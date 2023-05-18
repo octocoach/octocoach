@@ -53,7 +53,7 @@ export const loadDocuments = async () => {
           docs.push(
             ...(await loader.load()).map((d) => ({
               ...d,
-              metadata: { ...d.metadata, category },
+              metadata: { ...d.metadata, category, source: href },
             }))
           );
         } catch (err) {

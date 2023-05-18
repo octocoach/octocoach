@@ -1,32 +1,35 @@
-import { ChatOpenAI } from "langchain/chat_models/openai";
+import { OpenAI } from "langchain/llms/openai";
+import { HNSWLib } from "langchain/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { AutoGPT } from "langchain/experimental/autogpt";
-import { InMemoryFileStore } from "langchain/stores/file/in_memory";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
-import { baTool } from "./tool.js";
-import { ReadFileTool, WriteFileTool } from "langchain/tools";
 
-const memoryStore = new MemoryVectorStore(new OpenAIEmbeddings());
-const store = new InMemoryFileStore();
+import {
+  VectorStoreToolkit,
+  createVectorStoreAgent,
+  VectorStoreInfo,
+} from "langchain/agents";
 
-const tools = [
-  new ReadFileTool({ store }),
-  new WriteFileTool({ store }),
-  baTool,
-];
-
-const autogpt = AutoGPT.fromLLMAndTools(
-  new ChatOpenAI({ temperature: 0 }),
-  tools,
-  {
-    memory: memoryStore.asRetriever(),
-    aiName: "Ute",
-    aiRole: "Agent at the Bundesagentur für Arbeit",
-  }
+export const vectorStore = await HNSWLib.load(
+  "vectors/ba-index",
+  new OpenAIEmbeddings()
 );
 
-await autogpt.run([
-  "Find out how to register as an AZAV training provider in Germany",
-  "Compile a list of tasks to complete to become registered as AZAV",
-  "Compile the tasks into a plan",
-]);
+const vectorStoreInfo: VectorStoreInfo = {
+  name: "bundesagentur für arbeit",
+  description:
+    "training courses, accreditation of educational institutions, funding from the bundesagentur für arbeit",
+  vectorStore,
+};
+const model = new OpenAI({ temperature: 0, modelName: "gpt-4" });
+
+const toolkit = new VectorStoreToolkit(vectorStoreInfo, model);
+
+const agent = createVectorStoreAgent(model, toolkit);
+
+const result = await agent.call({
+  input: "Create a todo list for me to become AZAV certified.",
+});
+
+console.log(`Got output ${result.output}`);
+console.log(
+  `Got intermediate steps ${JSON.stringify(result.intermediateSteps, null, 2)}`
+);

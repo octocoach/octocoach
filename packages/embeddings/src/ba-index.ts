@@ -8,6 +8,6 @@ console.log("Creating embeddings...");
 const vectorStore = await HNSWLib.fromDocuments(docs, new OpenAIEmbeddings());
 
 console.log("Saving vector store...");
-await vectorStore.save("vectors");
+await vectorStore.save("vectors/ba-index");
 
 console.log("Done");

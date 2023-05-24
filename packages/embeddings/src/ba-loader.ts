@@ -4,7 +4,6 @@ import { gotScraping } from "got-scraping";
 import * as htmlparser2 from "htmlparser2";
 import { Document } from "langchain/document";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { Blob } from "node:buffer";
 import cliProgress from "cli-progress";
 
 export const loadDocuments = async () => {

@@ -26,7 +26,7 @@ const toolkit = new VectorStoreToolkit(vectorStoreInfo, model);
 const agent = createVectorStoreAgent(model, toolkit);
 
 const result = await agent.call({
-  input: "Create a todo list for me to become AZAV certified.",
+  input: `What are the requirements for "ausschließlich erfolgsbezogen vergütete Arbeitsvermittlung in versicherungspflichtige Beschäftigung nach §45 (4) S. 3 Nr. 2 SGB III" as part of the SGB III/AZAV certification?`,
 });
 
 console.log(`Got output ${result.output}`);

@@ -9,7 +9,7 @@
     "agent": "tsc && node -r dotenv/config build/agent.js",
     "chain": "tsc && node -r dotenv/config build/chain.js",
     "baindex": "tsc && node -r dotenv/config build/ba-index.js",
-    "test:loader": "tsc && node -r dotenv/config build/test-loader.js",
+    "bametasearch": "tsc && node -r dotenv/config build/ba-metasearch-index.js",
     "emails": "tsc && node -r dotenv/config build/emails-agent.js"
   },
   "devDependencies": {

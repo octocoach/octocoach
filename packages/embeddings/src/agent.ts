@@ -9,7 +9,7 @@ import {
 } from "langchain/agents";
 
 export const vectorStore = await HNSWLib.load(
-  "vectors/ba-index",
+  "vectors/ba-metasearch-index",
   new OpenAIEmbeddings()
 );
 
@@ -26,7 +26,7 @@ const toolkit = new VectorStoreToolkit(vectorStoreInfo, model);
 const agent = createVectorStoreAgent(model, toolkit);
 
 const result = await agent.call({
-  input: `What are the requirements for "ausschließlich erfolgsbezogen vergütete Arbeitsvermittlung in versicherungspflichtige Beschäftigung nach §45 (4) S. 3 Nr. 2 SGB III" as part of the SGB III/AZAV certification?`,
+  input: `Do I need a Quality Management Handbook to get AZAV accredited?`,
 });
 
 console.log(`Got output ${result.output}`);

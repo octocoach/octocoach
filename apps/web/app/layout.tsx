@@ -1,3 +1,4 @@
+import { Header } from "ui";
 import "ui/styles.css";
 
 export default function RootLayout({
@@ -7,7 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="dark">
-      <body>{children}</body>
+      <body>
+        <Header text="OctoCoach" />
+        {children}
+      </body>
     </html>
   );
 }

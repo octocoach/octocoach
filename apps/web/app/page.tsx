@@ -1,11 +1,9 @@
-"use client";
-
-import { Header } from "ui";
+import { Button } from "ui";
 
 export default function Page() {
   return (
-    <>
-      <Header text="OctoCoach" />
-    </>
+    <main className="container mx-auto px-4">
+      <Button>Welcome</Button>
+    </main>
   );
 }

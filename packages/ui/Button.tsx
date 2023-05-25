@@ -10,7 +10,7 @@ export const Button = ({
   onClick?: () => void;
 }) => {
   return (
-    <button className="btn btn-secondary" onClick={onClick}>
+    <button className="btn-secondary btn" onClick={onClick}>
       {children}
     </button>
   );

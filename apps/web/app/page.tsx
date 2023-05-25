@@ -1,10 +1,11 @@
-import { Button, Header } from "ui";
+"use client";
+
+import { Header } from "ui";
 
 export default function Page() {
   return (
     <>
-      <Header text="Web" />
-      <Button />
+      <Header text="OctoCoach" />
     </>
   );
 }

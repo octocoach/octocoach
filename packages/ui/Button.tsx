@@ -2,6 +2,16 @@
 
 import * as React from "react";
 
-export const Button = () => {
-  return <button onClick={() => alert("boop")}>Boop</button>;
+export const Button = ({
+  children,
+  onClick,
+}: {
+  children: string;
+  onClick?: () => void;
+}) => {
+  return (
+    <button className="btn btn-secondary" onClick={onClick}>
+      {children}
+    </button>
+  );
 };

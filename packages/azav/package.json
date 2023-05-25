@@ -1,0 +1,21 @@
+{
+  "name": "azav",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "build/main.js",
+  "scripts": {
+    "start": "tsc && node ./build/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.2.3",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}

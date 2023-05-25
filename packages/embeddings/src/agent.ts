@@ -26,7 +26,7 @@ const toolkit = new VectorStoreToolkit(vectorStoreInfo, model);
 const agent = createVectorStoreAgent(model, toolkit);
 
 const result = await agent.call({
-  input: `Do I need a Quality Management Handbook to get AZAV accredited?`,
+  input: `How would I certify individual training modules which could be combined into a single training measure?`,
 });
 
 console.log(`Got output ${result.output}`);

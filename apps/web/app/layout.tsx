@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body>
-        <Header text="OctoCoach" />
+        <Header text="octo.coach" />
         {children}
       </body>
     </html>

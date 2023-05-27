@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@catppuccin/palette": "^0.1.8",
+    "@iconscout/react-unicons": "^2.0.2",
     "@octocoach/configs": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",

@@ -2,8 +2,8 @@ import * as React from "react";
 
 export const Header = ({ text }: { text: string }) => {
   return (
-    <nav className="navbar bg-base-100">
-      <a className="btn-ghost btn text-xl normal-case">{text}</a>
-    </nav>
+    <header className="hero bg-base-100">
+      <h1 className="hero-content text-7xl">{text}</h1>
+    </header>
   );
 };

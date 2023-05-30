@@ -8,11 +8,8 @@ import {
   VectorStoreInfo,
 } from "langchain/agents";
 
-export const createAgent = async () => {
-  const vectorStore = await HNSWLib.load(
-    "vectors/ba-metasearch-index",
-    new OpenAIEmbeddings()
-  );
+export const createAgent = async ({ indexPath }: { indexPath: string }) => {
+  const vectorStore = await HNSWLib.load(indexPath, new OpenAIEmbeddings());
 
   const vectorStoreInfo: VectorStoreInfo = {
     name: "bundesagentur für arbeit",

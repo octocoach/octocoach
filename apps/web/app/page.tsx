@@ -9,11 +9,14 @@ export default function Page() {
 
     console.log(`Asking: ${input}`);
 
-    const agent = await createAgent();
+    const agent = await createAgent({
+      indexPath: "../../packages/embeddings/vectors/ba-metasearch-index",
+    });
 
     const response = await agent.call({ input });
 
     console.log(response);
+    return response.output;
   }
 
   return (

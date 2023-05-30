@@ -1,26 +1,27 @@
-import { Button, Textarea, ChatMessage } from "ui";
+import styles from "./page.module.css";
+import { createAgent } from "@octocoach/embeddings";
 
 export default function Page() {
+  async function myAction(data: FormData) {
+    "use server";
+
+    const input = data.get("question") as string;
+
+    console.log(`Asking: ${input}`);
+
+    const agent = await createAgent();
+
+    const response = await agent.call({ input });
+
+    console.log(response);
+  }
+
   return (
-    <main className="container mx-auto px-8">
-      <div className="grid justify-center gap-2">
-        <Textarea />
-        <Button>Ask</Button>
-        <div>
-          <ChatMessage
-            name="Adriaan"
-            text="Hey, how are you?"
-            time={new Date()}
-            side="start"
-          />
-          <ChatMessage
-            name="Burger"
-            text="I'm good thanks and you?"
-            time={new Date()}
-            side="end"
-          />
-        </div>
-      </div>
+    <main>
+      <form action={myAction} className={styles.grid}>
+        <textarea name="question" />
+        <button type="submit">Submit</button>
+      </form>
     </main>
   );
 }

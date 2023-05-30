@@ -1,4 +1,12 @@
 module.exports = {
+  experimental: {
+    serverActions: true,
+  },
   reactStrictMode: true,
-  transpilePackages: ["ui"],
+  transpilePackages: ["@octocoach/embeddings", "ui"],
+  webpack: (config) => ({
+    ...config,
+    experiments: { ...config.experiments, topLevelAwait: true },
+    externals: ["hnswlib-node"],
+  }),
 };

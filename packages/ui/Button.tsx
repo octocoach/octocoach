@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 export const Button = ({
   children,
   onClick,
@@ -9,9 +7,5 @@ export const Button = ({
   children: string;
   onClick?: () => void;
 }) => {
-  return (
-    <button className="btn-primary btn" onClick={onClick}>
-      {children}
-    </button>
-  );
+  return <button onClick={onClick}>{children}</button>;
 };

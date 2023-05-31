@@ -1,5 +1,5 @@
 {
-  "name": "embeddings",
+  "name": "@octocoach/embeddings",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,9 @@
     "build": "tsc && node -r dotenv/config build/build.js",
     "agent": "tsc && node -r dotenv/config build/agent.js",
     "chain": "tsc && node -r dotenv/config build/chain.js",
-    "baindex": "tsc && node -r dotenv/config build/ba-index.js"
+    "baindex": "tsc && node -r dotenv/config build/ba-index.js",
+    "bametasearch": "tsc && node -r dotenv/config build/ba-metasearch-index.js",
+    "emails": "tsc && node -r dotenv/config build/emails-agent.js"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
@@ -31,5 +33,8 @@
     "playwright": "^1.33.0",
     "puppeteer": "^20.2.1",
     "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "hnswlib-node": "^1.4.2"
   }
 }

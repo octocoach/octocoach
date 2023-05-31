@@ -28,6 +28,9 @@ importers:
       '@octocoach/embeddings':
         specifier: workspace:*
         version: link:../../packages/embeddings
+      '@octocoach/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       hnswlib-node:
         specifier: ^1.4.2
         version: 1.4.2
@@ -40,9 +43,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
     devDependencies:
       '@types/node':
         specifier: ^20.2.5

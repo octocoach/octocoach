@@ -1,13 +1,19 @@
 "use client";
 
-import { forwardRef } from "react";
+import { PropsWithChildren, useRef } from "react";
+import { useButton, AriaButtonProps } from "react-aria";
 import { ButtonVariants, button } from "./button.css";
 
-export const Button = forwardRef<
-  HTMLButtonElement,
-  JSX.IntrinsicElements["button"] & ButtonVariants
->((props, ref) => {
-  const { color, children } = props;
+export const Button = ({
+  color,
+  children,
+  ...props
+}: PropsWithChildren<
+  JSX.IntrinsicElements["button"] & AriaButtonProps & ButtonVariants
+>) => {
+  const ref = useRef(null);
+
+  const { buttonProps } = useButton(props, ref);
 
   return (
     <button
@@ -15,9 +21,9 @@ export const Button = forwardRef<
         color,
       })}
       ref={ref}
-      {...props}
+      {...buttonProps}
     >
       {children}
     </button>
   );
-});
+};

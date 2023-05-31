@@ -1,3 +1,4 @@
+import { Button } from "@octocoach/ui";
 import styles from "./page.module.css";
 import { createAgent } from "@octocoach/embeddings";
 
@@ -23,7 +24,9 @@ export default function Page() {
     <main>
       <form action={myAction} className={styles.grid}>
         <textarea name="question" />
-        <button type="submit">Submit</button>
+        <Button type="submit" color="secondary">
+          Submit
+        </Button>
       </form>
     </main>
   );

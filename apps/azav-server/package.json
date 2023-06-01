@@ -1,0 +1,18 @@
+{
+  "name": "@octocoach/azav-server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@octocoach/trpc": "workspace:*",
+    "@trpc/server": "^10.28.2",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.4"
+  }
+}

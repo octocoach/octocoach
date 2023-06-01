@@ -1,5 +1,6 @@
 import { Button, TextArea } from "@octocoach/ui";
 import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
+import { type AppRouter } from "@octocoach/trpc";
 import style from "./App.module.css";
 import { useState } from "react";
 

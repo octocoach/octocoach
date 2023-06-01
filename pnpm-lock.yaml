@@ -23,8 +23,30 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
 
+  apps/azav-server:
+    dependencies:
+      '@octocoach/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
+      '@trpc/server':
+        specifier: ^10.28.2
+        version: 10.28.2
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
   apps/azav-web:
     dependencies:
+      '@octocoach/trpc':
+        specifier: workspace:^
+        version: link:../../packages/trpc
       '@octocoach/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -206,6 +228,22 @@ importers:
       eslint-plugin-react:
         specifier: 7.28.0
         version: 7.28.0(eslint@8.41.0)
+
+  packages/trpc:
+    dependencies:
+      '@trpc/server':
+        specifier: ^10.28.2
+        version: 10.28.2
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
 
   packages/tsconfig: {}
 
@@ -2449,6 +2487,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@trpc/server@10.28.2:
+    resolution: {integrity: sha512-mCdMzef1NnchYyV11Dg02vu8HDyXl0elvrs2Noi261eLRIU5TwQjiSRxbw/YrDupOKKjaG4iz2i8mHR7jhlvWQ==}
+    dev: false
 
   /@types/cheerio@0.22.31:
     resolution: {integrity: sha512-Kt7Cdjjdi2XWSfrZ53v4Of0wG3ZcmaegFXjMmz9tfNrZSkzzo36G0AL1YqSdcIA78Etjt6E609pt5h1xnQkPUw==}

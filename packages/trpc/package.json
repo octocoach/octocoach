@@ -1,0 +1,19 @@
+{
+  "name": "@octocoach/trpc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@trpc/server": "^10.28.2",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.4"
+  }
+}

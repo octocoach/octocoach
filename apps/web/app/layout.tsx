@@ -1,3 +1,4 @@
+import { SSRProvider } from "@octocoach/ui";
 import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
 
 export default function RootLayout({
@@ -7,7 +8,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={latteThemeClass}>
-      <body>{children}</body>
+      <SSRProvider>
+        <body>{children}</body>
+      </SSRProvider>
     </html>
   );
 }

@@ -1,4 +1,4 @@
-import { Button } from "@octocoach/ui";
+import { Button, TextArea } from "@octocoach/ui";
 import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
 import style from "./App.module.css";
 import { useState } from "react";
@@ -9,12 +9,10 @@ function App() {
   return (
     <div className={latteThemeClass}>
       <section className={style.grid}>
-        <textarea
-          cols={30}
-          rows={10}
-          className={style.noResize}
+        <TextArea
+          label="Your Question"
           value={input}
-          onChange={({ target }) => setInput(target.value)}
+          onChange={(val) => setInput(val)}
         />
         <Button
           color="primary"

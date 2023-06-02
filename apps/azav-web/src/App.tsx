@@ -1,10 +1,10 @@
-import { Button, Stack, TextArea } from "@octocoach/ui";
-import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
-import { useState } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { client } from "./client";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { Button, Stack, TextArea } from "@octocoach/ui";
+import { bg, themeClass } from "@octocoach/ui/theme.css";
+import { useEffect, useState } from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import animation from "./animation.json";
+import { client } from "./client";
 import "./font.css";
 
 function App() {
@@ -12,8 +12,12 @@ function App() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    document.querySelector("html")?.classList.add(themeClass.frappe, bg);
+  }, []);
+
   return (
-    <div className={latteThemeClass}>
+    <div>
       <Stack>
         <TextArea
           label="What would you like to know about AZAV?"

@@ -21,6 +21,7 @@
     "@vanilla-extract/css": "^1.11.0",
     "@vanilla-extract/recipes": "^0.4.0",
     "@vanilla-extract/sprinkles": "^1.6.0",
+    "colord": "^2.9.3",
     "react-aria": "^3.25.0"
   },
   "peerDependencies": {

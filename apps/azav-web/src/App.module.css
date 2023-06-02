@@ -1,8 +1,0 @@
-.grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.noResize {
-  resize: none;
-}

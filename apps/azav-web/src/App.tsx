@@ -1,33 +1,49 @@
-import { Button, TextArea } from "@octocoach/ui";
+import { Button, Stack, TextArea } from "@octocoach/ui";
 import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
 import { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import style from "./App.module.css";
 import { client } from "./client";
+import { Player } from "@lottiefiles/react-lottie-player";
+import animation from "./animation.json";
+import "./font.css";
 
 function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className={latteThemeClass}>
-      <section className={style.grid}>
+      <Stack>
         <TextArea
-          label="Your Question"
+          label="What would you like to know about AZAV?"
           value={input}
           onChange={(val) => setInput(val)}
         />
         <Button
           color="primary"
+          isDisabled={loading}
           onClick={async () => {
-            const output = await client.askAZAV.query(input);
-            setOutput(output);
+            try {
+              setLoading(true);
+              const output = await client.askAZAV.query(input);
+              setInput("");
+              setOutput(output);
+              setLoading(false);
+            } catch (err) {
+              console.error(err);
+              setLoading(false);
+            }
           }}
         >
           Ask
         </Button>
-        <ReactMarkdown>{output}</ReactMarkdown>
-      </section>
+        {loading ? (
+          <Player src={animation} loop autoplay />
+        ) : (
+          <ReactMarkdown>{output}</ReactMarkdown>
+        )}
+      </Stack>
     </div>
   );
 }

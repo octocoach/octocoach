@@ -1,11 +1,13 @@
 import { Button, TextArea } from "@octocoach/ui";
 import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
-import { type AppRouter } from "@octocoach/trpc";
-import style from "./App.module.css";
 import { useState } from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import style from "./App.module.css";
+import { client } from "./client";
 
 function App() {
   const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
 
   return (
     <div className={latteThemeClass}>
@@ -17,12 +19,14 @@ function App() {
         />
         <Button
           color="primary"
-          onClick={() => {
-            setInput("");
+          onClick={async () => {
+            const output = await client.askAZAV.query(input);
+            setOutput(output);
           }}
         >
           Ask
         </Button>
+        <ReactMarkdown>{output}</ReactMarkdown>
       </section>
     </div>
   );

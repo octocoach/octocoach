@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && node -r dotenv/config build/build.js",
+    "build": "tsc",
+    "scrape": "tsc && node -r dotenv/config build/build.js",
     "agent": "tsc && node -r dotenv/config build/agent.js",
     "chain": "tsc && node -r dotenv/config build/chain.js",
     "baindex": "tsc && node -r dotenv/config build/ba-index.js",

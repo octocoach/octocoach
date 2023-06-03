@@ -37,8 +37,18 @@ export const button = recipe({
 
   variants: {
     color: {
-      primary: { background: vars.color.brand },
-      secondary: { background: vars.color.accent },
+      primary: {
+        color: vars.color.typography.body,
+        background: vars.color.background.base,
+        border: `2px solid ${vars.color.brand}`,
+        boxShadow: `
+          -10px 0px 20px ${vars.color.brand},
+          10px 0px 20px ${vars.color.accent};`,
+      },
+      secondary: {
+        background: vars.color.typography.body,
+        color: vars.color.background.mantle,
+      },
     },
   },
 });

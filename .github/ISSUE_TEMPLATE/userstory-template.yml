@@ -1,0 +1,11 @@
+name: Feature
+description: Add a new feature
+title: "[FEATURE]:"
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "As a ____, I want to, ____ , so that ____"
+    validations:
+      required: true

@@ -10,14 +10,12 @@ body:
       value: As a ____, I want to, ____ , so that ____
     validations:
       required: true
-
-  - type: markdown
+  - type: textarea
     attributes:
+      label: Acceptance Criteria
       value: "
-      - [ ] Acceptance Criteria 1
-      - [ ] Acceptance Criteria 2
-      - [ ] Acceptance Criteria 3
+      - [ ] ...
+      - [ ] ...
+      - [ ] ...
       "
 
-    validations:
-      required: true

@@ -4,8 +4,20 @@ title: "[FEATURE]:"
 labels: ["enhancement"]
 
 body:
+  - type: textarea
+    attributes:
+      label: Title
+      value: As a ____, I want to, ____ , so that ____
+    validations:
+      required: true
+
   - type: markdown
     attributes:
-      value: "As a ____, I want to, ____ , so that ____"
+      value: "
+      - [ ] Acceptance Criteria 1
+      - [ ] Acceptance Criteria 2
+      - [ ] Acceptance Criteria 3
+      "
+
     validations:
       required: true

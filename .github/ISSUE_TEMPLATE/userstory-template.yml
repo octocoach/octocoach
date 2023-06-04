@@ -1,21 +1,15 @@
 name: Feature
 description: Add a new feature
-title: "[FEATURE]:"
-labels: ["enhancement"]
+title: "[FEATURE]: As a ____, I want to, ____ , so that ____"
+labels: ["feature"]
 
 body:
   - type: textarea
     attributes:
-      label: Title
-      value: As a ____, I want to, ____ , so that ____
-    validations:
-      required: true
-  - type: textarea
-    attributes:
       label: Acceptance Criteria
       value: "
-      - [ ] ...
-      - [ ] ...
-      - [ ] ...
+      - [ ] ...\n
+      - [ ] ...\n
+      - [ ] ...\n
       "
 

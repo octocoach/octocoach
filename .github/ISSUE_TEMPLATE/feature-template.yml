@@ -1,6 +1,6 @@
 name: Feature
 description: Add a new feature
-title: "[FEATURE]: As a ____, I want to, ____ , so that ____"
+title: "[FEATURE]: As a ____, I want to ____, so I can ____."
 labels: ["feature"]
 
 body:

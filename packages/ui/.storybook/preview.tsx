@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react";
 import React, { useEffect, useRef } from "react";
 import { bg, themeClass } from "../theme.css";
+import "../reset.css";
 
 const preview: Preview = {
   globalTypes: {

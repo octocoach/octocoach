@@ -1,6 +1,9 @@
-import { ReactNode } from "react";
-import { stack } from "./stack.css";
+import { PropsWithChildren } from "react";
+import { StackVariants, stack } from "./stack.css";
 
-export const Stack = ({ children }: { children: ReactNode }) => (
-  <div className={stack({ align: "center" })}>{children}</div>
+export const Stack = ({
+  children,
+  spacing,
+}: PropsWithChildren<StackVariants>) => (
+  <div className={stack({ align: "center", spacing })}>{children}</div>
 );

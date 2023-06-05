@@ -1,8 +1,15 @@
 import { variants } from "@catppuccin/palette";
 import { createTheme, createThemeContract, style } from "@vanilla-extract/css";
-import { colord } from "colord";
+import { createAlpha } from "./helpers";
 
 type Flavor = keyof typeof variants;
+
+const colorAlphas = {
+  normal: "",
+  80: "",
+  50: "",
+  20: "",
+};
 
 export const vars = createThemeContract({
   fonts: {
@@ -10,8 +17,8 @@ export const vars = createThemeContract({
   },
 
   color: {
-    brand: "",
-    accent: "",
+    brand: colorAlphas,
+    accent: colorAlphas,
     background: {
       base: "",
       mantle: "",
@@ -44,6 +51,13 @@ export const vars = createThemeContract({
   },
 });
 
+const createColorAlphas = (color: string) => ({
+  normal: color,
+  80: createAlpha(color, 0.8),
+  50: createAlpha(color, 0.5),
+  20: createAlpha(color, 0.2),
+});
+
 const createThemeVariant = (flavor: Flavor) => {
   const variant = variants[flavor];
   return createTheme(vars, {
@@ -52,8 +66,8 @@ const createThemeVariant = (flavor: Flavor) => {
     },
 
     color: {
-      brand: variant.mauve.hsl,
-      accent: variant.sapphire.hsl,
+      brand: createColorAlphas(variant.mauve.hsl),
+      accent: createColorAlphas(variant.sapphire.hsl),
       background: {
         base: variant.base.hsl,
         mantle: variant.mantle.hsl,
@@ -80,7 +94,7 @@ const createThemeVariant = (flavor: Flavor) => {
         warning: variant.yellow.hsl,
         error: variant.red.hsl,
         tag: variant.blue.hsl,
-        selection: colord(variant.surface2.hex).alpha(0.5).toHslString(),
+        selection: createAlpha(variant.surface2.hex, 0.5),
         cursor: variant.rosewater.hsl,
       },
     },

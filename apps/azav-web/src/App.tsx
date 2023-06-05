@@ -1,5 +1,6 @@
 import { Player } from "@lottiefiles/react-lottie-player";
-import { Button, Stack, TextArea } from "@octocoach/ui";
+import { Button, Container, Stack, TextArea, Typography } from "@octocoach/ui";
+import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { useEffect, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -17,8 +18,11 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Stack>
+    <Container element="main">
+      <Stack spacing="loose">
+        <Typography size="xl" element="h1">
+          Ask AZAV
+        </Typography>
         <TextArea
           label="What would you like to know about AZAV?"
           value={input}
@@ -48,7 +52,7 @@ function App() {
           <ReactMarkdown>{output}</ReactMarkdown>
         )}
       </Stack>
-    </div>
+    </Container>
   );
 }
 

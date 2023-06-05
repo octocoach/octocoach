@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { TextArea } from "../TextArea/TextArea";
-import { bg, themeClass } from "../theme.css";
+import { TextArea } from "./TextArea";
 
 import { userEvent, within } from "@storybook/testing-library";
 
@@ -15,26 +14,21 @@ const meta: Meta<typeof TextArea> = {
       description: "Label Text",
     },
   },
-  parameters: {
-    layout: "centered",
+  args: {
+    label: "This is the label",
   },
-  decorators: [
-    (Story) => (
-      <div className={`${themeClass.latte} ${bg}`}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof TextArea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+const labelText = "Label";
+export const Basic: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    console.log(canvas);
+    const textArea = await canvas.findByLabelText(labelText);
+    await userEvent.type(textArea, "Hello");
   },
-  args: {},
+  args: { label: labelText },
 };

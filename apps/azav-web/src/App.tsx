@@ -1,34 +1,58 @@
-import { Button, TextArea } from "@octocoach/ui";
-import { latteThemeClass } from "@octocoach/ui/latteTheme.css";
-import { useState } from "react";
+import { Player } from "@lottiefiles/react-lottie-player";
+import { Button, Container, Stack, TextArea, Typography } from "@octocoach/ui";
+import "@octocoach/ui/reset.css";
+import { bg, themeClass } from "@octocoach/ui/theme.css";
+import { useEffect, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import style from "./App.module.css";
+import animation from "./animation.json";
 import { client } from "./client";
+import "./font.css";
 
 function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.querySelector("html")?.classList.add(themeClass.frappe, bg);
+  }, []);
 
   return (
-    <div className={latteThemeClass}>
-      <section className={style.grid}>
+    <Container element="main">
+      <Stack spacing="loose">
+        <Typography size="xl" element="h1">
+          Ask AZAV
+        </Typography>
         <TextArea
-          label="Your Question"
+          label="What would you like to know about AZAV?"
           value={input}
           onChange={(val) => setInput(val)}
         />
         <Button
           color="primary"
+          isDisabled={loading}
           onClick={async () => {
-            const output = await client.askAZAV.query(input);
-            setOutput(output);
+            try {
+              setLoading(true);
+              const output = await client.askAZAV.query(input);
+              setInput("");
+              setOutput(output);
+              setLoading(false);
+            } catch (err) {
+              console.error(err);
+              setLoading(false);
+            }
           }}
         >
           Ask
         </Button>
-        <ReactMarkdown>{output}</ReactMarkdown>
-      </section>
-    </div>
+        {loading ? (
+          <Player src={animation} loop autoplay />
+        ) : (
+          <ReactMarkdown>{output}</ReactMarkdown>
+        )}
+      </Stack>
+    </Container>
   );
 }
 

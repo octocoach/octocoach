@@ -23,18 +23,18 @@ const preview: Preview = {
     (Story, { globals }) => {
       const body = useRef(document.querySelector(".sb-show-main"));
       useEffect(() => {
+        const docsStory = document.querySelector(".docs-story");
+        docsStory?.classList.add(bg);
         if (body.current) {
           body.current.classList.add(bg);
         }
       }, [body.current]);
 
       useEffect(() => {
-        if (body.current) {
-          ["latte", "frappe", "macchiato", "mocha"].forEach((theme) => {
-            body.current?.classList.remove(themeClass[theme]);
-          });
-          body.current.classList.add(themeClass[globals.theme]);
-        }
+        ["latte", "frappe", "macchiato", "mocha"].forEach((theme) => {
+          body.current?.classList.remove(themeClass[theme]);
+        });
+        body.current?.classList.add(themeClass[globals.theme]);
       }, [body.current, globals.theme]);
 
       return <Story />;

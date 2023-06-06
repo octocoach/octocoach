@@ -38,11 +38,13 @@ body:
       label: User Type
       description: Select the type(s) of user this story applies to.
       options:
-        - Coach
-        - Student
-        - Recruiter
+        - Alumni
         - Case Worker
+        - Coach
         - Employer
+        - Potential Student
+        - Recruiter
+        - Student
       multiple: true
     validations:
       required: true

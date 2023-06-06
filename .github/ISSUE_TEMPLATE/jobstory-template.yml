@@ -1,6 +1,6 @@
 name: 👷 Job Story
 description: Propose a new feature or improvement in the form of a Job Story
-title: When ____, I want to ____, so I can ____.
+title: 👷 When ____, I want to ____, so I can ____.
 labels: ["feature", "job story"]
 
 body:

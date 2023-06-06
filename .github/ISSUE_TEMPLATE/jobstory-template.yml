@@ -44,24 +44,28 @@ body:
         - Case Worker
         - Employer
       multiple: true
+    validations:
       required: true
 
   - type: textarea
     attributes:
       label: Situation
       description: Describe the situation the user is in when they would encounter this job.
+    validations:
       required: true
 
   - type: textarea
     attributes:
       label: Motivation
       description: Describe what the user wants to do in this situation.
+    validations:
       required: true
 
   - type: textarea
     attributes:
       label: Expected Outcome
       description: Describe the outcome the user wants from performing this job. How will you measure if the proposed solution indeed helps the user achieve the desired outcome?
+    validations:
       required: true
 
   - type: checkboxes

@@ -1,0 +1,77 @@
+name: 👷 Job Story
+description: Propose a new feature or improvement in the form of a Job Story
+title: "Job Story: When ____, I want to ____, so I can ____."
+labels: ["job story"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## About Job Stories and JTBD
+
+        Job Stories and the Jobs To Be Done (JTBD) framework provide a way of thinking about products and features from the perspective of the tasks users are trying to accomplish. The goal is to focus on the job that needs to be done, rather than the specific solution used to do it.
+
+        A Job To Be Done:
+
+        1. Is solution-agnostic.
+        2. Results in progress when completed.
+        3. Is relatively stable across time.
+
+        A Job To Be Done doesn't know what products or solutions have existed, currently exist, or might exist. It's just framing some area of life where your customer is at the center of a struggle, and they want some help solving the problem.
+
+        For example:
+
+        > “Help me brush my teeth in the morning” is not a great example of a Job to Be Done statement.
+
+        > “Help me brush my teeth in the morning” is joined at the hip to an existing solution (a toothbrush) and there's only so far you'll be able to expand your thinking within that bubble.
+
+        A better example of a Job to Be Done statement is:
+
+        > “Keep my teeth healthy.”
+
+        This statement is detached from a specific solution (a toothbrush) and moves toward the person's true motivation
+
+        [Learn more](https://brianrhea.com/jobs-to-be-done-examples/)
+
+  - type: dropdown
+    attributes:
+      label: User Type
+      description: Select the type(s) of user this story applies to.
+      options:
+        - Coach
+        - Student
+        - Recruiter
+        - Case Worker
+        - Employer
+      multiple: true
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Situation
+      description: Describe the situation the user is in when they would encounter this job.
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Motivation
+      description: Describe what the user wants to do in this situation.
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected Outcome
+      description: Describe the outcome the user wants from performing this job. How will you measure if the proposed solution indeed helps the user achieve the desired outcome?
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Validation
+      description: "Does the job story meet these criteria?"
+      options:
+        - label: "The Situation is correctly identified and clearly defined"
+        - label: "The Motivation is aligned with user needs and goals"
+        - label: "The Expected Outcome is achievable and measurable"
+        - label: "The measurement criteria for the expected outcome is defined"
+    validations:
+      required: true

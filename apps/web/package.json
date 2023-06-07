@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@octocoach/embeddings": "workspace:*",
+    "@octocoach/i18n": "workspace:^",
     "@octocoach/ui": "workspace:*",
     "hnswlib-node": "^1.4.2",
     "next": "^13.4.4",

@@ -110,4 +110,5 @@ export const themeClass = flavors.reduce(
 
 export const bg = style({
   backgroundColor: vars.color.background.base,
+  color: vars.color.typography.body,
 });

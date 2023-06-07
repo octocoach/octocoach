@@ -21,6 +21,6 @@ export const textarea = style({
   resize: "none",
   ":focus": {
     border: `1px solid ${vars.color.brand}`,
-    outline: vars.color.brand,
+    outline: vars.color.brand.normal,
   },
 });

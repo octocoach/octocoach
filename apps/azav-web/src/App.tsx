@@ -1,12 +1,12 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Button, Container, Stack, TextArea, Typography } from "@octocoach/ui";
+import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { useEffect, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import animation from "./animation.json";
 import { client } from "./client";
-import "./font.css";
 
 function App() {
   const [input, setInput] = useState("");

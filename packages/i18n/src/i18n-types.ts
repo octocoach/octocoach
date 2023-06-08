@@ -22,6 +22,10 @@ type RootTranslation = {
 	 * A​c​c​r​e​d​i​t​a​t​i​o​n
 	 */
 	ACCREDITATION: string
+	/**
+	 * A​d​m​i​n
+	 */
+	ADMIN: string
 }
 
 export type TranslationFunctions = {
@@ -33,6 +37,10 @@ export type TranslationFunctions = {
 	 * Accreditation
 	 */
 	ACCREDITATION: () => LocalizedString
+	/**
+	 * Admin
+	 */
+	ADMIN: () => LocalizedString
 }
 
 export type Formatters = {}

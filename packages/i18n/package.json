@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "i18n": "typesafe-i18n"
+    "dev": "typesafe-i18n",
+    "build": "typesafe-i18n --no-watch"
   },
   "dependencies": {
     "react": "^18.2.0",

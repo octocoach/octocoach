@@ -49,7 +49,7 @@ export const mapToTUVSchema = ({
   return {
     name,
     certificationNumber: certificationNumber || "",
-    address1: `${address.street}, ${address.number}`,
+    address1: `${address.street} ${address.number}`,
     address2: `${address.postalCode}, ${address.city}`,
     email,
     website,

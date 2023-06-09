@@ -16,6 +16,7 @@ const zip = new PizZip(content);
 const doc = new Docxtemplater(zip, {
   paragraphLoop: true,
   linebreaks: true,
+  // Prevent `undefined` when value is not defined
   nullGetter() {
     return "";
   },

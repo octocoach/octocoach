@@ -13,9 +13,14 @@
   "devDependencies": {
     "@types/node": "^20.2.3",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.4"
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4",
+    "zod-to-json-schema": "^3.21.1"
   },
   "dependencies": {
-    "pdf-lib": "^1.17.1"
+    "docxtemplater": "^3.37.9",
+    "pdf-lib": "^1.17.1",
+    "pizzip": "^3.1.4",
+    "zod": "^3.21.4"
   }
 }

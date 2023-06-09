@@ -1,0 +1,13 @@
+{
+  "name": "@octocoach/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "typesafe-i18n",
+    "build": "typesafe-i18n --no-watch"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "typesafe-i18n": "^5.24.3"
+  }
+}

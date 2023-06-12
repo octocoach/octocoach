@@ -2,12 +2,23 @@
   "name": "@octocoach/i18n",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "typesafe-i18n",
-    "build": "typesafe-i18n --no-watch"
+    "build": "typesafe-i18n --no-watch",
+    "translate": "tsx -r dotenv/config src/translate.ts"
   },
   "dependencies": {
+    "@octocoach/azav": "workspace:^",
+    "deepl-node": "^1.10.2",
     "react": "^18.2.0",
     "typesafe-i18n": "^5.24.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.0",
+    "dotenv": "^16.0.3",
+    "tsconfig": "workspace:*",
+    "tsx": "^3.12.7"
   }
 }

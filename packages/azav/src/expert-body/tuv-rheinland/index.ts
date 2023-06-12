@@ -1,4 +1,4 @@
-import { EducationProvider } from "./schema";
+import { EducationProvider } from "../../schema";
 
 type Checkbox = "☒" | "☐";
 export const [checked, unchecked] = ["☒", "☐"] as Checkbox[];

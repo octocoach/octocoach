@@ -3,8 +3,8 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import PizZip from "pizzip";
 
-import type { EducationProvider } from "./schema";
-import { mapToTUVSchema } from "./tuv";
+import type { EducationProvider } from "../../schema";
+import { mapToTUVSchema } from ".";
 
 const content = readFileSync(
   resolve(process.cwd(), "data/tuv_form.docx"),

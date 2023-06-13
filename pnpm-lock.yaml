@@ -167,6 +167,9 @@ importers:
 
   packages/azav:
     dependencies:
+      '@octocoach/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       docxtemplater:
         specifier: ^3.37.9
         version: 3.37.9
@@ -271,9 +274,6 @@ importers:
 
   packages/i18n:
     dependencies:
-      '@octocoach/azav':
-        specifier: workspace:^
-        version: link:../azav
       deepl-node:
         specifier: ^1.10.2
         version: 1.10.2

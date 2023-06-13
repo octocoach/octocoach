@@ -65,10 +65,10 @@ export const tuvRheinland: FileSchema = {
     ],
     tips: [
       { text: "Testat eines Steuerberaters/Wirtschaftsprüfers _oder_" },
-      { text: "Bilanzen _oder_" },
-      { text: "Bankauskunft _oder_" },
-      { text: "Gewinn- und Verlustrechnung _oder_" },
-      { text: "Eingaben-Ausgabenrechnung _oder_" },
+      { text: "Bilanzen oder" },
+      { text: "Bankauskunft oder" },
+      { text: "Gewinn- und Verlustrechnung oder" },
+      { text: "Eingaben-Ausgabenrechnung oder" },
       { text: "Controlling und Planungsunterlagen" },
       {
         text: "Aktuell bzw. aus dem letzten Wirtschaftsjahr und vom Testierer unterschrieben",
@@ -182,6 +182,7 @@ export const tuvRheinland: FileSchema = {
       { text: "Zulassung als Fahrschule" },
       {
         text: "Leistungsbeschreibungen bzw. Verträge über Maßnahmen im Fachbereich 3 (§§ 48-80 SGB III)",
+        subjectAreas: [3],
       },
       {
         text: "Nachweis über die Einrichtungen der beruflichen Rehabilitation, z.B. Berufsförderungswerke, Berufsbildungswerke und vergleichbare Einrichtungen nach § 51 SGB IX, Werkstätten für Behinderte nach § 227 SGB IX",
@@ -279,7 +280,7 @@ export const tuvRheinland: FileSchema = {
       },
       {
         text: "Bei Maßnahmen mit Einzelcoaching reicht ein Büro- und Beratungsraum aus",
-        subjectAreas: [1, 5, 6],
+        subjectAreas: [1, 4, 5, 6],
       },
       {
         text: "Büro- und Beratungsraum",
@@ -291,10 +292,6 @@ export const tuvRheinland: FileSchema = {
       },
       {
         text: "Schulungsraum mit mindestens 12 TN-Plätzen, Büro, Beratungsraum, Pausen-(Sozialraum), Werkstätten bei fachpraktischer Weiterbildung",
-        subjectAreas: [4, 5, 6],
-      },
-      {
-        text: "Bei Maßnahmen mit Einzelcoaching reicht ein Büro- und Beratungsraum aus",
         subjectAreas: [4, 5, 6],
       },
       {
@@ -634,7 +631,7 @@ export const tuvRheinland: FileSchema = {
         subjectAreas: [2],
       },
       {
-        text: "Verfahren des Vermittlungsprozesses: Vermittlungsplan, Aktivitätenplan mit Nachweisführung, Kennzahlen (z.B. zu Kontakten",
+        text: "Verfahren des Vermittlungsprozesses: Vermittlungsplan, Aktivitätenplan mit Nachweisführung, Kennzahlen (z.B. zu Kontakten)",
         subjectAreas: [2],
       },
       {
@@ -648,15 +645,7 @@ export const tuvRheinland: FileSchema = {
         subjectAreas: [3],
       },
       {
-        text: "Prozessorientierung und konzeptionelle Gestaltung (Gesamtkonzept des Trägers, inkl.",
-        subjectAreas: [3],
-      },
-      {
-        text: "Kostenregelung/Finanzierung/Kostenkalkulation/Preis) Aufbau und Abfolge von Modulen,",
-        subjectAreas: [3],
-      },
-      {
-        text: "Die organisatorische und inhaltliche Ausgestaltung sowie die Aufgaben aller an der Umsetzung",
+        text: "Prozessorientierung und konzeptionelle Gestaltung (Gesamtkonzept des Trägers, inkl. Kostenregelung/Finanzierung/Kostenkalkulation/Preis) Aufbau und Abfolge von Modulen, Die organisatorische und inhaltliche Ausgestaltung sowie die Aufgaben aller an der Umsetzung",
         subjectAreas: [3],
       },
       {
@@ -766,15 +755,11 @@ export const tuvRheinland: FileSchema = {
         subjectAreas: [3],
       },
       {
-        text: "Ergebnissicherung und Nachhaltigkeit (Berichtswesen / Dokumentation / Nachbereitung durch Schule",
+        text: "Ergebnissicherung und Nachhaltigkeit (Berichtswesen / Dokumentation / Nachbereitung durch Schule)",
         subjectAreas: [3],
       },
       {
-        text: "Im Zuge der Ergebnissicherung und der Dokumentation sind alle relevanten Daten über die",
-        subjectAreas: [3],
-      },
-      {
-        text: "Organisation und den Verlauf der Maßnahme festzuhalten. Das Berichtswesen ist ausgerichtet an der Zielsetzung der Maßnahme und umfasst die laufende Beobachtung (z. B. Statusbericht des Trägers, Maßnahmebesuche der Berufsberaterin / des Berufsberaters bzw. der Beraterin / des Beraters, Reha/SB) sowie den Abschlussbericht.",
+        text: "Im Zuge der Ergebnissicherung und der Dokumentation sind alle relevanten Daten über die Organisation und den Verlauf der Maßnahme festzuhalten. Das Berichtswesen ist ausgerichtet an der Zielsetzung der Maßnahme und umfasst die laufende Beobachtung (z. B. Statusbericht des Trägers, Maßnahmebesuche der Berufsberaterin / des Berufsberaters bzw. der Beraterin / des Beraters, Reha/SB) sowie den Abschlussbericht.",
         subjectAreas: [3],
       },
       {
@@ -904,7 +889,6 @@ export const tuvRheinland: FileSchema = {
         subjectAreas: [3],
       },
       { text: "Befragung des Personal", subjectAreas: [3] },
-      { text: "System zur Auswertung der Beschwerden", subjectAreas: [3] },
       {
         text: "System zur Einleitung und Verfolgung von Vorbeugungs- und Korrekturmaßnahmen",
         subjectAreas: [3],
@@ -912,8 +896,7 @@ export const tuvRheinland: FileSchema = {
     ],
   },
   20: {
-    title:
-      "Übersicht über das aktuelle Dienstleistungsangebot / Maßnahmeangebot",
+    title: "Dienstleistungsangebot / Maßnahmenangebot im Überblick",
     description:
       "Übersicht über das aktuelle Dienstleistungsangebot / Maßnahmeangebot",
     legalBasis: [

@@ -1,13 +1,17 @@
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+
 type SubjectArea = 1 | 2 | 3 | 4 | 5 | 6;
 
+type Translation = Record<Locales, string>;
+
 interface Tip {
-  text: string;
+  text: Translation;
   subjectAreas?: SubjectArea[];
 }
 
 interface Section {
-  title: string;
-  description: string;
+  title: Translation;
+  description: Translation;
   legalBasis?: {
     text: string;
     href: string;

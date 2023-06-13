@@ -14,6 +14,7 @@
     "zod-to-json-schema": "^3.21.1"
   },
   "dependencies": {
+    "@octocoach/i18n": "workspace:^",
     "docxtemplater": "^3.37.9",
     "pdf-lib": "^1.17.1",
     "pizzip": "^3.1.4",

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "tsx watch -r dotenv/config src/main",
     "build": "tsc --build",
     "start": "node -r dotenv/config build/main"
   },
@@ -17,6 +18,7 @@
     "@types/cors": "^2.8.13",
     "dotenv": "^16.0.3",
     "tsconfig": "workspace:*",
+    "tsx": "^3.12.7",
     "typescript": "^5.0.4"
   }
 }

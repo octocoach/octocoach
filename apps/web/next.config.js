@@ -9,7 +9,11 @@ const nextConfig = {
     serverComponentsExternalPackages: ["hnswlib-node"],
   },
   reactStrictMode: true,
-  transpilePackages: ["@octocoach/embeddings", "@octocoach/ui"],
+  transpilePackages: [
+    "@octocoach/embeddings",
+    "@octocoach/i18n",
+    "@octocoach/ui",
+  ],
   webpack: (config) => ({
     ...config,
     experiments: { ...config.experiments, topLevelAwait: true },

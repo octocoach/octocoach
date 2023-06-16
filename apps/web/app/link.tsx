@@ -1,3 +1,5 @@
+"use client";
+
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import NextLink from "next/link";
 import { ComponentProps } from "react";

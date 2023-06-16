@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.0",
+    "@types/react": "18.2.7",
     "dotenv": "^16.0.3",
     "tsconfig": "workspace:*",
     "tsx": "^3.12.7"

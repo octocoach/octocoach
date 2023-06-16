@@ -1,16 +1,19 @@
 import { defineProperties, createSprinkles } from "@vanilla-extract/sprinkles";
 
-const base = 4;
+type Space = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
+const base = 0.25;
 const ratio = (1 + Math.sqrt(5)) / 2;
 
-let c = base;
-export let space: Record<number, number> = {};
-for (let i = 0; i <= 8; i++) {
-  space[i] = Math.round(c);
-  c *= ratio;
-}
+let prev: number = base;
 
-Array(10).map((i, c) => console.log(i, c));
+export let space = Object.fromEntries(
+  Array.from(Array(10).keys()).map((i) => {
+    const c = prev;
+    prev *= ratio;
+    return [(i + 1) as Space, `${c.toFixed(2)}rem`];
+  })
+) as Record<Space, string>;
 
 const responsiveProps = defineProperties({
   properties: {

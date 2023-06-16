@@ -1,6 +1,6 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 
-type SubjectArea = 1 | 2 | 3 | 4 | 5 | 6;
+export type SubjectArea = 1 | 2 | 3 | 4 | 5 | 6;
 
 type Translation = Record<Locales, string>;
 

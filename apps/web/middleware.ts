@@ -26,13 +26,9 @@ export function middleware(request: NextRequest) {
       requestCookiesDetector
     );
 
-    console.log(pathname + "!");
-
     return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
   }
 }
-
-const localesRegEx = () => locales.reduce((prev, cur) => prev + `|${cur}`, "");
 
 export const config = {
   matcher: [

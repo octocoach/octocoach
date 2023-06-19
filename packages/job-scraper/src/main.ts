@@ -1,83 +1,60 @@
 import { chromium } from "playwright";
+import UserAgent from "user-agents";
+import { cleanPage, extractJobDetails, getTotalAds, makeUrl } from "./helpers";
 
-const browser = await chromium.launch({ headless: false });
+const ua = new UserAgent({ deviceCategory: "desktop" });
+const browser = await chromium.launch({ headless: true });
+
+const userAgent = ua.toString();
+console.log(userAgent);
+
+const context = await browser.newContext({ userAgent: userAgent.toString() });
 
 const languages = {
   JavaScript: "JB2WC",
   NodeJS: "6M28R",
 };
 
-const makeLanguageParam = (code: string) => `0bf:exrec(),kf:attr(${code});`;
-
 const keywords = ["TypeScript", "React", "JavaScript"];
 
-const makeUrl = ({
-  query,
-  location,
-  programmingLanguage,
-  age,
-}: {
-  query: string;
-  location: string;
-  programmingLanguage: string;
-  age: number;
-}) => {
-  const url = new URL("https://de.indeed.com/jobs");
-  url.searchParams.append("q", query);
-  url.searchParams.append("l", location);
-  url.searchParams.append(
-    "sc",
-    makeLanguageParam(languages[programmingLanguage])
-  );
-  url.searchParams.append("fromage", age.toString());
-  return url.toString();
-};
-
 for (const keyword of keywords) {
-  const page = await browser.newPage();
+  const page = await context.newPage();
   await page.goto(
     makeUrl({
       query: keyword,
       location: "Düsseldorf",
       programmingLanguage: "JavaScript",
       age: 1,
+      languages,
     })
   );
+  await cleanPage(page);
 
-  const element = await page.getByText(/^\d+\sStellenanzeigen$/);
+  try {
+    const totalAds = await getTotalAds(page);
+  } catch (e) {}
 
-  const text = await element.innerHTML();
-
-  const match = text.match(/^(\d+)/);
-
-  if (match?.length) {
-    const num = parseInt(match[0]);
-    console.log(`${keyword}: ${num}`);
-  }
-
-  const items = await page.$$("ul.jobsearch-ResultsList > li");
+  const items = await page
+    .locator("ul.jobsearch-ResultsList > li")
+    .filter({ has: page.locator("h2") })
+    .all();
 
   if (items) {
-    for (const item of items) {
-      const link = await item.$("a");
-
-      if (link) {
-        await link.click();
-
-        await page.waitForSelector(".jobsearch-InfoHeaderContainer");
-
-        const l = await page.$(".jobsearch-JobComponent");
-
-        console.log(await l?.innerText());
-      } else {
-        console.log("Link is undefined", await item.innerHTML());
+    try {
+      for (const item of items) {
+        await item.click();
+        const job = await extractJobDetails(page);
+        if (!job) continue;
+        console.log(job);
       }
+    } catch (err) {
+      console.error(err);
+      await page.screenshot({ path: "error.png" });
     }
-  } else {
-    console.log("No Items");
   }
 
   await page.close();
 }
 
+await context.close();
 await browser.close();

@@ -25,9 +25,15 @@ export const cleanPage = async (page: Page) => {
       await closeButton.click({ timeout: 1000 });
     }
   } catch (err) {}
+
+  try {
+    await page.locator("[aria-label=schließen]").click({ timeout: 3000 });
+  } catch (e) {}
 };
 
 export const extractJobDetails = async (page: Page): Promise<Job | null> => {
+  await sleep(1000);
+
   const headerContainer = await page.locator(".jobsearch-InfoHeaderContainer");
 
   if (!headerContainer) return null;
@@ -35,7 +41,7 @@ export const extractJobDetails = async (page: Page): Promise<Job | null> => {
   const title = (
     await (
       await headerContainer.locator(".jobsearch-JobInfoHeader-title")
-    ).innerText()
+    ).innerText({ timeout: 2000 })
   )
     .replace("- job post", "")
     .trim();
@@ -142,4 +148,12 @@ export const makeUrl = ({
   );
   url.searchParams.append("fromage", age.toString());
   return url.toString();
+};
+
+export const sleep = async (timeout: number) => {
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, timeout);
+  });
 };

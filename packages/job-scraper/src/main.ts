@@ -1,14 +1,15 @@
 import { chromium } from "playwright";
 import UserAgent from "user-agents";
-import { cleanPage, extractJobDetails, getTotalAds, makeUrl } from "./helpers";
+import {
+  cleanPage,
+  extractJobDetails,
+  getTotalAds,
+  makeUrl,
+  sleep,
+} from "./helpers";
 
-const ua = new UserAgent({ deviceCategory: "desktop" });
+const userAgent = new UserAgent({ deviceCategory: "desktop" });
 const browser = await chromium.launch({ headless: true });
-
-const userAgent = ua.toString();
-console.log(userAgent);
-
-const context = await browser.newContext({ userAgent: userAgent.toString() });
 
 const languages = {
   JavaScript: "JB2WC",
@@ -18,6 +19,11 @@ const languages = {
 const keywords = ["TypeScript", "React", "JavaScript"];
 
 for (const keyword of keywords) {
+  const context = await browser.newContext({
+    userAgent: userAgent.toString(),
+    recordVideo: { dir: "videos/" },
+  });
+
   const page = await context.newPage();
   await page.goto(
     makeUrl({
@@ -28,6 +34,7 @@ for (const keyword of keywords) {
       languages,
     })
   );
+  await sleep(3000);
   await cleanPage(page);
 
   try {
@@ -45,16 +52,16 @@ for (const keyword of keywords) {
         await item.click();
         const job = await extractJobDetails(page);
         if (!job) continue;
-        console.log(job);
+        console.log(job.title);
       }
     } catch (err) {
       console.error(err);
-      await page.screenshot({ path: "error.png" });
+      await page.screenshot({ path: `error-${Date.now()}.png` });
     }
   }
 
   await page.close();
+  await context.close();
 }
 
-await context.close();
 await browser.close();

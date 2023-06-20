@@ -13,7 +13,7 @@ const browser = await chromium.launch({ headless: true });
 
 const keywords = ["Frontend", "Backend", "Full Stack"];
 
-const getJobsPage = async (page: Page, nextPage$: Locator) => {
+const getJobsPage = async (page: Page) => {
   const items = await page
     .locator("ul.jobsearch-ResultsList > li")
     .filter({ has: page.locator("h2") })
@@ -26,9 +26,6 @@ const getJobsPage = async (page: Page, nextPage$: Locator) => {
         const job = await extractJobDetails(page);
         if (!job) continue;
         console.log(job.title);
-      }
-      if ((await nextPage$.count()) > 0) {
-        await nextPage$.click();
       }
     } catch (err) {
       console.error(err);
@@ -49,7 +46,7 @@ for (const keyword of keywords) {
       query: keyword,
       location: "Düsseldorf",
       programmingLanguage: "JavaScript",
-      age: 30,
+      age: 1,
     })
   );
   await sleep(3000);
@@ -60,9 +57,15 @@ for (const keyword of keywords) {
 
   const nextPage$ = page.locator("[aria-label='Next Page']");
 
-  do {
-    await getJobsPage(page, nextPage$);
-  } while ((await nextPage$.count()) > 0);
+  await getJobsPage(page);
+
+  while ((await nextPage$.count()) > 0) {
+    await nextPage$.click();
+    await sleep(1000);
+    await cleanPage(page);
+    await sleep(1000);
+    await getJobsPage(page);
+  }
 
   if (await nextPage$.count()) await page.close();
   await context.close();

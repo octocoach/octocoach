@@ -18,16 +18,16 @@ export const cleanPage = async (page: Page) => {
     });
   } catch (err) {}
 
-  // Close all modals
-  try {
-    const closeButtons = await page.locator(".icl-CloseButton").all();
-    for (const closeButton of closeButtons) {
-      await closeButton.click({ timeout: 1000 });
-    }
-  } catch (err) {}
+  const close$ = page
+    .locator("[role=dialog]")
+    .locator("[aria-label=schließen]");
 
   try {
-    await page.locator("[aria-label=schließen]").click({ timeout: 3000 });
+    for (const e of await close$.all()) {
+      await sleep(500);
+      console.log("click", e);
+      await e.click({ timeout: 3000 });
+    }
   } catch (e) {}
 };
 
@@ -162,8 +162,10 @@ export const makeUrl = ({
 
 export const sleep = async (timeout: number) => {
   await new Promise<void>((resolve) => {
+    const t = Math.round(timeout + timeout * (Math.random() * 0.5));
+    console.log(`sleeping ${t}`);
     setTimeout(() => {
       resolve();
-    }, timeout);
+    }, t);
   });
 };

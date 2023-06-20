@@ -111,10 +111,15 @@ export const extractJobDetails = async (page: Page): Promise<Job | null> => {
   };
 };
 
-export const getTotalAds = async (page: Page): Promise<number> => {
+export const getTotalAds = async (
+  page: Page,
+  keyword: string
+): Promise<number> => {
+  await page.screenshot({ path: `${keyword}.png` });
+
   const element = await page.getByText(/^\d+\sStellenanzeigen?$/);
 
-  const text = await element.innerHTML();
+  const text = (await element.innerHTML()).replace(",", "");
 
   const match = text.match(/^(\d+)/);
 
@@ -130,14 +135,16 @@ export const makeUrl = ({
   location,
   programmingLanguage,
   age,
-  languages,
 }: {
   query: string;
   location: string;
   programmingLanguage: string;
   age: number;
-  languages: Record<string, string>;
 }) => {
+  const languages = {
+    JavaScript: "JB2WC",
+    NodeJS: "6M28R",
+  };
   const makeLanguageParam = (code: string) => `0bf:exrec(),kf:attr(${code});`;
   const url = new URL("https://de.indeed.com/jobs");
   url.searchParams.append("q", query);
@@ -147,6 +154,9 @@ export const makeUrl = ({
     makeLanguageParam(languages[programmingLanguage])
   );
   url.searchParams.append("fromage", age.toString());
+  url.searchParams.append("filter", "0");
+  url.searchParams.append("sort", "date");
+
   return url.toString();
 };
 

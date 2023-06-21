@@ -9,7 +9,7 @@ import {
 
 const browser = await chromium.launch({ headless: true });
 
-const keywords = ["Frontend", "Backend", "Full Stack"];
+const keywords = ["Web Developer"];
 
 const getJobsPage = async (page: Page) => {
   const items = await page
@@ -38,7 +38,7 @@ for (const keyword of keywords) {
     query: keyword,
     location: "Düsseldorf",
     programmingLanguage: "JavaScript",
-    age: 1,
+    age: 7,
     pageNo,
   };
 

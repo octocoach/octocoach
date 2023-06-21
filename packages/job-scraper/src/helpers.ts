@@ -1,6 +1,9 @@
 import camelCase from "just-camel-case";
 import { Browser, Page, devices } from "playwright";
 import { Job } from "./interfaces";
+import { z } from "zod";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { createExtractionChainFromZod } from "langchain/chains";
 
 export const cleanPage = async (page: Page) => {
   // Remove Cookie Banner if present
@@ -29,6 +32,54 @@ export const cleanPage = async (page: Page) => {
       await e.click({ timeout: 3000 });
     }
   } catch (e) {}
+};
+
+const parseJob = async (job: Job) => {
+  const parsedJobSchema = z.object({
+    skills: z.array(
+      z.object({
+        name: z.string(),
+        type: z.enum([
+          "backendFramework",
+          "bundler",
+          "database",
+          "designPattern",
+          "frontendFramework",
+          "IDE",
+          "programmingLanguage",
+          "projectManagement",
+          "protocol",
+          "softSkill",
+          "spokenLanguage",
+          "testingFramework",
+          "versionControl",
+        ]),
+        level: z.enum(["beginner", "intermediate", "advanced", "expert"]),
+        required: z.boolean().optional(),
+      })
+    ),
+
+    computerScienceDegreeRequired: z.boolean().optional(),
+    yearsExperienceRequired: z.number().nonnegative().optional(),
+    contactPerson: z
+      .object({
+        firstName: z.string().optional(),
+        lastName: z.string(),
+        salutation: z.enum(["Mr.", "Mrs.", "Ms."]).optional(),
+        email: z.string().email(),
+        phone: z.string().optional(),
+      })
+      .optional(),
+  });
+
+  const chain = createExtractionChainFromZod(
+    parsedJobSchema,
+    new ChatOpenAI({ modelName: "gpt-4-0613", temperature: 0 })
+  );
+
+  const response = await chain.run(JSON.stringify(job));
+
+  console.log(JSON.stringify(response));
 };
 
 export const extractJobDetails = async (page: Page): Promise<Job | null> => {
@@ -102,13 +153,17 @@ export const extractJobDetails = async (page: Page): Promise<Job | null> => {
     if (x.length) moreDetails[heading] = x;
   }
 
-  return {
+  const job = {
     description,
     employerId,
     location,
     moreDetails,
     title,
   };
+
+  await parseJob(job);
+
+  return job;
 };
 
 export const getTotalAds = async (

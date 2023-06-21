@@ -1,5 +1,5 @@
 import camelCase from "just-camel-case";
-import { Page } from "playwright";
+import { Browser, Page, devices } from "playwright";
 import { Job } from "./interfaces";
 
 export const cleanPage = async (page: Page) => {
@@ -130,17 +130,21 @@ export const getTotalAds = async (
   return parseInt(match[0]);
 };
 
+export interface URLParams {
+  query: string;
+  location: string;
+  programmingLanguage: string;
+  age: number;
+  pageNo: number;
+}
+
 export const makeUrl = ({
   query,
   location,
   programmingLanguage,
   age,
-}: {
-  query: string;
-  location: string;
-  programmingLanguage: string;
-  age: number;
-}) => {
+  pageNo,
+}: URLParams) => {
   const languages = {
     JavaScript: "JB2WC",
     NodeJS: "6M28R",
@@ -154,8 +158,11 @@ export const makeUrl = ({
     makeLanguageParam(languages[programmingLanguage])
   );
   url.searchParams.append("fromage", age.toString());
-  url.searchParams.append("filter", "0");
+  url.searchParams.append("filter", "1");
   url.searchParams.append("sort", "date");
+  if (pageNo) {
+    url.searchParams.append("start", `${pageNo * 10}`);
+  }
 
   return url.toString();
 };
@@ -163,9 +170,49 @@ export const makeUrl = ({
 export const sleep = async (timeout: number) => {
   await new Promise<void>((resolve) => {
     const t = Math.round(timeout + timeout * (Math.random() * 0.5));
-    console.log(`sleeping ${t}`);
     setTimeout(() => {
       resolve();
     }, t);
   });
+};
+
+export const goToPage = async (
+  browser: Browser,
+  urlParams: URLParams
+): Promise<Page> => {
+  const deviceDescriptors = [
+    "Desktop Chrome",
+    "Desktop Chrome HiDPI",
+    "Desktop Edge",
+    "Desktop Edge HiDPI",
+    "Desktop Firefox",
+    "Desktop Firefox HiDPI",
+    "Desktop Safari",
+  ];
+
+  const device =
+    devices[
+      deviceDescriptors[Math.floor(Math.random() * deviceDescriptors.length)]
+    ];
+
+  const context = await browser.newContext({
+    ...device,
+  });
+
+  const page = await context.newPage();
+
+  const width = Math.floor(
+    device.viewport.width - device.viewport.width * Math.random() * 0.2
+  );
+  const height = Math.floor(
+    device.viewport.height - device.viewport.height * Math.random() * 0.2
+  );
+
+  await page.setViewportSize({ width, height });
+  const url = makeUrl(urlParams);
+
+  console.log(`${urlParams.query}: page ${urlParams.pageNo}`);
+  await page.goto(url);
+
+  return page;
 };

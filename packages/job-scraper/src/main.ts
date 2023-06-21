@@ -1,14 +1,12 @@
-import { Locator, Page, chromium } from "playwright";
-import UserAgent from "user-agents";
+import { Page, chromium } from "playwright";
 import {
   cleanPage,
   extractJobDetails,
   getTotalAds,
-  makeUrl,
+  goToPage,
   sleep,
 } from "./helpers";
 
-const userAgent = new UserAgent({ deviceCategory: "desktop" });
 const browser = await chromium.launch({ headless: true });
 
 const keywords = ["Frontend", "Backend", "Full Stack"];
@@ -35,40 +33,36 @@ const getJobsPage = async (page: Page) => {
 };
 
 for (const keyword of keywords) {
-  const context = await browser.newContext({
-    userAgent: userAgent.toString(),
-    recordVideo: { dir: "videos/" },
-  });
+  let pageNo = 0;
+  const urlParams = {
+    query: keyword,
+    location: "Düsseldorf",
+    programmingLanguage: "JavaScript",
+    age: 1,
+    pageNo,
+  };
 
-  const page = await context.newPage();
-  await page.goto(
-    makeUrl({
-      query: keyword,
-      location: "Düsseldorf",
-      programmingLanguage: "JavaScript",
-      age: 1,
-    })
-  );
+  let page = await goToPage(browser, urlParams);
+
   await sleep(3000);
   await cleanPage(page);
 
   const totalAds = await getTotalAds(page, keyword);
   console.log(`\n\n${keyword}: ${totalAds} jobs\n=========================`);
 
-  const nextPage$ = page.locator("[aria-label='Next Page']");
-
   await getJobsPage(page);
 
-  while ((await nextPage$.count()) > 0) {
-    await nextPage$.click();
+  while ((await page.locator("[aria-label='Next Page']").count()) > 0) {
+    await page.close();
+    await sleep(2000);
+    page = await goToPage(browser, { ...urlParams, pageNo: ++pageNo });
+
     await sleep(1000);
     await cleanPage(page);
     await sleep(1000);
     await getJobsPage(page);
   }
-
-  if (await nextPage$.count()) await page.close();
-  await context.close();
+  await page.close();
 }
 
 await browser.close();

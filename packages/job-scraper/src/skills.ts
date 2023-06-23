@@ -36,7 +36,32 @@ export const getSkills = async (q: string, access_token: string) => {
   return response.data;
 };
 
-export const extractSkills = async (text: string, access_token) => {
+interface Tag {
+  key: string;
+  value: string;
+}
+
+interface Identifier<T> {
+  id: T;
+  name: string;
+}
+export interface Skill {
+  type?: Identifier<string>;
+  id: string;
+  name: string;
+  tags?: Tag[];
+  infoUrl?: string;
+  isSoftware?: boolean;
+  isLanguage?: boolean;
+  description?: string;
+  category?: Identifier<number>;
+  subcategory?: Identifier<number>;
+}
+
+export const extractSkills = async (
+  text: string,
+  access_token: string
+): Promise<Skill[]> => {
   const response = (await got
     .post("https://emsiservices.com/skills/versions/latest/extract", {
       headers: {
@@ -48,7 +73,7 @@ export const extractSkills = async (text: string, access_token) => {
         confidenceThreshold: 0.6,
       }),
     })
-    .json()) as { data: any[] };
+    .json()) as { data: { skill: Skill; confidence: number }[] };
 
-  return response.data;
+  return response.data.map(({ skill }) => ({ id: skill.id, name: skill.name }));
 };

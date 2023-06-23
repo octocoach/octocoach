@@ -4,6 +4,8 @@ import { Job } from "./interfaces";
 import { z } from "zod";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { createExtractionChainFromZod } from "langchain/chains";
+import { extractSkills } from "./skills";
+import { extractTasks } from "./tasks";
 
 export const cleanPage = async (page: Page) => {
   // Remove Cookie Banner if present
@@ -82,7 +84,11 @@ const parseJob = async (job: Job) => {
   console.log(JSON.stringify(response));
 };
 
-export const extractJobDetails = async (page: Page): Promise<Job | null> => {
+export const extractJobDetails = async (
+  page: Page,
+  id: string,
+  access_token: string
+): Promise<Job | null> => {
   await sleep(1000);
 
   const headerContainer = await page.locator(".jobsearch-InfoHeaderContainer");
@@ -153,15 +159,21 @@ export const extractJobDetails = async (page: Page): Promise<Job | null> => {
     if (x.length) moreDetails[heading] = x;
   }
 
+  const skills = await extractSkills(description, access_token);
+  const tasks = await extractTasks({ description, title });
+
   const job = {
+    id,
     description,
     employerId,
     location,
     moreDetails,
     title,
+    skills,
+    tasks,
   };
 
-  await parseJob(job);
+  // await parseJob(job);
 
   return job;
 };
@@ -170,8 +182,6 @@ export const getTotalAds = async (
   page: Page,
   keyword: string
 ): Promise<number> => {
-  await page.screenshot({ path: `${keyword}.png` });
-
   const element = await page.getByText(/^\d+\sStellenanzeigen?$/);
 
   const text = (await element.innerHTML()).replace(",", "");

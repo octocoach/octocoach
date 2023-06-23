@@ -17,6 +17,7 @@
     "just-camel-case": "^6.2.0",
     "langchain": "^0.0.96",
     "user-agents": "^1.0.1415",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "zod-to-json-schema": "^3.21.1"
   }
 }

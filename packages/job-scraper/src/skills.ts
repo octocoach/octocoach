@@ -1,4 +1,5 @@
 import got from "got";
+import { Skill } from "./schema";
 
 const client_id = process.env.LIGHTCAST_CLIENT_ID;
 const client_secret = process.env.LIGHTCAST_SECRET;
@@ -35,28 +36,6 @@ export const getSkills = async (q: string, access_token: string) => {
 
   return response.data;
 };
-
-interface Tag {
-  key: string;
-  value: string;
-}
-
-interface Identifier<T> {
-  id: T;
-  name: string;
-}
-export interface Skill {
-  type?: Identifier<string>;
-  id: string;
-  name: string;
-  tags?: Tag[];
-  infoUrl?: string;
-  isSoftware?: boolean;
-  isLanguage?: boolean;
-  description?: string;
-  category?: Identifier<number>;
-  subcategory?: Identifier<number>;
-}
 
 export const extractSkills = async (
   text: string,

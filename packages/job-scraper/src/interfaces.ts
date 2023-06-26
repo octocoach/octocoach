@@ -1,4 +1,4 @@
-import { Skill } from "./skills";
+import { Skill, Task } from "./schema";
 
 export interface Job {
   id: string;
@@ -8,5 +8,5 @@ export interface Job {
   description: string;
   moreDetails: Record<string, string[]>;
   skills: Skill[];
-  tasks: string[];
+  tasks: Task[];
 }

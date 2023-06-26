@@ -98,7 +98,7 @@ export const extractJobDetails = async (
   const title = (
     await (
       await headerContainer.locator(".jobsearch-JobInfoHeader-title")
-    ).innerText({ timeout: 2000 })
+    ).innerText()
   )
     .replace("- job post", "")
     .trim();
@@ -159,7 +159,8 @@ export const extractJobDetails = async (
     if (x.length) moreDetails[heading] = x;
   }
 
-  const skills = await extractSkills(description, access_token);
+  // TODO: We can't use this untill the limit of 50 requests a month is lifted
+  // const skills = await extractSkills(description, access_token);
   const tasks = await extractTasks({ description, title });
 
   const job = {
@@ -169,7 +170,7 @@ export const extractJobDetails = async (
     location,
     moreDetails,
     title,
-    skills,
+    skills: [],
     tasks,
   };
 

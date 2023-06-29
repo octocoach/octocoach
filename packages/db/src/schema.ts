@@ -36,7 +36,12 @@ export const skillCategorySchema = createInsertSchema(skillCategories);
 export const skillSubcategories = pgTable("skill_subcategories", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
-  category: integer("category").notNull(),
+  category: integer("category")
+    .notNull()
+    .references(() => skillCategories.id, {
+      onDelete: "restrict",
+      onUpdate: "cascade",
+    }),
 });
 
 export const skillSubcategoriesRelations = relations(

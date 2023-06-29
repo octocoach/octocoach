@@ -203,7 +203,7 @@ export interface URLParams {
   age: number;
   pageNo: number;
 }
-
+("https://de.indeed.com/Jobs?q=Developer&sc=0bf:exrec(),kf:attr(DSQF7)attr(HFDVW)attr(JB2WC)cmpsec(NKR5F)jt(fulltime);&jlid=ecffc05d2bd6a515&lang=en&vjk=a42b1743ca826d61");
 export const makeUrl = ({
   query,
   location,
@@ -214,15 +214,14 @@ export const makeUrl = ({
   const languages = {
     JavaScript: "JB2WC",
     NodeJS: "6M28R",
+    CSS: "6XQ9P",
   };
-  const makeLanguageParam = (code: string) => `0bf:exrec(),kf:attr(${code});`;
+
+  const makeScParam = (code: string) => `0bf:exrec(),kf:attr(${code});`;
   const url = new URL("https://de.indeed.com/jobs");
   url.searchParams.append("q", query);
   url.searchParams.append("l", location);
-  url.searchParams.append(
-    "sc",
-    makeLanguageParam(languages[programmingLanguage])
-  );
+  url.searchParams.append("sc", makeScParam(languages[programmingLanguage]));
   url.searchParams.append("fromage", age.toString());
   url.searchParams.append("filter", "1");
   url.searchParams.append("sort", "date");

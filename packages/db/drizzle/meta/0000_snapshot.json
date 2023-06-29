@@ -1,0 +1,36 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "id": "968d7c4a-aa8b-473d-b89a-261931d6841c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "skill_types": {
+      "name": "skill_types",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(3)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

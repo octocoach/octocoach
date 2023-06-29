@@ -19,11 +19,19 @@ export const getAccessToken = async (): Promise<string> => {
   return access_token;
 };
 
-export const getSkills = async (q: string, access_token: string) => {
-  const searchParams = new URLSearchParams({
-    q,
+export const getSkills = async ({
+  q,
+  access_token,
+}: {
+  q?: string;
+  access_token: string;
+}): Promise<Skill[]> => {
+  const params: { fields: string; q?: string } = {
     fields: "id,name,type,tags,isSoftware,isLanguage,category,subcategory",
-  });
+  };
+
+  if (q) params.q = q;
+  const searchParams = new URLSearchParams(params);
 
   const response = (await got
     .get("https://emsiservices.com/skills/versions/latest/skills", {
@@ -32,7 +40,7 @@ export const getSkills = async (q: string, access_token: string) => {
       },
       searchParams,
     })
-    .json()) as { data: any[] };
+    .json()) as { data: Skill[] };
 
   return response.data;
 };

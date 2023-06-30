@@ -1,5 +1,5 @@
 import { db, end } from "./connection";
-import { skillTypes } from "./schema";
+import { skillTypes } from "./schema/skills";
 
 await db.insert(skillTypes).values([
   { id: "ST1", name: "Specialized Skill" },

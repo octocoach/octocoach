@@ -1,6 +1,7 @@
 import { db } from "@octocoach/db/src/connection";
 import { employers } from "@octocoach/db/src/schema/employers";
-import type { Job } from "@octocoach/db/src/schema/jobs";
+import { jobs, type Job, type NewJob } from "@octocoach/db/src/schema/jobs";
+import { tasks } from "@octocoach/db/src/schema/tasks";
 import camelCase from "just-camel-case";
 import { createExtractionChainFromZod } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
@@ -85,11 +86,11 @@ const parseJob = async (job: Job) => {
   console.log(JSON.stringify(response));
 };
 
-export const extractJobDetails = async (
+export const processJob = async (
   page: Page,
-  id: string,
+  sourceId: string,
   access_token: string
-): Promise<Job | null> => {
+) => {
   await sleep(1000);
 
   const headerContainer = await page.locator(".jobsearch-InfoHeaderContainer");
@@ -182,19 +183,29 @@ export const extractJobDetails = async (
 
   // TODO: We can't use this untill the limit of 50 requests a month is lifted
   // const skills = await extractSkills(description, access_token);
-  const tasks = await extractTasks({ description, title });
 
-  const job: Job = {
+  const newJob: NewJob = {
     source: "indeed",
-    id,
+    sourceId,
     title,
     description,
     employer: employer.id,
   };
 
-  // await parseJob(job);
+  const result = await db
+    .insert(jobs)
+    .values(newJob)
+    .onConflictDoNothing()
+    .returning();
 
-  return job;
+  const job = result[0];
+
+  const jobTasks = (await extractTasks({ description, title })).map((t) => ({
+    ...t,
+    job: job.id,
+  }));
+
+  await db.insert(tasks).values(jobTasks);
 };
 
 export const getTotalAds = async (

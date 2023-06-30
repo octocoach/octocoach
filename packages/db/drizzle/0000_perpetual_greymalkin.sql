@@ -14,14 +14,13 @@ CREATE TABLE IF NOT EXISTS "employers" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "jobs" (
+	"id" serial PRIMARY KEY NOT NULL,
 	"source" "job_source" NOT NULL,
-	"id" text NOT NULL,
+	"source_id" text,
 	"employer" integer NOT NULL,
 	"title" text,
 	"description" text
 );
---> statement-breakpoint
-ALTER TABLE "jobs" ADD CONSTRAINT "jobs_source_id" PRIMARY KEY("source","id");
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "skill_categories" (
 	"id" integer PRIMARY KEY NOT NULL,
@@ -39,6 +38,12 @@ CREATE TABLE IF NOT EXISTS "skill_types" (
 	"name" text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "tasks" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"description" text NOT NULL,
+	"job" integer NOT NULL
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "jobs" ADD CONSTRAINT "jobs_employer_employers_id_fk" FOREIGN KEY ("employer") REFERENCES "employers"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
@@ -47,6 +52,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "skill_subcategories" ADD CONSTRAINT "skill_subcategories_category_skill_categories_id_fk" FOREIGN KEY ("category") REFERENCES "skill_categories"("id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tasks" ADD CONSTRAINT "tasks_job_jobs_id_fk" FOREIGN KEY ("job") REFERENCES "jobs"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

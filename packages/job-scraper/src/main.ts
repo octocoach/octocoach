@@ -1,16 +1,9 @@
-import { jobs } from "@octocoach/db/src/schema/jobs";
 import { Page, chromium } from "playwright";
-import {
-  cleanPage,
-  extractJobDetails,
-  getTotalAds,
-  goToPage,
-  sleep,
-} from "./helpers";
+import { cleanPage, getTotalAds, goToPage, processJob, sleep } from "./helpers";
 import { queryBuilder } from "./indeed";
 import { getAccessToken } from "./skills";
 
-import { db } from "@octocoach/db/src/connection";
+import { end } from "@octocoach/db/src/connection";
 
 const browser = await chromium.launch({ headless: true });
 
@@ -48,11 +41,8 @@ const processJobsPage = async (page: Page) => {
           continue;
         }
         await item.click();
-        const job = await extractJobDetails(page, id, access_token);
-        if (!job) continue;
-        console.log(job.title);
 
-        await db.insert(jobs).values(job).onConflictDoNothing();
+        await processJob(page, id, access_token);
       }
     } catch (err) {
       console.error(err);
@@ -95,3 +85,5 @@ for (const query of queries) {
 }
 
 await browser.close();
+
+await end();

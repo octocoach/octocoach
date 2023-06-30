@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "fe2715db-8bef-4016-8246-8995fcbd83d4",
+  "id": "dcb0d9b4-63e0-4c69-b50e-c6fb3cd43c4a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "employers": {
@@ -53,17 +53,23 @@
       "name": "jobs",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
         "source": {
           "name": "source",
           "type": "job_source",
           "primaryKey": false,
           "notNull": true
         },
-        "id": {
-          "name": "id",
+        "source_id": {
+          "name": "source_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "employer": {
           "name": "employer",
@@ -100,15 +106,7 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {
-        "jobs_source_id": {
-          "name": "jobs_source_id",
-          "columns": [
-            "source",
-            "id"
-          ]
-        }
-      }
+      "compositePrimaryKeys": {}
     },
     "skill_categories": {
       "name": "skill_categories",
@@ -191,6 +189,47 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    },
+    "tasks": {
+      "name": "tasks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job": {
+          "name": "job",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tasks_job_jobs_id_fk": {
+          "name": "tasks_job_jobs_id_fk",
+          "tableFrom": "tasks",
+          "tableTo": "jobs",
+          "columnsFrom": [
+            "job"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {}
     }
   },

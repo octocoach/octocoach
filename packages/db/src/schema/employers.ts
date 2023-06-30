@@ -1,20 +1,26 @@
 import { InferModel, relations } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, serial, text } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { jobs } from "./jobs";
-import { createInsertSchema } from "drizzle-zod";
 
 export const employers = pgTable("employers", {
-  id: varchar("id").primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  url: text("url").notNull(),
+  url: text("url"),
+  indeed: text("indeed"),
+  stepstone: text("stepstone"),
+  linkedin: text("linkedin"),
 });
 
 export const employerRelations = relations(employers, ({ many }) => ({
   jobs: many(jobs),
 }));
 
-export const employerSchema = createInsertSchema(employers, {
+export const employerInsertSchema = createInsertSchema(employers, {
   url: ({ url }) => url.url(),
 });
 
+export const employerSelectSchema = createSelectSchema(employers);
+
 export type Employer = InferModel<typeof employers>;
+export type NewEmployer = InferModel<typeof employers, "insert">;

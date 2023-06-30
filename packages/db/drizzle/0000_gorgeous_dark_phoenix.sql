@@ -1,19 +1,22 @@
 DO $$ BEGIN
- CREATE TYPE "job_source" AS ENUM('indeed', 'stepstone');
+ CREATE TYPE "job_source" AS ENUM('indeed', 'stepstone', 'linkedin');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "employers" (
-	"id" varchar PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
-	"url" text NOT NULL
+	"url" text,
+	"indeed" text,
+	"stepstone" text,
+	"linkedin" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "jobs" (
 	"source" "job_source" NOT NULL,
-	"id" varchar NOT NULL,
-	"employer" varchar NOT NULL,
+	"id" text NOT NULL,
+	"employer" integer NOT NULL,
 	"title" text,
 	"description" text
 );
@@ -32,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "skill_subcategories" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "skill_types" (
-	"id" varchar(3) PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL
 );
 --> statement-breakpoint

@@ -1,10 +1,11 @@
+import { db } from "@octocoach/db/src/connection";
+import { employers } from "@octocoach/db/src/schema/employers";
+import type { Job } from "@octocoach/db/src/schema/jobs";
 import camelCase from "just-camel-case";
-import { Browser, Page, devices } from "playwright";
-import { Job } from "./interfaces";
-import { z } from "zod";
-import { ChatOpenAI } from "langchain/chat_models/openai";
 import { createExtractionChainFromZod } from "langchain/chains";
-import { extractSkills } from "./skills";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { Browser, Page, devices } from "playwright";
+import { z } from "zod";
 import { extractTasks } from "./tasks";
 
 export const cleanPage = async (page: Page) => {
@@ -104,6 +105,7 @@ export const extractJobDetails = async (
     .trim();
 
   const company = await headerContainer.locator("[data-company-name=true]");
+  const companyName = await company.innerText();
 
   let href: string = "";
 
@@ -121,6 +123,25 @@ export const extractJobDetails = async (
 
   const url = new URL(href);
   const employerId = url.pathname.replace("/cmp/", "");
+
+  let employer = await db.query.employers.findFirst({
+    where: (employers, { eq }) => eq(employers.indeed, employerId),
+  });
+
+  if (!employer) {
+    const newEmployers = await db
+      .insert(employers)
+      .values({
+        name: companyName,
+        indeed: employerId,
+      })
+      .returning();
+
+    if (!newEmployers.length || !newEmployers[0]) {
+      throw new Error("Error while saving new employer");
+    }
+    employer = newEmployers[0];
+  }
 
   const location = await (
     await headerContainer
@@ -163,15 +184,12 @@ export const extractJobDetails = async (
   // const skills = await extractSkills(description, access_token);
   const tasks = await extractTasks({ description, title });
 
-  const job = {
+  const job: Job = {
+    source: "indeed",
     id,
-    description,
-    employerId,
-    location,
-    moreDetails,
     title,
-    skills: [],
-    tasks,
+    description,
+    employer: employer.id,
   };
 
   // await parseJob(job);

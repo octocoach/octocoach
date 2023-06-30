@@ -1,3 +1,4 @@
+import { jobs } from "@octocoach/db/src/schema/jobs";
 import { Page, chromium } from "playwright";
 import {
   cleanPage,
@@ -8,8 +9,8 @@ import {
 } from "./helpers";
 import { queryBuilder } from "./indeed";
 import { getAccessToken } from "./skills";
-import { Job } from "./interfaces";
-import { writeFile } from "node:fs/promises";
+
+import { db } from "@octocoach/db/src/connection";
 
 const browser = await chromium.launch({ headless: true });
 
@@ -32,13 +33,11 @@ const queries = [
 
 const access_token = await getAccessToken();
 
-const getJobsPage = async (page: Page): Promise<Job[]> => {
+const processJobsPage = async (page: Page) => {
   const items = await page
     .locator("ul.jobsearch-ResultsList > li")
     .filter({ has: page.locator("h2") })
     .all();
-
-  const jobs: Job[] = [];
 
   if (items) {
     try {
@@ -52,17 +51,15 @@ const getJobsPage = async (page: Page): Promise<Job[]> => {
         const job = await extractJobDetails(page, id, access_token);
         if (!job) continue;
         console.log(job.title);
-        jobs.push(job);
+
+        await db.insert(jobs).values(job).onConflictDoNothing();
       }
     } catch (err) {
       console.error(err);
       await page.screenshot({ path: `error-${Date.now()}.png` });
     }
   }
-  return jobs;
 };
-
-const jobs: Job[] = [];
 
 for (const query of queries) {
   let pageNo = 0;
@@ -82,7 +79,7 @@ for (const query of queries) {
   const totalAds = await getTotalAds(page, query);
   console.log(`\n\n${query}: ${totalAds} jobs\n=========================`);
 
-  jobs.push(...(await getJobsPage(page)));
+  await processJobsPage(page);
 
   while ((await page.locator("[aria-label='Next Page']").count()) > 0) {
     await page.close();
@@ -92,11 +89,9 @@ for (const query of queries) {
     await sleep(1000);
     await cleanPage(page);
     await sleep(1000);
-    jobs.push(...(await getJobsPage(page)));
+    await processJobsPage(page);
   }
   await page.close();
 }
-
-await writeFile("data.json", JSON.stringify(jobs), "utf-8");
 
 await browser.close();

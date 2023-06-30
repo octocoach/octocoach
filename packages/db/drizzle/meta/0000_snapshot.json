@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "e903ff7b-ac84-4109-b449-841638370151",
+  "id": "fe2715db-8bef-4016-8246-8995fcbd83d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "employers": {
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -24,7 +24,25 @@
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "indeed": {
+          "name": "indeed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stepstone": {
+          "name": "stepstone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "linkedin": {
+          "name": "linkedin",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -43,13 +61,13 @@
         },
         "id": {
           "name": "id",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "employer": {
           "name": "employer",
-          "type": "varchar",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -160,7 +178,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(3)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -181,7 +199,8 @@
       "name": "job_source",
       "values": {
         "indeed": "indeed",
-        "stepstone": "stepstone"
+        "stepstone": "stepstone",
+        "linkedin": "linkedin"
       }
     }
   },

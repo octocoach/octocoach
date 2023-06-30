@@ -342,6 +342,9 @@ importers:
 
   packages/job-scraper:
     dependencies:
+      '@octocoach/db':
+        specifier: workspace:^
+        version: link:../db
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3

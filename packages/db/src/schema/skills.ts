@@ -1,11 +1,11 @@
 import { InferModel, relations } from "drizzle-orm";
-import { integer, pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 // Skill Types
 
 export const skillTypes = pgTable("skill_types", {
-  id: varchar("id", { length: 3 }).primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
 });
 

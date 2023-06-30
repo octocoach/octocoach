@@ -12,6 +12,7 @@
     "tsx": "^3.12.7"
   },
   "dependencies": {
+    "@octocoach/db": "workspace:^",
     "dotenv": "^16.0.3",
     "got": "^12.6.0",
     "just-camel-case": "^6.2.0",

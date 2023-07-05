@@ -29,6 +29,7 @@ export const skillSchema = z.object({
 
 export const taskSchema = z.object({
   description: z.string().describe("A plain text description of the task."),
+  embeddings: z.array(z.number()),
 });
 
 export type Skill = z.infer<typeof skillSchema>;

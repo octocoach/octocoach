@@ -4,6 +4,7 @@ import postgres from "postgres";
 import * as employers from "./schema/employers";
 import * as jobs from "./schema/jobs";
 import * as skills from "./schema/skills";
+import * as tasks from "./schema/tasks";
 
 const username = process.env.POSTGRES_USER;
 const password = process.env.POSTGRES_PW;
@@ -15,7 +16,7 @@ export const connectionString = `postgres://${username}:${password}@${host}:${po
 
 const client = postgres(connectionString);
 export const db = drizzle(client, {
-  schema: { ...employers, ...jobs, ...skills },
+  schema: { ...employers, ...jobs, ...skills, ...tasks },
 });
 
 export const end = async () => {

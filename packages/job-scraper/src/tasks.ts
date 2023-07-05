@@ -1,5 +1,6 @@
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { JsonKeyOutputFunctionsParser } from "langchain/output_parsers";
 import { PromptTemplate } from "langchain/prompts";
 import { ZodSchema, z } from "zod";
@@ -7,6 +8,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { JsonSchema7ObjectType } from "zod-to-json-schema/src/parsers/object.js";
 import { Job } from "./interfaces";
 import { Task } from "./schema";
+const embeddingsApi = new OpenAIEmbeddings();
 
 export const createFunctionsFromZodSchema = (zodSchema: ZodSchema) => {
   const { type, properties, required } = zodToJsonSchema(
@@ -108,10 +110,16 @@ export const extractTasks = async ({
 }: Pick<Job, "description" | "title">): Promise<Task[]> => {
   console.log(`Getting tasks for: ${title}`);
 
-  const response = await chain.call({
+  const { text } = (await chain.call({
     title,
     description,
-  });
+  })) as { text: Pick<Task, "description">[] };
 
-  return response.text;
+  const tasks: Task[] = [];
+  for (const task of text) {
+    const embeddings = await embeddingsApi.embedQuery(task.description);
+    tasks.push({ ...task, embeddings });
+  }
+
+  return tasks;
 };

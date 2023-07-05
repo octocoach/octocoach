@@ -1,7 +1,8 @@
-import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
-import { jobs } from "./jobs";
 import { InferModel, relations } from "drizzle-orm";
+import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { vector } from "../vector";
+import { jobs } from "./jobs";
 
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
@@ -9,6 +10,7 @@ export const tasks = pgTable("tasks", {
   job: integer("job")
     .notNull()
     .references(() => jobs.id),
+  embedding: vector("embedding", { dimensions: 1536 }),
 });
 
 export const taskRelations = relations(tasks, ({ one }) => ({

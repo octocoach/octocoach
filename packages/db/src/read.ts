@@ -1,10 +1,11 @@
 import { db, end } from "./connection";
-import { skillTypes } from "./schema/skills";
+import { tasks } from "./schema/tasks";
+import { cosineDistance } from "./vector";
 
-const s = await db.select().from(skillTypes);
-
-for (const { id, name } of s) {
-  console.log(`${id}: ${name}`);
-}
+const s = await db
+  .select()
+  .from(tasks)
+  .orderBy(cosineDistance(tasks.embedding, [1, 1, 1]))
+  .limit(3);
 
 await end();

@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS "skill_types" (
 CREATE TABLE IF NOT EXISTS "tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"description" text NOT NULL,
-	"job" integer NOT NULL
+	"job" integer NOT NULL,
+	"embeddings" vector(1536)
 );
 --> statement-breakpoint
 DO $$ BEGIN

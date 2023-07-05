@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "dcb0d9b4-63e0-4c69-b50e-c6fb3cd43c4a",
+  "id": "bad70564-04ce-4e3b-9bd6-8da96fc69167",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "employers": {
@@ -212,6 +212,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "embeddings": {
+          "name": "embeddings",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

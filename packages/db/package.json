@@ -13,6 +13,7 @@
   "dependencies": {
     "drizzle-orm": "^0.27.0",
     "drizzle-zod": "^0.4.4",
+    "got": "^12.6.0",
     "postgres": "^3.3.5",
     "zod": "^3.21.4"
   },

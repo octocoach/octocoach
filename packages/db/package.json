@@ -11,9 +11,12 @@
     "read": "tsx -r dotenv/config src/read.ts"
   },
   "dependencies": {
+    "@types/cli-progress": "^3.11.0",
+    "cli-progress": "^3.12.0",
     "drizzle-orm": "^0.27.0",
     "drizzle-zod": "^0.4.4",
     "got": "^12.6.0",
+    "langchain": "^0.0.103",
     "postgres": "^3.3.5",
     "zod": "^3.21.4"
   },

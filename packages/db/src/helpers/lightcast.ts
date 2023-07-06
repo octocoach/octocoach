@@ -14,9 +14,9 @@ const skillSchema = z.object({
   category: makeIdentifyer(z.number().nonnegative()),
   description: z.string().optional(),
   id: z.string(),
-  infoUrl: z.string().url().optional(),
-  isLanguage: z.boolean().optional(),
-  isSoftware: z.boolean().optional(),
+  infoUrl: z.string().url(),
+  isLanguage: z.boolean(),
+  isSoftware: z.boolean(),
   name: z.string(),
   subcategory: makeIdentifyer(z.number().nonnegative()),
   type: makeIdentifyer(z.string()),
@@ -48,7 +48,7 @@ export const getSkills = async ({
 }): Promise<Skill[]> => {
   const params: { fields: string; q?: string } = {
     fields:
-      "id,name,type,description,isSoftware,isLanguage,category,subcategory",
+      "id,name,type,description,isSoftware,isLanguage,category,subcategory,infoUrl",
   };
 
   if (q) params.q = q;

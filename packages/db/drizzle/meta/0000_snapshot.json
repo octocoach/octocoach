@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "bad70564-04ce-4e3b-9bd6-8da96fc69167",
+  "id": "c26b9a2b-c331-4216-acea-755a97caefbd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "employers": {
@@ -191,6 +191,102 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {}
     },
+    "skills": {
+      "name": "skills",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_embedding": {
+          "name": "name_embedding",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "info_url": {
+          "name": "info_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_software": {
+          "name": "is_software",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_language": {
+          "name": "is_language",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_embedding": {
+          "name": "description_embedding",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subcategory": {
+          "name": "subcategory",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "skills_subcategory_skill_subcategories_id_fk": {
+          "name": "skills_subcategory_skill_subcategories_id_fk",
+          "tableFrom": "skills",
+          "tableTo": "skill_subcategories",
+          "columnsFrom": [
+            "subcategory"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "skills_type_skill_types_id_fk": {
+          "name": "skills_type_skill_types_id_fk",
+          "tableFrom": "skills",
+          "tableTo": "skill_types",
+          "columnsFrom": [
+            "type"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
     "tasks": {
       "name": "tasks",
       "schema": "",
@@ -213,8 +309,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "embeddings": {
-          "name": "embeddings",
+        "embedding": {
+          "name": "embedding",
           "type": "vector(1536)",
           "primaryKey": false,
           "notNull": false

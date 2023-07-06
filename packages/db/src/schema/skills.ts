@@ -1,6 +1,7 @@
 import { InferModel, relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { vector } from "../vector";
 
 // Skill Types
 
@@ -61,13 +62,21 @@ export const skillSubcategorySchema = createInsertSchema(skillSubcategories);
 export const skills = pgTable("skills", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  nameEmbedding: vector("name_embedding", { dimensions: 1536 }).notNull(),
   infoUrl: text("info_url"),
-  isSoftware: boolean("is_software"),
-  isLanguage: boolean("is_language"),
+  isSoftware: boolean("is_software").notNull(),
+  isLanguage: boolean("is_language").notNull(),
   description: text("description"),
+  descriptionEmbedding: vector("description_embedding", { dimensions: 1536 }),
   subcategory: integer("subcategory")
     .notNull()
     .references(() => skillSubcategories.id, {
+      onDelete: "restrict",
+      onUpdate: "cascade",
+    }),
+  type: text("type")
+    .notNull()
+    .references(() => skillTypes.id, {
       onDelete: "restrict",
       onUpdate: "cascade",
     }),
@@ -77,6 +86,10 @@ export const skillRelations = relations(skills, ({ one }) => ({
   subcategory: one(skillSubcategories, {
     fields: [skills.subcategory],
     references: [skillSubcategories.id],
+  }),
+  type: one(skillTypes, {
+    fields: [skills.type],
+    references: [skillTypes.id],
   }),
 }));
 

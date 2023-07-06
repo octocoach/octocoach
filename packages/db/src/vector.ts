@@ -1,5 +1,6 @@
-import { AnyColumn, ColumnBaseConfig, SQL, sql } from "drizzle-orm";
-import { PgColumn, PgCustomColumn, customType } from "drizzle-orm/pg-core";
+import { AnyColumn, sql } from "drizzle-orm";
+import { customType } from "drizzle-orm/pg-core";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 
 export const vector = customType<{
   data: number[];
@@ -32,3 +33,10 @@ const makeCompareFunction =
 export const l2Distance = makeCompareFunction("<->");
 export const maxInnerProduct = makeCompareFunction("<#>");
 export const cosineDistance = makeCompareFunction("<=>");
+
+export const makeCosineDistance = async (input: string) => {
+  const e = new OpenAIEmbeddings();
+  const inputEmbeddings = await e.embedQuery(input);
+
+  return (column: AnyColumn) => cosineDistance(column, inputEmbeddings);
+};

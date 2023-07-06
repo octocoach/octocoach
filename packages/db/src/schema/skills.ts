@@ -59,6 +59,7 @@ export type SkillSubcategory = InferModel<typeof skillSubcategories>;
 export const skillSubcategorySchema = createInsertSchema(skillSubcategories);
 
 // Skills
+
 export const skills = pgTable("skills", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),

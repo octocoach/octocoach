@@ -124,6 +124,9 @@ importers:
       '@octocoach/azav':
         specifier: workspace:^
         version: link:../../packages/azav
+      '@octocoach/db':
+        specifier: workspace:^
+        version: link:../../packages/db
       '@octocoach/embeddings':
         specifier: workspace:*
         version: link:../../packages/embeddings

@@ -185,9 +185,6 @@ export const processJob = async (page: Page, sourceId: string) => {
   //   ? await e.embedQuery(`${title}\n\n${description}`)
   //   : null;
 
-  // TODO: We can't use this untill the limit of 50 requests a month is lifted
-  // const skills = await extractSkills(description, access_token);
-
   const newJob: NewJob = {
     source: "indeed",
     sourceId,
@@ -204,14 +201,9 @@ export const processJob = async (page: Page, sourceId: string) => {
 
   const job = result[0];
 
-  await extractSkills(description);
+  const skills = await extractSkills(description);
 
-  const jobTasks = (await extractTasks({ description, title })).map((t) => ({
-    ...t,
-    job: job.id,
-  }));
-
-  await db.insert(tasks).values(jobTasks);
+  await extractTasks({ db, job, skills });
 };
 
 export const getTotalAds = async (

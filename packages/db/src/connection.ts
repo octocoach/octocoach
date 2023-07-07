@@ -22,3 +22,5 @@ export const db = drizzle(client, {
 export const end = async () => {
   await client.end();
 };
+
+export type Database = typeof db;

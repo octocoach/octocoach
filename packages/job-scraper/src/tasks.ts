@@ -1,3 +1,6 @@
+import { type Database } from "@octocoach/db/src/connection";
+import { Job } from "@octocoach/db/src/schema/jobs";
+import { tasks } from "@octocoach/db/src/schema/tasks";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
@@ -6,8 +9,7 @@ import { PromptTemplate } from "langchain/prompts";
 import { ZodSchema, z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { JsonSchema7ObjectType } from "zod-to-json-schema/src/parsers/object.js";
-import { Job } from "./interfaces";
-import { Task } from "./schema";
+
 const embeddingsApi = new OpenAIEmbeddings();
 
 export const createFunctionsFromZodSchema = (zodSchema: ZodSchema) => {
@@ -38,9 +40,11 @@ export const createFunctionsFromZodSchema = (zodSchema: ZodSchema) => {
 };
 
 const prompt =
-  PromptTemplate.fromTemplate(`Save all tasks mentioned in the job posting below.
+  PromptTemplate.fromTemplate(`Save all tasks mentioned along with the skills required to do them in the job posting below.
 
 Only include tasks which fall within the general area of Web Application Development.
+
+When saving a task, include the task description and an array of skill ids (ONLY INCLUDE IDs THAT APPEAR IN THE SKILLS LIST)
 
 Tasks should be written in the format:
    "Verb Noun ..."
@@ -78,6 +82,12 @@ Do not confuse qualifications or skills as tasks. i.e. "Have a lot of experience
 
 ---
 
+SKILLS LIST:
+
+\`\`\`csv
+{skills}
+\`\`\`
+
 JOB POSTING:
 
 Title: {title}
@@ -92,6 +102,9 @@ const llm = new ChatOpenAI({ temperature: 0, modelName: "gpt-4-0613" });
 const functions = createFunctionsFromZodSchema(
   z.object({
     description: z.string().describe("A description of the task"),
+    skills: z.array(z.string(), {
+      description: "A list of IDs of skills, which appear in the SKILLS LIST",
+    }),
   })
 );
 
@@ -105,21 +118,37 @@ const chain = new LLMChain({
 });
 
 export const extractTasks = async ({
-  title,
-  description,
-}: Pick<Job, "description" | "title">): Promise<Task[]> => {
+  db,
+  job,
+  skills,
+}: {
+  db: Database;
+  job: Job;
+  skills: string;
+}) => {
+  const { title, description } = job;
   console.log(`Getting tasks for: ${title}`);
 
   const { text } = (await chain.call({
     title,
     description,
-  })) as { text: Pick<Task, "description">[] };
+    skills,
+  })) as {
+    text: {
+      description: string;
+      skills: string[];
+    }[];
+  };
 
-  const tasks: Task[] = [];
-  for (const task of text) {
-    const embeddings = await embeddingsApi.embedQuery(task.description);
-    tasks.push({ ...task, embeddings });
+  console.log(text);
+
+  for (const newTask of text) {
+    const embedding = await embeddingsApi.embedQuery(newTask.description);
+    const task = await db
+      .insert(tasks)
+      .values({ ...newTask, embedding, job: job.id })
+      .returning();
+
+    // ToDo: Here we will create the links between the skills and tasks and persist to the db
   }
-
-  return tasks;
 };

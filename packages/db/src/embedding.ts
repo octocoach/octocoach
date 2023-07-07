@@ -2,13 +2,12 @@ import { AnyColumn, sql } from "drizzle-orm";
 import { customType } from "drizzle-orm/pg-core";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 
-export const vector = customType<{
+export const embedding = customType<{
   data: number[];
   driverData: string;
-  config?: { dimensions: number };
 }>({
-  dataType(config) {
-    return config?.dimensions ? `vector(${config.dimensions})` : "vector";
+  dataType() {
+    return "vector(1536)";
   },
 
   fromDriver(value: string) {
@@ -23,16 +22,8 @@ export const vector = customType<{
   },
 });
 
-type Value = number[];
-type Operator = "<->" | "<#>" | "<=>";
-
-const makeCompareFunction =
-  (operator: Operator) => (column: AnyColumn, value: Value) =>
-    sql`${column} ${operator} ${JSON.stringify(value)}`;
-
-export const l2Distance = makeCompareFunction("<->");
-export const maxInnerProduct = makeCompareFunction("<#>");
-export const cosineDistance = makeCompareFunction("<=>");
+export const cosineDistance = (column: AnyColumn, value: number[]) =>
+  sql`${column} <=> ${JSON.stringify(value)}`;
 
 export const makeCosineDistance = async (input: string) => {
   const e = new OpenAIEmbeddings();

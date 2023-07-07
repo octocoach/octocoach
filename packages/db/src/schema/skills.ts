@@ -1,7 +1,7 @@
 import { InferModel, relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { vector } from "../vector";
+import { embedding } from "../embedding";
 
 // Skill Types
 
@@ -63,12 +63,12 @@ export const skillSubcategorySchema = createInsertSchema(skillSubcategories);
 export const skills = pgTable("skills", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  nameEmbedding: vector("name_embedding", { dimensions: 1536 }).notNull(),
+  nameEmbedding: embedding("name_embedding").notNull(),
   infoUrl: text("info_url"),
   isSoftware: boolean("is_software").notNull(),
   isLanguage: boolean("is_language").notNull(),
   description: text("description"),
-  descriptionEmbedding: vector("description_embedding", { dimensions: 1536 }),
+  descriptionEmbedding: embedding("description_embedding"),
   subcategory: integer("subcategory")
     .notNull()
     .references(() => skillSubcategories.id, {

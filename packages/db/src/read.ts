@@ -1,6 +1,6 @@
 import { db, end } from "./connection";
+import { cosineDistance } from "./embedding";
 import { tasks } from "./schema/tasks";
-import { cosineDistance } from "./vector";
 
 const s = await db
   .select()

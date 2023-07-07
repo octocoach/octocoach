@@ -1,7 +1,6 @@
 import { Page, chromium } from "playwright";
 import { cleanPage, getTotalAds, goToPage, processJob, sleep } from "./helpers";
 import { queryBuilder } from "./indeed";
-import { getAccessToken } from "./skills";
 
 import { end } from "@octocoach/db/src/connection";
 
@@ -24,8 +23,6 @@ const queries = [
   }),
 ];
 
-const access_token = await getAccessToken();
-
 const processJobsPage = async (page: Page) => {
   const items = await page
     .locator("ul.jobsearch-ResultsList > li")
@@ -42,7 +39,7 @@ const processJobsPage = async (page: Page) => {
         }
         await item.click();
 
-        await processJob(page, id, access_token);
+        await processJob(page, id);
       }
     } catch (err) {
       console.error(err);

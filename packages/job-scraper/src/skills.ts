@@ -1,66 +1,90 @@
-import got from "got";
-import { Skill } from "./schema";
+import { db } from "@octocoach/db/src/connection";
+import { makeCosineDistance } from "@octocoach/db/src/embedding";
+import { Skill, skills } from "@octocoach/db/src/schema/skills";
+import { LLMChain } from "langchain/chains";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { JsonKeyOutputFunctionsParser } from "langchain/output_parsers";
+import { PromptTemplate } from "langchain/prompts";
+import { ZodSchema, z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
+import { JsonSchema7ObjectType } from "zod-to-json-schema/src/parsers/object";
 
-const client_id = process.env.LIGHTCAST_CLIENT_ID;
-const client_secret = process.env.LIGHTCAST_SECRET;
+export const createFunctionsFromZodSchema = (zodSchema: ZodSchema) => {
+  const { type, properties, required } = zodToJsonSchema(
+    zodSchema
+  ) as JsonSchema7ObjectType;
 
-export const getAccessToken = async (): Promise<string> => {
-  const { access_token } = (await got
-    .post("https://auth.emsicloud.com/connect/token", {
-      form: {
-        client_id,
-        client_secret,
-        grant_type: "client_credentials",
-        scope: "emsi_open",
+  return [
+    {
+      name: "save_skills",
+      description:
+        "Save a list of skills relating to the job posting. Takes an array id skills `id`s as parameter",
+      parameters: {
+        type: "object",
+        properties: {
+          skills: {
+            type: "array",
+            items: {
+              type,
+              properties,
+              required,
+            },
+          },
+        },
+        required: ["skills"],
       },
-    })
-    .json()) as { access_token: string };
-
-  return access_token;
+    },
+  ];
 };
 
-export const getSkills = async ({
-  q,
-  access_token,
-}: {
-  q?: string;
-  access_token: string;
-}): Promise<Skill[]> => {
-  const params: { fields: string; q?: string } = {
-    fields: "id,name,type,tags,isSoftware,isLanguage,category,subcategory",
+const prompt =
+  PromptTemplate.fromTemplate(`Save all skills from the list below which are needed for the job posting below.
+  When saving the skills, provide the \`id\` as parameter, NOT the \`name\`!
+
+  SKILLS LIST:
+
+  \`\`\`csv
+  {skills}
+  \`\`\`
+
+  JOB POSTING:
+  
+  {description}
+`);
+
+const functions = createFunctionsFromZodSchema(
+  z.string({ description: "The skill ID" })
+);
+
+const llm = new ChatOpenAI({ temperature: 0, modelName: "gpt-4-0613" });
+
+const outputParser = new JsonKeyOutputFunctionsParser({ attrName: "skills" });
+
+const chain = new LLMChain({
+  prompt,
+  llm,
+  llmKwargs: { functions },
+  outputParser,
+});
+
+export const extractSkills = async (description: string) => {
+  console.log("extracting skills");
+  const distance = await makeCosineDistance(description);
+
+  const relatedSkills = await db.query.skills.findMany({
+    limit: 50,
+    orderBy: distance(skills.nameEmbedding),
+  });
+
+  const csv = relatedSkills.reduce(
+    (acc, curr) => `${acc}\n${curr.id},${curr.name}`,
+    "id,name"
+  );
+  console.log("csv", csv);
+
+  const { text } = (await chain.call({ skills: csv, description })) as {
+    text: Pick<Skill, "id">;
   };
-
-  if (q) params.q = q;
-  const searchParams = new URLSearchParams(params);
-
-  const response = (await got
-    .get("https://emsiservices.com/skills/versions/latest/skills", {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      searchParams,
-    })
-    .json()) as { data: Skill[] };
-
-  return response.data;
-};
-
-export const extractSkills = async (
-  text: string,
-  access_token: string
-): Promise<Skill[]> => {
-  const response = (await got
-    .post("https://emsiservices.com/skills/versions/latest/extract", {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        text,
-        confidenceThreshold: 0.6,
-      }),
-    })
-    .json()) as { data: { skill: Skill; confidence: number }[] };
-
-  return response.data.map(({ skill }) => ({ id: skill.id, name: skill.name }));
+  console.log("done");
+  console.log(text);
 };

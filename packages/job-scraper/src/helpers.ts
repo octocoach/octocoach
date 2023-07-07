@@ -5,8 +5,10 @@ import { tasks } from "@octocoach/db/src/schema/tasks";
 import camelCase from "just-camel-case";
 import { createExtractionChainFromZod } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { Browser, Page, devices } from "playwright";
 import { z } from "zod";
+import { extractSkills } from "./skills";
 import { extractTasks } from "./tasks";
 
 export const cleanPage = async (page: Page) => {
@@ -86,12 +88,10 @@ const parseJob = async (job: Job) => {
   console.log(JSON.stringify(response));
 };
 
-export const processJob = async (
-  page: Page,
-  sourceId: string,
-  access_token: string
-) => {
+export const processJob = async (page: Page, sourceId: string) => {
   await sleep(1000);
+
+  const e = new OpenAIEmbeddings();
 
   const headerContainer = await page.locator(".jobsearch-InfoHeaderContainer");
 
@@ -181,6 +181,10 @@ export const processJob = async (
     if (x.length) moreDetails[heading] = x;
   }
 
+  // const embedding = description?.length
+  //   ? await e.embedQuery(`${title}\n\n${description}`)
+  //   : null;
+
   // TODO: We can't use this untill the limit of 50 requests a month is lifted
   // const skills = await extractSkills(description, access_token);
 
@@ -199,6 +203,8 @@ export const processJob = async (
     .returning();
 
   const job = result[0];
+
+  await extractSkills(description);
 
   const jobTasks = (await extractTasks({ description, title })).map((t) => ({
     ...t,
@@ -232,7 +238,7 @@ export interface URLParams {
   age: number;
   pageNo: number;
 }
-("https://de.indeed.com/Jobs?q=Developer&sc=0bf:exrec(),kf:attr(DSQF7)attr(HFDVW)attr(JB2WC)cmpsec(NKR5F)jt(fulltime);&jlid=ecffc05d2bd6a515&lang=en&vjk=a42b1743ca826d61");
+
 export const makeUrl = ({
   query,
   location,

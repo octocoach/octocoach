@@ -133,6 +133,7 @@ export const extractTasks = async ({
     title,
     description,
     skills,
+    timeout: 5 * 60 * 1000, // 5 minutes
   })) as {
     text: {
       description: string;

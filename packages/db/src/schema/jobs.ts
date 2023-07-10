@@ -21,7 +21,7 @@ export const jobs = pgTable("jobs", {
       onUpdate: "cascade",
     }),
   title: text("title"),
-  description: text("description"),
+  description: text("description").notNull(),
 });
 
 export const jobRelations = relations(jobs, ({ one, many }) => ({

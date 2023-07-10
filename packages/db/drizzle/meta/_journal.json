@@ -8,6 +8,13 @@
       "when": 1688634604619,
       "tag": "0000_lumpy_queen_noir",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1688998949608,
+      "tag": "0001_ancient_scrambler",
+      "breakpoints": true
     }
   ]
 }

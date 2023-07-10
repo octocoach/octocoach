@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "scrape": "tsx -r dotenv/config src/main.ts",
-    "lightcast": "tsx -r dotenv/config src/lightcast.ts"
+    "scrape": "tsx -r dotenv/config src/main.ts"
   },
   "devDependencies": {
     "playwright": "^1.34.3",

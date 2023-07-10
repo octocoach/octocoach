@@ -142,12 +142,16 @@ export const extractTasks = async ({
 
   console.log(text);
 
-  for (const newTask of text) {
-    const embedding = await embeddingsApi.embedQuery(newTask.description);
+  for (const { description, skills } of text) {
+    const embedding = await embeddingsApi.embedQuery(description);
+    console.log("Inserting", description);
+
     const task = await db
       .insert(tasks)
-      .values({ ...newTask, embedding, job: job.id })
+      .values({ description, embedding, job: job.id })
       .returning();
+
+    console.log(`Inserted Task ${task[0].id}`);
 
     // ToDo: Here we will create the links between the skills and tasks and persist to the db
   }

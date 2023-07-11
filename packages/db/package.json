@@ -1,0 +1,31 @@
+{
+  "name": "@octocoach/db",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "drizzle-kit generate:pg",
+    "migrate": "tsx -r dotenv/config src/migrate.ts",
+    "test": "tsx -r dotenv/config src/test.ts",
+    "seed": "tsx -r dotenv/config src/seed.ts",
+    "read": "tsx -r dotenv/config src/read.ts"
+  },
+  "dependencies": {
+    "@types/cli-progress": "^3.11.0",
+    "cli-progress": "^3.12.0",
+    "drizzle-orm": "^0.27.0",
+    "drizzle-zod": "^0.4.4",
+    "got": "^12.6.0",
+    "langchain": "^0.0.103",
+    "postgres": "^3.3.5",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.2",
+    "dotenv": "^16.0.3",
+    "drizzle-kit": "^0.19.2",
+    "tsconfig": "workspace:*",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}

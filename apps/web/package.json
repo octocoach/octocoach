@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@octocoach/azav": "workspace:^",
+    "@octocoach/db": "workspace:^",
     "@octocoach/embeddings": "workspace:*",
     "@octocoach/i18n": "workspace:^",
     "@octocoach/ui": "workspace:*",

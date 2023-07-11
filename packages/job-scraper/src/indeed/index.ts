@@ -3,9 +3,20 @@ import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
 
+/**
+ * IndeedScraper class that extends JobScraper class
+ */
 export class IndeedScraper extends JobScraper {
   nextPageSelector = "[aria-label='Next Page']";
 
+  /**
+   * Builds the URL for the Indeed website based on the search parameters
+   * @param age - age of job postings in days
+   * @param location - location of job postings
+   * @param pageNo - page number of job postings
+   * @param query - search query for job postings
+   * @returns URL string
+   */
   buildUrl({ age, location, pageNo, query }) {
     const url = new URL("https://de.indeed.com/jobs");
 
@@ -21,6 +32,10 @@ export class IndeedScraper extends JobScraper {
     return url.toString();
   }
 
+  /**
+   * Cleans the current page by closing popups and dialogs
+   * @returns Promise that resolves when the page is cleaned
+   */
   async cleanPage(): Promise<void> {
     try {
       await this.page.getByText("Alle ablehnen").click({ timeout: 1000 });
@@ -48,6 +63,10 @@ export class IndeedScraper extends JobScraper {
     } catch (e) {}
   }
 
+  /**
+   * Processes the current page by extracting job information and inserting it into the database
+   * @returns Promise that resolves when the page is processed
+   */
   async processCurrentPage(): Promise<void> {
     const items = await this.page
       .locator("ul.jobsearch-ResultsList > li")
@@ -124,6 +143,11 @@ export class IndeedScraper extends JobScraper {
     }
   }
 
+  /**
+   * Gets the company ID from the company locator
+   * @param locator - the company locator
+   * @returns the company ID
+   */
   async getCompanyId(locator: Locator): Promise<string> {
     const href = await locator
       .locator("a")

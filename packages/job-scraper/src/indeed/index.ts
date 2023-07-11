@@ -1,4 +1,4 @@
-import { employers } from "@octocoach/db/src/schema/employers";
+import { companies } from "@octocoach/db/src/schema/companies";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
@@ -104,13 +104,13 @@ export class IndeedScraper extends JobScraper {
         const companyName = await $company.innerText();
         const sourceId = await this.getCompanyId($company);
 
-        let company = await this.db.query.employers.findFirst({
-          where: (employers, { eq }) => eq(employers.indeed, sourceId),
+        let company = await this.db.query.companies.findFirst({
+          where: (companies, { eq }) => eq(companies.indeed, sourceId),
         });
 
         if (!company) {
           const newCompany = await this.db
-            .insert(employers)
+            .insert(companies)
             .values({
               name: companyName,
               indeed: sourceId,
@@ -135,7 +135,7 @@ export class IndeedScraper extends JobScraper {
           sourceId,
           title,
           description,
-          employer: company.id,
+          company: company.id,
         });
       }
     } catch (err) {

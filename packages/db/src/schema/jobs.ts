@@ -1,7 +1,7 @@
 import { InferModel, relations } from "drizzle-orm";
 import { integer, pgEnum, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
-import { employers } from "./employers";
+import { companies } from "./companies";
 import { tasks } from "./tasks";
 
 export const jobSource = pgEnum("job_source", [
@@ -14,9 +14,9 @@ export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   source: jobSource("source").notNull(),
   sourceId: text("source_id"),
-  employer: integer("employer")
+  company: integer("company")
     .notNull()
-    .references(() => employers.id, {
+    .references(() => companies.id, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
@@ -25,9 +25,9 @@ export const jobs = pgTable("jobs", {
 });
 
 export const jobRelations = relations(jobs, ({ one, many }) => ({
-  employer: one(employers, {
-    fields: [jobs.employer],
-    references: [employers.id],
+  company: one(companies, {
+    fields: [jobs.company],
+    references: [companies.id],
   }),
   tasks: many(tasks),
 }));

@@ -3,7 +3,7 @@ import { pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { jobs } from "./jobs";
 
-export const employers = pgTable("employers", {
+export const companies = pgTable("companies", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   url: text("url"),
@@ -12,15 +12,15 @@ export const employers = pgTable("employers", {
   linkedin: text("linkedin"),
 });
 
-export const employerRelations = relations(employers, ({ many }) => ({
+export const employerRelations = relations(companies, ({ many }) => ({
   jobs: many(jobs),
 }));
 
-export const employerInsertSchema = createInsertSchema(employers, {
+export const employerInsertSchema = createInsertSchema(companies, {
   url: ({ url }) => url.url(),
 });
 
-export const employerSelectSchema = createSelectSchema(employers);
+export const employerSelectSchema = createSelectSchema(companies);
 
-export type Employer = InferModel<typeof employers>;
-export type NewEmployer = InferModel<typeof employers, "insert">;
+export type Company = InferModel<typeof companies>;
+export type NewCompany = InferModel<typeof companies, "insert">;

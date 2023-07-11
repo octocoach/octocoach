@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import * as employers from "./schema/employers";
+import * as companies from "./schema/companies";
 import * as jobs from "./schema/jobs";
 import * as skills from "./schema/skills";
 import * as tasks from "./schema/tasks";
@@ -16,7 +16,7 @@ export const connectionString = `postgres://${username}:${password}@${host}:${po
 
 const client = postgres(connectionString);
 export const db = drizzle(client, {
-  schema: { ...employers, ...jobs, ...skills, ...tasks },
+  schema: { ...companies, ...jobs, ...skills, ...tasks },
 });
 
 export const end = async () => {

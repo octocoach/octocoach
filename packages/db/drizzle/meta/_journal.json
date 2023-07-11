@@ -8,6 +8,13 @@
       "when": 1689058639258,
       "tag": "0000_typical_genesis",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1689060253789,
+      "tag": "0001_greedy_alex_power",
+      "breakpoints": true
     }
   ]
 }

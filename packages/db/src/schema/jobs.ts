@@ -25,6 +25,7 @@ export const jobs = pgTable("jobs", {
   titleEmbedding: embedding("title_embedding").notNull(),
   description: text("description").notNull(),
   descriptionEmbedding: embedding("description_embedding").notNull(),
+  location: text("location"),
 });
 
 export const jobRelations = relations(jobs, ({ one, many }) => ({

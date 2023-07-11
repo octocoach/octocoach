@@ -1,4 +1,6 @@
+import { eq } from "@octocoach/db/src/index";
 import { companies } from "@octocoach/db/src/schema/companies";
+import { jobs } from "@octocoach/db/src/schema/jobs";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
@@ -130,13 +132,23 @@ export class IndeedScraper extends JobScraper {
           await $description?.locator("#jobDescriptionText")
         )?.innerText();
 
-        await this.processJob({
-          source: "indeed",
-          sourceId,
-          title,
-          description,
-          company: company.id,
-        });
+        const job = await this.db
+          .select()
+          .from(jobs)
+          .where(eq(jobs.sourceId, sourceId));
+
+        if (job.length) {
+          console.log(`${job[0].title} already exists`);
+        } else {
+          await this.processJob({
+            company: company.id,
+            description,
+            location,
+            source: "indeed",
+            sourceId,
+            title,
+          });
+        }
       }
     } catch (err) {
       console.error(err);

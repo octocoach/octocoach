@@ -153,9 +153,13 @@ export const extractTasks = async ({
 
     const taskId = task[0].id;
 
-    await db
-      .insert(tasksToSkills)
-      .values(skills.map((skillId) => ({ taskId, skillId })));
+    for (const skillId of skills) {
+      try {
+        await db.insert(tasksToSkills).values({ taskId, skillId });
+      } catch (e) {
+        console.error(`Error inserting ${taskId} <=> ${skillId}`);
+      }
+    }
 
     console.log(`Inserted Task ${taskId}`);
   }

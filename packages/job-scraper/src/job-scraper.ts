@@ -172,10 +172,18 @@ export abstract class JobScraper {
    *
    * @returns {Promise<void>} A Promise that resolves when the job has been processed.
    */
-  async processJob(newJob: NewJob) {
+  async processJob(
+    newJob: Omit<NewJob, "titleEmbedding" | "descriptionEmbedding">
+  ) {
+    const [titleEmbedding, descriptionEmbedding] =
+      await this.openAIEmbeddings.embedDocuments([
+        newJob.title,
+        newJob.description,
+      ]);
+
     const result = await this.db
       .insert(jobs)
-      .values(newJob)
+      .values({ ...newJob, titleEmbedding, descriptionEmbedding })
       .onConflictDoNothing()
       .returning();
 

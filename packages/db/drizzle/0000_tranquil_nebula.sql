@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS "jobs" (
 	"title" text NOT NULL,
 	"title_embedding" vector(1536) NOT NULL,
 	"description" text NOT NULL,
-	"description_embedding" vector(1536) NOT NULL
+	"description_embedding" vector(1536) NOT NULL,
+	"location" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "skill_categories" (

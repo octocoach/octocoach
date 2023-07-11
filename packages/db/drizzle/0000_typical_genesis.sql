@@ -4,7 +4,7 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "employers" (
+CREATE TABLE IF NOT EXISTS "companies" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"url" text,
@@ -17,9 +17,11 @@ CREATE TABLE IF NOT EXISTS "jobs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"source" "job_source" NOT NULL,
 	"source_id" text,
-	"employer" integer NOT NULL,
-	"title" text,
-	"description" text
+	"company" integer NOT NULL,
+	"title" text NOT NULL,
+	"title_embedding" vector(1536) NOT NULL,
+	"description" text NOT NULL,
+	"description_embedding" vector(1536) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "skill_categories" (
@@ -51,6 +53,11 @@ CREATE TABLE IF NOT EXISTS "skills" (
 	"type" text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "tasks_to_skills" (
+	"task_id" integer NOT NULL,
+	"skill_id" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"description" text NOT NULL,
@@ -59,7 +66,7 @@ CREATE TABLE IF NOT EXISTS "tasks" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "jobs" ADD CONSTRAINT "jobs_employer_employers_id_fk" FOREIGN KEY ("employer") REFERENCES "employers"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "jobs" ADD CONSTRAINT "jobs_company_companies_id_fk" FOREIGN KEY ("company") REFERENCES "companies"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -78,6 +85,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "skills" ADD CONSTRAINT "skills_type_skill_types_id_fk" FOREIGN KEY ("type") REFERENCES "skill_types"("id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tasks_to_skills" ADD CONSTRAINT "tasks_to_skills_task_id_tasks_id_fk" FOREIGN KEY ("task_id") REFERENCES "tasks"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tasks_to_skills" ADD CONSTRAINT "tasks_to_skills_skill_id_skills_id_fk" FOREIGN KEY ("skill_id") REFERENCES "skills"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

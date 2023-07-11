@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1688634604619,
-      "tag": "0000_lumpy_queen_noir",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1688998949608,
-      "tag": "0001_ancient_scrambler",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1689053497660,
-      "tag": "0002_overconfident_nico_minoru",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1689057027666,
-      "tag": "0003_mixed_raza",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1689058236578,
-      "tag": "0004_far_dazzler",
+      "when": 1689058639258,
+      "tag": "0000_typical_genesis",
       "breakpoints": true
     }
   ]

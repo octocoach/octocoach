@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "c26b9a2b-c331-4216-acea-755a97caefbd",
+  "id": "f1aa448c-e629-4e4b-ba4b-a11d90376b33",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "employers": {
-      "name": "employers",
+    "companies": {
+      "name": "companies",
       "schema": "",
       "columns": {
         "id": {
@@ -71,8 +71,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "employer": {
-          "name": "employer",
+        "company": {
+          "name": "company",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -81,23 +81,35 @@
           "name": "title",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "title_embedding": {
+          "name": "title_embedding",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "description_embedding": {
+          "name": "description_embedding",
+          "type": "vector(1536)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "jobs_employer_employers_id_fk": {
-          "name": "jobs_employer_employers_id_fk",
+        "jobs_company_companies_id_fk": {
+          "name": "jobs_company_companies_id_fk",
           "tableFrom": "jobs",
-          "tableTo": "employers",
+          "tableTo": "companies",
           "columnsFrom": [
-            "employer"
+            "company"
           ],
           "columnsTo": [
             "id"
@@ -283,6 +295,54 @@
           ],
           "onDelete": "restrict",
           "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "tasks_to_skills": {
+      "name": "tasks_to_skills",
+      "schema": "",
+      "columns": {
+        "task_id": {
+          "name": "task_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skill_id": {
+          "name": "skill_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tasks_to_skills_task_id_tasks_id_fk": {
+          "name": "tasks_to_skills_task_id_tasks_id_fk",
+          "tableFrom": "tasks_to_skills",
+          "tableTo": "tasks",
+          "columnsFrom": [
+            "task_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tasks_to_skills_skill_id_skills_id_fk": {
+          "name": "tasks_to_skills_skill_id_skills_id_fk",
+          "tableFrom": "tasks_to_skills",
+          "tableTo": "skills",
+          "columnsFrom": [
+            "skill_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {}

@@ -2,6 +2,7 @@ import { InferModel, relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { embedding } from "../embedding";
+import { tasksToSkills } from "./tasks-to-skills";
 
 // Skill Types
 
@@ -83,7 +84,7 @@ export const skills = pgTable("skills", {
     }),
 });
 
-export const skillRelations = relations(skills, ({ one }) => ({
+export const skillRelations = relations(skills, ({ one, many }) => ({
   subcategory: one(skillSubcategories, {
     fields: [skills.subcategory],
     references: [skillSubcategories.id],
@@ -92,6 +93,7 @@ export const skillRelations = relations(skills, ({ one }) => ({
     fields: [skills.type],
     references: [skillTypes.id],
   }),
+  tasksToSkills: many(tasksToSkills),
 }));
 
 export type Skill = InferModel<typeof skills>;

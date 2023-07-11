@@ -1,6 +1,7 @@
 import { type Database } from "@octocoach/db/src/connection";
 import { Job } from "@octocoach/db/src/schema/jobs";
 import { tasks } from "@octocoach/db/src/schema/tasks";
+import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
@@ -141,8 +142,6 @@ export const extractTasks = async ({
     }[];
   };
 
-  console.log(text);
-
   for (const { description, skills } of text) {
     const embedding = await embeddingsApi.embedQuery(description);
     console.log("Inserting", description);
@@ -152,8 +151,12 @@ export const extractTasks = async ({
       .values({ description, embedding, job: job.id })
       .returning();
 
-    console.log(`Inserted Task ${task[0].id}`);
+    const taskId = task[0].id;
 
-    // ToDo: Here we will create the links between the skills and tasks and persist to the db
+    await db
+      .insert(tasksToSkills)
+      .values(skills.map((skillId) => ({ taskId, skillId })));
+
+    console.log(`Inserted Task ${taskId}`);
   }
 };

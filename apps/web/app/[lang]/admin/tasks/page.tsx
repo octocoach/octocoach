@@ -17,10 +17,12 @@ export default async function Page() {
     <Container element="section">
       <Stack>
         {tasks.map((task) => (
-          <div>
-            <Typography size="l">{task.description}</Typography>
+          <div key={task.id}>
+            <Typography size="l">
+              {task.job.title}: {task.description}
+            </Typography>
             {task.tasksToSkills.map(({ skill }) => (
-              <Typography>{skill.name}</Typography>
+              <Typography key={skill.id}>{skill.name}</Typography>
             ))}
           </div>
         ))}

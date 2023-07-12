@@ -139,7 +139,7 @@ export abstract class JobScraper {
    */
   async scrape(queries: string[]) {
     const urlParams = {
-      age: 7,
+      age: 1,
       location: "Düsseldorf",
     };
 

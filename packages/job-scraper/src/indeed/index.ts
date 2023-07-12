@@ -77,8 +77,10 @@ export class IndeedScraper extends JobScraper {
 
     try {
       for (const item of items) {
-        const id = await item.locator("[data-jk]").getAttribute("data-jk");
-        if (!id) {
+        const sourceId = await item
+          .locator("[data-jk]")
+          .getAttribute("data-jk");
+        if (!sourceId) {
           console.error("Can't get ID");
           continue;
         }
@@ -104,10 +106,10 @@ export class IndeedScraper extends JobScraper {
           .trim();
 
         const companyName = await $company.innerText();
-        const sourceId = await this.getCompanyId($company);
+        const companySourceId = await this.getCompanyId($company);
 
         let company = await this.db.query.companies.findFirst({
-          where: (companies, { eq }) => eq(companies.indeed, sourceId),
+          where: (companies, { eq }) => eq(companies.indeed, companySourceId),
         });
 
         if (!company) {
@@ -115,7 +117,7 @@ export class IndeedScraper extends JobScraper {
             .insert(companies)
             .values({
               name: companyName,
-              indeed: sourceId,
+              indeed: companySourceId,
             })
             .returning();
 
@@ -135,13 +137,13 @@ export class IndeedScraper extends JobScraper {
         const job = await this.db
           .select()
           .from(jobs)
-          .where(eq(jobs.sourceId, sourceId));
+          .where(eq(jobs.sourceId, companySourceId));
 
         if (job.length) {
           console.log(`${job[0].title} already exists`);
         } else {
           await this.processJob({
-            company: company.id,
+            companyId: company.id,
             description,
             location,
             source: "indeed",

@@ -38,7 +38,7 @@ export const skillCategorySchema = createInsertSchema(skillCategories);
 export const skillSubcategories = pgTable("skill_subcategories", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
-  category: integer("category")
+  categoryId: integer("category_id")
     .notNull()
     .references(() => skillCategories.id, {
       onDelete: "restrict",
@@ -50,7 +50,7 @@ export const skillSubcategoriesRelations = relations(
   skillSubcategories,
   ({ one }) => ({
     category: one(skillCategories, {
-      fields: [skillSubcategories.category],
+      fields: [skillSubcategories.categoryId],
       references: [skillCategories.id],
     }),
   })
@@ -70,13 +70,13 @@ export const skills = pgTable("skills", {
   isLanguage: boolean("is_language").notNull(),
   description: text("description"),
   descriptionEmbedding: embedding("description_embedding"),
-  subcategory: integer("subcategory")
+  subcategoryId: integer("subcategory_id")
     .notNull()
     .references(() => skillSubcategories.id, {
       onDelete: "restrict",
       onUpdate: "cascade",
     }),
-  type: text("type")
+  typeId: text("type_id")
     .notNull()
     .references(() => skillTypes.id, {
       onDelete: "restrict",
@@ -86,11 +86,11 @@ export const skills = pgTable("skills", {
 
 export const skillRelations = relations(skills, ({ one, many }) => ({
   subcategory: one(skillSubcategories, {
-    fields: [skills.subcategory],
+    fields: [skills.subcategoryId],
     references: [skillSubcategories.id],
   }),
   type: one(skillTypes, {
-    fields: [skills.type],
+    fields: [skills.typeId],
     references: [skillTypes.id],
   }),
   tasksToSkills: many(tasksToSkills),

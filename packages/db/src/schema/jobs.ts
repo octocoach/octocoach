@@ -15,7 +15,7 @@ export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   source: jobSource("source").notNull(),
   sourceId: text("source_id"),
-  company: integer("company")
+  companyId: integer("company_id")
     .notNull()
     .references(() => companies.id, {
       onDelete: "cascade",
@@ -30,7 +30,7 @@ export const jobs = pgTable("jobs", {
 
 export const jobRelations = relations(jobs, ({ one, many }) => ({
   company: one(companies, {
-    fields: [jobs.company],
+    fields: [jobs.companyId],
     references: [companies.id],
   }),
   tasks: many(tasks),

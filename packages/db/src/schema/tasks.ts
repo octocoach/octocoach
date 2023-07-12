@@ -8,7 +8,7 @@ import { tasksToSkills } from "./tasks-to-skills";
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
   description: text("description").notNull(),
-  job: integer("job")
+  jobId: integer("job_id")
     .notNull()
     .references(() => jobs.id),
   embedding: embedding("embedding"),
@@ -16,7 +16,7 @@ export const tasks = pgTable("tasks", {
 
 export const taskRelations = relations(tasks, ({ one, many }) => ({
   job: one(jobs, {
-    fields: [tasks.job],
+    fields: [tasks.jobId],
     references: [jobs.id],
   }),
   tasksToSkills: many(tasksToSkills),

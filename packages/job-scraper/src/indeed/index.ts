@@ -137,7 +137,7 @@ export class IndeedScraper extends JobScraper {
         const job = await this.db
           .select()
           .from(jobs)
-          .where(eq(jobs.sourceId, companySourceId));
+          .where(eq(jobs.sourceId, sourceId));
 
         if (job.length) {
           console.log(`${job[0].title} already exists`);

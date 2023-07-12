@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { TypographyVariants, typography } from "./typography.css";
 
-type AllowedElements = "h1" | "h2" | "p";
+type AllowedElements = "h1" | "h2" | "p" | "span";
 
 export const Typography = ({
   children,

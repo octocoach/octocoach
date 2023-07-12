@@ -148,7 +148,7 @@ export const extractTasks = async ({
 
     const task = await db
       .insert(tasks)
-      .values({ description, embedding, job: job.id })
+      .values({ description, embedding, jobId: job.id })
       .returning();
 
     const taskId = task[0].id;

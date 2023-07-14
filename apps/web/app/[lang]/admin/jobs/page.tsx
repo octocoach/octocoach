@@ -24,7 +24,7 @@ export default async function Page() {
       <Typography size="xl">Jobs</Typography>
       <Stack>
         {jobs.map((job) => (
-          <Link href={`/admin/jobs/${job.id}`}>
+          <Link href={`/admin/jobs/${job.id}`} key={job.id}>
             <Card key={job.id}>
               <Typography size="l">{job.title}</Typography>
               <Typography>{job.company.name}</Typography>

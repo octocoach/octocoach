@@ -39,7 +39,7 @@ export default async function Page({
         <Typography size="l">Tasks</Typography>
         <Stack>
           {skill.tasksToSkills.map(({ task }) => (
-            <Link href={`/admin/tasks/${task.id}`}>
+            <Link href={`/admin/tasks/${task.id}`} key={task.id}>
               <Typography>{task.description}</Typography>
             </Link>
           ))}

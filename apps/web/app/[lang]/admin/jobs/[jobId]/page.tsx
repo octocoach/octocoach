@@ -31,11 +31,11 @@ export default async function Page({ params }: { params: { jobId: number } }) {
 
       <Stack>
         {job.tasks.map((task) => (
-          <Link href={`/admin/tasks/${task.id}`}>
+          <Link href={`/admin/tasks/${task.id}`} key={task.id}>
             <Card>
               <Typography>{task.description}</Typography>
               {task.tasksToSkills.map(({ skill }) => (
-                <Typography size="s" element="span">
+                <Typography size="s" element="span" key={skill.id}>
                   {skill.name},{" "}
                 </Typography>
               ))}

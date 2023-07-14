@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { taskId: number } }) {
       <Typography>Skills</Typography>
       <Stack>
         {task.tasksToSkills.map(({ skill }) => (
-          <Link href={`/admin/skills/${skill.id}`}>
+          <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
             <Card>
               <Typography>{skill.name}</Typography>
               <Typography>{skill.description}</Typography>

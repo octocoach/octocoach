@@ -15,7 +15,7 @@ export default async function Page() {
     <Container element="section">
       <Stack spacing="loose">
         {s.map((k) => (
-          <div>
+          <div key={k.id}>
             <Typography size="m">{k.name}</Typography>
             <p>{k.description}</p>
           </div>

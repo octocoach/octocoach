@@ -9,6 +9,7 @@ export const stack = recipe({
   },
   variants: {
     align: {
+      none: {},
       left: {
         alignItems: "flex-start",
       },
@@ -32,7 +33,7 @@ export const stack = recipe({
     },
   },
   defaultVariants: {
-    align: "left",
+    align: "none",
     spacing: "normal",
   },
 });

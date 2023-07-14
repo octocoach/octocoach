@@ -8,8 +8,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { LL } = useI18nContext();
   return (
     <Container element="section">
-      <Stack align="left">
-        <Typography element="h1" size="xl">
+      <Stack>
+        <Typography element="h1" size="l">
           <Link href="/admin">{LL.ADMIN()}</Link>
         </Typography>
         <section>{children}</section>

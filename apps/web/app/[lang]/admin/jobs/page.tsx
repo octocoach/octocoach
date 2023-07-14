@@ -21,7 +21,7 @@ export default async function Page() {
 
   return (
     <Container element="section">
-      <Typography size="l">Jobs</Typography>
+      <Typography size="xl">Jobs</Typography>
       <Stack>
         {jobs.map((job) => (
           <Link href={`/admin/jobs/${job.id}`}>

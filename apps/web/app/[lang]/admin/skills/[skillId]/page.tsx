@@ -32,7 +32,9 @@ export default async function Page({
       <Typography>{skill.description}</Typography>
       <Typography>Software: {skill.isSoftware ? "yes" : "no"}</Typography>
       <Typography>Language: {skill.isLanguage ? "yes" : "no"}</Typography>
-      <a href={skill.infoUrl}>Source</a>
+      <Link externalLink href={skill.infoUrl}>
+        Source
+      </Link>
       <Container element="div">
         <Typography size="l">Tasks</Typography>
         <Stack>

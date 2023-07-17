@@ -3,6 +3,7 @@ import { db } from "@octocoach/db/src/connection";
 import { jobSchema, jobs } from "@octocoach/db/src/schema/jobs";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { Pill } from "./components";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
   const job = await db.query.jobs.findFirst({
@@ -23,12 +24,16 @@ export default async function Page({ params }: { params: { jobId: number } }) {
 
   return (
     <Stack>
-      <div>
-        <Text size="l" weight="extraBold">
-          {job.title}
-        </Text>
-        <Text weight="light">{job.company.name}</Text>
-      </div>
+      <Link href="/admin/jobs">
+        <Text>Jobs</Text>
+      </Link>
+      <Text size="l" weight="extraBold" variation="heading">
+        {job.title}
+      </Text>
+      <Text weight="light" size="s">
+        {job.company.name}
+      </Text>
+
       {/* <ReactMarkdown>{job.description}</ReactMarkdown> */}
 
       <Stack>
@@ -36,11 +41,13 @@ export default async function Page({ params }: { params: { jobId: number } }) {
           <Link href={`/admin/tasks/${task.id}`} key={task.id}>
             <Card>
               <Text>{task.description}</Text>
-              {task.tasksToSkills.map(({ skill }) => (
-                <Text size="s" element="span" key={skill.id}>
-                  {skill.name},{" "}
-                </Text>
-              ))}
+              <div>
+                {task.tasksToSkills.map(({ skill }) => (
+                  <Pill>
+                    <Text>{skill.name}</Text>
+                  </Pill>
+                ))}
+              </div>
             </Card>
           </Link>
         ))}

@@ -52,6 +52,9 @@ export const text = recipe({
       casual: {
         fontVariationSettings: "'CASL' 1",
       },
+      heading: {
+        lineHeight: "0.95",
+      },
     },
   },
   defaultVariants: {

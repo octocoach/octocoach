@@ -17,22 +17,29 @@ export default async function Page({ params }: { params: { taskId: number } }) {
 
   return (
     <Container element="div">
-      <Text size="l">{task.description}</Text>
-      <Text>Skills</Text>
-      <Stack>
-        {task.tasksToSkills.map(({ skill }) => (
-          <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
-            <Card>
-              <Text>{skill.name}</Text>
-              <Text>{skill.description}</Text>
-            </Card>
-          </Link>
-        ))}
+      <Stack spacing="loose">
+        <Link href={`/admin/jobs/${task.jobId}`}>
+          <Text size="l" weight="light" variation="heading">
+            {task.job.title}
+          </Text>
+        </Link>
+        <Text size="xl" variation="heading">
+          {task.description}
+        </Text>
+
+        <Stack>
+          {task.tasksToSkills.map(({ skill }) => (
+            <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
+              <Card>
+                <Text size="l" weight="bold">
+                  {skill.name}
+                </Text>
+                <Text>{skill.description}</Text>
+              </Card>
+            </Link>
+          ))}
+        </Stack>
       </Stack>
-      <Text>Job</Text>
-      <Link href={`/admin/jobs/${task.jobId}`}>
-        <Text>{task.job.title}</Text>
-      </Link>
     </Container>
   );
 }

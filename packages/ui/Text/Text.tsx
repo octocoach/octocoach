@@ -7,11 +7,13 @@ export const Text = ({
   children,
   element = "p",
   size = "m",
+  variation = "default",
+  weight = "regular",
   ...props
 }: PropsWithChildren<{ element?: AllowedElements } & TextVariants>) => {
   const Component = element;
   return (
-    <Component className={text({ size })} {...props}>
+    <Component className={text({ size, variation, weight })} {...props}>
       {children}
     </Component>
   );

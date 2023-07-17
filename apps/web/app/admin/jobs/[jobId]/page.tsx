@@ -24,10 +24,12 @@ export default async function Page({ params }: { params: { jobId: number } }) {
   return (
     <Stack>
       <div>
-        <Text size="l">{job.title}</Text>
-        <Text>{job.company.name}</Text>
+        <Text size="l" weight="extraBold">
+          {job.title}
+        </Text>
+        <Text weight="light">{job.company.name}</Text>
       </div>
-      <ReactMarkdown>{job.description}</ReactMarkdown>
+      {/* <ReactMarkdown>{job.description}</ReactMarkdown> */}
 
       <Stack>
         {job.tasks.map((task) => (

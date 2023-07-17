@@ -21,9 +21,43 @@ export const text = recipe({
         fontSize: ".8rem",
       },
     },
+    weight: {
+      light: {
+        fontWeight: 300,
+      },
+      regular: {
+        fontWeight: 400,
+      },
+      medium: {
+        fontWeight: 500,
+      },
+      semiBold: {
+        fontWeight: 600,
+      },
+      bold: {
+        fontWeight: 700,
+      },
+      extraBold: {
+        fontWeight: 800,
+      },
+      heavy: {
+        fontWeight: 900,
+      },
+      extraBlack: {
+        fontWeight: 1000,
+      },
+    },
+    variation: {
+      default: {},
+      casual: {
+        fontVariationSettings: "'CASL' 1",
+      },
+    },
   },
   defaultVariants: {
     size: "m",
+    weight: "regular",
+    variation: "default",
   },
 });
 

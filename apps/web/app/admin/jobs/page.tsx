@@ -21,14 +21,20 @@ export default async function Page() {
 
   return (
     <Container element="section">
-      <Text size="xl">Jobs</Text>
+      <Text size="xl" variation="casual" weight="bold">
+        Jobs
+      </Text>
       <Stack>
         {jobs.map((job) => (
           <Link href={`/admin/jobs/${job.id}`} key={job.id}>
             <Card key={job.id}>
-              <Text size="l">{job.title}</Text>
-              <Text>{job.company.name}</Text>
-              <Text size="s">{job.location}</Text>
+              <Text size="l" weight="bold">
+                {job.title}
+              </Text>
+              <Text variation="casual">{job.company.name}</Text>
+              <Text size="s" weight="light">
+                {job.location}
+              </Text>
             </Card>
           </Link>
         ))}

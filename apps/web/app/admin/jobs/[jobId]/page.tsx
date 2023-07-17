@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
 import { jobSchema, jobs } from "@octocoach/db/src/schema/jobs";
-import { Card, Container, Stack, Typography } from "@octocoach/ui";
+import { Card, Container, Stack, Text } from "@octocoach/ui";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
@@ -24,8 +24,8 @@ export default async function Page({ params }: { params: { jobId: number } }) {
   return (
     <Stack>
       <div>
-        <Typography size="l">{job.title}</Typography>
-        <Typography>{job.company.name}</Typography>
+        <Text size="l">{job.title}</Text>
+        <Text>{job.company.name}</Text>
       </div>
       <ReactMarkdown>{job.description}</ReactMarkdown>
 
@@ -33,11 +33,11 @@ export default async function Page({ params }: { params: { jobId: number } }) {
         {job.tasks.map((task) => (
           <Link href={`/admin/tasks/${task.id}`} key={task.id}>
             <Card>
-              <Typography>{task.description}</Typography>
+              <Text>{task.description}</Text>
               {task.tasksToSkills.map(({ skill }) => (
-                <Typography size="s" element="span" key={skill.id}>
+                <Text size="s" element="span" key={skill.id}>
                   {skill.name},{" "}
-                </Typography>
+                </Text>
               ))}
             </Card>
           </Link>

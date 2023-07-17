@@ -1,7 +1,7 @@
 import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
 import { vars } from "../theme.css";
 
-export const typography = recipe({
+export const text = recipe({
   base: {
     fontFamily: vars.fonts.base,
     color: vars.color.typography.heading,
@@ -27,4 +27,4 @@ export const typography = recipe({
   },
 });
 
-export type TypographyVariants = RecipeVariants<typeof typography>;
+export type TextVariants = RecipeVariants<typeof text>;

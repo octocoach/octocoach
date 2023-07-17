@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
-import { Card, Container, Stack, Typography } from "@octocoach/ui";
+import { Card, Container, Stack, Text } from "@octocoach/ui";
 
 export default async function Page({ params }: { params: { taskId: number } }) {
   const task = await db.query.tasks.findFirst({
@@ -17,21 +17,21 @@ export default async function Page({ params }: { params: { taskId: number } }) {
 
   return (
     <Container element="div">
-      <Typography size="l">{task.description}</Typography>
-      <Typography>Skills</Typography>
+      <Text size="l">{task.description}</Text>
+      <Text>Skills</Text>
       <Stack>
         {task.tasksToSkills.map(({ skill }) => (
           <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
             <Card>
-              <Typography>{skill.name}</Typography>
-              <Typography>{skill.description}</Typography>
+              <Text>{skill.name}</Text>
+              <Text>{skill.description}</Text>
             </Card>
           </Link>
         ))}
       </Stack>
-      <Typography>Job</Typography>
+      <Text>Job</Text>
       <Link href={`/admin/jobs/${task.jobId}`}>
-        <Typography>{task.job.title}</Typography>
+        <Text>{task.job.title}</Text>
       </Link>
     </Container>
   );

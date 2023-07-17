@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
-import { Card, Container, Stack, Typography } from "@octocoach/ui";
+import { Card, Container, Stack, Text } from "@octocoach/ui";
 import ReactMarkdown from "react-markdown";
 
 export default async function Page() {
@@ -21,14 +21,14 @@ export default async function Page() {
 
   return (
     <Container element="section">
-      <Typography size="xl">Jobs</Typography>
+      <Text size="xl">Jobs</Text>
       <Stack>
         {jobs.map((job) => (
           <Link href={`/admin/jobs/${job.id}`} key={job.id}>
             <Card key={job.id}>
-              <Typography size="l">{job.title}</Typography>
-              <Typography>{job.company.name}</Typography>
-              <Typography size="s">{job.location}</Typography>
+              <Text size="l">{job.title}</Text>
+              <Text>{job.company.name}</Text>
+              <Text size="s">{job.location}</Text>
             </Card>
           </Link>
         ))}

@@ -1,5 +1,5 @@
 import { db } from "@octocoach/db/src/connection";
-import { Container, Stack, Typography } from "@octocoach/ui";
+import { Container, Stack, Text } from "@octocoach/ui";
 
 export default async function Page() {
   const tasks = await db.query.tasks.findMany({
@@ -18,11 +18,11 @@ export default async function Page() {
       <Stack>
         {tasks.map((task) => (
           <div key={task.id}>
-            <Typography size="l">
+            <Text size="l">
               {task.job.title}: {task.description}
-            </Typography>
+            </Text>
             {task.tasksToSkills.map(({ skill }) => (
-              <Typography key={skill.id}>{skill.name}</Typography>
+              <Text key={skill.id}>{skill.name}</Text>
             ))}
           </div>
         ))}

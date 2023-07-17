@@ -1,7 +1,7 @@
 import { db } from "@octocoach/db/src/connection";
 import { makeCosineDistance } from "@octocoach/db/src/embedding";
 import { skills } from "@octocoach/db/src/schema/skills";
-import { Container, Stack, Typography } from "@octocoach/ui";
+import { Container, Stack, Text } from "@octocoach/ui";
 
 export default async function Page() {
   const distance = await makeCosineDistance(`coaching`);
@@ -16,7 +16,7 @@ export default async function Page() {
       <Stack spacing="loose">
         {s.map((k) => (
           <div key={k.id}>
-            <Typography size="m">{k.name}</Typography>
+            <Text size="m">{k.name}</Text>
             <p>{k.description}</p>
           </div>
         ))}

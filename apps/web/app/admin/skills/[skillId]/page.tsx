@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
-import { Container, Stack, Typography } from "@octocoach/ui";
+import { Container, Stack, Text } from "@octocoach/ui";
 
 export default async function Page({
   params,
@@ -25,22 +25,20 @@ export default async function Page({
 
   return (
     <Stack>
-      <Typography>
+      <Text>
         {skill.subcategory.category.name} - {skill.subcategory.name}
-      </Typography>
-      <Typography size="l">{skill.name}</Typography>
-      <Typography>{skill.description}</Typography>
-      <Typography>Software: {skill.isSoftware ? "yes" : "no"}</Typography>
-      <Typography>Language: {skill.isLanguage ? "yes" : "no"}</Typography>
-      <Link externalLink href={skill.infoUrl}>
-        Source
-      </Link>
+      </Text>
+      <Text size="l">{skill.name}</Text>
+      <Text>{skill.description}</Text>
+      <Text>Software: {skill.isSoftware ? "yes" : "no"}</Text>
+      <Text>Language: {skill.isLanguage ? "yes" : "no"}</Text>
+      <Link href={skill.infoUrl}>Source</Link>
       <Container element="div">
-        <Typography size="l">Tasks</Typography>
+        <Text size="l">Tasks</Text>
         <Stack>
           {skill.tasksToSkills.map(({ task }) => (
             <Link href={`/admin/tasks/${task.id}`} key={task.id}>
-              <Typography>{task.description}</Typography>
+              <Text>{task.description}</Text>
             </Link>
           ))}
         </Stack>

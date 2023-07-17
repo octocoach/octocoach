@@ -2,7 +2,7 @@
 
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Container, Stack, Typography } from "@octocoach/ui";
-import Link from "@app/link";
+import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { LL } = useI18nContext();

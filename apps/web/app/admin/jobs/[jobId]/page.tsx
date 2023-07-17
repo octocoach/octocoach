@@ -1,4 +1,4 @@
-import Link from "@app/link";
+import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
 import { jobSchema, jobs } from "@octocoach/db/src/schema/jobs";
 import { Card, Container, Stack, Typography } from "@octocoach/ui";

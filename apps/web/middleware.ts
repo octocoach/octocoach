@@ -21,17 +21,11 @@ function detectLocale(request: NextRequest) {
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const response = NextResponse.next();
+  const locale = detectLocale(request);
+  response.cookies.set("locale", locale);
 
-  const pathnameIsMissingLocale = locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  );
-
-  if (pathnameIsMissingLocale) {
-    const locale = detectLocale(request);
-
-    return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
-  }
+  return response;
 }
 
 export const config = {
@@ -43,6 +37,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    `/((?!api|_next/static|_next/image|favicon.ico|en|de).*)`,
+    `/((?!api|_next/static|_next/image|favicon.ico).*)`,
   ],
 };

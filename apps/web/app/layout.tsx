@@ -5,16 +5,16 @@ import { SSRProvider } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
+import { cookies } from "next/headers";
 import RootLayoutClient from "./layout-client";
 
 export default async function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: { lang: string };
 }) {
-  const locale = params.lang as Locales;
+  const cookieStore = cookies();
+  const locale = (cookieStore.get("locale")?.value || "en") as Locales;
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];

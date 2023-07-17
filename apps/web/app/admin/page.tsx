@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
-import Link from "@app/link";
+import Link from "next/link";
 
 export default function Page() {
   const { LL } = useI18nContext();

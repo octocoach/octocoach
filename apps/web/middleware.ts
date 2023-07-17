@@ -1,10 +1,24 @@
-import {
-  initAcceptLanguageHeaderDetector,
-  initRequestCookiesDetector,
-} from "@octocoach/i18n/src";
+import { match } from "@formatjs/intl-localematcher";
+import Negotiator from "negotiator";
+
 import { NextRequest, NextResponse } from "next/server";
 
-import { detectLocale, locales } from "@octocoach/i18n/src/i18n-util";
+const locales = ["en", "de"];
+
+// TODO: This is a workaround until this is solved:
+// https://github.com/ivanhofer/typesafe-i18n/discussions/580#discussioncomment-6465405
+function detectLocale(request: NextRequest) {
+  const headers = {
+    "accept-language": request.headers.get("accept-language"),
+  };
+  const languages = new Negotiator({ headers }).languages();
+
+  const defaultLocale = "en";
+
+  const locale = match(languages, locales, defaultLocale);
+
+  return locale;
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,17 +28,7 @@ export function middleware(request: NextRequest) {
   );
 
   if (pathnameIsMissingLocale) {
-    const acceptLanguageHeaderDetector =
-      initAcceptLanguageHeaderDetector(request);
-
-    const requestCookiesDetector = initRequestCookiesDetector({
-      cookies: request.cookies.toString(),
-    });
-
-    const locale = detectLocale(
-      acceptLanguageHeaderDetector,
-      requestCookiesDetector
-    );
+    const locale = detectLocale(request);
 
     return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
   }

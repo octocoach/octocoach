@@ -26,6 +26,22 @@ type RootTranslation = {
 	 * A​d​m​i​n
 	 */
 	ADMIN: string
+	/**
+	 * J​o​b​s
+	 */
+	JOBS: string
+	/**
+	 * T​a​s​k​s
+	 */
+	TASKS: string
+	/**
+	 * C​o​m​p​a​n​i​e​s
+	 */
+	COMPANIES: string
+	/**
+	 * S​k​i​l​l​s
+	 */
+	SKILLS: string
 }
 
 export type TranslationFunctions = {
@@ -41,6 +57,22 @@ export type TranslationFunctions = {
 	 * Admin
 	 */
 	ADMIN: () => LocalizedString
+	/**
+	 * Jobs
+	 */
+	JOBS: () => LocalizedString
+	/**
+	 * Tasks
+	 */
+	TASKS: () => LocalizedString
+	/**
+	 * Companies
+	 */
+	COMPANIES: () => LocalizedString
+	/**
+	 * Skills
+	 */
+	SKILLS: () => LocalizedString
 }
 
 export type Formatters = {}

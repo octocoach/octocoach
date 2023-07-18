@@ -1,4 +1,5 @@
 import { db } from "@octocoach/db/src/connection";
+import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
 
@@ -22,14 +23,18 @@ export default async function Page({ params }: { params: { jobId: number } }) {
   return (
     <Stack>
       <Link href="/admin/jobs">
-        <Text>Jobs</Text>
+        <Text>
+          <Message id="JOBS" />
+        </Text>
       </Link>
       <Text size="l" weight="extraBold" variation="heading">
         {job.title}
       </Text>
-      <Text weight="light" size="s">
-        {job.company.name}
-      </Text>
+      <Link href={`/admin/companies/${job.company.id}`}>
+        <Text weight="light" size="s">
+          {job.company.name}
+        </Text>
+      </Link>
 
       {/* <ReactMarkdown>{job.description}</ReactMarkdown> */}
 

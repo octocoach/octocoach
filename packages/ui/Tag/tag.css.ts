@@ -5,7 +5,7 @@ import { vars } from "../theme.css";
 export const tag = recipe({
   base: {
     padding: space[2],
-    lineHeight: 0.7,
+    lineHeight: 1,
     borderRadius: space[4],
     borderColor: vars.color.typography.subtle,
     borderWidth: 1,

@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
+import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { taskId: number } }) {
   const task = await db.query.tasks.findFirst({
@@ -18,6 +19,11 @@ export default async function Page({ params }: { params: { taskId: number } }) {
   return (
     <Container element="div">
       <Stack spacing="loose">
+        <Link href="/admin/tasks">
+          <Text>
+            <Message id="TASKS" />
+          </Text>
+        </Link>
         <Link href={`/admin/jobs/${task.jobId}`}>
           <Text size="l" weight="light" variation="heading">
             {task.job.title}

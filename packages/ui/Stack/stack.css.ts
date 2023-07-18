@@ -5,7 +5,6 @@ export const stack = recipe({
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
   },
   variants: {
     align: {
@@ -23,6 +22,7 @@ export const stack = recipe({
     direction: {
       horizontal: {
         flexDirection: "row",
+        flexWrap: "wrap",
       },
       vertical: {
         flexDirection: "column",

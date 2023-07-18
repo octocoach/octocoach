@@ -1,5 +1,8 @@
 import { db } from "@octocoach/db/src/connection";
-import { Container, Stack, Text } from "@octocoach/ui";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
+import Message from "@octocoach/i18n/src/react-message";
+import { Card, Container, Stack, Tag, Text } from "@octocoach/ui";
+import Link from "next/link";
 
 export default async function Page() {
   const tasks = await db.query.tasks.findMany({
@@ -16,16 +19,36 @@ export default async function Page() {
   return (
     <Container element="section">
       <Stack>
-        {tasks.map((task) => (
-          <div key={task.id}>
-            <Text size="l">
-              {task.job.title}: {task.description}
-            </Text>
-            {task.tasksToSkills.map(({ skill }) => (
-              <Text key={skill.id}>{skill.name}</Text>
-            ))}
-          </div>
-        ))}
+        <Text>
+          <Message id="TASKS" />
+        </Text>
+        <Stack>
+          {tasks.map((task) => (
+            <Card key={task.id}>
+              <Stack>
+                <Stack spacing="tight">
+                  <Link href={`/admin/jobs/${task.job.id}`}>
+                    <Text size="s">{task.job.title}</Text>
+                  </Link>
+                  <Link href={`/admin/tasks/${task.id}`}>
+                    <Text size="l">{task.description}</Text>
+                  </Link>
+                </Stack>
+                <Stack direction="horizontal" spacing="tight">
+                  {task.tasksToSkills.map(({ skill }) => (
+                    <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
+                      <Tag>
+                        <Text size="s" key={skill.id}>
+                          {skill.name}
+                        </Text>
+                      </Tag>
+                    </Link>
+                  ))}
+                </Stack>
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
       </Stack>
     </Container>
   );

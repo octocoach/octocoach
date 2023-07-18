@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.4.0",
     "@octocoach/azav": "workspace:^",
     "@octocoach/db": "workspace:^",
     "@octocoach/embeddings": "workspace:*",
     "@octocoach/i18n": "workspace:^",
     "@octocoach/ui": "workspace:*",
     "hnswlib-node": "^1.4.2",
-    "next": "^13.4.6",
+    "negotiator": "^0.6.3",
+    "next": "^13.4.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7"

@@ -5,10 +5,10 @@ export const stack = recipe({
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
   },
   variants: {
     align: {
+      none: {},
       left: {
         alignItems: "flex-start",
       },
@@ -17,6 +17,15 @@ export const stack = recipe({
       },
       right: {
         alignItems: "flex-end",
+      },
+    },
+    direction: {
+      horizontal: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+      },
+      vertical: {
+        flexDirection: "column",
       },
     },
     spacing: {
@@ -32,7 +41,8 @@ export const stack = recipe({
     },
   },
   defaultVariants: {
-    align: "left",
+    align: "none",
+    direction: "vertical",
     spacing: "normal",
   },
 });

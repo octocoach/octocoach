@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Typography } from "./Typography";
+import { Text } from "./Text";
 
-const meta: Meta<typeof Typography> = {
+const meta: Meta<typeof Text> = {
   title: "Atoms/Typography",
-  component: Typography,
+  component: Text,
   tags: ["autodocs"],
-} satisfies Meta<typeof Typography>;
+} satisfies Meta<typeof Text>;
 
 export default meta;
 

@@ -1,9 +1,6 @@
-import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
-import { jobSchema, jobs } from "@octocoach/db/src/schema/jobs";
-import { Card, Container, Stack, Text } from "@octocoach/ui";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { Pill } from "./components";
+import { Card, Stack, Tag, Text } from "@octocoach/ui";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
   const job = await db.query.jobs.findFirst({
@@ -40,14 +37,16 @@ export default async function Page({ params }: { params: { jobId: number } }) {
         {job.tasks.map((task) => (
           <Link href={`/admin/tasks/${task.id}`} key={task.id}>
             <Card>
-              <Text>{task.description}</Text>
-              <div>
-                {task.tasksToSkills.map(({ skill }) => (
-                  <Pill>
-                    <Text>{skill.name}</Text>
-                  </Pill>
-                ))}
-              </div>
+              <Stack>
+                <Text>{task.description}</Text>
+                <Stack direction="horizontal" spacing="tight">
+                  {task.tasksToSkills.map(({ skill }) => (
+                    <Tag>
+                      <Text size="s">{skill.name}</Text>
+                    </Tag>
+                  ))}
+                </Stack>
+              </Stack>
             </Card>
           </Link>
         ))}

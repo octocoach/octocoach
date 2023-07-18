@@ -20,6 +20,14 @@ export const stack = recipe({
         alignItems: "flex-end",
       },
     },
+    direction: {
+      horizontal: {
+        flexDirection: "row",
+      },
+      vertical: {
+        flexDirection: "column",
+      },
+    },
     spacing: {
       tight: {
         gap: space[2],
@@ -34,6 +42,7 @@ export const stack = recipe({
   },
   defaultVariants: {
     align: "none",
+    direction: "vertical",
     spacing: "normal",
   },
 });

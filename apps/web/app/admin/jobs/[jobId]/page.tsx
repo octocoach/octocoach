@@ -2,6 +2,7 @@ import { db } from "@octocoach/db/src/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
   const job = await db.query.jobs.findFirst({
@@ -36,7 +37,7 @@ export default async function Page({ params }: { params: { jobId: number } }) {
         </Text>
       </Link>
 
-      {/* <ReactMarkdown>{job.description}</ReactMarkdown> */}
+      <ReactMarkdown>{job.description}</ReactMarkdown>
 
       <Stack>
         {job.tasks.map((task) => (

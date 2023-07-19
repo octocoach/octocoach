@@ -25,6 +25,7 @@ export class IndeedScraper extends JobScraper {
 
     url.searchParams.append("q", query);
     url.searchParams.append("l", location);
+    url.searchParams.append("sc", "sc=0bf:exrec();");
     url.searchParams.append("fromage", age.toString());
     url.searchParams.append("filter", "1");
     url.searchParams.append("sort", "date");

@@ -52,9 +52,12 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
     You will be provided with a job posting.
     Analyse the job posting and save a list of duties (tasks) explicitly mentioned in the job description.
     Only include duties which would be relevant and meaningful to a potential cantidate for this position.
+    Do not include the name of the company or any internal software names of the this company.
     Do not include duties which are too obvious or generic to have any real impact on the position.
     Use the provided \`save_tasks\` function to save the list of duties along with a list of descriptors for skills required to complete the duty.
-    Skills could be hard skills like "JavaScript" or "PHP" or soft skills like "Communication" or "Conflict Resolution"
+    Use any programming languages, databases, frameworks, libraries or any other tools mentioned in the job description combined with your general knowledge as a CTO to make an informed guess about what skills are needed for the task.
+    Skills could be hard skills like "JavaScript (Programming Language)" or "PHP (Programming Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)"
+    Skill descriptors will be used as a search term from a skills database. Avoid ambigious skill names, and rather provide a short description that would match the skill's descrition in a database using a cosine distance to embedding.
   `),
   HumanMessagePromptTemplate.fromTemplate(`
   {title}
@@ -63,7 +66,7 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
   `),
 ]);
 
-const llm = new ChatOpenAI({ temperature: 0, modelName: "gpt-4-0613" });
+const llm = new ChatOpenAI({ temperature: 0.7, modelName: "gpt-4-0613" });
 
 const functions = createFunctionsFromZodSchema(
   z.object({
@@ -83,7 +86,7 @@ const chain = new LLMChain({
 
 export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
   const { title, description } = job;
-  console.log(`Getting tasks for: ${title}`);
+  console.log(`Job: ${title}`);
 
   const { text } = (await chain.call({
     title,
@@ -98,7 +101,7 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
   for (const { description, skills } of text) {
     const embedding = await embeddingsApi.embedQuery(description);
-    console.log("Inserting", description);
+    console.log("Task: ", description);
 
     const task = await db
       .insert(tasks)
@@ -115,6 +118,7 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
       if (skill) {
         try {
+          console.log(`Skill: ${skillDescriptor} -> ${skill.name}`);
           await db.insert(tasksToSkills).values({ taskId, skillId: skill.id });
         } catch (e) {
           console.error(`Error inserting ${taskId} <=> ${skillDescriptor}`);
@@ -123,7 +127,5 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
         console.error(`No skill for descriptor ${skillDescriptor}`);
       }
     }
-
-    console.log(`Inserted Task ${taskId}`);
   }
 };

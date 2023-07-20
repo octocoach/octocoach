@@ -1,1 +1,1 @@
-export {};
+export { WC } from "./wordcloud";

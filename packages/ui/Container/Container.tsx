@@ -5,10 +5,16 @@ type AllowedElement = "div" | "section" | "main" | "article";
 
 export const Container = ({
   children,
+  id,
   element = "div",
 }: PropsWithChildren<{
   element: AllowedElement;
+  id?: string;
 }>) => {
   const Component = element;
-  return <Component className={container}>{children}</Component>;
+  return (
+    <Component id={id} className={container}>
+      {children}
+    </Component>
+  );
 };

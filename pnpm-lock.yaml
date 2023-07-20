@@ -127,6 +127,9 @@ importers:
       '@octocoach/azav':
         specifier: workspace:^
         version: link:../../packages/azav
+      '@octocoach/charts':
+        specifier: workspace:^
+        version: link:../../packages/charts
       '@octocoach/db':
         specifier: workspace:^
         version: link:../../packages/db
@@ -139,6 +142,12 @@ importers:
       '@octocoach/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@visx/visx':
+        specifier: ^3.3.0
+        version: 3.3.0(@react-spring/web@9.7.3)(react-dom@18.2.0)(react@18.2.0)
+      '@visx/wordcloud':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.2.0)
       hnswlib-node:
         specifier: ^1.4.2
         version: 1.4.2
@@ -216,9 +225,27 @@ importers:
 
   packages/charts:
     dependencies:
+      '@octocoach/ui':
+        specifier: workspace:^
+        version: link:../ui
+      '@visx/scale':
+        specifier: ^3.3.0
+        version: 3.3.0
+      '@visx/text':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.2.0)
       '@visx/visx':
         specifier: ^3.3.0
         version: 3.3.0(@react-spring/web@9.7.3)(react-dom@18.2.0)(react@18.2.0)
+      '@visx/wordcloud':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
 
   packages/db:
     dependencies:

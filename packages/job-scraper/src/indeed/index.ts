@@ -4,6 +4,7 @@ import { jobs } from "@octocoach/db/src/schema/jobs";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
+import { NodeHtmlMarkdown } from "node-html-markdown";
 
 /**
  * IndeedScraper class that extends JobScraper class
@@ -24,6 +25,7 @@ export class IndeedScraper extends JobScraper {
 
     url.searchParams.append("q", query);
     url.searchParams.append("l", location);
+    url.searchParams.append("sc", "sc=0bf:exrec();");
     url.searchParams.append("fromage", age.toString());
     url.searchParams.append("filter", "1");
     url.searchParams.append("sort", "date");
@@ -130,9 +132,11 @@ export class IndeedScraper extends JobScraper {
             .filter({ hasNotText: /Bewertungen/ })
         )?.innerText();
 
-        const description = await (
-          await $description?.locator("#jobDescriptionText")
-        )?.innerText();
+        const description = NodeHtmlMarkdown.translate(
+          await (
+            await $description?.locator("#jobDescriptionText")
+          )?.innerHTML()
+        );
 
         const job = await this.db
           .select()

@@ -1,8 +1,8 @@
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { Browser, Page, devices } from "playwright";
 import { Database } from "@octocoach/db/src/connection";
 import { NewJob, jobs } from "@octocoach/db/src/schema/jobs";
-import { extractSkills } from "./skills";
+import { Translator } from "deepl-node";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { Browser, Page, devices } from "playwright";
 import { extractTasks } from "./tasks";
 
 /**
@@ -139,7 +139,7 @@ export abstract class JobScraper {
    */
   async scrape(queries: string[]) {
     const urlParams = {
-      age: 3,
+      age: 7,
       location: "Düsseldorf",
     };
 
@@ -175,6 +175,16 @@ export abstract class JobScraper {
   async processJob(
     newJob: Omit<NewJob, "titleEmbedding" | "descriptionEmbedding">
   ) {
+    const translator = new Translator(process.env.DEEPL_AUTH_KEY || "");
+
+    const { text: description } = await translator.translateText(
+      newJob.description,
+      null,
+      "en-US"
+    );
+
+    newJob = { ...newJob, description };
+
     const [titleEmbedding, descriptionEmbedding] =
       await this.openAIEmbeddings.embedDocuments([
         newJob.title,
@@ -183,15 +193,17 @@ export abstract class JobScraper {
 
     const result = await this.db
       .insert(jobs)
-      .values({ ...newJob, titleEmbedding, descriptionEmbedding })
+      .values({
+        ...newJob,
+        titleEmbedding,
+        descriptionEmbedding,
+      })
       .onConflictDoNothing()
       .returning();
 
     const job = result[0];
 
-    const skills = await extractSkills(job.description);
-
-    await extractTasks({ db: this.db, job, skills });
+    await extractTasks({ db: this.db, job });
   }
 
   /**

@@ -5,21 +5,27 @@ import { Card, Container, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page() {
-  const tasks = await db.query.tasks.findMany({
-    with: {
-      job: true,
-      tasksToSkills: {
-        with: {
-          skill: true,
+  const tasks = (
+    await db.query.tasks.findMany({
+      with: {
+        job: {
+          with: {
+            company: true,
+          },
+        },
+        tasksToSkills: {
+          with: {
+            skill: true,
+          },
         },
       },
-    },
-  });
+    })
+  ).sort((a, b) => (a.description > b.description ? 1 : -1));
 
   return (
     <Container element="section">
       <Stack>
-        <Text>
+        <Text weight="bold">
           <Message id="TASKS" />
         </Text>
         <Stack>
@@ -27,11 +33,19 @@ export default async function Page() {
             <Card key={task.id}>
               <Stack>
                 <Stack spacing="tight">
-                  <Link href={`/admin/jobs/${task.job.id}`}>
-                    <Text size="s">{task.job.title}</Text>
-                  </Link>
+                  <Text size="s">
+                    <Link href={`/admin/jobs/${task.job.id}`}>
+                      {task.job.title}
+                    </Link>
+                    {" @ "}
+                    <Link href={`/admin/companies/${task.job.companyId}`}>
+                      {task.job.company.name}
+                    </Link>
+                  </Text>
                   <Link href={`/admin/tasks/${task.id}`}>
-                    <Text size="l">{task.description}</Text>
+                    <Text size="l" variation="casual">
+                      {task.description}
+                    </Text>
                   </Link>
                 </Stack>
                 <Stack direction="horizontal" spacing="tight">

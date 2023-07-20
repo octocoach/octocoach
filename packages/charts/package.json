@@ -1,0 +1,9 @@
+{
+  "name": "@octocoach/charts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@visx/visx": "^3.3.0"
+  }
+}

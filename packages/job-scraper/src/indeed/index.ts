@@ -167,15 +167,19 @@ export class IndeedScraper extends JobScraper {
    * @returns the company ID
    */
   async getCompanyId(locator: Locator): Promise<string> {
-    const href = await locator
-      .locator("a")
-      .getAttribute("href", { timeout: 500 });
+    if ((await locator.locator("a").count()) > 0) {
+      const href = await locator
+        .locator("a")
+        .getAttribute("href", { timeout: 500 });
 
-    if (href) {
+      if (!href) throw new Error("Error while getting company logo");
+
       const url = new URL(href);
       return url.pathname.replace("/cmp/", "");
     } else {
-      return snakeCase(`unknown_${await locator.innerText()}`);
+      return snakeCase(
+        `unknown_${encodeURIComponent(await locator.innerText())}`
+      );
     }
   }
 }

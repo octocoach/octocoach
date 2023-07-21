@@ -240,6 +240,9 @@ importers:
       '@visx/wordcloud':
         specifier: ^3.3.0
         version: 3.3.0(react@18.2.0)
+      just-debounce-it:
+        specifier: ^3.2.0
+        version: 3.2.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -12094,6 +12097,10 @@ packages:
 
   /just-camel-case@6.2.0:
     resolution: {integrity: sha512-ICenRLXwkQYLk3UyvLQZ+uKuwFVJ3JHFYFn7F2782G2Mv2hW8WPePqgdhpnjGaqkYtSVWnyCESZhGXUmY3/bEg==}
+    dev: false
+
+  /just-debounce-it@3.2.0:
+    resolution: {integrity: sha512-WXzwLL0745uNuedrCsCs3rpmfD6DBaf7uuVwaq98/8dafURfgQaBsSpjiPp5+CW6Vjltwy9cOGI6qE71b3T8iQ==}
     dev: false
 
   /just-snake-case@3.2.0:

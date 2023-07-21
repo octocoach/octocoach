@@ -26,11 +26,9 @@ export default async function Page({
       <Text size="xl">{company.name}</Text>
       <Stack>
         {company.jobs.map((job) => (
-          <div>
-            <Link href={`/admin/jobs/${job.id}`}>
-              <Text>{job.title}</Text>
-            </Link>
-          </div>
+          <Link href={`/admin/jobs/${job.id}`} key={job.id}>
+            <Text>{job.title}</Text>
+          </Link>
         ))}
       </Stack>
     </Stack>

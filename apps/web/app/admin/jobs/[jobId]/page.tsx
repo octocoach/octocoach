@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: { jobId: number } }) {
                 <Text>{task.description}</Text>
                 <Stack direction="horizontal" spacing="tight">
                   {task.tasksToSkills.map(({ skill }) => (
-                    <Tag>
+                    <Tag key={skill.id}>
                       <Text size="s">{skill.name}</Text>
                     </Tag>
                   ))}

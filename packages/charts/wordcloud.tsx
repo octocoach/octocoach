@@ -1,9 +1,11 @@
 "use client";
 
-import { scaleSqrt } from "@visx/scale";
+import { scaleSqrt, scaleLinear, scaleLog } from "@visx/scale";
 import { Text } from "@visx/text";
 import { Wordcloud } from "@visx/wordcloud";
 import { React, useEffect, useState } from "react";
+import { vars } from "@octocoach/ui";
+import debounce from "just-debounce-it";
 
 interface Word {
   text: string;
@@ -21,10 +23,19 @@ export const WC = ({
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    const width = document
-      ? document.getElementById(container)?.clientWidth || 0
-      : 0;
-    setWidth(width);
+    const parent = document.getElementById(container);
+
+    setWidth(parent.clientWidth);
+
+    const resizeHandler = debounce(() => {
+      setWidth(parent.clientWidth);
+    }, 500);
+
+    window.addEventListener("resize", resizeHandler, true);
+
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+    };
   }, []);
 
   if (!width) return null;
@@ -37,7 +48,19 @@ export const WC = ({
     range: [8, 32],
   });
 
+  const opacityScale = scaleLog({
+    domain: [8, 32],
+    range: [0.5, 1],
+  });
+
+  const rotationScale = scaleLinear({
+    domain: [0, 1],
+    range: [-5, 5],
+  });
+
   const fontSize = (word: Word) => fontScale(word.value);
+  const fixedValueGenerator = () => 0.5;
+  const getRotation = () => rotationScale(Math.random());
 
   return (
     <Wordcloud
@@ -45,21 +68,26 @@ export const WC = ({
       height={800}
       width={width}
       font="Recursive"
-      spiral="rectangular"
+      spiral="archimedean"
       padding={1}
       fontSize={fontSize}
+      random={fixedValueGenerator}
+      rotate={getRotation}
       {...props}
     >
       {(cloudWords) =>
         cloudWords.map((word) => (
           <Text
             key={word.text}
-            x={word.x}
-            y={word.y}
+            transform={`translate(${word.x},${word.y}) rotate(${word.rotate})`}
             fontSize={word.size}
-            fill="#ffffff"
+            fill={vars.color.typography.body}
             fontFamily={word.font}
             textAnchor={"middle"}
+            style={{
+              opacity: opacityScale(word.size),
+              boxShadow: "0 0 3px #000",
+            }}
           >
             {word.text}
           </Text>

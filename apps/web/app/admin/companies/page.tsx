@@ -19,11 +19,9 @@ export default async function Page() {
             a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
           )
           .map((company) => (
-            <div>
-              <Link href={`/admin/companies/${company.id}`}>
-                <Text>{company.name}</Text>
-              </Link>
-            </div>
+            <Link href={`/admin/companies/${company.id}`} key={company.id}>
+              <Text>{company.name}</Text>
+            </Link>
           ))}
       </Stack>
     </Stack>

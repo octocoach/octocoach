@@ -1,0 +1,1 @@
+export { WC } from "./wordcloud";

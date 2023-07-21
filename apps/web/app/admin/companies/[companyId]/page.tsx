@@ -1,7 +1,7 @@
 import { db } from "@octocoach/db/src/connection";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import Message from "@octocoach/i18n/src/react-message";
 import { Stack, Text } from "@octocoach/ui";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page({
@@ -23,7 +23,15 @@ export default async function Page({
           <Message id="COMPANIES" />
         </Text>
       </Link>
+      <Image
+        src={`https://logo.clearbit.com/${company.url}`}
+        alt="logo"
+        width={50}
+        height={50}
+      />
+
       <Text size="xl">{company.name}</Text>
+      <Text>{company.url}</Text>
       <Stack>
         {company.jobs.map((job) => (
           <Link href={`/admin/jobs/${job.id}`} key={job.id}>

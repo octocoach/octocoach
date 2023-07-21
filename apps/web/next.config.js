@@ -8,6 +8,15 @@ const nextConfig = {
     serverActions: true,
     serverComponentsExternalPackages: ["hnswlib-node"],
   },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "logo.clearbit.com" },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      },
+    ],
+  },
   reactStrictMode: true,
   transpilePackages: [
     "@octocoach/embeddings",

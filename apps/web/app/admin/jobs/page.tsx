@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { db } from "@octocoach/db/src/connection";
-import { Card, Container, Stack, Text } from "@octocoach/ui";
-import ReactMarkdown from "react-markdown";
 import Message from "@octocoach/i18n/src/react-message";
+import { Card, Container, Stack, Text } from "@octocoach/ui";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page() {
   const jobs = await db.query.jobs.findMany({
@@ -27,17 +27,28 @@ export default async function Page() {
       </Text>
       <Stack>
         {jobs.map((job) => (
-          <Link href={`/admin/jobs/${job.id}`} key={job.id}>
-            <Card key={job.id}>
-              <Text size="l" weight="bold">
-                {job.title}
-              </Text>
-              <Text variation="casual">{job.company.name}</Text>
-              <Text size="s" weight="light">
-                {job.location}
-              </Text>
-            </Card>
-          </Link>
+          <Card key={job.id}>
+            <Stack direction="horizontal">
+              <Image
+                src={`https://logo.clearbit.com/${job.company.url}`}
+                alt="logo"
+                width={100}
+                height={100}
+              />
+
+              <Stack direction="vertical" spacing="tight">
+                <Link href={`/admin/jobs/${job.id}`} key={job.id}>
+                  <Text size="l" weight="bold">
+                    {job.title}
+                  </Text>
+                </Link>
+                <Text variation="casual">{job.company.name}</Text>
+                <Text size="s" weight="light">
+                  {job.location}
+                </Text>
+              </Stack>
+            </Stack>
+          </Card>
         ))}
       </Stack>
     </Container>

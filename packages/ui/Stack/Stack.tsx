@@ -6,6 +6,7 @@ export const Stack = ({
   children,
   spacing,
   direction = "vertical",
+  wrap = false,
 }: PropsWithChildren<StackVariants>) => (
-  <div className={stack({ align, spacing, direction })}>{children}</div>
+  <div className={stack({ align, spacing, direction, wrap })}>{children}</div>
 );

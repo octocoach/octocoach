@@ -43,6 +43,9 @@ export const button = recipe({
       },
     },
   },
+  defaultVariants: {
+    color: "primary",
+  },
 });
 
 export type ButtonVariants = RecipeVariants<typeof button>;

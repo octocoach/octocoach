@@ -32,7 +32,7 @@ export abstract class JobScraper {
    * @param {Browser} browser - The Playwright browser instance to use for scraping.
    * @param {Database} db - The database connection to use for storing job data.
    */
-  constructor(private browser: Browser, protected db: Database) {
+  constructor(protected browser: Browser, protected db: Database) {
     this.openAIEmbeddings = new OpenAIEmbeddings();
   }
 
@@ -139,8 +139,8 @@ export abstract class JobScraper {
    */
   async scrape(queries: string[]) {
     const urlParams = {
-      age: 7,
-      location: "Düsseldorf",
+      age: 1,
+      location: "Köln",
     };
 
     for (const query of queries) {

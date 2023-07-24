@@ -115,11 +115,40 @@ export class IndeedScraper extends JobScraper {
         });
 
         if (!company) {
+          let companyUrl: string | undefined;
+
+          if (!companySourceId.startsWith("unknown")) {
+            const page = await this.browser.newPage();
+            const companyPage = await $company
+              .locator("a")
+              .getAttribute("href");
+            if (!companyPage) throw new Error("URL not found");
+            await page.goto(companyPage, { waitUntil: "networkidle" });
+
+            const $link = page.locator(
+              '[data-testid="companyInfo-companyWebsite"]'
+            );
+
+            if ((await $link.count()) > 1) {
+              const companyLink = await $link.locator("a").getAttribute("href");
+
+              if (!companyLink) throw new Error("Could not find company link");
+
+              const url = new URL(companyLink);
+
+              companyUrl = url.hostname.split(".").slice(-2).join(".");
+            }
+
+            console.log(`${companyName}: ${companyUrl}`);
+            await page.close();
+          }
+
           const newCompany = await this.db
             .insert(companies)
             .values({
               name: companyName,
               indeed: companySourceId,
+              url: companyUrl,
             })
             .returning();
 

@@ -48,7 +48,7 @@ export default async function Page() {
                     </Text>
                   </Link>
                 </Stack>
-                <Stack direction="horizontal" spacing="tight">
+                <Stack direction="horizontal" spacing="tight" wrap>
                   {task.tasksToSkills.map(({ skill }) => (
                     <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
                       <Tag>

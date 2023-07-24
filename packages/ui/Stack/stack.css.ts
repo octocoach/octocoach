@@ -22,7 +22,6 @@ export const stack = recipe({
     direction: {
       horizontal: {
         flexDirection: "row",
-        flexWrap: "wrap",
       },
       vertical: {
         flexDirection: "column",
@@ -39,11 +38,20 @@ export const stack = recipe({
         gap: space[6],
       },
     },
+    wrap: {
+      true: {
+        flexWrap: "wrap",
+      },
+      false: {
+        flexWrap: "nowrap",
+      },
+    },
   },
   defaultVariants: {
     align: "none",
     direction: "vertical",
     spacing: "normal",
+    wrap: false,
   },
 });
 

@@ -1,8 +1,8 @@
 import { db } from "@octocoach/db/src/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
-import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "../components";
 
 export default async function Page() {
   const jobs = await db.query.jobs.findMany({
@@ -29,12 +29,7 @@ export default async function Page() {
         {jobs.map((job) => (
           <Card key={job.id}>
             <Stack direction="horizontal">
-              <Image
-                src={`https://logo.clearbit.com/${job.company.url}`}
-                alt="logo"
-                width={100}
-                height={100}
-              />
+              <Logo company={job.company} size={100} />
 
               <Stack direction="vertical" spacing="tight">
                 <Link href={`/admin/jobs/${job.id}`} key={job.id}>

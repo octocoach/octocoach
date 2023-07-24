@@ -1,8 +1,8 @@
 import { db } from "@octocoach/db/src/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Stack, Text } from "@octocoach/ui";
-import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "../components";
 
 export default async function Page() {
   const companies = await db.query.companies.findMany({
@@ -22,18 +22,7 @@ export default async function Page() {
           .map((company) => (
             <Link href={`/admin/companies/${company.id}`} key={company.id}>
               <Stack direction="horizontal">
-                <Image
-                  alt="Logo"
-                  width={50}
-                  height={50}
-                  src={
-                    company.url
-                      ? `https://logo.clearbit.com/${company.url}`
-                      : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                          company.name
-                        )}`
-                  }
-                />
+                <Logo company={company} size={50} />
                 <Text>{company.name}</Text>
               </Stack>
             </Link>

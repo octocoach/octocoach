@@ -1,9 +1,16 @@
 import { InferModel, relations } from "drizzle-orm";
-import { integer, pgEnum, pgTable, serial, text } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
+import { embedding } from "../embedding";
 import { companies } from "./companies";
 import { tasks } from "./tasks";
-import { embedding } from "../embedding";
 
 export const jobSource = pgEnum("job_source", [
   "indeed",
@@ -25,7 +32,9 @@ export const jobs = pgTable("jobs", {
   titleEmbedding: embedding("title_embedding").notNull(),
   description: text("description").notNull(),
   descriptionEmbedding: embedding("description_embedding").notNull(),
+  descriptionOriginal: text("description_original").notNull(),
   location: text("location"),
+  created: timestamp("created").notNull().defaultNow(),
 });
 
 export const jobRelations = relations(jobs, ({ one, many }) => ({

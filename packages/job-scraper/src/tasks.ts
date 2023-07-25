@@ -50,14 +50,19 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
   SystemMessagePromptTemplate.fromTemplate(`
     You are an experienced CTO.
     You will be provided with a job posting.
-    Analyse the job posting and save a list of duties (tasks) explicitly mentioned in the job description.
-    Only include duties which would be relevant and meaningful to a potential cantidate for this position.
-    Do not include the name of the company or any internal software names of the this company.
-    Do not include duties which are too obvious or generic to have any real impact on the position.
+    Analyse the job posting and identify explicit duties (tasks) mentioned in the job description.
+    Each duty should describe an activity or responsibility a candidate would be expected to perform.
+    The tasks should not only be about the technologies to be used, but also provide context about the project and industry where applicable.
+    Avoid generating tasks that simply state the use of certain technologies with verbs like "work with", "use", "learn", or "understand". Instead, incorporate these technologies into specific responsibilities or activities. For example, instead of "Work with .NET", use "Develop applications using .NET".
+    When describing the industry or business context, use indefinite articles (like 'an' or 'a') to keep the task general rather than specific to a single company.
+    Try to embed the project or industry context into the task description to help provide a more comprehensive understanding of the duty.
+    Remember, each task description should be clear and self-explanatory, providing a meaningful understanding of the task even when read out of context.
+    Avoid extrapolating or assuming responsibilities that are not explicitly mentioned in the job description.
+    Do not include the name of the company or any internal software names of this company.
     Use the provided \`save_tasks\` function to save the list of duties along with a list of descriptors for skills required to complete the duty.
+    Skill descriptors could be hard skills like "JavaScript (Programming Language)" or "PHP (Scripting Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)".
+    Avoid ambiguous skill names, instead use descriptions that would closely match the skill's description in a database using a cosine distance to the embedding.
     Use any programming languages, databases, frameworks, libraries or any other tools mentioned in the job description combined with your general knowledge as a CTO to make an informed guess about what skills are needed for the task.
-    Skills could be hard skills like "JavaScript (Programming Language)" or "PHP (Programming Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)"
-    Skill descriptors will be used as a search term from a skills database. Avoid ambigious skill names, and rather provide a short description that would match the skill's descrition in a database using a cosine distance to embedding.
   `),
   HumanMessagePromptTemplate.fromTemplate(`
   {title}

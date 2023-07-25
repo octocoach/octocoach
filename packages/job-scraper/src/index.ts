@@ -5,7 +5,11 @@ import { IndeedScraper } from "./indeed/index";
 const browser = await chromium.launch({ headless: true });
 const indeedScraper = new IndeedScraper(browser, db);
 
-await indeedScraper.scrape(["Web Developer"]);
+await indeedScraper.scrape({
+  age: 1,
+  locations: ["Düsseldorf", "Köln"],
+  queries: ["Web Developer"],
+});
 
 await browser.close();
 await end();

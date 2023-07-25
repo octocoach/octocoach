@@ -2,6 +2,7 @@ import { Database } from "@octocoach/db/src/connection";
 import { NewJob, jobs } from "@octocoach/db/src/schema/jobs";
 import { Translator } from "deepl-node";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { NodeHtmlMarkdown } from "node-html-markdown";
 import { Browser, Page, devices } from "playwright";
 import { extractTasks } from "./tasks";
 
@@ -137,31 +138,41 @@ export abstract class JobScraper {
    *
    * @returns {Promise<void>} A Promise that resolves when all job postings have been scraped.
    */
-  async scrape(queries: string[]) {
-    const urlParams = {
-      age: 1,
-      location: "Köln",
-    };
+  async scrape({
+    age,
+    locations,
+    queries,
+  }: {
+    age: number;
+    locations: string[];
+    queries: string[];
+  }) {
+    for (const location of locations) {
+      const urlParams = {
+        age,
+        location,
+      };
 
-    for (const query of queries) {
-      let pageNo = 0;
+      for (const query of queries) {
+        let pageNo = 0;
 
-      await this.goToPage(this.buildUrl({ ...urlParams, query }));
-      await this.sleep(1000);
-      await this.cleanPage();
-      await this.processCurrentPage();
-
-      while ((await this.page.locator(this.nextPageSelector).count()) > 0) {
-        await this.sleep(1000);
-        await this.goToPage(
-          this.buildUrl({ ...urlParams, query, pageNo: ++pageNo })
-        );
+        await this.goToPage(this.buildUrl({ ...urlParams, query }));
         await this.sleep(1000);
         await this.cleanPage();
         await this.processCurrentPage();
-      }
 
-      await this.page.close();
+        while ((await this.page.locator(this.nextPageSelector).count()) > 0) {
+          await this.sleep(1000);
+          await this.goToPage(
+            this.buildUrl({ ...urlParams, query, pageNo: ++pageNo })
+          );
+          await this.sleep(1000);
+          await this.cleanPage();
+          await this.processCurrentPage();
+        }
+
+        await this.page.close();
+      }
     }
   }
 
@@ -173,30 +184,40 @@ export abstract class JobScraper {
    * @returns {Promise<void>} A Promise that resolves when the job has been processed.
    */
   async processJob(
-    newJob: Omit<NewJob, "titleEmbedding" | "descriptionEmbedding">
+    newJob: Omit<
+      NewJob,
+      | "titleEmbedding"
+      | "descriptionEmbedding"
+      | "description"
+      | "descriptionOriginal"
+    >,
+    originalDescriptionHTML: string
   ) {
     const translator = new Translator(process.env.DEEPL_AUTH_KEY || "");
 
-    const { text: description } = await translator.translateText(
-      newJob.description,
+    const { text: descriptionHTML } = await translator.translateText(
+      originalDescriptionHTML,
       null,
-      "en-US"
+      "en-US",
+      { tagHandling: "html" }
     );
 
-    newJob = { ...newJob, description };
+    const description = NodeHtmlMarkdown.translate(descriptionHTML);
+    const descriptionOriginal = NodeHtmlMarkdown.translate(
+      originalDescriptionHTML
+    );
 
     const [titleEmbedding, descriptionEmbedding] =
-      await this.openAIEmbeddings.embedDocuments([
-        newJob.title,
-        newJob.description,
-      ]);
+      await this.openAIEmbeddings.embedDocuments([newJob.title, description]);
 
     const result = await this.db
       .insert(jobs)
       .values({
         ...newJob,
         titleEmbedding,
+        description,
         descriptionEmbedding,
+        descriptionOriginal,
       })
       .onConflictDoNothing()
       .returning();

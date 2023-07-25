@@ -36,14 +36,14 @@ body:
   - type: textarea
     attributes:
       label: Motivation
-      description: What is the user trying to achieve? (I want to ____)
+      description: What is the user trying to achieve? (They want to ____)
     validations:
       required: true
 
   - type: textarea
     attributes:
       label: Expected Outcome
-      description: What outcome does the user expect by performing the job? (So I can ____)
+      description: What outcome does the user expect by performing the job? (So they can ____)
     validations:
       required: true
 

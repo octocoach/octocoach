@@ -4,7 +4,7 @@ import { jobs } from "@octocoach/db/src/schema/jobs";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
-import { NodeHtmlMarkdown } from "node-html-markdown";
+import blacklist from "./blacklist";
 
 /**
  * IndeedScraper class that extends JobScraper class
@@ -110,6 +110,13 @@ export class IndeedScraper extends JobScraper {
         const companyName = await $company.innerText();
         const companySourceId = await this.getCompanyId($company);
 
+        if (
+          blacklist.map((x) => encodeURIComponent(x)).includes(companySourceId)
+        ) {
+          console.warn(`${companyName} is on the blacklist, skipping...`);
+          continue;
+        }
+
         let company = await this.db.query.companies.findFirst({
           where: (companies, { eq }) => eq(companies.indeed, companySourceId),
         });
@@ -161,11 +168,9 @@ export class IndeedScraper extends JobScraper {
             .filter({ hasNotText: /Bewertungen/ })
         )?.innerText();
 
-        const description = NodeHtmlMarkdown.translate(
-          await (
-            await $description?.locator("#jobDescriptionText")
-          )?.innerHTML()
-        );
+        const descriptionHTML = await (
+          await $description?.locator("#jobDescriptionText")
+        )?.innerHTML();
 
         const job = await this.db
           .select()
@@ -175,14 +180,16 @@ export class IndeedScraper extends JobScraper {
         if (job.length) {
           console.log(`${job[0].title} already exists`);
         } else {
-          await this.processJob({
-            companyId: company.id,
-            description,
-            location,
-            source: "indeed",
-            sourceId,
-            title,
-          });
+          await this.processJob(
+            {
+              companyId: company.id,
+              location,
+              source: "indeed",
+              sourceId,
+              title,
+            },
+            descriptionHTML
+          );
         }
       }
     } catch (err) {

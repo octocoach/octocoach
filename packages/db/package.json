@@ -8,7 +8,7 @@
     "migrate": "tsx -r dotenv/config src/migrate.ts",
     "seed": "tsx -r dotenv/config src/seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
-    "test": "tsx -r dotenv/config test/skills.test.ts"
+    "test": "vitest"
   },
   "dependencies": {
     "@types/cli-progress": "^3.11.0",
@@ -18,7 +18,6 @@
     "got": "^12.6.0",
     "langchain": "^0.0.103",
     "postgres": "^3.3.5",
-    "uvu": "^0.5.6",
     "zod": "^3.21.4"
   },
   "devDependencies": {

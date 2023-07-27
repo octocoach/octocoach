@@ -1,5 +1,4 @@
-import { test, suite } from "uvu";
-import * as assert from "uvu/assert";
+import { test, expect, afterAll } from "vitest";
 import { db, end } from "../src/connection";
 import { makeCosineDistance } from "../src/embedding";
 import { skills } from "../src/schema/skills";
@@ -38,16 +37,11 @@ for (const [id, terms] of Object.entries(expected)) {
         )
         .limit(limit);
 
-      assert.ok(
-        result.map(({ id }) => id).includes(id),
-        `"${term}" does not appear in the first ${limit} results.`
-      );
+      expect(result.map(({ id }) => id).includes(id)).toBeTruthy();
     }
   });
 }
 
-test.after(async () => {
+afterAll(async () => {
   await end();
 });
-
-test.run();

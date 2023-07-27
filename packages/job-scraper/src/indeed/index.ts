@@ -1,6 +1,7 @@
 import { eq } from "@octocoach/db/src/index";
 import { companies } from "@octocoach/db/src/schema/companies";
 import { jobs } from "@octocoach/db/src/schema/jobs";
+import chalk from "chalk";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
 import { JobScraper } from "../job-scraper";
@@ -113,7 +114,9 @@ export class IndeedScraper extends JobScraper {
         if (
           blacklist.map((x) => encodeURIComponent(x)).includes(companySourceId)
         ) {
-          console.warn(`${companyName} is on the blacklist, skipping...`);
+          console.warn(
+            chalk.yellow(`${companyName} is on the blacklist, skipping...`)
+          );
           continue;
         }
 

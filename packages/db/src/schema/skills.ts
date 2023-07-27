@@ -82,6 +82,7 @@ export const skills = pgTable("skills", {
       onDelete: "restrict",
       onUpdate: "cascade",
     }),
+  aliases: text("aliases").array(),
 });
 
 export const skillRelations = relations(skills, ({ one, many }) => ({

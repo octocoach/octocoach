@@ -2,6 +2,7 @@ import { type Database } from "@octocoach/db/src/connection";
 import { Job } from "@octocoach/db/src/schema/jobs";
 import { tasks } from "@octocoach/db/src/schema/tasks";
 import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+import chalk from "chalk";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
@@ -82,7 +83,7 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
   for (const { description, skills } of text) {
     const embedding = await embeddingsApi.embedQuery(description);
-    console.log("Task: ", description);
+    console.log(chalk.blue(`Task:  ${description}`));
 
     const task = await db
       .insert(tasks)
@@ -99,13 +100,17 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
       if (skill) {
         try {
-          console.log(`Skill: ${skillDescription} -> ${skill.name}`);
+          console.log(
+            chalk.magenta(`Skill: ${skillDescription} -> ${skill.name}`)
+          );
           await db.insert(tasksToSkills).values({ taskId, skillId: skill.id });
         } catch (e) {
           console.error(`Error inserting ${taskId} <=> ${skillDescription}`);
         }
       } else {
-        console.error(`No skill for descriptor ${skillDescription}`);
+        console.warn(
+          `No skill for descriptor ${skillDescription}, consider adding it!`
+        );
       }
     }
   }

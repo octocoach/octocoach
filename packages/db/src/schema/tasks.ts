@@ -4,6 +4,7 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { embedding } from "../embedding";
 import { jobs } from "./jobs";
 import { tasksToSkills } from "./tasks-to-skills";
+import { tasksToSkillsMissing } from "./tasks-to-skills-missing";
 
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
@@ -20,6 +21,7 @@ export const taskRelations = relations(tasks, ({ one, many }) => ({
     references: [jobs.id],
   }),
   tasksToSkills: many(tasksToSkills),
+  tasksToSkillsMissing: many(tasksToSkillsMissing),
 }));
 
 export const selectTaskSchema = createSelectSchema(tasks);

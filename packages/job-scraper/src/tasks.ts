@@ -82,8 +82,9 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
   };
 
   for (const { description, skills } of text) {
-    const embedding = await embeddingsApi.embedQuery(description);
     console.log(chalk.blue(`Task:  ${description}`));
+
+    const embedding = await embeddingsApi.embedQuery(description);
 
     const task = await db
       .insert(tasks)
@@ -92,26 +93,12 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
     const taskId = task[0].id;
 
-    for (const skillDescription of skills) {
-      const skill = await matchSkill({
+    for (const description of skills) {
+      await matchSkill({
         db,
-        description: skillDescription,
+        description,
+        taskId,
       });
-
-      if (skill) {
-        try {
-          console.log(
-            chalk.magenta(`Skill: ${skillDescription} -> ${skill.name}`)
-          );
-          await db.insert(tasksToSkills).values({ taskId, skillId: skill.id });
-        } catch (e) {
-          console.error(`Error inserting ${taskId} <=> ${skillDescription}`);
-        }
-      } else {
-        console.warn(
-          `No skill for descriptor ${skillDescription}, consider adding it!`
-        );
-      }
     }
   }
 };

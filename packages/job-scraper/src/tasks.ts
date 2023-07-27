@@ -1,9 +1,8 @@
 import { type Database } from "@octocoach/db/src/connection";
-import { makeCosineDistance } from "@octocoach/db/src/embedding";
 import { Job } from "@octocoach/db/src/schema/jobs";
-import { skills as skillsSchema } from "@octocoach/db/src/schema/skills";
 import { tasks } from "@octocoach/db/src/schema/tasks";
 import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+import chalk from "chalk";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
@@ -13,38 +12,11 @@ import {
   HumanMessagePromptTemplate,
   SystemMessagePromptTemplate,
 } from "langchain/prompts";
-import { ZodSchema, z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
-import { JsonSchema7ObjectType } from "zod-to-json-schema/src/parsers/object.js";
+import { z } from "zod";
+import { createFunctionFromZodSchema } from "./helpers";
+import { matchSkill } from "./skills";
 
 const embeddingsApi = new OpenAIEmbeddings();
-
-export const createFunctionsFromZodSchema = (zodSchema: ZodSchema) => {
-  const { type, properties, required } = zodToJsonSchema(
-    zodSchema
-  ) as JsonSchema7ObjectType;
-
-  return [
-    {
-      name: "save_tasks",
-      description: "Save a list of tasks",
-      parameters: {
-        type: "object",
-        properties: {
-          tasks: {
-            type: "array",
-            items: {
-              type,
-              properties,
-              required,
-            },
-          },
-        },
-        required: ["tasks"],
-      },
-    },
-  ];
-};
 
 const prompt = ChatPromptTemplate.fromPromptMessages([
   SystemMessagePromptTemplate.fromTemplate(`
@@ -73,19 +45,24 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
 
 const llm = new ChatOpenAI({ temperature: 0.7, modelName: "gpt-4-0613" });
 
-const functions = createFunctionsFromZodSchema(
-  z.object({
+const attrName = "tasks";
+
+const saveTasks = createFunctionFromZodSchema({
+  name: "save_tasks",
+  description: "Save a list of tasks",
+  attrName,
+  zodSchema: z.object({
     description: z.string().describe("A description of the task"),
     skills: z.array(z.string()).describe("An array of skill descriptors"),
-  })
-);
+  }),
+});
 
-const outputParser = new JsonKeyOutputFunctionsParser({ attrName: "tasks" });
+const outputParser = new JsonKeyOutputFunctionsParser({ attrName });
 
 const chain = new LLMChain({
   prompt,
   llm,
-  llmKwargs: { functions },
+  llmKwargs: { functions: [saveTasks] },
   outputParser,
 });
 
@@ -105,8 +82,9 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
   };
 
   for (const { description, skills } of text) {
+    console.log(chalk.blue(`Task:  ${description}`));
+
     const embedding = await embeddingsApi.embedQuery(description);
-    console.log("Task: ", description);
 
     const task = await db
       .insert(tasks)
@@ -115,22 +93,12 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
 
     const taskId = task[0].id;
 
-    for (const skillDescriptor of skills) {
-      const distance = await makeCosineDistance(skillDescriptor);
-      const skill = await db.query.skills.findFirst({
-        orderBy: distance(skillsSchema.nameEmbedding),
+    for (const description of skills) {
+      await matchSkill({
+        db,
+        description,
+        taskId,
       });
-
-      if (skill) {
-        try {
-          console.log(`Skill: ${skillDescriptor} -> ${skill.name}`);
-          await db.insert(tasksToSkills).values({ taskId, skillId: skill.id });
-        } catch (e) {
-          console.error(`Error inserting ${taskId} <=> ${skillDescriptor}`);
-        }
-      } else {
-        console.error(`No skill for descriptor ${skillDescriptor}`);
-      }
     }
   }
 };

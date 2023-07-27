@@ -6,9 +6,9 @@
   "scripts": {
     "generate": "drizzle-kit generate:pg",
     "migrate": "tsx -r dotenv/config src/migrate.ts",
-    "test": "tsx -r dotenv/config src/test.ts",
     "seed": "tsx -r dotenv/config src/seed.ts",
-    "read": "tsx -r dotenv/config src/read.ts"
+    "read": "tsx -r dotenv/config src/read.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "@types/cli-progress": "^3.11.0",

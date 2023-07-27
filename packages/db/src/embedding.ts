@@ -23,7 +23,7 @@ export const embedding = customType<{
 });
 
 export const cosineDistance = (column: AnyColumn, value: number[]) =>
-  sql`${column} <=> ${JSON.stringify(value)}`;
+  sql<number>`${column} <=> ${JSON.stringify(value)}`;
 
 export const makeCosineDistance = async (input: string) => {
   const e = new OpenAIEmbeddings();

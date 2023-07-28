@@ -80,21 +80,47 @@ export class IndeedScraper extends JobScraper {
 
     try {
       for (const item of items) {
-        const sourceId = await item
-          .locator("[data-jk]")
-          .getAttribute("data-jk");
+        const $dataJk = item.locator("[data-jk]");
+        if ((await $dataJk.count()) < 1) {
+          console.error("Can't get ID Container");
+          continue;
+        }
+        const sourceId = await $dataJk.getAttribute("data-jk");
+
         if (!sourceId) {
-          console.error("Can't get ID");
+          console.log("Can't get Source ID");
           continue;
         }
 
-        await item.click();
+        const client = await this.page.context().newCDPSession(this.page);
 
-        const $header = await this.page.locator(
+        const yDistance = Math.random() * -100 - 100;
+
+        await client.send("Input.synthesizeScrollGesture", {
+          x: 0,
+          y: 0,
+          xDistance: 0,
+          yDistance,
+          yOverscroll: Math.random() * 10,
+          speed: Math.round(Math.random() * 300) + 600,
+        });
+
+        await this.sleep(2000);
+
+        const context = await this.newBrowserContext();
+
+        const viewJobPage = await context.newPage();
+        await viewJobPage.goto(`https://de.indeed.com/viewjob?jk=${sourceId}`, {
+          waitUntil: "networkidle",
+        });
+
+        await client.detach();
+
+        const $header = await viewJobPage.locator(
           ".jobsearch-InfoHeaderContainer"
         );
 
-        const $description = await this.page.locator(
+        const $description = await viewJobPage.locator(
           ".jobsearch-JobComponent-description"
         );
 
@@ -117,6 +143,7 @@ export class IndeedScraper extends JobScraper {
           console.warn(
             chalk.yellow(`${companyName} is on the blacklist, skipping...`)
           );
+          await viewJobPage.close();
           continue;
         }
 
@@ -167,13 +194,15 @@ export class IndeedScraper extends JobScraper {
 
         const location = await (
           await $header
-            .locator("div > div > div > div:nth-child(2) > div")
+            .locator('[data-testid="inlineHeader-companyLocation"]')
             .filter({ hasNotText: /Bewertungen/ })
         )?.innerText();
 
         const descriptionHTML = await (
           await $description?.locator("#jobDescriptionText")
         )?.innerHTML();
+
+        await viewJobPage.close();
 
         const job = await this.db
           .select()

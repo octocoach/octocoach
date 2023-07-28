@@ -1,9 +1,8 @@
 import { Database } from "@octocoach/db/src/connection";
 import { NewJob, jobs } from "@octocoach/db/src/schema/jobs";
-import { Translator } from "deepl-node";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { NodeHtmlMarkdown } from "node-html-markdown";
-import { Browser, Page, devices } from "playwright";
+import { Browser, BrowserContext, Page, devices } from "playwright";
 import { extractTasks } from "./tasks";
 
 /**
@@ -95,6 +94,16 @@ export abstract class JobScraper {
    * @returns {Promise<void>} A Promise that resolves when the page has loaded.
    */
   async goToPage(url: string): Promise<void> {
+    const context = await this.newBrowserContext();
+    const page = await context.newPage();
+
+    // Navigate to the URL and close the previous page
+    if (this.page) await this.page.close();
+    this.page = page;
+    await page.goto(url);
+  }
+
+  async newBrowserContext(): Promise<BrowserContext> {
     // Select a random device descriptor to emulate
     const deviceDescriptors = [
       "Desktop Chrome",
@@ -111,11 +120,6 @@ export abstract class JobScraper {
         deviceDescriptors[Math.floor(Math.random() * deviceDescriptors.length)]
       ];
 
-    // Create a new context and page with the selected device
-    const context = await this.browser.newContext({ ...device });
-    const page = await context.newPage();
-
-    // Set a random viewport size
     const { viewport } = device;
     const width = Math.floor(
       viewport.width - viewport.width * Math.random() * 0.2
@@ -123,12 +127,13 @@ export abstract class JobScraper {
     const height = Math.floor(
       viewport.height - viewport.height * Math.random() * 0.2
     );
-    await page.setViewportSize({ width, height });
 
-    // Navigate to the URL and close the previous page
-    if (this.page) await this.page.close();
-    this.page = page;
-    await page.goto(url);
+    // Create a new context and page with the selected device
+    const context = await this.browser.newContext({
+      ...device,
+      viewport: { width, height },
+    });
+    return context;
   }
 
   /**
@@ -191,38 +196,27 @@ export abstract class JobScraper {
       | "description"
       | "descriptionOriginal"
     >,
-    originalDescriptionHTML: string
+    descriptionHTML: string
   ) {
-    const translator = new Translator(process.env.DEEPL_AUTH_KEY || "");
-
-    const { text: descriptionHTML } = await translator.translateText(
-      originalDescriptionHTML,
-      null,
-      "en-US",
-      { tagHandling: "html" }
-    );
-
     const description = NodeHtmlMarkdown.translate(descriptionHTML);
-    const descriptionOriginal = NodeHtmlMarkdown.translate(
-      originalDescriptionHTML
-    );
+    const descriptionOriginal = NodeHtmlMarkdown.translate(descriptionHTML);
 
     const [titleEmbedding, descriptionEmbedding] =
       await this.openAIEmbeddings.embedDocuments([newJob.title, description]);
 
-    const result = await this.db
-      .insert(jobs)
-      .values({
-        ...newJob,
-        titleEmbedding,
-        description,
-        descriptionEmbedding,
-        descriptionOriginal,
-      })
-      .onConflictDoNothing()
-      .returning();
-
-    const job = result[0];
+    const job = (
+      await this.db
+        .insert(jobs)
+        .values({
+          ...newJob,
+          titleEmbedding,
+          description,
+          descriptionEmbedding,
+          descriptionOriginal,
+        })
+        .onConflictDoNothing()
+        .returning()
+    )[0];
 
     await extractTasks({ db: this.db, job });
   }

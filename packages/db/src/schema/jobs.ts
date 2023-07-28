@@ -32,7 +32,6 @@ export const jobs = pgTable("jobs", {
   titleEmbedding: embedding("title_embedding").notNull(),
   description: text("description").notNull(),
   descriptionEmbedding: embedding("description_embedding").notNull(),
-  descriptionOriginal: text("description_original").notNull(),
   location: text("location"),
   created: timestamp("created").notNull().defaultNow(),
 });

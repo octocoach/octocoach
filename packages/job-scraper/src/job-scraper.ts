@@ -199,7 +199,6 @@ export abstract class JobScraper {
     descriptionHTML: string
   ) {
     const description = NodeHtmlMarkdown.translate(descriptionHTML);
-    const descriptionOriginal = NodeHtmlMarkdown.translate(descriptionHTML);
 
     const [titleEmbedding, descriptionEmbedding] =
       await this.openAIEmbeddings.embedDocuments([newJob.title, description]);
@@ -212,7 +211,6 @@ export abstract class JobScraper {
           titleEmbedding,
           description,
           descriptionEmbedding,
-          descriptionOriginal,
         })
         .onConflictDoNothing()
         .returning()

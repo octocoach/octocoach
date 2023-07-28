@@ -1,12 +1,17 @@
 import { WC } from "@octocoach/charts";
-import { asc, desc, sql } from "@octocoach/db/src";
+import { desc, eq, gte, sql } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
+import { jobs } from "@octocoach/db/src/schema/jobs";
 import { skills } from "@octocoach/db/src/schema/skills";
+import { tasks } from "@octocoach/db/src/schema/tasks";
 import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
 import Message from "@octocoach/i18n/src/react-message";
 import { Container, Stack, Text } from "@octocoach/ui";
 
 export default async function Page() {
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
   const s = await db
     .select({
       id: skills.id,
@@ -14,6 +19,10 @@ export default async function Page() {
       count: sql<number>`(select count(*) from ${tasksToSkills} where ${tasksToSkills.skillId} = ${skills.id})`,
     })
     .from(skills)
+    .leftJoin(tasksToSkills, eq(skills.id, tasksToSkills.skillId))
+    .leftJoin(tasks, eq(tasksToSkills.taskId, tasks.id))
+    .leftJoin(jobs, eq(tasks.jobId, jobs.id))
+    .where(gte(jobs.created, twoWeeksAgo))
     .groupBy(skills.id)
     .having(({ count }) => sql`${count} > 0`)
     .orderBy(({ count }) => desc(count));

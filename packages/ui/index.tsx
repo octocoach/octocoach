@@ -5,6 +5,7 @@ export * from "./Container/Container";
 export * from "./Form/Field";
 export * from "./Form/Form";
 export * from "./Form/HiddenInput";
+export * from "./Progress/Progress";
 export * from "./SSRProvider";
 export * from "./Stack/Stack";
 export * from "./Tag/Tag";

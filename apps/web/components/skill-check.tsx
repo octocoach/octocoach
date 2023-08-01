@@ -1,7 +1,7 @@
 "use client";
 
 import { Task } from "@octocoach/db/src/schema/tasks";
-import { Button, Card, Container, Stack, Text } from "@octocoach/ui";
+import { Button, Card, Container, Progress, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState } from "react";
 
 export const TaskCheck = ({ tasks }: { tasks: Task[] }) => {
@@ -32,7 +32,6 @@ export const TaskCheck = ({ tasks }: { tasks: Task[] }) => {
     <Container element="section">
       <Stack align="center" spacing="loose">
         <Text>Does this task interest you?</Text>
-        <progress value={taskIndex + 1} max={tasks.length} />
         <div
           style={{
             minHeight: 300,
@@ -47,6 +46,7 @@ export const TaskCheck = ({ tasks }: { tasks: Task[] }) => {
           </Card>
         </div>
         <Stack align="center">
+          <Progress max={tasks.length} value={taskIndex + 1} />
           <Stack direction="horizontal">
             <Button onPress={goToNext}>No</Button>
             <Button onPress={goToNext}>Yes</Button>

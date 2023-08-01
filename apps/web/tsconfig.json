@@ -4,7 +4,7 @@
     "plugins": [{ "name": "next" }],
     "target": "es2017",
     "baseUrl": "./",
-    "paths": { "@app/*": ["app/*"] }
+    "paths": { "@app/*": ["app/*"], "@components/*": ["components/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

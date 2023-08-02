@@ -1,7 +1,15 @@
 import { db } from "@octocoach/db/src/connection";
 import Message from "@octocoach/i18n/src/react-message";
-import { Container, Stack, Text } from "@octocoach/ui";
+import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
+
+const Pill = ({ children }: { children: string }) => (
+  <Tag>
+    <Text size="s" weight="light">
+      {children}
+    </Text>
+  </Tag>
+);
 
 export default async function Page({
   params,
@@ -27,26 +35,38 @@ export default async function Page({
   return (
     <Stack>
       <Link href="/admin/skills">
-        <Message id="SKILLS" />
+        <Text>
+          <Message id="SKILLS" />
+        </Text>
       </Link>
-      <Text>
-        {skill.subcategory.category.name} - {skill.subcategory.name}
+      <Text size="s">
+        <Link href={`/admin/skills/categories/${skill.subcategory.categoryId}`}>
+          {skill.subcategory.category.name}
+        </Link>{" "}
+        -{" "}
+        <Link href={`/admin/skills/subcategories/${skill.subcategoryId}`}>
+          {skill.subcategory.name}
+        </Link>
       </Text>
-      <Text size="l">{skill.name}</Text>
+      <Text size="xl" variation="heading">
+        {skill.name}
+      </Text>
       <Text>{skill.description}</Text>
-      <Text>Software: {skill.isSoftware ? "yes" : "no"}</Text>
-      <Text>Language: {skill.isLanguage ? "yes" : "no"}</Text>
-      <Link href={skill.infoUrl}>Source</Link>
-      <Container element="div">
-        <Text size="l">Tasks</Text>
-        <Stack>
-          {skill.tasksToSkills.map(({ task }) => (
-            <Link href={`/admin/tasks/${task.id}`} key={task.id}>
+      <Stack direction="horizontal">
+        {skill.isSoftware && <Pill>Software</Pill>}
+        {skill.isLanguage && <Pill>Language</Pill>}
+      </Stack>
+
+      <Text size="l">Tasks</Text>
+      <Stack>
+        {skill.tasksToSkills.map(({ task }) => (
+          <Link href={`/admin/tasks/${task.id}`} key={task.id}>
+            <Card>
               <Text>{task.description}</Text>
-            </Link>
-          ))}
-        </Stack>
-      </Container>
+            </Card>
+          </Link>
+        ))}
+      </Stack>
     </Stack>
   );
 }

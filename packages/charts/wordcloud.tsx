@@ -25,10 +25,10 @@ export const WC = ({
   useEffect(() => {
     const parent = document.getElementById(container);
 
-    setWidth(parent.clientWidth);
+    setWidth(parent?.clientWidth);
 
     const resizeHandler = debounce(() => {
-      setWidth(parent.clientWidth);
+      setWidth(parent?.clientWidth);
     }, 500);
 
     window.addEventListener("resize", resizeHandler, true);
@@ -85,7 +85,7 @@ export const WC = ({
             fontFamily={word.font}
             textAnchor={"middle"}
             style={{
-              opacity: opacityScale(word.size),
+              opacity: opacityScale(word.size || 0),
               boxShadow: "0 0 3px #000",
             }}
           >

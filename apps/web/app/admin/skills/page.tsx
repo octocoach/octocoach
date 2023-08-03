@@ -7,6 +7,7 @@ import { tasks } from "@octocoach/db/src/schema/tasks";
 import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
 import Message from "@octocoach/i18n/src/react-message";
 import { Container, Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
 
 export default async function Page() {
   const twoWeeksAgo = new Date();
@@ -39,6 +40,9 @@ export default async function Page() {
           <Message id="SKILLS" />
         </Text>
         <WC words={words} container="cloudcontainer" />
+        <Link href="/admin/skills/categories">
+          <Text>Categories</Text>
+        </Link>
       </Stack>
     </Container>
   );

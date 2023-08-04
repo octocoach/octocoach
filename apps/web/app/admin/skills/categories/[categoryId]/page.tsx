@@ -50,7 +50,7 @@ export default async function Page({
         <Text size="xl">{category.name}</Text>
         <Stack>
           {t.map(({ count, id, subCategory }) => (
-            <Link href={`/admin/skills/subcategories/${id}`}>
+            <Link href={`/admin/skills/subcategories/${id}`} key={id}>
               <Text>
                 {subCategory} ({count})
               </Text>

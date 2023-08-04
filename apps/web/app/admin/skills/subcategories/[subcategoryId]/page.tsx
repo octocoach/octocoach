@@ -49,7 +49,7 @@ export default async function Page({
         <Text size="xl">{name}</Text>
         <Stack>
           {tasks.map(({ name, taskCount, id }) => (
-            <Card>
+            <Card key={id}>
               <Link href={`/admin/skills/${id}`}>
                 <Text>
                   {name} ({taskCount})

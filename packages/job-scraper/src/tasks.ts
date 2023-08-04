@@ -21,7 +21,7 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
   SystemMessagePromptTemplate.fromTemplate(
     [
       "You will be provided with a job posting.",
-      "Analyse it and identify all duties (tasks) mentioned.",
+      "First, Analyse it and identify all duties (tasks) mentioned.",
       "Each task describes an activity or responsibility a candidate would be expected to perform.",
       "The task description should include context about the type of work, project, industry and tools used where possible.",
       "Try to embed the project or industry context into the task description to help provide a more comprehensive understanding of the duty.",
@@ -32,7 +32,11 @@ const prompt = ChatPromptTemplate.fromPromptMessages([
       "Each task description should be written in English and be clear and self-explanatory, providing a meaningful understanding of the task even when read out of context.",
       "Avoid extrapolating or assuming responsibilities that are not mentioned in the job description.",
       "Do not include the name of the company!",
-      "Use the provided function to save the list of duties along with an extensive list of descriptors for skills required to complete the duty.",
+      "Next, phrase the task description as a yes/no question.",
+      "The question should be phrased in such a way that a yes response indicates an interest in doing the task and a no indicates disinterest.",
+      'Questions could be prased as "Would you like to...", "Are you willing to...", "Do you know how to...", "Would you be able to...".',
+      "Use all available context information from the job posting to formulate the question in such a way that the person answering yes/no can make an informed decision when it's read on its",
+      "Use the provided function to save the list of duty description and questions along with an extensive list of descriptors for skills required to complete the duty.",
       'Skill descriptors could be hard skills like "JavaScript (Programming Language)" or "PHP (Scripting Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)".',
       "Avoid ambiguous skill names, instead use descriptions that would closely match the skill's description in a database using a cosine distance to the embedding.",
       "Use any tools or technologies mentioned in the job description combined with your general knowledge to make an informed guess about the skills needed to complete task.",
@@ -51,6 +55,9 @@ const saveTasks = createFunctionFromZodSchema({
   attrName,
   zodSchema: z.object({
     description: z.string().describe("A description of the task"),
+    question: z
+      .string()
+      .describe("The description, phrased as a yes/no question"),
     skills: z.array(z.string()).describe("An array of skill descriptors"),
   }),
 });
@@ -80,18 +87,20 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
   })) as {
     text: {
       description: string;
+      question: string;
       skills: string[];
     }[];
   };
 
-  for (const { description, skills } of text) {
+  for (const { description, question, skills } of text) {
     console.log(chalk.bgWhite(chalk.black(`Task:  ${description}`)));
+    console.log(chalk.bgBlue(chalk.yellowBright(`Question: ${question}`)));
 
     const embedding = await embeddingsApi.embedQuery(description);
 
     const task = await db
       .insert(tasks)
-      .values({ description, embedding, jobId: job.id })
+      .values({ description, question, embedding, jobId: job.id })
       .returning();
 
     const taskId = task[0].id;

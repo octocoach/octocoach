@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { container } from "./container.css";
 
-type AllowedElement = "div" | "section" | "main" | "article";
+type AllowedElement = "div" | "section" | "main" | "article" | "header" | "nav";
 
 export const Container = ({
   children,

@@ -1,12 +1,20 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
-import { SSRProvider } from "@octocoach/ui";
+import { Container, SSRProvider, Stack } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { cookies } from "next/headers";
 import RootLayoutClient from "./layout-client";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { Header } from "@components/Header";
 
 export default async function RootLayout({
   children,
@@ -20,14 +28,17 @@ export default async function RootLayout({
   const dictionary = loadedLocales[locale];
 
   return (
-    <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
-      <SSRProvider>
-        <body>
-          <RootLayoutClient dictionary={dictionary} locale={locale}>
-            {children}
-          </RootLayoutClient>
-        </body>
-      </SSRProvider>
-    </html>
+    <ClerkProvider>
+      <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
+        <SSRProvider>
+          <body>
+            <Header />
+            <RootLayoutClient dictionary={dictionary} locale={locale}>
+              {children}
+            </RootLayoutClient>
+          </body>
+        </SSRProvider>
+      </html>
+    </ClerkProvider>
   );
 }

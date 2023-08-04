@@ -9,7 +9,11 @@ export default async function Page() {
         usersTasksInterest: true,
         tasksToSkills: {
           with: {
-            skill: true,
+            skill: {
+              with: {
+                usersSkillsLevels: true,
+              },
+            },
           },
         },
       },

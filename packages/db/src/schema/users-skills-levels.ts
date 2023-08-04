@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { skills } from "./skills";
-import { relations } from "drizzle-orm";
+import { InferModel, relations } from "drizzle-orm";
 
 export const usersSkillsLevels = pgTable(
   "users_skills_levels",
@@ -39,3 +39,5 @@ export const usersSkillsLevelsRelations = relations(
     }),
   })
 );
+
+export type UsersSkillsLevels = InferModel<typeof usersSkillsLevels>;

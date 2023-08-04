@@ -38,10 +38,13 @@ const skillLevels: Level[] = [
 export const SkillCheck = ({
   skills,
   onComplete,
+  addCheckedSkillId,
 }: {
   skills: Skill[];
   onComplete: () => void;
+  addCheckedSkillId: (skillId: Skill["id"]) => void;
 }) => {
+  console.log("skills", skills);
   const [isPending, startTransition] = useTransition();
 
   const [skill, setSkill] = useState(skills[0]);
@@ -49,6 +52,8 @@ export const SkillCheck = ({
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (skills.length === 0) onComplete();
+
     setIndex(0);
     setTotalSkills(skills.length);
   }, [skills]);
@@ -58,9 +63,10 @@ export const SkillCheck = ({
   }, [index]);
 
   const onAnswer = async ({ level }: { level: number }) => {
-    console.log(`level: ${level}`);
     startTransition(async () => {
       await submitSkillAssessment({ skillId: skill.id, level });
+      addCheckedSkillId(skill.id);
+
       if (index + 1 === totalSkills) {
         console.log("done");
         onComplete();
@@ -69,6 +75,8 @@ export const SkillCheck = ({
       }
     });
   };
+
+  if (!skill) return null;
 
   return (
     <Container element="section">

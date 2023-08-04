@@ -1,17 +1,20 @@
 "use client";
 
+import { Skill } from "@octocoach/db/src/schema/skills";
 import { Task } from "@octocoach/db/src/schema/tasks";
+import { TasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+import { UsersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
 import { Button, Card, Container, Progress, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState, useTransition } from "react";
 import { Answer, submitAnswer } from "./actions";
-import { UsersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
-import { TasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
-import { Skill } from "@octocoach/db/src/schema/skills";
 import { SkillCheck } from "./skill-check";
+import { UsersSkillsLevels } from "@octocoach/db/src/schema/users-skills-levels";
 
 type TaskWithUsersInterestAndSkill = Task & {
   usersTasksInterest: UsersTasksInterest[];
-  tasksToSkills: (TasksToSkills & { skill: Skill })[];
+  tasksToSkills: (TasksToSkills & {
+    skill: Skill & { usersSkillsLevels: UsersSkillsLevels[] };
+  })[];
 };
 
 export const TaskCheck = ({
@@ -24,6 +27,21 @@ export const TaskCheck = ({
   const newTasks = tasks.filter(
     ({ usersTasksInterest }) => !usersTasksInterest.length
   );
+
+  const [checkedSkillIds, setCheckedSkillIds] = useState(
+    tasks
+      .flatMap((task) => task.tasksToSkills)
+      .map(({ skill }) => skill)
+      .flatMap((skill) => skill.usersSkillsLevels)
+      .filter((level) => level)
+      .map((level) => level.skillId)
+  );
+
+  console.log("checkedSkillIds", checkedSkillIds);
+
+  const addCheckedSkillId = (id: Skill["id"]) => {
+    setCheckedSkillIds((current) => [...current, id]);
+  };
 
   const goToNext = () => {
     setTaskIndex((i) => (i >= newTasks.length - 1 ? i : i + 1));
@@ -75,8 +93,11 @@ export const TaskCheck = ({
   if (showSkillCheck) {
     return (
       <SkillCheck
-        skills={newTasks[taskIndex].tasksToSkills.map(({ skill }) => skill)}
+        skills={newTasks[taskIndex].tasksToSkills
+          .map(({ skill }) => skill)
+          .filter((skill) => !checkedSkillIds.includes(skill.id))}
         onComplete={goToNext}
+        addCheckedSkillId={addCheckedSkillId}
       />
     );
   }

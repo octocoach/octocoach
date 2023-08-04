@@ -1,6 +1,7 @@
 import { Skill } from "@octocoach/db/src/schema/skills";
-import { Container, Stack, Button, Text } from "@octocoach/ui";
-import { useEffect, useState } from "react";
+import { Button, Container, Stack, Text } from "@octocoach/ui";
+import { useEffect, useState, useTransition } from "react";
+import { submitSkillAssessment } from "./actions";
 
 interface Level {
   title: string;
@@ -41,6 +42,8 @@ export const SkillCheck = ({
   skills: Skill[];
   onComplete: () => void;
 }) => {
+  const [isPending, startTransition] = useTransition();
+
   const [skill, setSkill] = useState(skills[0]);
   const [totalSkills, setTotalSkills] = useState(skills.length);
   const [index, setIndex] = useState(0);
@@ -54,15 +57,17 @@ export const SkillCheck = ({
     if (index !== undefined) setSkill(skills[index]);
   }, [index]);
 
-  const onAnswer = () => {
-    console.log(`index: ${index}`);
-    console.log(`total: ${totalSkills}`);
-    if (index + 1 === totalSkills) {
-      console.log("done");
-      onComplete();
-    } else {
-      setIndex((index) => index + 1);
-    }
+  const onAnswer = async ({ level }: { level: number }) => {
+    console.log(`level: ${level}`);
+    startTransition(async () => {
+      await submitSkillAssessment({ skillId: skill.id, level });
+      if (index + 1 === totalSkills) {
+        console.log("done");
+        onComplete();
+      } else {
+        setIndex((index) => index + 1);
+      }
+    });
   };
 
   return (
@@ -76,8 +81,8 @@ export const SkillCheck = ({
         </Text>
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
-          {skillLevels.map(({ title }) => (
-            <Button onPress={onAnswer}>{title}</Button>
+          {skillLevels.map(({ title }, level) => (
+            <Button onPress={() => onAnswer({ level })}>{title}</Button>
           ))}
         </Stack>
       </Stack>

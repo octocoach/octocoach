@@ -8,7 +8,7 @@ const indeedScraper = new IndeedScraper(browser, db);
 await indeedScraper.scrape({
   age: 7,
   locations: ["Düsseldorf"],
-  queries: ["Redakteur/in"],
+  queries: ["Web Developer"],
 });
 
 await browser.close();

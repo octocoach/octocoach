@@ -64,6 +64,13 @@
       "when": 1691157592287,
       "tag": "0008_orange_bucky",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1691393320363,
+      "tag": "0009_giant_madrox",
+      "breakpoints": true
     }
   ]
 }

@@ -5,7 +5,7 @@ import { InferModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 
 export const usersTasksInterest = pgTable(
-  "tasks_to_users",
+  "users_tasks_interest",
   {
     taskId: integer("task_id")
       .notNull()

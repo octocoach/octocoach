@@ -23,6 +23,9 @@ export default function Page() {
       <Link href="/admin/skills">
         <Text>{LL.SKILLS()}</Text>
       </Link>
+      <Link href="/admin/users">
+        <Text>Users</Text>
+      </Link>
     </Stack>
   );
 }

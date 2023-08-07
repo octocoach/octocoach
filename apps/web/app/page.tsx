@@ -23,7 +23,7 @@ export default async function Page() {
   return (
     <main
       style={{
-        height: "100vh",
+        height: "calc(100vh - 40px)",
         display: "grid",
         placeItems: "center",
       }}

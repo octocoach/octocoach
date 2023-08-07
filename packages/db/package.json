@@ -13,7 +13,7 @@
   "dependencies": {
     "@types/cli-progress": "^3.11.0",
     "cli-progress": "^3.12.0",
-    "drizzle-orm": "^0.27.2",
+    "drizzle-orm": "^0.28.0",
     "drizzle-zod": "^0.4.4",
     "got": "^12.6.0",
     "langchain": "^0.0.103",

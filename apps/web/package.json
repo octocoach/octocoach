@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.23.2",
     "@formatjs/intl-localematcher": "^0.4.0",
     "@octocoach/azav": "workspace:^",
     "@octocoach/charts": "workspace:^",

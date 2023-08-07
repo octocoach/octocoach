@@ -43,9 +43,12 @@ export default async function Page() {
                     </Link>
                   </Text>
                   <Link href={`/admin/tasks/${task.id}`}>
-                    <Text size="l" variation="casual">
-                      {task.description}
-                    </Text>
+                    <Stack>
+                      <Text size="l" variation="casual">
+                        {task.description}
+                      </Text>
+                      <Text size="l">{task.question}</Text>
+                    </Stack>
                   </Link>
                 </Stack>
                 <Stack direction="horizontal" spacing="tight" wrap>

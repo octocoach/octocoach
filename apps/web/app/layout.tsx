@@ -1,3 +1,5 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { Header } from "@components/Header";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
@@ -20,14 +22,17 @@ export default async function RootLayout({
   const dictionary = loadedLocales[locale];
 
   return (
-    <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
-      <SSRProvider>
-        <body>
-          <RootLayoutClient dictionary={dictionary} locale={locale}>
-            {children}
-          </RootLayoutClient>
-        </body>
-      </SSRProvider>
-    </html>
+    <ClerkProvider>
+      <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
+        <SSRProvider>
+          <body>
+            <Header />
+            <RootLayoutClient dictionary={dictionary} locale={locale}>
+              {children}
+            </RootLayoutClient>
+          </body>
+        </SSRProvider>
+      </html>
+    </ClerkProvider>
   );
 }

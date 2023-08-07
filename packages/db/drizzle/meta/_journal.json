@@ -43,6 +43,34 @@
       "when": 1690547380599,
       "tag": "0005_groovy_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1691053500375,
+      "tag": "0006_crazy_chat",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1691069178153,
+      "tag": "0007_confused_tempest",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1691157592287,
+      "tag": "0008_orange_bucky",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1691393320363,
+      "tag": "0009_giant_madrox",
+      "breakpoints": true
     }
   ]
 }

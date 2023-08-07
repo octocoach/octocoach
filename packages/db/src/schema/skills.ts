@@ -10,8 +10,8 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { embedding } from "../embedding";
 import { tasksToSkills } from "./tasks-to-skills";
-import { type } from "os";
 import { tasksToSkillsMissing } from "./tasks-to-skills-missing";
+import { usersSkillsLevels } from "./users-skills-levels";
 
 // Skill Types
 
@@ -104,6 +104,7 @@ export const skillRelations = relations(skills, ({ one, many }) => ({
     references: [skillTypes.id],
   }),
   tasksToSkills: many(tasksToSkills),
+  usersSkillsLevels: many(usersSkillsLevels),
 }));
 
 export type Skill = InferModel<typeof skills>;

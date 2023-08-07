@@ -37,7 +37,7 @@ export default async function Page() {
         <Text size="xl">Categories</Text>
         <Stack>
           {categories.map(({ category, taskCount, id }) => (
-            <Link href={`/admin/skills/categories/${id}`}>
+            <Link href={`/admin/skills/categories/${id}`} key={id}>
               <Text>
                 {category} ({taskCount})
               </Text>

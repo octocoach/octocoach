@@ -6,7 +6,7 @@ const browser = await chromium.launch({ headless: true });
 const indeedScraper = new IndeedScraper(browser, db);
 
 await indeedScraper.scrape({
-  age: 1,
+  age: 7,
   locations: ["Düsseldorf"],
   queries: ["Web Developer"],
 });

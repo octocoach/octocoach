@@ -1,17 +1,21 @@
-import { db } from "@octocoach/db/src/connection";
+import { clerkClient } from "@clerk/nextjs/server";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page() {
-  const users = await db.query.users.findMany({ with: {} });
+  const users = await clerkClient.users.getUserList();
 
   return (
     <Stack>
-      {users.map((user) => (
-        <Text>
-          <Link href={`/admin/users/${user.id}`}>{user.id}</Link>
-        </Text>
-      ))}
+      {users.map((user) => {
+        return (
+          <Text>
+            <Link href={`/admin/users/${user.id}`}>
+              {user.firstName} {user.lastName}
+            </Link>
+          </Text>
+        );
+      })}
     </Stack>
   );
 }

@@ -160,6 +160,9 @@ importers:
       just-shuffle:
         specifier: ^4.2.0
         version: 4.2.0
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
       negotiator:
         specifier: ^0.6.3
         version: 0.6.3
@@ -237,10 +240,16 @@ importers:
       '@octocoach/ui':
         specifier: workspace:^
         version: link:../ui
+      '@visx/event':
+        specifier: ^3.3.0
+        version: 3.3.0
       '@visx/group':
         specifier: ^3.3.0
         version: 3.3.0(react@18.2.0)
       '@visx/hierarchy':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.2.0)
+      '@visx/legend':
         specifier: ^3.3.0
         version: 3.3.0(react@18.2.0)
       '@visx/scale':
@@ -252,21 +261,37 @@ importers:
       '@visx/text':
         specifier: ^3.3.0
         version: 3.3.0(react@18.2.0)
+      '@visx/tooltip':
+        specifier: ^3.3.0
+        version: 3.3.0(react-dom@18.2.0)(react@18.2.0)
       '@visx/visx':
         specifier: ^3.3.0
         version: 3.3.0(@react-spring/web@9.7.3)(react-dom@18.2.0)(react@18.2.0)
       '@visx/wordcloud':
         specifier: ^3.3.0
         version: 3.3.0(react@18.2.0)
+      d3-scale-chromatic:
+        specifier: ^3.0.0
+        version: 3.0.0
       just-debounce-it:
         specifier: ^3.2.0
         version: 3.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      '@types/react-dom':
+        specifier: ^18.2.7
+        version: 18.2.7
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/db:
     dependencies:
@@ -643,13 +668,6 @@ packages:
 
   /@babel/code-frame@7.12.11:
     resolution: {integrity: sha512-Zt1yodBx1UcyiePMSkWnU4hPqhwq7hGi2nFL1LeA3EUl+q2LQx16MISgJ0+z7dnmgvP9QtIleuETGOiOH1RcIw==}
-    dependencies:
-      '@babel/highlight': 7.22.5
-    dev: true
-
-  /@babel/code-frame@7.21.4:
-    resolution: {integrity: sha512-LYvhNKfwWSPpocw8GI7gpK2nq3HSDuEPC/uSYaALSJu9xjsalaaYFOq0Pwt5KmVqwEbZlDu81aLXwBOmD/Fv9g==}
-    engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/highlight': 7.22.5
     dev: true
@@ -3159,7 +3177,7 @@ packages:
     resolution: {integrity: sha512-5irClVky7TxRWIRtxlh2WPUUOLhcPN06AGgaQSB8AEwuyEBgJVuJ5imdHm5zxk8w0QS5T+tDfnDxAlhWjpb7cw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/code-frame': 7.21.4
+      '@babel/code-frame': 7.22.5
       '@babel/generator': 7.17.7
       '@babel/helper-environment-visitor': 7.22.1
       '@babel/helper-function-name': 7.21.0
@@ -7173,6 +7191,19 @@ packages:
     resolution: {integrity: sha512-sRQsOS/sCLnpQhR4DSKGTtWFE3FZjpQa86KPVbhUqdYMRZ9FEFcfAytKhR/vUG2rH1oFbOOej6cuD7MFSobDRQ==}
     dependencies:
       '@types/react': 18.2.7
+    dev: true
+
+  /@types/react-dom@18.2.7:
+    resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
+    dependencies:
+      '@types/react': 18.2.20
+
+  /@types/react@18.2.20:
+    resolution: {integrity: sha512-WKNtmsLWJM/3D5mG4U84cysVY31ivmyw85dE84fOCk5Hx78wezB/XEjVPWl2JTZ5FkEeaTJf+VgUAUn3PE7Isw==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
 
   /@types/react@18.2.5:
     resolution: {integrity: sha512-RuoMedzJ5AOh23Dvws13LU9jpZHIc/k90AgmK7CecAYeWmSr3553L4u5rk4sWAPBuQosfT7HmTfG4Rg5o4nGEA==}
@@ -7632,7 +7663,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/drag': 3.3.0(react@18.2.0)
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/text': 3.3.0(react@18.2.0)
@@ -7649,7 +7680,7 @@ packages:
     peerDependencies:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/point': 3.3.0
       '@visx/scale': 3.3.0
@@ -7666,8 +7697,8 @@ packages:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
       react-dom: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
-      '@types/react-dom': 18.2.5
+      '@types/react': 18.2.20
+      '@types/react-dom': 18.2.7
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -7693,7 +7724,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
@@ -7710,7 +7741,7 @@ packages:
     peerDependencies:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/vendor': 3.3.0
       classnames: 2.3.2
       prop-types: 15.8.1
@@ -7732,7 +7763,7 @@ packages:
   /@visx/event@3.3.0:
     resolution: {integrity: sha512-fKalbNgNz2ooVOTXhvcOx5IlEQDgVfX66rI7bgZhBxI2/scy+5rWcXJXpwkheRF68SMx9R93SjKW6tmiD0h+jA==}
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/point': 3.3.0
     dev: false
 
@@ -7743,7 +7774,7 @@ packages:
     dependencies:
       '@types/d3-geo': 1.12.4
       '@types/geojson': 7946.0.10
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       classnames: 2.3.2
       d3-geo: 1.12.1
@@ -7757,7 +7788,7 @@ packages:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/d3-shape': 1.3.8
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       classnames: 2.3.2
       d3-shape: 1.3.7
@@ -7770,7 +7801,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
@@ -7780,7 +7811,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/curve': 3.3.0
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/point': 3.3.0
@@ -7796,7 +7827,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       classnames: 2.3.2
       prop-types: 15.8.1
       react: 18.2.0
@@ -7807,7 +7838,7 @@ packages:
     peerDependencies:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       classnames: 2.3.2
       prop-types: 15.8.1
@@ -7820,7 +7851,7 @@ packages:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/d3-hierarchy': 1.1.8
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       classnames: 2.3.2
       d3-hierarchy: 1.1.9
@@ -7833,7 +7864,7 @@ packages:
     peerDependencies:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/scale': 3.3.0
       classnames: 2.3.2
@@ -7846,7 +7877,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/shape': 3.3.0(react@18.2.0)
       classnames: 2.3.2
@@ -7866,7 +7897,7 @@ packages:
     peerDependencies:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/group': 3.3.0(react@18.2.0)
       classnames: 2.3.2
       prop-types: 15.8.1
@@ -7878,7 +7909,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       classnames: 2.3.2
       prop-types: 15.8.1
       react: 18.2.0
@@ -7895,7 +7926,7 @@ packages:
       react: ^16.3.0-0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@react-spring/web': 9.7.3(react-dom@18.2.0)(react@18.2.0)
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/axis': 3.3.0(react@18.2.0)
       '@visx/grid': 3.3.0(react@18.2.0)
       '@visx/scale': 3.3.0
@@ -7911,7 +7942,7 @@ packages:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/lodash': 4.14.195
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 18.2.0
@@ -7931,7 +7962,7 @@ packages:
       '@types/d3-path': 1.0.9
       '@types/d3-shape': 1.3.8
       '@types/lodash': 4.14.195
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/curve': 3.3.0
       '@visx/group': 3.3.0(react@18.2.0)
       '@visx/scale': 3.3.0
@@ -7949,7 +7980,7 @@ packages:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/lodash': 4.14.195
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       classnames: 2.3.2
       lodash: 4.17.21
       prop-types: 15.8.1
@@ -7962,7 +7993,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/clip-path': 3.3.0(react@18.2.0)
       '@visx/shape': 3.3.0(react@18.2.0)
       classnames: 2.3.2
@@ -7976,7 +8007,7 @@ packages:
       react: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
       react-dom: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/bounds': 3.3.0(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
       prop-types: 15.8.1
@@ -8056,7 +8087,7 @@ packages:
       react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
       '@types/d3-voronoi': 1.1.9
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       classnames: 2.3.2
       d3-voronoi: 1.1.4
       prop-types: 15.8.1
@@ -8082,7 +8113,7 @@ packages:
     dependencies:
       '@react-spring/web': 9.7.3(react-dom@18.2.0)(react@18.2.0)
       '@types/lodash': 4.14.195
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/annotation': 3.3.0(react-dom@18.2.0)(react@18.2.0)
       '@visx/axis': 3.3.0(react@18.2.0)
       '@visx/event': 3.3.0
@@ -8112,7 +8143,7 @@ packages:
     peerDependencies:
       react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@use-gesture/react': 10.2.27(react@18.2.0)
       '@visx/event': 3.3.0
       prop-types: 15.8.1
@@ -8182,7 +8213,7 @@ packages:
     dependencies:
       magic-string: 0.30.1
       pathe: 1.1.1
-      pretty-format: 29.6.1
+      pretty-format: 29.6.2
     dev: true
 
   /@vitest/spy@0.33.0:
@@ -8196,7 +8227,7 @@ packages:
     dependencies:
       diff-sequences: 29.4.3
       loupe: 2.3.6
-      pretty-format: 29.6.1
+      pretty-format: 29.6.2
     dev: true
 
   /@webassemblyjs/ast@1.11.6:
@@ -9551,6 +9582,14 @@ packages:
 
   /d3-random@2.2.2:
     resolution: {integrity: sha512-0D9P8TRj6qDAtHhRQn6EfdOtHMfsUWanl3yb/84C4DqpZ+VsgfI5iTVRNRbELCfNvRfpMr8OrqqUTQ6ANGCijw==}
+    dev: false
+
+  /d3-scale-chromatic@3.0.0:
+    resolution: {integrity: sha512-Lx9thtxAKrO2Pq6OO2Ua474opeziKr279P/TKZsMAhYyNDD3EnCffdbgeSYN5O7m2ByQsxtuP2CSDczNUIZ22g==}
+    engines: {node: '>=12'}
+    dependencies:
+      d3-color: 3.1.0
+      d3-interpolate: 3.0.1
     dev: false
 
   /d3-scale@4.0.2:
@@ -13680,6 +13719,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  /nanoid@4.0.2:
+    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
+
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
     dev: true
@@ -14443,15 +14488,6 @@ packages:
       ansi-regex: 5.0.1
       ansi-styles: 5.2.0
       react-is: 17.0.2
-    dev: true
-
-  /pretty-format@29.6.1:
-    resolution: {integrity: sha512-7jRj+yXO0W7e4/tSJKoR7HRIHLPPjtNaUGG2xxKQnGvPNRkgWcQ0AZX6P4KBRJN4FcTBWb3sa7DVUJmocYuoog==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      '@jest/schemas': 29.6.0
-      ansi-styles: 5.2.0
-      react-is: 18.2.0
     dev: true
 
   /pretty-format@29.6.2:

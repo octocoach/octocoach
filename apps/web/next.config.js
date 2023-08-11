@@ -19,6 +19,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   transpilePackages: [
+    "@octocoach/charts",
     "@octocoach/embeddings",
     "@octocoach/i18n",
     "@octocoach/ui",

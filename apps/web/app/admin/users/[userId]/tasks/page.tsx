@@ -1,6 +1,7 @@
 import { BarChart } from "@octocoach/charts";
 import { db } from "@octocoach/db/src/connection";
 import { Card, Stack, Text } from "@octocoach/ui";
+import { nanoid } from "nanoid";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { userId: string } }) {
@@ -21,13 +22,15 @@ export default async function Page({ params }: { params: { userId: string } }) {
     yes: 1,
   };
 
+  const containerId = nanoid();
+
   return (
-    <Stack>
+    <Stack id={containerId}>
       <Text size="l" variation="heading">
         Task Affinity
       </Text>
       <BarChart
-        width={900}
+        container={containerId}
         height={500}
         data={Object.entries(likeLevel).map(([label, value]) => ({
           label,

@@ -237,9 +237,18 @@ importers:
 
   packages/charts:
     dependencies:
+      '@octocoach/db':
+        specifier: workspace:^
+        version: link:../db
+      '@octocoach/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       '@octocoach/ui':
         specifier: workspace:^
         version: link:../ui
+      '@visx/axis':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.2.0)
       '@visx/event':
         specifier: ^3.3.0
         version: 3.3.0
@@ -4165,7 +4174,7 @@ packages:
       react: '>=16'
     dependencies:
       '@types/mdx': 2.0.5
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       react: 18.2.0
     dev: true
 
@@ -7753,7 +7762,7 @@ packages:
     peerDependencies:
       react: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
     dependencies:
-      '@types/react': 18.2.7
+      '@types/react': 18.2.20
       '@visx/event': 3.3.0
       '@visx/point': 3.3.0
       prop-types: 15.8.1

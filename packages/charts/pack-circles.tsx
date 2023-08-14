@@ -1,11 +1,16 @@
 "use client";
 
+import {
+  skillLevel,
+  type SkillLevel,
+} from "@octocoach/db/src/schema/users-skills-levels";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Card, Text, vars } from "@octocoach/ui";
 import { localPoint } from "@visx/event";
 import { Group } from "@visx/group";
-import { Pack, hierarchy } from "@visx/hierarchy";
+import { hierarchy, Pack } from "@visx/hierarchy";
 import { LegendOrdinal } from "@visx/legend";
-import { scaleLinear, scaleOrdinal } from "@visx/scale";
+import { scaleOrdinal } from "@visx/scale";
 import { Tooltip, useTooltip } from "@visx/tooltip";
 import debounce from "just-debounce-it";
 import { useEffect, useState } from "react";
@@ -15,8 +20,9 @@ export const PackCircles = ({
   data,
 }: {
   container: string;
-  data: { fill: number; name: string }[];
+  data: { fill: SkillLevel; name: string }[];
 }) => {
+  const { LL } = useI18nContext();
   const [width, setWidth] = useState(0);
 
   const {
@@ -45,12 +51,12 @@ export const PackCircles = ({
 
   const root = hierarchy({
     name: "root",
-    fill: -1,
+    fill: undefined,
     children: data,
   }).count();
 
   const colorScale = scaleOrdinal({
-    domain: [0, 4],
+    domain: skillLevel.enumValues,
     range: [
       vars.color.accent.normal,
       vars.color.brand.normal,
@@ -60,12 +66,10 @@ export const PackCircles = ({
     ],
   });
 
-  const sizeScale = scaleLinear({
-    domain: [0, 4],
-    range: [0.5, 1],
+  const sizeScale = scaleOrdinal({
+    domain: skillLevel.enumValues,
+    range: skillLevel.enumValues.map((_, i) => 0.5 + i * 0.12),
   });
-
-  const levels = ["Novice", "Beginner", "Competent", "Advanced", "Expert"];
 
   if (width < 300) return null;
 
@@ -82,14 +86,14 @@ export const PackCircles = ({
                     <circle
                       key={`circle-${i}`}
                       r={
-                        circle.data.fill >= 0
+                        circle.data.fill
                           ? circle.r * sizeScale(circle.data.fill)
                           : 0
                       }
                       cx={circle.x}
                       cy={circle.y}
                       fill={
-                        circle.data.fill >= 0
+                        circle.data.fill
                           ? colorScale(circle.data.fill)
                           : "transparent"
                       }
@@ -132,10 +136,10 @@ export const PackCircles = ({
       )}
       <LegendOrdinal
         scale={colorScale}
-        domain={levels.map((_, i) => i)}
         style={{ position: "absolute" }}
-        labelFormat={(item, index) => levels[item]}
         itemDirection="row"
+        labelFormat={(id) => LL.skillLevels[id]()}
+        domain={skillLevel.enumValues}
       />
     </div>
   );

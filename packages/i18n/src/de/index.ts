@@ -8,6 +8,13 @@ const de = {
   TASKS: "Aufgaben",
   COMPANIES: "Firmen",
   SKILLS: "Skills",
+  skillLevels: {
+    novice: "Neuling",
+    advanced_beginner: "fortgeschrittene Anfänger",
+    competent: "Kompetenter",
+    proficient: "Gewandter",
+    expert: "Experte",
+  },
 } satisfies Translation;
 
 export default de;

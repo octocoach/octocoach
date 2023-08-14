@@ -1,7 +1,10 @@
-import { skillLevels } from "@app/constants";
-import { BarChart, PackCircles } from "@octocoach/charts";
+import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
 import { BarChartItem } from "@octocoach/charts/bar";
 import { db } from "@octocoach/db/src/connection";
+import {
+  SkillLevel,
+  skillLevel,
+} from "@octocoach/db/src/schema/users-skills-levels";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -26,23 +29,29 @@ export default async function Page({ params }: { params: { userId: string } }) {
     where: (users, { eq }) => eq(users.id, params.userId),
   });
 
-  const countSkills = (level: number) =>
-    user.usersSkillsLevels.filter((s) => s.level === level).length;
+  const countSkills = (skillLevel: SkillLevel) =>
+    user.usersSkillsLevels.filter((s) => s.skillLevel === skillLevel).length;
 
   const containerId = nanoid();
 
-  const data = user.usersSkillsLevels
-    .sort((a, b) => b.level - a.level)
-    .map((s) => ({
-      fill: s.level,
-      name: s.skill.name,
-    }));
+  const data = user.usersSkillsLevels.map((s) => ({
+    fill: s.skillLevel,
+    name: s.skill.name,
+  }));
+
+  const categoryLevels = user.usersSkillsLevels.map(
+    ({ skill, skillLevel }) => ({
+      category: skill.subcategory.category.name,
+      skillLevel,
+    })
+  );
 
   return (
     <Stack id={containerId}>
       <Text size="l" variation="heading">
         Skill Self-Assessment
       </Text>
+      {/* <SkillByCategory data={categoryLevels} /> */}
       <PackCircles container={containerId} data={data} />
       <BarChart
         container={containerId}
@@ -61,15 +70,15 @@ export default async function Page({ params }: { params: { userId: string } }) {
           .sort((a, b) => b.value - a.value)}
       />
 
-      {skillLevels.map(({ title }, i) => (
+      {skillLevel.enumValues.map((level) => (
         <Card>
           <Stack>
             <Text size="l" variation="casual" weight="bold">
-              {`${title} (${countSkills(i)})`}
+              {`${level} (${countSkills(level)})`}
             </Text>
             <Stack direction="horizontal" wrap>
               {user.usersSkillsLevels
-                .filter(({ level }) => level === i)
+                .filter(({ skillLevel }) => skillLevel === level)
                 .map(({ skill }) => (
                   <Link href={`/admin/skills/${skill.id}`}>
                     <Tag>{skill.name}</Tag>

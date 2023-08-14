@@ -11,7 +11,10 @@
     "tsconfig": "workspace:*"
   },
   "dependencies": {
+    "@octocoach/db": "workspace:^",
+    "@octocoach/i18n": "workspace:^",
     "@octocoach/ui": "workspace:^",
+    "@visx/axis": "^3.3.0",
     "@visx/event": "^3.3.0",
     "@visx/group": "^3.3.0",
     "@visx/hierarchy": "^3.3.0",

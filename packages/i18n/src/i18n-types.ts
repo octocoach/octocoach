@@ -42,6 +42,28 @@ type RootTranslation = {
 	 * S​k​i​l​l​s
 	 */
 	SKILLS: string
+	skillLevels: {
+		/**
+		 * N​o​v​i​c​e
+		 */
+		novice: string
+		/**
+		 * A​d​v​a​n​c​e​d​ ​B​e​g​i​n​n​e​r
+		 */
+		advanced_beginner: string
+		/**
+		 * C​o​m​p​e​t​e​n​t
+		 */
+		competent: string
+		/**
+		 * P​r​o​f​i​c​i​e​n​t
+		 */
+		proficient: string
+		/**
+		 * E​x​p​e​r​t
+		 */
+		expert: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -73,6 +95,28 @@ export type TranslationFunctions = {
 	 * Skills
 	 */
 	SKILLS: () => LocalizedString
+	skillLevels: {
+		/**
+		 * Novice
+		 */
+		novice: () => LocalizedString
+		/**
+		 * Advanced Beginner
+		 */
+		advanced_beginner: () => LocalizedString
+		/**
+		 * Competent
+		 */
+		competent: () => LocalizedString
+		/**
+		 * Proficient
+		 */
+		proficient: () => LocalizedString
+		/**
+		 * Expert
+		 */
+		expert: () => LocalizedString
+	}
 }
 
 export type Formatters = {}

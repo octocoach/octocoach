@@ -5,7 +5,10 @@ import { and, eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { Skill } from "@octocoach/db/src/schema/skills";
 import { users } from "@octocoach/db/src/schema/users";
-import { usersSkillsLevels } from "@octocoach/db/src/schema/users-skills-levels";
+import {
+  SkillLevel,
+  usersSkillsLevels,
+} from "@octocoach/db/src/schema/users-skills-levels";
 import { usersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
 
 export type Answer = "yes" | "no" | "dontknow";
@@ -41,10 +44,10 @@ export const submitAnswer = async ({
 
 export const submitSkillAssessment = async ({
   skillId,
-  level,
+  skillLevel,
 }: {
   skillId: Skill["id"];
-  level: number;
+  skillLevel: SkillLevel;
 }) => {
   const { userId } = auth();
 
@@ -62,11 +65,11 @@ export const submitSkillAssessment = async ({
     .values({
       skillId,
       userId,
-      level,
+      skillLevel,
     })
     .onConflictDoUpdate({
       target: [usersSkillsLevels.userId, usersSkillsLevels.skillId],
-      set: { level },
+      set: { skillLevel },
       where: and(
         eq(usersSkillsLevels.userId, userId),
         eq(usersSkillsLevels.skillId, skillId)

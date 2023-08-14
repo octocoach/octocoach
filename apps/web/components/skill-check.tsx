@@ -1,8 +1,12 @@
 import { Skill } from "@octocoach/db/src/schema/skills";
+import {
+  SkillLevel,
+  skillLevel,
+} from "@octocoach/db/src/schema/users-skills-levels";
+import Message from "@octocoach/i18n/src/react-message";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState, useTransition } from "react";
 import { submitSkillAssessment } from "./actions";
-import { skillLevels } from "@app/constants";
 
 export const SkillCheck = ({
   skills,
@@ -31,9 +35,9 @@ export const SkillCheck = ({
     if (index !== undefined) setSkill(skills[index]);
   }, [index]);
 
-  const onAnswer = async ({ level }: { level: number }) => {
+  const onAnswer = async ({ skillLevel }: { skillLevel: SkillLevel }) => {
     startTransition(async () => {
-      await submitSkillAssessment({ skillId: skill.id, level });
+      await submitSkillAssessment({ skillId: skill.id, skillLevel });
       addCheckedSkillId(skill.id);
 
       if (index + 1 === totalSkills) {
@@ -58,8 +62,10 @@ export const SkillCheck = ({
         </Text>
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
-          {skillLevels.map(({ title }, level) => (
-            <Button onPress={() => onAnswer({ level })}>{title}</Button>
+          {skillLevel.enumValues.map((skillLevel, key) => (
+            <Button onPress={() => onAnswer({ skillLevel })} key={key}>
+              <Message id={`skillLevels.${skillLevel}`} />
+            </Button>
           ))}
         </Stack>
       </Stack>

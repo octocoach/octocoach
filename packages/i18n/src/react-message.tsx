@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
 import { LocalizedString } from "typesafe-i18n";
 import { useI18nContext } from "./i18n-react";
 import { TranslationFunctions, Translations } from "./i18n-types";
 
 type NestedKeyOf<T, K = keyof T> = K extends keyof T & (string | number)
-  ? `${K}` | (T[K] extends object ? `${K}.${NestedKeyOf<T[K]>}` : never)
+  ? T[K] extends object
+    ? `${K}.${NestedKeyOf<T[K]>}`
+    : `${K}`
   : never;
 
 const hasKey = (

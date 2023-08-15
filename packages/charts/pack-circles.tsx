@@ -138,7 +138,7 @@ export const PackCircles = ({
         scale={colorScale}
         style={{ position: "absolute" }}
         itemDirection="row"
-        labelFormat={(id) => LL.skillLevels[id]()}
+        labelFormat={(id) => LL.skillLevels[id].title()}
         domain={skillLevel.enumValues}
       />
     </div>

@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
       <Text size="l" variation="heading">
         Skill Self-Assessment
       </Text>
-      {/* <SkillByCategory data={categoryLevels} /> */}
+      <SkillByCategory data={categoryLevels} />
       <PackCircles container={containerId} data={data} />
       <BarChart
         container={containerId}

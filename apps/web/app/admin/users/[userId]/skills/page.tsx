@@ -51,10 +51,10 @@ export default async function Page({ params }: { params: { userId: string } }) {
       <Text size="l" variation="heading">
         Skill Self-Assessment
       </Text>
-      <SkillByCategory data={categoryLevels} />
+      <SkillByCategory data={categoryLevels} containerId={containerId} />
       <PackCircles container={containerId} data={data} />
       <BarChart
-        container={containerId}
+        containerId={containerId}
         height={300}
         data={Object.entries(
           user.usersSkillsLevels.reduce(

@@ -8,7 +8,7 @@ import { Text, vars } from "@octocoach/ui";
 import { AxisLeft } from "@visx/axis";
 import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { BarStackHorizontal } from "@visx/shape";
-import { useState } from "react";
+import { useParentWidth } from "./hooks";
 
 export type CategoryLevels = {
   category: string;
@@ -16,11 +16,12 @@ export type CategoryLevels = {
 
 export const SkillByCategory = ({
   data,
+  containerId,
 }: {
   data: { category: string; skillLevel: SkillLevel }[];
+  containerId: string;
 }) => {
-  const [width, setWidth] = useState(600);
-  const height = 200;
+  const width = useParentWidth(containerId);
 
   const categoryLevels: Record<string, CategoryLevels> = {};
 
@@ -51,7 +52,11 @@ export const SkillByCategory = ({
       ) as number
   );
 
-  console.log(totals);
+  const numCategories = totals.length;
+
+  const fontSize = 16;
+
+  const height = numCategories * fontSize * 3;
 
   const xScale = scaleLinear({
     domain: [0, Math.max(...totals)],
@@ -90,16 +95,17 @@ export const SkillByCategory = ({
           yScale={yScale}
         >
           {(barStacks) => {
-            console.log("barStacks", barStacks);
             return barStacks.map(({ bars }) =>
               bars.map((bar) => (
                 <rect
                   x={bar.x}
-                  y={bar.y}
-                  width={bar.width}
+                  y={bar.y + bar.height * 0.9}
+                  width={bar.width <= 10 ? 10 : bar.width}
                   fill={bar.color}
                   key={`${bar.key}-${bar.index}`}
-                  height={bar.height}
+                  height={10}
+                  rx={5}
+                  opacity={0.5}
                 />
               ))
             );
@@ -110,12 +116,13 @@ export const SkillByCategory = ({
           tickStroke="white"
           tickFormat={(d) => d}
           tickLabelProps={{
-            fill: "white",
-            fontSize: 11,
+            fill: vars.color.typography.body,
+            fontFamily: vars.fonts.base,
+            fontSize,
             textAnchor: "start",
-            dy: "0.33em",
-            dx: "2em",
+            dx: "0.5em",
           }}
+          numTicks={numCategories}
         />
       </svg>
     </div>

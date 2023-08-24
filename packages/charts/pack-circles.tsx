@@ -12,8 +12,7 @@ import { hierarchy, Pack } from "@visx/hierarchy";
 import { LegendOrdinal } from "@visx/legend";
 import { scaleOrdinal } from "@visx/scale";
 import { Tooltip, useTooltip } from "@visx/tooltip";
-import debounce from "just-debounce-it";
-import { useEffect, useState } from "react";
+import { useParentWidth } from "./hooks";
 
 export const PackCircles = ({
   container,
@@ -23,7 +22,6 @@ export const PackCircles = ({
   data: { fill: SkillLevel; name: string }[];
 }) => {
   const { LL } = useI18nContext();
-  const [width, setWidth] = useState(0);
 
   const {
     tooltipOpen,
@@ -34,20 +32,7 @@ export const PackCircles = ({
     hideTooltip,
   } = useTooltip<{ name: string }>();
 
-  useEffect(() => {
-    const parent = document.getElementById(container);
-    setWidth(parent?.clientWidth || 0);
-
-    const resizeHandler = debounce(() => {
-      if (parent) setWidth(parent.clientWidth);
-    }, 500);
-
-    window.addEventListener("resize", resizeHandler, true);
-
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
-  }, []);
+  const width = useParentWidth(container);
 
   const root = hierarchy({
     name: "root",

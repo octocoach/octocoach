@@ -44,7 +44,7 @@ export class IndeedScraper extends JobScraper {
   async cleanPage(): Promise<void> {
     try {
       await this.page.getByText("Alle ablehnen").click({ timeout: 1000 });
-    } catch (e) {}
+    } catch (err) {}
 
     // Close the Continue with Google Modal
     try {
@@ -65,7 +65,7 @@ export class IndeedScraper extends JobScraper {
         await this.sleep(500);
         await e.click({ timeout: 3000 });
       }
-    } catch (e) {}
+    } catch (err) {}
   }
 
   /**
@@ -74,7 +74,7 @@ export class IndeedScraper extends JobScraper {
    */
   async processCurrentPage(): Promise<void> {
     const items = await this.page
-      .locator("ul.jobsearch-ResultsList > li")
+      .locator("#mosaic-jobResults ul > li")
       .filter({ has: this.page.locator("h2") })
       .all();
 

@@ -1,5 +1,5 @@
 import { Player } from "@lottiefiles/react-lottie-player";
-import { Button, Container, Stack, TextArea, Typography } from "@octocoach/ui";
+import { Button, Container, Stack, TextArea, Text } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
@@ -20,9 +20,9 @@ function App() {
   return (
     <Container element="main">
       <Stack spacing="loose">
-        <Typography size="xl" element="h1">
+        <Text size="xl" element="h1">
           Ask AZAV
-        </Typography>
+        </Text>
         <TextArea
           label="What would you like to know about AZAV?"
           value={input}

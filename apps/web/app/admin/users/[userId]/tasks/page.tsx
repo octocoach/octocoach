@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         Task Affinity
       </Text>
       <BarChart
-        container={containerId}
+        containerId={containerId}
         height={500}
         data={Object.entries(likeLevel).map(([label, value]) => ({
           label,
@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         }))}
       />
       {[-1, 0, 1].map((interest) => (
-        <Card>
+        <Card key={interest}>
           <Stack spacing="loose">
             <Text size="l" variation="casual" weight="bold">
               {interest < 0
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
               {user.usersTasksInterest
                 .filter((x) => x.interest === interest)
                 .map(({ task }) => (
-                  <Link href={`/admin/tasks/${task.id}`}>
+                  <Link href={`/admin/tasks/${task.id}`} key={task.id}>
                     <Text>{task.description}</Text>
                   </Link>
                 ))}

@@ -1,3 +1,4 @@
+import { UserSummary } from "@components/user-summary";
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
 import { BarChartItem } from "@octocoach/charts/bar";
 import { db } from "@octocoach/db/src/connection";
@@ -5,6 +6,7 @@ import {
   SkillLevel,
   skillLevel,
 } from "@octocoach/db/src/schema/users-skills-levels";
+import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -48,6 +50,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
 
   return (
     <Stack id={containerId}>
+      <UserSummary userId={user.id} />
       <Text size="l" variation="heading">
         Skill Self-Assessment
       </Text>
@@ -71,16 +74,17 @@ export default async function Page({ params }: { params: { userId: string } }) {
       />
 
       {skillLevel.enumValues.map((level) => (
-        <Card>
+        <Card key={level}>
           <Stack>
             <Text size="l" variation="casual" weight="bold">
-              {`${level} (${countSkills(level)})`}
+              <Message id={`skillLevels.${level}.title`} />
+              {` (${countSkills(level)})`}
             </Text>
             <Stack direction="horizontal" wrap>
               {user.usersSkillsLevels
                 .filter(({ skillLevel }) => skillLevel === level)
                 .map(({ skill }) => (
-                  <Link href={`/admin/skills/${skill.id}`}>
+                  <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
                     <Tag>{skill.name}</Tag>
                   </Link>
                 ))}

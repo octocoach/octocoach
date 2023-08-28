@@ -55,7 +55,7 @@ export const SkillCheck = ({
     <Container element="section">
       <Stack align="center" spacing="loose">
         <Text size="l" weight="light">
-          What's Your Skill Level?
+          What&apos;s Your Skill Level?
         </Text>
         <Text element="span" size="xl" variation="casual">
           {skill.name}

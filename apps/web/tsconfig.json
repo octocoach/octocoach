@@ -4,7 +4,12 @@
     "plugins": [{ "name": "next" }],
     "target": "es2017",
     "baseUrl": "./",
-    "paths": { "@app/*": ["app/*"], "@components/*": ["components/*"] }
+    "paths": {
+      "@app/*": ["app/*"],
+      "@components/*": ["components/*"],
+      // https://github.com/facebook/react/issues/24304#issuecomment-1092563688
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

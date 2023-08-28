@@ -9,7 +9,7 @@ export default async function Page() {
     <Stack>
       {users.map((user) => {
         return (
-          <Text>
+          <Text key={user.id}>
             <Link href={`/admin/users/${user.id}`}>
               {user.firstName} {user.lastName}
             </Link>

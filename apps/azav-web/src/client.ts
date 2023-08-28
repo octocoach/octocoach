@@ -1,5 +1,6 @@
-import type { AppRouter } from "@octocoach/trpc";
+import type { AppRouter } from "@octocoach/trpc/src/server/routers/app";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import superjson from "superjson";
 
 export const client = createTRPCProxyClient<AppRouter>({
   links: [
@@ -7,4 +8,5 @@ export const client = createTRPCProxyClient<AppRouter>({
       url: "http://localhost:3002",
     }),
   ],
+  transformer: superjson,
 });

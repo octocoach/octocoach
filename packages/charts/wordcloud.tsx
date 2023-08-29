@@ -3,7 +3,7 @@
 import { scaleSqrt, scaleLinear, scaleLog } from "@visx/scale";
 import { Text } from "@visx/text";
 import { Wordcloud } from "@visx/wordcloud";
-import { React, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { vars } from "@octocoach/ui";
 import debounce from "just-debounce-it";
 
@@ -24,19 +24,20 @@ export const WC = ({
 
   useEffect(() => {
     const parent = document.getElementById(container);
-
-    setWidth(parent?.clientWidth);
-
-    const resizeHandler = debounce(() => {
+    if (parent) {
       setWidth(parent?.clientWidth);
-    }, 500);
 
-    window.addEventListener("resize", resizeHandler, true);
+      const resizeHandler = debounce(() => {
+        setWidth(parent?.clientWidth);
+      }, 500);
 
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
-  }, []);
+      window.addEventListener("resize", resizeHandler, true);
+
+      return () => {
+        window.removeEventListener("resize", resizeHandler);
+      };
+    }
+  }, [container]);
 
   if (!width) return null;
 

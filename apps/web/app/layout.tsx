@@ -3,13 +3,13 @@ import { Header } from "@components/Header";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
+import TrpcProvider from "@octocoach/trpc/src/next/provider";
 import { SSRProvider } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { cookies } from "next/headers";
 import RootLayoutClient from "./layout-client";
-
 export default async function RootLayout({
   children,
 }: {
@@ -28,7 +28,7 @@ export default async function RootLayout({
           <body>
             <Header />
             <RootLayoutClient dictionary={dictionary} locale={locale}>
-              {children}
+              <TrpcProvider>{children}</TrpcProvider>
             </RootLayoutClient>
           </body>
         </SSRProvider>

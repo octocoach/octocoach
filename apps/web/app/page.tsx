@@ -1,3 +1,4 @@
+import { SignedIn } from "@clerk/nextjs";
 import { TaskCheck } from "@components/task-check";
 import { db } from "@octocoach/db/src/connection";
 import shuffle from "just-shuffle";
@@ -28,7 +29,9 @@ export default async function Page() {
         placeItems: "center",
       }}
     >
-      <TaskCheck tasks={tasks} />
+      <SignedIn>
+        <TaskCheck tasks={tasks} />
+      </SignedIn>
     </main>
   );
 }

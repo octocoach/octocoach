@@ -6,6 +6,8 @@ import { usersSkillsLevels } from "./users-skills-levels";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
+  summary: text("summary"),
+  summaryHash: text("summary_hash"),
 });
 
 export const userRelations = relations(users, ({ many }) => ({

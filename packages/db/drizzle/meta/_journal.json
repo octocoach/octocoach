@@ -71,6 +71,20 @@
       "when": 1691393320363,
       "tag": "0009_giant_madrox",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1692019562006,
+      "tag": "0010_deep_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1693297994397,
+      "tag": "0011_mushy_venus",
+      "breakpoints": true
     }
   ]
 }

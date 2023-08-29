@@ -1,39 +1,12 @@
 import { Skill } from "@octocoach/db/src/schema/skills";
+import {
+  SkillLevel,
+  skillLevel,
+} from "@octocoach/db/src/schema/users-skills-levels";
+import Message from "@octocoach/i18n/src/react-message";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState, useTransition } from "react";
 import { submitSkillAssessment } from "./actions";
-
-interface Level {
-  title: string;
-  description: string;
-}
-
-const skillLevels: Level[] = [
-  {
-    title: "Novice",
-    description: "I have no experience or knowledge about this topic.",
-  },
-  {
-    title: "Beginner",
-    description:
-      "I have a basic understanding and can perform simple tasks with guidance.",
-  },
-  {
-    title: "Competent",
-    description:
-      "I can perform tasks related to the topic independently. I can handle regular tasks confidently and I'm starting to deal with more complex issues.",
-  },
-  {
-    title: "Advanced",
-    description:
-      "I can perform complex tasks and solve difficult problems. I have a deep understanding of the topic.",
-  },
-  {
-    title: "Expert",
-    description:
-      "I have a deep and comprehensive understanding of the topic. I can teach others and handle all issues, including novel ones.",
-  },
-];
 
 export const SkillCheck = ({
   skills,
@@ -62,9 +35,9 @@ export const SkillCheck = ({
     if (index !== undefined) setSkill(skills[index]);
   }, [index]);
 
-  const onAnswer = async ({ level }: { level: number }) => {
+  const onAnswer = async ({ skillLevel }: { skillLevel: SkillLevel }) => {
     startTransition(async () => {
-      await submitSkillAssessment({ skillId: skill.id, level });
+      await submitSkillAssessment({ skillId: skill.id, skillLevel });
       addCheckedSkillId(skill.id);
 
       if (index + 1 === totalSkills) {
@@ -82,15 +55,17 @@ export const SkillCheck = ({
     <Container element="section">
       <Stack align="center" spacing="loose">
         <Text size="l" weight="light">
-          What's Your Skill Level?
+          What&apos;s Your Skill Level?
         </Text>
         <Text element="span" size="xl" variation="casual">
           {skill.name}
         </Text>
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
-          {skillLevels.map(({ title }, level) => (
-            <Button onPress={() => onAnswer({ level })}>{title}</Button>
+          {skillLevel.enumValues.map((skillLevel, key) => (
+            <Button onPress={() => onAnswer({ skillLevel })} key={key}>
+              <Message id={`skillLevels.${skillLevel}.title`} />
+            </Button>
           ))}
         </Stack>
       </Stack>

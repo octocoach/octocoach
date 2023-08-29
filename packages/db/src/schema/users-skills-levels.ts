@@ -1,13 +1,23 @@
+import { InferModel, relations } from "drizzle-orm";
 import {
-  integer,
+  pgEnum,
   pgTable,
   primaryKey,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { users } from "./users";
 import { skills } from "./skills";
-import { InferModel, relations } from "drizzle-orm";
+import { users } from "./users";
+
+export const skillLevel = pgEnum("skill_level", [
+  "novice",
+  "advanced_beginner",
+  "competent",
+  "proficient",
+  "expert",
+]);
+
+export type SkillLevel = (typeof skillLevel.enumValues)[number];
 
 export const usersSkillsLevels = pgTable(
   "users_skills_levels",
@@ -18,7 +28,7 @@ export const usersSkillsLevels = pgTable(
     skillId: text("skill_id")
       .notNull()
       .references(() => skills.id),
-    level: integer("level").notNull(),
+    skillLevel: skillLevel("skill_level").notNull(),
     created: timestamp("created").defaultNow(),
   },
   ({ skillId, userId }) => ({

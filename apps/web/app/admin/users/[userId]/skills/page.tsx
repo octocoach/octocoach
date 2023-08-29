@@ -1,4 +1,3 @@
-import { UserSummary } from "@components/user-summary";
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
 import { BarChartItem } from "@octocoach/charts/bar";
 import { db } from "@octocoach/db/src/connection";
@@ -50,7 +49,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
 
   return (
     <Stack id={containerId}>
-      <UserSummary userId={user.id} />
       <Text size="l" variation="heading">
         Skill Self-Assessment
       </Text>

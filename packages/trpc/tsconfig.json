@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "lib": ["ES2017", "DOM"],
     "paths": {
       "react": ["./node_modules/@types/react"]

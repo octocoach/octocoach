@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { jobs } from "./jobs";
@@ -22,5 +22,5 @@ export const employerInsertSchema = createInsertSchema(companies, {
 
 export const employerSelectSchema = createSelectSchema(companies);
 
-export type Company = InferModel<typeof companies>;
-export type NewCompany = InferModel<typeof companies, "insert">;
+export type Company = InferSelectModel<typeof companies>;
+export type NewCompany = InferInsertModel<typeof companies>;

@@ -14,7 +14,7 @@ import {
 type SkillType = (typeof lightcastSkills)[0]["type"];
 type SkillCategory = (typeof lightcastSkills)[0]["category"];
 type SkillSubcategory = (typeof lightcastSkills)[0]["subcategory"] & {
-  category: number;
+  categoryId: number;
 };
 
 const access_token = await getAccessToken();
@@ -52,8 +52,9 @@ for (const [
     descriptionEmbedding,
     name,
     nameEmbedding,
-    subcategory: subcategory?.id || 100,
-    type: type.id,
+    subcategoryId: subcategory?.id || 100,
+    typeId: type.id,
+    aliases: null,
     ...skill,
   });
 
@@ -67,7 +68,10 @@ for (const [
     }
 
     if (subcategory && !subcategories[subcategory.id]) {
-      subcategories[subcategory.id] = { ...subcategory, category: category.id };
+      subcategories[subcategory.id] = {
+        ...subcategory,
+        categoryId: category.id,
+      };
     }
   }
 }

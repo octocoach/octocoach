@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import {
   pgEnum,
   pgTable,
@@ -50,4 +50,4 @@ export const usersSkillsLevelsRelations = relations(
   })
 );
 
-export type UsersSkillsLevels = InferModel<typeof usersSkillsLevels>;
+export type UsersSkillsLevels = InferSelectModel<typeof usersSkillsLevels>;

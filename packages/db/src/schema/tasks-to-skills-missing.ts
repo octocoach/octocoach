@@ -1,8 +1,8 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 import { skillsMissing } from "./skills";
 import { tasks } from "./tasks";
-import { createInsertSchema } from "drizzle-zod";
 
 export const tasksToSkillsMissing = pgTable(
   "tasks_to_skills_missing",
@@ -36,4 +36,6 @@ export const tasksToSkillsMissingRelations = relations(
 export const tasksToSkillsMissingSchema =
   createInsertSchema(tasksToSkillsMissing);
 
-export type TasksToSkillsMissing = InferModel<typeof tasksToSkillsMissing>;
+export type TasksToSkillsMissing = InferSelectModel<
+  typeof tasksToSkillsMissing
+>;

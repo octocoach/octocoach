@@ -16,10 +16,7 @@ export const createContextInner = async ({ auth }: AuthContext) => {
   };
 };
 
-export const createContext = async ({
-  req,
-  resHeaders,
-}: FetchCreateContextFnOptions) => {
+export const createContext = async ({ req }: FetchCreateContextFnOptions) => {
   return await createContextInner({ auth: getAuth(req as NextRequest) });
 };
 

@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferSelectModel, InferInsertModel, relations } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -20,7 +20,7 @@ export const skillTypes = pgTable("skill_types", {
   name: text("name").notNull(),
 });
 
-export type SkillType = InferModel<typeof skillTypes>;
+export type SkillType = InferSelectModel<typeof skillTypes>;
 
 export const insertSkillTypeSchema = createInsertSchema(skillTypes);
 export const selectSkillTypeSchema = createSelectSchema(skillTypes);
@@ -39,7 +39,7 @@ export const skillCategoriesRelations = relations(
   })
 );
 
-export type SkillCategory = InferModel<typeof skillCategories>;
+export type SkillCategory = InferSelectModel<typeof skillCategories>;
 export const skillCategorySchema = createInsertSchema(skillCategories);
 
 // Skill Subcategories
@@ -65,7 +65,7 @@ export const skillSubcategoriesRelations = relations(
   })
 );
 
-export type SkillSubcategory = InferModel<typeof skillSubcategories>;
+export type SkillSubcategory = InferSelectModel<typeof skillSubcategories>;
 export const skillSubcategorySchema = createInsertSchema(skillSubcategories);
 
 // Skills
@@ -107,7 +107,7 @@ export const skillRelations = relations(skills, ({ one, many }) => ({
   usersSkillsLevels: many(usersSkillsLevels),
 }));
 
-export type Skill = InferModel<typeof skills>;
+export type Skill = InferSelectModel<typeof skills>;
 export const skillSchema = createInsertSchema(skills);
 
 // Missing Skills
@@ -123,6 +123,6 @@ export const skillMissingRelations = relations(skillsMissing, ({ many }) => ({
   tasksToSkillsMissing: many(tasksToSkillsMissing),
 }));
 
-export type SkillsMissing = InferModel<typeof skillsMissing>;
+export type SkillsMissing = InferSelectModel<typeof skillsMissing>;
 export const skillsMissingSchema = createSelectSchema(skillsMissing);
 export const newSkillsMissingSchema = createInsertSchema(skillsMissing);

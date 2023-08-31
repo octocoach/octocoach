@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import {
   integer,
   pgEnum,
@@ -46,6 +46,6 @@ export const jobRelations = relations(jobs, ({ one, many }) => ({
 
 export const jobSchema = createInsertSchema(jobs);
 
-export type Job = InferModel<typeof jobs>;
+export type Job = InferSelectModel<typeof jobs>;
 
-export type NewJob = InferModel<typeof jobs, "insert">;
+export type NewJob = InferInsertModel<typeof jobs>;

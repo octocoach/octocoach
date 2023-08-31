@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { embedding } from "../embedding";
@@ -30,5 +30,5 @@ export const taskRelations = relations(tasks, ({ one, many }) => ({
 export const selectTaskSchema = createSelectSchema(tasks);
 export const insertTaskSchema = createInsertSchema(tasks);
 
-export type Task = InferModel<typeof tasks>;
-export type NewTask = InferModel<typeof tasks, "insert">;
+export type Task = InferSelectModel<typeof tasks>;
+export type NewTask = InferInsertModel<typeof tasks>;

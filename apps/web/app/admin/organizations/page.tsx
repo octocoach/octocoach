@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <Stack>
       {organizationList.map(({ organization }) => (
-        <Text>
+        <Text key={organization.id}>
           <Link href={`/admin/organizations/${organization.slug}`}>
             {organization.name}
           </Link>

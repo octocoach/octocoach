@@ -7,16 +7,16 @@ import { SSRProvider } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
-import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
+import React from "react";
 import RootLayoutClient from "./layout-client";
-
-const Header = dynamic(() => import("../components/Header"), { ssr: false });
 
 export default async function RootLayout({
   children,
+  header,
 }: {
   children: React.ReactNode;
+  header: React.ReactNode;
 }) {
   const cookieStore = cookies();
   const locale = (cookieStore.get("locale")?.value || "en") as Locales;
@@ -29,8 +29,8 @@ export default async function RootLayout({
       <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
         <SSRProvider>
           <body>
+            {header}
             <RootLayoutClient dictionary={dictionary} locale={locale}>
-              <Header />
               <TrpcProvider>{children}</TrpcProvider>
             </RootLayoutClient>
           </body>

@@ -6,8 +6,8 @@ import { TasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
 import { UsersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
 import { Button, Card, Container, Progress, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState, useTransition } from "react";
-import { Answer, submitAnswer } from "./actions";
-import { SkillCheck } from "./skill-check";
+import { Answer, submitAnswer } from "../../../components/actions";
+import { SkillCheck } from "../../../components/skill-check";
 import { UsersSkillsLevels } from "@octocoach/db/src/schema/users-skills-levels";
 
 type TaskWithUsersInterestAndSkill = Task & {
@@ -17,11 +17,11 @@ type TaskWithUsersInterestAndSkill = Task & {
   })[];
 };
 
-export const TaskCheck = ({
+export default function TaskCheck({
   tasks,
 }: {
   tasks: TaskWithUsersInterestAndSkill[];
-}) => {
+}) {
   const [taskIndex, setTaskIndex] = useState(0);
 
   const newTasks = tasks.filter(
@@ -131,4 +131,4 @@ export const TaskCheck = ({
       </Stack>
     </Container>
   );
-};
+}

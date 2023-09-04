@@ -1,7 +1,8 @@
-import { SignedIn } from "@clerk/nextjs";
 import { db } from "@octocoach/db/src/connection";
-import { Text } from "@octocoach/ui";
 import shuffle from "just-shuffle";
+import TaskCheck from "./task-check";
+
+export const runtime = "nodejs";
 
 export default async function Page() {
   const tasks = shuffle(
@@ -21,15 +22,5 @@ export default async function Page() {
     })
   );
 
-  return (
-    <main
-      style={{
-        height: "calc(100vh - 40px)",
-        display: "grid",
-        placeItems: "center",
-      }}
-    >
-      <Text>Hello</Text>
-    </main>
-  );
+  return <TaskCheck tasks={tasks} />;
 }

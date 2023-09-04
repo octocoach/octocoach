@@ -23,8 +23,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <Text size="xl">{organization.name}</Text>
       <Text size="s">{organization.slug}</Text>
       <Stack>
-        {memberships.map(({ publicUserData }) => (
-          <Text>
+        {memberships.map(({ publicUserData, id }) => (
+          <Text key={id}>
             {publicUserData.firstName} {publicUserData.lastName}{" "}
             {publicUserData.userId === organization.createdBy ? "(Owner)" : ""}
           </Text>

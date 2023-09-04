@@ -15,6 +15,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "ui-avatars.com",
       },
+      { protocol: "https", hostname: "img.clerk.com" },
     ],
   },
   reactStrictMode: true,

@@ -1,4 +1,3 @@
-import { SignedIn } from "@clerk/nextjs";
 import { db } from "@octocoach/db/src/connection";
 import { Text } from "@octocoach/ui";
 import shuffle from "just-shuffle";

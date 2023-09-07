@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import { Header } from "@components/Header";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
@@ -9,11 +8,15 @@ import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { cookies } from "next/headers";
+import React from "react";
 import RootLayoutClient from "./layout-client";
+
 export default async function RootLayout({
   children,
+  header,
 }: {
   children: React.ReactNode;
+  header: React.ReactNode;
 }) {
   const cookieStore = cookies();
   const locale = (cookieStore.get("locale")?.value || "en") as Locales;
@@ -26,7 +29,7 @@ export default async function RootLayout({
       <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
         <SSRProvider>
           <body>
-            <Header />
+            {header}
             <RootLayoutClient dictionary={dictionary} locale={locale}>
               <TrpcProvider>{children}</TrpcProvider>
             </RootLayoutClient>

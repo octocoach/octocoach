@@ -17,11 +17,11 @@ type TaskWithUsersInterestAndSkill = Task & {
   })[];
 };
 
-export const TaskCheck = ({
+export default function TaskCheck({
   tasks,
 }: {
   tasks: TaskWithUsersInterestAndSkill[];
-}) => {
+}) {
   const [taskIndex, setTaskIndex] = useState(0);
 
   const newTasks = tasks.filter(
@@ -36,8 +36,6 @@ export const TaskCheck = ({
       .filter((level) => level)
       .map((level) => level.skillId)
   );
-
-  console.log("checkedSkillIds", checkedSkillIds);
 
   const addCheckedSkillId = (id: Skill["id"]) => {
     setCheckedSkillIds((current) => [...current, id]);
@@ -131,4 +129,4 @@ export const TaskCheck = ({
       </Stack>
     </Container>
   );
-};
+}

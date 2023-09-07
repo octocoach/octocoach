@@ -1,5 +1,5 @@
 import { clerkClient } from "@clerk/nextjs";
-import { UserSummary } from "@components/user-summary";
+import { UserSummary } from "./user-summary";
 import { Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 import { ReactNode } from "react";

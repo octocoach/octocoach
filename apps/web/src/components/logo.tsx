@@ -4,7 +4,13 @@ import { Company } from "@octocoach/db/src/schema/companies";
 import Image from "next/image";
 import { useState } from "react";
 
-export const Logo = ({ company, size }: { company: Company; size: number }) => {
+export default function Logo({
+  company,
+  size,
+}: {
+  company: Company;
+  size: number;
+}) {
   const { name, url } = company;
 
   const createSrc = (url: string) => `https://logo.clearbit.com/${url}`;
@@ -32,4 +38,4 @@ export const Logo = ({ company, size }: { company: Company; size: number }) => {
       onError={() => setSrc(createFallbackSrc(name))}
     />
   );
-};
+}

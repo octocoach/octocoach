@@ -1,4 +1,4 @@
-import { Logo } from "@app/admin/components";
+import Logo from "@components/logo";
 import { eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { companies } from "@octocoach/db/src/schema/companies";

@@ -13,12 +13,12 @@
   "dependencies": {
     "@types/cli-progress": "^3.11.0",
     "cli-progress": "^3.12.0",
-    "drizzle-orm": "^0.28.5",
+    "drizzle-orm": "^0.28.6",
     "drizzle-zod": "^0.4.4",
     "got": "^12.6.0",
-    "langchain": "^0.0.103",
+    "langchain": "^0.0.145",
     "postgres": "^3.3.5",
-    "zod": "^3.21.4"
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/node": "^20.3.2",

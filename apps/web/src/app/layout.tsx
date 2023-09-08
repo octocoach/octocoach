@@ -1,4 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import SessionProvider from "@components/session-provider";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
@@ -28,19 +27,17 @@ export default async function RootLayout({
   const session = await getServerSession();
 
   return (
-    <ClerkProvider>
-      <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
-        <SSRProvider>
-          <body>
-            <SessionProvider session={session}>
-              {header}
-              <RootLayoutClient dictionary={dictionary} locale={locale}>
-                <TrpcProvider>{children}</TrpcProvider>
-              </RootLayoutClient>
-            </SessionProvider>
-          </body>
-        </SSRProvider>
-      </html>
-    </ClerkProvider>
+    <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
+      <SSRProvider>
+        <body>
+          <SessionProvider session={session}>
+            {header}
+            <RootLayoutClient dictionary={dictionary} locale={locale}>
+              <TrpcProvider>{children}</TrpcProvider>
+            </RootLayoutClient>
+          </SessionProvider>
+        </body>
+      </SSRProvider>
+    </html>
   );
 }

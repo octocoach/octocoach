@@ -4,12 +4,9 @@ import GitHubProvider from "next-auth/providers/github";
 const handler = NextAuth({
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      console.log("jwt", { token, user, account, profile });
       return token;
     },
     async session({ session, token, user }) {
-      console.log("session", { session, token, user });
-
       // ToDo: Remove this temporary hack
       return {
         ...session,

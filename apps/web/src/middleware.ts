@@ -2,7 +2,6 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 import { NextRequest, NextResponse } from "next/server";
-import { authMiddleware } from "@clerk/nextjs";
 
 const locales = ["en", "de"];
 
@@ -21,16 +20,13 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-export default authMiddleware({
-  beforeAuth: (request) => {
-    const response = NextResponse.next();
-    const locale = detectLocale(request);
-    response.cookies.set("locale", locale);
+export default (request) => {
+  const response = NextResponse.next();
+  const locale = detectLocale(request);
+  response.cookies.set("locale", locale);
 
-    return response;
-  },
-  publicRoutes: ["/"],
-});
+  return response;
+};
 
 export const config = {
   matcher: [

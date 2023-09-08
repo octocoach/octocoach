@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
-import { clerkClient } from "@clerk/nextjs";
 import { Container, Stack, Text } from "@octocoach/ui";
+import { ReactNode } from "react";
 
 export default async function Layout({
   children,
@@ -9,9 +8,7 @@ export default async function Layout({
   children: ReactNode;
   params: { orgSlug: string };
 }) {
-  const organization = await clerkClient.organizations.getOrganization({
-    slug: params.orgSlug,
-  });
+  const organization = { name: "tempfix" };
 
   return (
     <Container element="main">

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.2",
+    "@auth/drizzle-adapter": "^0.3.2",
     "@formatjs/intl-localematcher": "^0.4.0",
     "@octocoach/azav": "workspace:^",
     "@octocoach/charts": "workspace:^",
@@ -26,6 +26,7 @@
     "nanoid": "^4.0.2",
     "negotiator": "^0.6.3",
     "next": "^13.4.19",
+    "next-auth": "^4.23.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7"

@@ -1,8 +1,8 @@
-import { clerkClient } from "@clerk/nextjs";
-import { UserSummary } from "./user-summary";
 import { Container, Stack, Text } from "@octocoach/ui";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { UserSummary } from "./user-summary";
 
 export default async function Layout({
   children,
@@ -11,13 +11,13 @@ export default async function Layout({
   children: ReactNode;
   params: { userId: string };
 }) {
-  const user = await clerkClient.users.getUser(params.userId);
+  const { user } = await getServerSession();
   return (
     <Container element="section">
       <Stack spacing="loose">
         <Link href={`/admin/users/${params.userId}`}>
           <Text size="xl" weight="bold" variation="casual">
-            {user.firstName} {user.lastName}
+            {user.name}
           </Text>
         </Link>
         <UserSummary userId={user.id} />

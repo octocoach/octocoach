@@ -1,5 +1,6 @@
 "use server";
 
+import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { and, eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { Skill } from "@octocoach/db/src/schema/skills";
@@ -20,7 +21,7 @@ export const submitAnswer = async ({
   answer: Answer;
   taskId: number;
 }) => {
-  const { user } = await getServerSession();
+  const { user } = await getServerSession(authOptions);
   if (!user) throw new Error("User not found");
 
   const userId = user.id;

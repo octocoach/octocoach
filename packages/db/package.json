@@ -5,10 +5,13 @@
   "private": true,
   "scripts": {
     "generate": "drizzle-kit generate:pg",
+    "generate:org": "drizzle-kit generate:pg --schema=\"./src/schema/organization/**/*.ts\" --out=\"org\"",
     "migrate": "tsx -r dotenv/config src/migrate.ts",
     "seed": "tsx -r dotenv/config src/seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "check": "tsx src/schema/organization/members.ts",
+    "create:org": "tsx -r dotenv/config src/create-org.ts"
   },
   "dependencies": {
     "@types/cli-progress": "^3.11.0",

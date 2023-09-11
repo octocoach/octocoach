@@ -1,24 +1,11 @@
-import { db } from "@octocoach/db/src/connection";
+import { makeDb } from "@octocoach/db/src/connection";
 import { Text } from "@octocoach/ui";
 import shuffle from "just-shuffle";
 
 export default async function Page() {
-  const tasks = shuffle(
-    await db.query.tasks.findMany({
-      with: {
-        usersTasksInterest: true,
-        tasksToSkills: {
-          with: {
-            skill: {
-              with: {
-                usersSkillsLevels: true,
-              },
-            },
-          },
-        },
-      },
-    })
-  );
+  const db = makeDb({ orgSlug: "q15" });
+
+  const members = await db.query.members.findMany();
 
   return (
     <main
@@ -28,7 +15,7 @@ export default async function Page() {
         placeItems: "center",
       }}
     >
-      <Text>Hello</Text>
+      <Text>{JSON.stringify(members)}</Text>
     </main>
   );
 }

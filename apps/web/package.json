@@ -36,6 +36,7 @@
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.5",
     "@vanilla-extract/next-plugin": "^2.1.3",
+    "encoding": "^0.1.13",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.9.5"

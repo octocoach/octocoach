@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@app/api/auth/[...nextauth]/route";
+import authOptions from "@config/next-auth";
 import { and, eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { Skill } from "@octocoach/db/src/schema/skills";
@@ -53,7 +53,7 @@ export const submitSkillAssessment = async ({
   skillId: Skill["id"];
   skillLevel: SkillLevel;
 }) => {
-  const { user } = await getServerSession();
+  const { user } = await getServerSession(authOptions);
   if (!user) throw new Error("User not found");
 
   const userId = user.id;

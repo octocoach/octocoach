@@ -1,4 +1,5 @@
 import SessionProvider from "@components/session-provider";
+import authOptions from "@config/next-auth";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
@@ -24,7 +25,7 @@ export default async function RootLayout({
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang={locale} className={`${themeClass.mocha} ${bg}`}>

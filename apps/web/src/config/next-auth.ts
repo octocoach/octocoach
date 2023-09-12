@@ -1,16 +1,15 @@
 import { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { db } from "@octocoach/db/src/connection";
 
 const authOptions: NextAuthOptions = {
+  adapter: DrizzleAdapter(db),
   callbacks: {
-    async jwt({ token, user, account, profile }) {
-      return { ...token, id: "user_2TTNLbfCmGjhhayy6RDBMBuuGY8" };
-    },
-    async session({ session, token }) {
-      // ToDo: Remove this temporary hack
+    async session({ session, user }) {
       return {
         ...session,
-        user: { ...session.user, id: token.id },
+        user: { ...session.user, id: user.id },
       };
     },
   },

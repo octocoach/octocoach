@@ -4,7 +4,6 @@ import authOptions from "@config/next-auth";
 import { and, eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { Skill } from "@octocoach/db/src/schema/skills";
-import { users } from "@octocoach/db/src/schema/users";
 import {
   SkillLevel,
   usersSkillsLevels,
@@ -22,26 +21,14 @@ export const submitAnswer = async ({
   taskId: number;
 }) => {
   const { user } = await getServerSession(authOptions);
+
   if (!user) throw new Error("User not found");
-
-  const userId = user.id;
-
-  let dbUser = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.id, userId),
-  });
-
-  if (dbUser) {
-    console.log(`${userId} : ${taskId} : ${answer}`);
-  } else {
-    console.log(`User ${userId} does not exist`);
-    dbUser = (await db.insert(users).values({ id: userId }).returning())[0];
-  }
 
   const interest: number = answer === "yes" ? 1 : answer === "no" ? -1 : 0;
 
   await db.insert(usersTasksInterest).values({
     taskId,
-    userId,
+    userId: user.id,
     interest,
   });
 };
@@ -56,28 +43,18 @@ export const submitSkillAssessment = async ({
   const { user } = await getServerSession(authOptions);
   if (!user) throw new Error("User not found");
 
-  const userId = user.id;
-  let dbUser = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.id, userId),
-  });
-
-  if (dbUser) {
-  } else {
-    dbUser = (await db.insert(users).values({ id: userId }).returning())[0];
-  }
-
   await db
     .insert(usersSkillsLevels)
     .values({
       skillId,
-      userId,
+      userId: user.id,
       skillLevel,
     })
     .onConflictDoUpdate({
       target: [usersSkillsLevels.userId, usersSkillsLevels.skillId],
       set: { skillLevel },
       where: and(
-        eq(usersSkillsLevels.userId, userId),
+        eq(usersSkillsLevels.userId, user.id),
         eq(usersSkillsLevels.skillId, skillId)
       ),
     });

@@ -6,7 +6,7 @@ export const organizations = pgTable("organization", {
   id: serial("id").notNull().primaryKey(),
   name: text("name").notNull(),
   slug: text("slug").notNull(),
-  owner: text("owner_id")
+  owner: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
 });

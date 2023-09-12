@@ -7,8 +7,8 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@components/*": ["src/components/*"],
-      // https://github.com/facebook/react/issues/24304#issuecomment-1092563688
       "@config/*": ["src/config/*"],
+      // https://github.com/facebook/react/issues/24304#issuecomment-1092563688
       "react": ["./node_modules/@types/react"]
     }
   },

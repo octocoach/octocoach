@@ -343,6 +343,9 @@ importers:
       postgres:
         specifier: ^3.3.5
         version: 3.3.5
+      superjson:
+        specifier: ^1.13.1
+        version: 1.13.1
       zod:
         specifier: ^3.22.2
         version: 3.22.2

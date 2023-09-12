@@ -11,7 +11,8 @@
     "read": "tsx -r dotenv/config src/read.ts",
     "test": "vitest",
     "check": "tsx src/schema/organization/members.ts",
-    "create:org": "tsx -r dotenv/config src/create-org.ts"
+    "create:org": "tsx -r dotenv/config src/create-org.ts",
+    "new:org": "tsx -r dotenv/config src/new-org.ts"
   },
   "dependencies": {
     "@auth/core": "^0.14.0",
@@ -22,6 +23,7 @@
     "got": "^12.6.0",
     "langchain": "^0.0.145",
     "postgres": "^3.3.5",
+    "superjson": "^1.13.1",
     "zod": "^3.22.2"
   },
   "devDependencies": {

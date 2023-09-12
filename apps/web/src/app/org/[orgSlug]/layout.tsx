@@ -1,4 +1,4 @@
-import { db, orgDb } from "@octocoach/db/src/connection";
+import { orgDb } from "@octocoach/db/src/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { ReactNode } from "react";
 

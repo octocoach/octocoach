@@ -3,10 +3,6 @@ import { argv } from "process";
 
 const slug = argv[5];
 
-if (!slug) {
-  console.error("No slug provided");
-}
-
 const fields = {
   id: uuid("id").primaryKey().defaultRandom(),
 };

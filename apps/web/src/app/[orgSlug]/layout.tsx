@@ -1,4 +1,4 @@
-import { makeDb } from "@octocoach/db/src/connection";
+import { db, orgDb } from "@octocoach/db/src/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { ReactNode } from "react";
 
@@ -11,9 +11,9 @@ export default async function Layout({
 }) {
   const organization = { name: params.orgSlug };
 
-  const db = makeDb({ orgSlug: params.orgSlug });
-
-  const members = await db.query.members.findMany({ with: {} });
+  const members = await orgDb(params.orgSlug).query.members.findMany({
+    with: {},
+  });
 
   return (
     <Container element="main">

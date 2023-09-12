@@ -1,15 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
-import * as companies from "./schema/companies";
-import * as jobs from "./schema/jobs";
-import * as organizations from "./schema/organizations";
-import * as skills from "./schema/skills";
-import * as tasks from "./schema/tasks";
-import * as tasksToSkills from "./schema/tasks-to-skills";
-import * as users from "./schema/users";
-import * as usersTasksInterest from "./schema/users-tasks-interest";
-import * as usersSkillsLevels from "./schema/users-skills-levels";
+import postgres, { Sql } from "postgres";
+import defaultSchema from "./schema";
 import { makeOrgSchema } from "./schema/organization/members";
 
 const username = process.env.POSTGRES_USER;
@@ -20,29 +11,29 @@ const database = "octocoach";
 
 export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}`;
 
-const client = postgres(connectionString);
+let client: Sql<{}>;
 
-export const makeDb = ({ orgSlug }: { orgSlug: string }) => {
-  return drizzle(client, {
-    schema: {
-      ...companies,
-      ...jobs,
-      ...organizations,
-      ...skills,
-      ...tasks,
-      ...tasksToSkills,
-      ...users,
-      ...usersTasksInterest,
-      ...usersSkillsLevels,
-      ...makeOrgSchema(orgSlug),
-    },
+if (process.env.NODE_ENV === "production") {
+  client = postgres(connectionString);
+} else {
+  let globalClient = global as typeof globalThis & {
+    client: Sql<{}>;
+  };
+
+  if (!globalClient.client) {
+    globalClient.client = postgres(connectionString);
+  }
+
+  client = globalClient.client;
+}
+
+export const orgDb = (orgSlug: string) =>
+  drizzle(client, {
+    schema: { ...defaultSchema, ...makeOrgSchema(orgSlug) },
   });
-};
 
-export const db = makeDb({ orgSlug: "q15" });
+export const db = drizzle(client, { schema: defaultSchema });
 
 export const end = async () => {
   await client.end();
 };
-
-export type Database = typeof db;

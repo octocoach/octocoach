@@ -62,20 +62,20 @@ const { data } = await octokit.request(
   }
 );
 
-console.log(
-  data
-    .toString()
-    .replace("{slug}", slug)
-    .replace("{schemaDir}", schemaDir)
-    .replace("{connectionString}", connectionString)
-);
+const drizzleConfig = data
+  .toString()
+  .replace("{slug}", slug)
+  .replace("{schemaDir}", schemaDir)
+  .replace("{connectionString}", connectionString);
 
-// const version = "0.19.13";
+const configDir = await mkdtemp(join(tmpdir(), "config-"));
 
-// console.log(`Generating schema for ${orgSlug}`);
+await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 
-// const command = `npx drizzle-kit@${version} push:pg --schema="${schemaDir}/*.ts" --connectionString="${connectionString}" --tablesFilter="${orgSlug}*" --verbose`;
+const version = "0.19.13";
 
-// console.log(command);
+const command = `npx drizzle-kit@${version} push:pg --config="${configDir}/org.drizzle.config.ts"`;
 
-// console.log(await run(command, { env: { SLUG: orgSlug } }));
+console.log(command);
+
+console.log(await run(command, { env: { SLUG: slug } }));

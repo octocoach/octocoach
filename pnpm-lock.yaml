@@ -343,6 +343,9 @@ importers:
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
       octokit:
         specifier: ^3.1.0
         version: 3.1.0

@@ -6,4 +6,5 @@ export default {
   dbCredentials: {
     connectionString: "{connectionString}",
   },
+  verbose: true,
 } satisfies Config;

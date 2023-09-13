@@ -9,6 +9,7 @@ const slug = process.env.SLUG ?? nanoid();
 const fields = {
   id: uuid("id").primaryKey().defaultRandom(),
   firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
 };
 
 export const schema = pgSchema(schemaName(slug));

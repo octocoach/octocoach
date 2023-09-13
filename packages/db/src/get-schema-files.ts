@@ -1,15 +1,15 @@
 import got from "got";
 import minimist from "minimist";
-import { mkdtemp, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { nanoid } from "nanoid";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Octokit } from "octokit";
-import run from "./helpers/run";
 import { connectionString } from "./config/connection";
+import run from "./helpers/run";
+
+const runId = nanoid(6);
 
 const { slug } = minimist(process.argv.slice(2));
-
-console.log("Slug from GetSchema", { slug });
 
 if (!slug) {
   throw new Error("Expected slug");
@@ -36,7 +36,9 @@ if (!Array.isArray(files)) {
   throw new Error("Expected array of files");
 }
 
-const schemaDir = await mkdtemp(join(tmpdir(), "migration-"));
+const schemaDir = `schema_${runId}`;
+
+await mkdir(schemaDir);
 
 for (const file of files) {
   if (!file.download_url) continue;
@@ -45,8 +47,6 @@ for (const file of files) {
 
   await writeFile(join(schemaDir, file.name), body, "utf-8");
 }
-
-const orgSlug = `org_${slug}`;
 
 const { data } = await octokit.request(
   "GET /repos/{owner}/{repo}/contents/{path}",
@@ -68,14 +68,21 @@ const drizzleConfig = data
   .replace("{schemaDir}", schemaDir)
   .replace("{connectionString}", connectionString);
 
-const configDir = await mkdtemp(join(tmpdir(), "config-"));
+const configDir = `config_${runId}`;
+
+await mkdir(configDir);
 
 await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 
 const version = "0.19.13";
 
-const command = `npx drizzle-kit@${version} push:pg --config="${configDir}/org.drizzle.config.ts"`;
+const command = `npx drizzle-kit@${version} push:pg --config=./${configDir}/org.drizzle.config.ts`;
 
 console.log(command);
 
 console.log(await run(command, { env: { SLUG: slug } }));
+
+console.log("Cleaning up 🧹...");
+await rm(schemaDir, { recursive: true });
+await rm(configDir, { recursive: true });
+console.log("Done 🎉");

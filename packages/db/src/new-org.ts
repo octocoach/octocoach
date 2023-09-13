@@ -3,7 +3,7 @@ import { PgDialect, getTableConfig } from "drizzle-orm/pg-core";
 import { argv } from "process";
 import superjson from "superjson";
 import { db, end } from "./connection";
-import { makeOrgSchema } from "./schema/organization/members";
+import { makeOrgSchema } from "./org/members";
 
 export default async function createOrg(slug: string) {
   console.log("Creating org", slug);

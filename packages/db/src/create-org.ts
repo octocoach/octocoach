@@ -5,16 +5,7 @@ import { readFile, readdir } from "fs/promises";
 import postgres from "postgres";
 import { argv } from "process";
 import { connectionString } from "./connection";
-
-function run(command: string) {
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) reject(error);
-      if (stderr) console.warn(stderr);
-      resolve(stdout);
-    });
-  });
-}
+import run from "./helpers/run";
 
 const slug = argv[2];
 

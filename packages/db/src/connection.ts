@@ -1,15 +1,8 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { Sql } from "postgres";
 import defaultSchema from "./schema";
-import { makeOrgSchema } from "./schema/organization/members";
-
-const username = process.env.POSTGRES_USER;
-const password = process.env.POSTGRES_PW;
-const host = "localhost";
-const port = 5432;
-const database = "octocoach";
-
-export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}`;
+import { makeOrgSchema } from "./org/members";
+import { connectionString } from "./config/connection";
 
 let client: Sql<{}>;
 

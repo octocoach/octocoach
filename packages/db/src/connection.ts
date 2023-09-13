@@ -1,8 +1,8 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { Sql } from "postgres";
 import defaultSchema from "./schema";
-import { makeOrgSchema } from "./org/members";
 import { connectionString } from "./config/connection";
+import { makeOrgSchema } from "./org";
 
 let client: Sql<{}>;
 

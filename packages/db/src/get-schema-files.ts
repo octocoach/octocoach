@@ -19,12 +19,12 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-const { data: files } = await octokit.request(
+const { data: schemaFiles } = await octokit.request(
   "GET /repos/{owner}/{repo}/contents/{path}",
   {
     owner: "octocoach",
     repo: "octocoach",
-    path: "packages/db/src/org",
+    path: "packages/db/src/org/schema",
     ref: "avanderbergh/issue70",
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
@@ -32,7 +32,7 @@ const { data: files } = await octokit.request(
   }
 );
 
-if (!Array.isArray(files)) {
+if (!Array.isArray(schemaFiles)) {
   throw new Error("Expected array of files");
 }
 
@@ -40,7 +40,7 @@ const schemaDir = `schema_${runId}`;
 
 await mkdir(schemaDir);
 
-for (const file of files) {
+for (const file of schemaFiles) {
   if (!file.download_url) continue;
 
   const body = await got(file.download_url).text();

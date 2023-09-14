@@ -12,4 +12,4 @@ export const userColumns = {
 };
 
 export const schema = pgSchema(slug);
-export const users = schema.table("user", userColumns);
+export const users = schema.table("org_user", userColumns);

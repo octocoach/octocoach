@@ -5,6 +5,7 @@ import { db } from "@octocoach/db/src/connection";
 import { organizations } from "@octocoach/db/src/schema/organizations";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import createOrg from "@octocoach/db/src/org/create-org";
 
 export async function create({ name, slug }: { name: string; slug: string }) {
   const { user } = await getServerSession(authOptions);
@@ -19,6 +20,8 @@ export async function create({ name, slug }: { name: string; slug: string }) {
     slug,
     owner: user.id,
   });
+
+  await createOrg(slug);
 
   redirect("/org");
 }

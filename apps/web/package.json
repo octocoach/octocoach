@@ -20,6 +20,7 @@
     "@octocoach/ui": "workspace:*",
     "@visx/visx": "^3.3.0",
     "@visx/wordcloud": "^3.3.0",
+    "drizzle-kit": "^0.19.13",
     "hnswlib-node": "^1.4.2",
     "just-shuffle": "^4.2.0",
     "langchain": "^0.0.134",

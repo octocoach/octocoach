@@ -38,5 +38,8 @@
     "tsconfig": "workspace:*",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
+  },
+  "peerDependencies": {
+    "drizzle-kit": "^0.19.13"
   }
 }

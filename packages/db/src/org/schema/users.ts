@@ -1,5 +1,6 @@
 import { pgSchema, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
+import { schemaName } from "./helpers/naming";
 
 const slug = process.env.SLUG ?? nanoid();
 
@@ -11,5 +12,5 @@ export const userColumns = {
   image: text("image"),
 };
 
-export const schema = pgSchema(slug);
-export const users = schema.table("org_user", userColumns);
+export const schema = pgSchema(schemaName(slug));
+export const users = schema.table("user", userColumns);

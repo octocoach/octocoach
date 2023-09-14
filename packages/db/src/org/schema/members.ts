@@ -1,8 +1,6 @@
 import { pgSchema, text, uuid } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
-
-export const schemaName = (slug: string) => `org_${slug}`;
-export const tableName = (slug: string, name: string) => `${slug}_${name}`;
+import { schemaName, tableName } from "./helpers/naming";
 
 const slug = process.env.SLUG ?? nanoid();
 

@@ -11,7 +11,7 @@ const drizzleKitVersion = "0.19.13";
 export default async function createOrg(slug: string) {
   "use server";
 
-  const tmpDir = join("tmp", nanoid(6));
+  const tmpDir = join(".tmp", nanoid(6));
   const configDir = join(tmpDir, "config");
   const schemaDir = join(tmpDir, "schema");
 
@@ -100,9 +100,9 @@ export default async function createOrg(slug: string) {
 
   console.log(await run(command, { env: { SLUG: slug } }));
 
-  console.log("Cleaning up 🧹...");
+  // console.log("Cleaning up 🧹...");
 
-  await rm(tmpDir, { recursive: true });
+  // await rm(tmpDir, { recursive: true });
 
-  console.log("Done 🎉");
+  // console.log("Done 🎉");
 }

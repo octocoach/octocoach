@@ -23,5 +23,5 @@ export async function create({ name, slug }: { name: string; slug: string }) {
 
   await createOrg(slug);
 
-  redirect("/org");
+  redirect(`/org/${slug}`);
 }

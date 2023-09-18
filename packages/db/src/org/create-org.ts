@@ -19,13 +19,19 @@ export default async function createOrg(slug: string) {
     auth: process.env.GITHUB_TOKEN,
   });
 
-  async function fetchContents(
-    owner: string,
-    repo: string,
-    path: string,
-    ref: string,
-    outputDir: string
-  ) {
+  async function fetchContents({
+    owner,
+    repo,
+    path,
+    ref,
+    outputDir,
+  }: {
+    owner: string;
+    repo: string;
+    path: string;
+    ref: string;
+    outputDir: string;
+  }) {
     const { data: contents } = await octokit.request(
       "GET /repos/{owner}/{repo}/contents/{path}",
       {
@@ -53,24 +59,24 @@ export default async function createOrg(slug: string) {
         await writeFile(join(outputDir, item.name), body, "utf-8");
       } else if (item.type === "dir") {
         // If it's a directory, fetch its contents recursively
-        await fetchContents(
+        await fetchContents({
           owner,
           repo,
-          item.path,
+          path: item.path,
           ref,
-          join(outputDir, item.name)
-        );
+          outputDir: join(outputDir, item.name),
+        });
       }
     }
   }
 
-  await fetchContents(
-    "octocoach",
-    "octocoach",
-    "packages/db/src/org/schema",
-    "avanderbergh/issue70",
-    schemaDir
-  );
+  await fetchContents({
+    owner: "octocoach",
+    repo: "octocoach",
+    path: "packages/db/src/org/schema",
+    ref: "avanderbergh/issue70",
+    outputDir: schemaDir,
+  });
 
   const { data } = await octokit.request(
     "GET /repos/{owner}/{repo}/contents/{path}",
@@ -100,9 +106,9 @@ export default async function createOrg(slug: string) {
 
   console.log(await run(command, { env: { SLUG: slug } }));
 
-  // console.log("Cleaning up 🧹...");
+  console.log("Cleaning up 🧹...");
 
-  // await rm(tmpDir, { recursive: true });
+  await rm(tmpDir, { recursive: true });
 
-  // console.log("Done 🎉");
+  console.log("Done 🎉");
 }

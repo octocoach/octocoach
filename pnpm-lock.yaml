@@ -219,6 +219,22 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
+  packages/auth-drizzle-adapter:
+    dependencies:
+      '@auth/core':
+        specifier: ^0.14.0
+        version: 0.14.0
+      drizzle-orm:
+        specifier: ^0.28.6
+        version: 0.28.6(postgres@3.3.5)
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
+    devDependencies:
+      tsconfig:
+        specifier: workspace:^
+        version: link:../tsconfig
+
   packages/azav:
     dependencies:
       '@octocoach/i18n':
@@ -530,6 +546,19 @@ importers:
       tsx:
         specifier: ^3.12.7
         version: 3.12.7
+
+  packages/next-auth-drizzle-adapter:
+    dependencies:
+      '@auth/core':
+        specifier: ^0.14.0
+        version: 0.14.0
+      drizzle-orm:
+        specifier: ^0.28.6
+        version: 0.28.6(postgres@3.3.5)
+    devDependencies:
+      tsconfig:
+        specifier: workspace:^
+        version: link:../tsconfig
 
   packages/trpc:
     dependencies:

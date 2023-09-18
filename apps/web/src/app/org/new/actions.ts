@@ -1,14 +1,14 @@
 "use server";
 
-import authOptions from "@config/next-auth";
+import mkAuthOptions from "@config/next-auth";
 import { db } from "@octocoach/db/src/connection";
+import createOrg from "@octocoach/db/src/org/create-org";
 import { organizations } from "@octocoach/db/src/schema/organizations";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import createOrg from "@octocoach/db/src/org/create-org";
 
 export async function create({ name, slug }: { name: string; slug: string }) {
-  const { user } = await getServerSession(authOptions);
+  const { user } = await getServerSession(mkAuthOptions());
 
   if (!user) redirect("/");
 

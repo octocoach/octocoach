@@ -20,10 +20,23 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-export default (request) => {
+export default (request: NextRequest) => {
   const response = NextResponse.next();
   const locale = detectLocale(request);
+
   response.cookies.set("locale", locale);
+
+  if (
+    request.nextUrl.pathname.startsWith("/org") &&
+    !["/org", "/org/new"].includes(request.nextUrl.pathname)
+  ) {
+    const org = request.nextUrl.pathname.replace("/org/", "");
+    response.cookies.set("org", org);
+    console.log("set org cookie", org);
+  } else if (!request.nextUrl.pathname.startsWith("/api")) {
+    console.log("delete org cookie");
+    response.cookies.delete("org");
+  }
 
   return response;
 };

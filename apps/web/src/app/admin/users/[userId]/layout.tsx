@@ -1,4 +1,4 @@
-import authOptions from "@config/next-auth";
+import mkAuthOptions from "@config/next-auth";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -12,7 +12,7 @@ export default async function Layout({
   children: ReactNode;
   params: { userId: string };
 }) {
-  const { user } = await getServerSession(authOptions);
+  const { user } = await getServerSession(mkAuthOptions());
   return (
     <Container element="section">
       <Stack spacing="loose">

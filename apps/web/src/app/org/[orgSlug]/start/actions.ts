@@ -1,6 +1,6 @@
 "use server";
 
-import authOptions from "@config/next-auth";
+import mkAuthOptions from "@config/next-auth";
 import { and, eq } from "@octocoach/db/src";
 import { db } from "@octocoach/db/src/connection";
 import { Skill } from "@octocoach/db/src/schema/skills";
@@ -10,6 +10,7 @@ import {
 } from "@octocoach/db/src/schema/users-skills-levels";
 import { usersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
 import { getServerSession } from "next-auth";
+import { cookies } from "next/headers";
 
 export type Answer = "yes" | "no" | "dontknow";
 
@@ -20,7 +21,9 @@ export const submitAnswer = async ({
   answer: Answer;
   taskId: number;
 }) => {
-  const { user } = await getServerSession(authOptions);
+  const c = cookies();
+  const org = c.get("org");
+  const { user } = await getServerSession(mkAuthOptions(org?.value));
 
   if (!user) throw new Error("User not found");
 
@@ -40,7 +43,8 @@ export const submitSkillAssessment = async ({
   skillId: Skill["id"];
   skillLevel: SkillLevel;
 }) => {
-  const { user } = await getServerSession(authOptions);
+  const org = cookies().get("org");
+  const { user } = await getServerSession(mkAuthOptions(org?.value));
   if (!user) throw new Error("User not found");
 
   await db

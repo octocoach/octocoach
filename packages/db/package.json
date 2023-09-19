@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "generate": "drizzle-kit generate:pg",
-    "generate:org": "drizzle-kit generate:pg --schema=\"./src/schema/organization/**/*.ts\" --out=\"org\"",
+    "generate:org": "drizzle-kit generate:pg --config=./org.drizzle.config.ts",
     "migrate": "tsx -r dotenv/config src/migrate.ts",
     "seed": "tsx -r dotenv/config src/seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",

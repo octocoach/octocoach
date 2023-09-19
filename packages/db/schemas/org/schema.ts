@@ -8,6 +8,7 @@ import {
   skillTable,
   skillTypeTable,
 } from "../common/skill";
+import { skillsTasksTable } from "../common/skills-tasks";
 import { taskTable } from "../common/task";
 import { mkOrgAccountTable } from "./auth/account";
 import { mkOrgSessionTable } from "./auth/session";
@@ -41,4 +42,6 @@ export const mkOrgSchema = (slug: string) => ({
   skillCategoryTable,
   skillSubcategoryTable,
   skillTable,
+
+  skillsTasksTable,
 });

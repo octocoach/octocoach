@@ -30,6 +30,7 @@ export const mkOrgSchema = (slug: string) => ({
 
   // common
   organizationTable: mkOrganizationTable(mkOrgUserTable(slug)),
+  organizationTableRelations: mkOrgUserTableRelations(slug),
 
   employerTable,
 

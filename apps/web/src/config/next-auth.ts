@@ -1,13 +1,13 @@
 import { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db, orgDb } from "@octocoach/db/src/connection";
+import { authDrizzleAdapter } from "@octocoach/auth-drizzle-adapter";
 
 export default function mkAuthOptions(org?: string): NextAuthOptions {
   const adapterDb = org ? orgDb(org) : db;
   console.log(org ? `Using org ${org} db` : "Using default db");
   return {
-    adapter: DrizzleAdapter(adapterDb),
+    adapter: authDrizzleAdapter(adapterDb),
     callbacks: {
       async session({ session, user }) {
         return {

@@ -4,6 +4,7 @@
   "private": "true",
   "dependencies": {
     "@auth/core": "^0.14.0",
+    "@octocoach/db": "workspace:*",
     "drizzle-orm": "^0.28.6",
     "nanoid": "^4.0.2"
   },

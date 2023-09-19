@@ -18,6 +18,7 @@
     "@octocoach/i18n": "workspace:^",
     "@octocoach/trpc": "workspace:^",
     "@octocoach/ui": "workspace:*",
+    "@octocoach/auth-drizzle-adapter": "workspace:*",
     "@visx/visx": "^3.3.0",
     "@visx/wordcloud": "^3.3.0",
     "drizzle-kit": "^0.19.13",

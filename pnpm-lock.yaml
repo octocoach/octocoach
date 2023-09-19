@@ -133,6 +133,9 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: ^0.4.0
         version: 0.4.0
+      '@octocoach/auth-drizzle-adapter':
+        specifier: workspace:*
+        version: link:../../packages/auth-drizzle-adapter
       '@octocoach/azav':
         specifier: workspace:^
         version: link:../../packages/azav
@@ -224,6 +227,9 @@ importers:
       '@auth/core':
         specifier: ^0.14.0
         version: 0.14.0
+      '@octocoach/db':
+        specifier: workspace:*
+        version: link:../db
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(postgres@3.3.5)
@@ -546,19 +552,6 @@ importers:
       tsx:
         specifier: ^3.12.7
         version: 3.12.7
-
-  packages/next-auth-drizzle-adapter:
-    dependencies:
-      '@auth/core':
-        specifier: ^0.14.0
-        version: 0.14.0
-      drizzle-orm:
-        specifier: ^0.28.6
-        version: 0.28.6(postgres@3.3.5)
-    devDependencies:
-      tsconfig:
-        specifier: workspace:^
-        version: link:../tsconfig
 
   packages/trpc:
     dependencies:

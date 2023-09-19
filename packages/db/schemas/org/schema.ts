@@ -9,13 +9,12 @@ import {
   skillTypeTable,
 } from "../common/skill";
 import { taskTable } from "../common/task";
-import { schemaName } from "../helpers/naming";
 import { mkOrgAccountTable } from "./auth/account";
 import { mkOrgSessionTable } from "./auth/session";
 import { mkOrgUserTable, mkOrgUserTableRelations } from "./auth/user";
 import { mkOrgVerificationTokenTable } from "./auth/verification-token";
 
-export const mkOrgPgSchema = (slug: string) => pgSchema(schemaName(slug));
+export const mkOrgPgSchema = (slug: string) => pgSchema(`org_${slug}`);
 
 export const mkOrgSchema = (slug: string) => ({
   // auth

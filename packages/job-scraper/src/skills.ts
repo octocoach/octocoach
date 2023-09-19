@@ -1,5 +1,5 @@
 import { eq, sql } from "@octocoach/db/src";
-import { Database } from "@octocoach/db/src/connection";
+import { type Database } from "@octocoach/db/src/connection";
 import { makeCosineDistance } from "@octocoach/db/src/embedding";
 import { skills, skillsMissing } from "@octocoach/db/src/schema/skills";
 import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";

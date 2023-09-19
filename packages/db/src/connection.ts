@@ -27,6 +27,8 @@ export const orgDb = (orgSlug: string) =>
 
 export const db = drizzle(client, { schema: defaultSchema });
 
+export type Database = typeof db;
+
 export const end = async () => {
   await client.end();
 };

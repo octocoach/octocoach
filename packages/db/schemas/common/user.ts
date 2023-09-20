@@ -4,12 +4,12 @@ export const mkUserCols = () => ({
   id: text("id").primaryKey(),
   name: text("name"),
   email: text("email").notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
 });
 
-const userTable = pgTable("user", mkUserCols());
-export type UserTable = typeof userTable;
+const _userTable = pgTable("user", mkUserCols());
+export type UserTable = typeof _userTable;
 
-const orgUserTable = pgSchema("slug" as string).table("user", mkUserCols());
-export type OrgUserTable = typeof orgUserTable;
+const _orgUserTable = pgSchema("slug" as string).table("user", mkUserCols());
+export type OrgUserTable = typeof _orgUserTable;

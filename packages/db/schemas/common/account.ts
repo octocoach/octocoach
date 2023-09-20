@@ -1,14 +1,14 @@
 import type { AdapterAccount } from "@auth/core/adapters";
-import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
+import { integer, primaryKey, text } from "drizzle-orm/pg-core";
 import type { OrgUserTable, UserTable } from "./user";
 
 export const mkAccountCols = (users: UserTable | OrgUserTable) => ({
-  userId: text("userId")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   type: text("type").$type<AdapterAccount["type"]>().notNull(),
   provider: text("provider").notNull(),
-  providerAccountId: text("providerAccountId").notNull(),
+  providerAccountId: text("provider_account_id").notNull(),
   refresh_token: text("refresh_token"),
   access_token: text("access_token"),
   expires_at: integer("expires_at"),

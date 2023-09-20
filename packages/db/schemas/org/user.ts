@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
-import { mkUserCols } from "../../common/user";
-import { mkOrgPgSchema } from "../schema";
-import { mkOrganizationTable } from "../../common/organization";
+import { mkUserCols } from "../common/user";
+import { mkOrgPgSchema } from "./schema";
+import { mkOrganizationTable } from "../common/organization";
 
 export const mkOrgUserTable = (slug: string) =>
   mkOrgPgSchema(slug).table("user", mkUserCols());

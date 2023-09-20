@@ -1,8 +1,8 @@
-import { mkOrgPgSchema } from "../schema";
+import { mkOrgPgSchema } from "./schema";
 import {
   mkVerificationTokensCols,
   verificationTokenKey,
-} from "../../common/verification-token";
+} from "../common/verification-token";
 
 export const mkOrgVerificationTokenTable = (slug: string) =>
   mkOrgPgSchema(slug).table(

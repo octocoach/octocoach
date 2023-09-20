@@ -1,5 +1,5 @@
-import { accountKey, mkAccountCols } from "../../common/account";
-import { mkOrgPgSchema } from "../schema";
+import { accountKey, mkAccountCols } from "../common/account";
+import { mkOrgPgSchema } from "./schema";
 import { mkOrgUserTable } from "./user";
 
 export const mkOrgAccountTable = (slug: string) =>

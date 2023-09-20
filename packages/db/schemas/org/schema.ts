@@ -10,10 +10,15 @@ import {
 } from "../common/skill";
 import { skillsTasksTable } from "../common/skills-tasks";
 import { taskTable } from "../common/task";
-import { mkOrgAccountTable } from "./auth/account";
-import { mkOrgSessionTable } from "./auth/session";
-import { mkOrgUserTable, mkOrgUserTableRelations } from "./auth/user";
-import { mkOrgVerificationTokenTable } from "./auth/verification-token";
+import { mkOrgAccountTable } from "./account";
+import { mkOrgSessionTable } from "./session";
+import { mkOrgUserTable, mkOrgUserTableRelations } from "./user";
+import { mkOrgVerificationTokenTable } from "./verification-token";
+import { skillsMissingTasksTable } from "../common/skills-missing-tasks";
+import {
+  mkUsersSkillLevelsTable,
+  mkUsersSkillLevelsTableRelations,
+} from "./users-skill-levels";
 
 export const mkOrgPgSchema = (slug: string) => pgSchema(`org_${slug}`);
 
@@ -44,4 +49,8 @@ export const mkOrgSchema = (slug: string) => ({
   skillTable,
 
   skillsTasksTable,
+  skillsMissingTasksTable,
+
+  usersSkillLevelsTable: mkUsersSkillLevelsTable(slug),
+  usersSkillLevelsTableRelations: mkUsersSkillLevelsTableRelations(slug),
 });

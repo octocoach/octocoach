@@ -1,7 +1,7 @@
-import * as account from "./auth/account";
-import * as session from "./auth/session";
-import * as user from "./auth/user";
-import * as verificationToken from "./auth/verification-token";
+import * as account from "./account";
+import * as session from "./session";
+import * as user from "./user";
+import * as verificationToken from "./verification-token";
 
 import {
   mkOrganizationTable,
@@ -12,6 +12,9 @@ import * as employer from "../common/employer";
 import * as job from "../common/job";
 import * as skill from "../common/skill";
 import * as task from "../common/task";
+
+import * as skillsTasks from "../common/skills-tasks";
+import * as skillsMissingTasks from "../common/skills-missing-tasks";
 
 export const { accountTable } = account;
 export const { sessionTable } = session;
@@ -32,6 +35,9 @@ export const {
   skillTable,
   skillMissingTable,
 } = skill;
+
+export const { skillsMissingTasksTable } = skillsMissingTasks;
+export const { skillsTasksTable } = skillsTasks;
 
 export const publicSchema = {
   // auth
@@ -54,4 +60,7 @@ export const publicSchema = {
   ...task,
 
   ...skill,
+
+  ...skillsTasks,
+  ...skillsMissingTasks,
 };

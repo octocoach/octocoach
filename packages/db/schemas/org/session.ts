@@ -1,5 +1,5 @@
-import { mkSessionCols } from "../../common/session";
-import { mkOrgPgSchema } from "../schema";
+import { mkSessionCols } from "../common/session";
+import { mkOrgPgSchema } from "./schema";
 import { mkOrgUserTable } from "./user";
 
 export const mkOrgSessionTable = (slug: string) =>

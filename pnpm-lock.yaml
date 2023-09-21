@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   drizzle-kit@0.19.13:
-    hash: ghy6gh6ofzvza65tifa6ji6joa
+    hash: p3zz6gchwwiefymdghvoeybt5i
     path: patches/drizzle-kit@0.19.13.patch
 
 importers:
@@ -170,7 +170,7 @@ importers:
         version: 3.3.0(react@18.2.0)
       drizzle-kit:
         specifier: ^0.19.13
-        version: 0.19.13(patch_hash=ghy6gh6ofzvza65tifa6ji6joa)
+        version: 0.19.13(patch_hash=p3zz6gchwwiefymdghvoeybt5i)
       hnswlib-node:
         specifier: ^1.4.2
         version: 1.4.2
@@ -400,7 +400,7 @@ importers:
         version: 16.0.3
       drizzle-kit:
         specifier: ^0.19.13
-        version: 0.19.13(patch_hash=ghy6gh6ofzvza65tifa6ji6joa)
+        version: 0.19.13(patch_hash=p3zz6gchwwiefymdghvoeybt5i)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -10614,7 +10614,7 @@ packages:
     dependencies:
       wordwrap: 1.0.0
 
-  /drizzle-kit@0.19.13(patch_hash=ghy6gh6ofzvza65tifa6ji6joa):
+  /drizzle-kit@0.19.13(patch_hash=p3zz6gchwwiefymdghvoeybt5i):
     resolution: {integrity: sha512-Rba5VW1O2JfJlwVBeZ8Zwt2E2us5oZ08PQBDiVSGlug53TOc8hzXjblZFuF+dnll9/RQEHrkzBmJFgqTvn5Rxg==}
     hasBin: true
     dependencies:

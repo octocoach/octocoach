@@ -4,16 +4,7 @@ import { mkOrgUserTable } from "./user";
 import { text } from "drizzle-orm/pg-core";
 import { skillTable } from "../common/skill";
 import { relations } from "drizzle-orm";
-
-export const skillLevelEnum = pgEnum("skill_level", [
-  "novice",
-  "advanced_beginner",
-  "competent",
-  "proficient",
-  "expert",
-]);
-
-export type SkillLevel = (typeof skillLevelEnum.enumValues)[number];
+import { skillLevelEnum } from "../common/skill-level";
 
 export const mkUsersSkillLevelsTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);

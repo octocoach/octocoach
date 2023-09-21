@@ -8,7 +8,7 @@ const db = drizzle(sql);
 
 console.log("Starting  Migration 🛫");
 
-await migrate(db, { migrationsFolder: "drizzle" });
+await migrate(db, { migrationsFolder: "drizzle-public" });
 
 console.log("Done! 🛬");
 

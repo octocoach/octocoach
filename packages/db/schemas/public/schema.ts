@@ -1,3 +1,4 @@
+import * as skillLevel from "../common/skill-level";
 import * as account from "./account";
 import * as session from "./session";
 import * as user from "./user";
@@ -13,8 +14,8 @@ import * as job from "../common/job";
 import * as skill from "../common/skill";
 import * as task from "../common/task";
 
-import * as skillsTasks from "../common/skills-tasks";
 import * as skillsMissingTasks from "../common/skills-missing-tasks";
+import * as skillsTasks from "../common/skills-tasks";
 
 export const { accountTable } = account;
 export const { sessionTable } = session;
@@ -28,6 +29,7 @@ export const organizationTableRelations =
 export const { employerTable } = employer;
 export const { jobTable, jobSourceEnum } = job;
 export const { taskTable } = task;
+export const { skillLevelEnum } = skillLevel;
 export const {
   skillTypeTable,
   skillCategoryTable,
@@ -59,6 +61,7 @@ export const publicSchema = {
 
   ...task,
 
+  ...skillLevel,
   ...skill,
 
   ...skillsTasks,

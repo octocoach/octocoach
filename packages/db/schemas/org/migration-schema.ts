@@ -10,6 +10,6 @@ export const {
   accountTable,
   sessionTable,
   verificationTokenTable,
-  organizationTable,
-  organizationTableRelations,
+  usersSkillLevelsTable,
+  usersSkillLevelsTableRelations,
 } = mkOrgSchema(slug);

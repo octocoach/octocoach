@@ -1,6 +1,6 @@
 import { eq } from "@octocoach/db/src/index";
-import { companies } from "@octocoach/db/src/schema/companies";
-import { jobs } from "@octocoach/db/src/schema/jobs";
+import { employerTable } from "@octocoach/db/schemas/common/employer";
+import { jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
@@ -147,11 +147,11 @@ export class IndeedScraper extends JobScraper {
           continue;
         }
 
-        let company = await this.db.query.companies.findFirst({
-          where: (companies, { eq }) => eq(companies.indeed, companySourceId),
+        let employer = await this.db.query.employerTable.findFirst({
+          where: (employers, { eq }) => eq(employers.indeed, companySourceId),
         });
 
-        if (!company) {
+        if (!employer) {
           let companyUrl: string | undefined;
 
           if (!companySourceId.startsWith("unknown")) {
@@ -181,7 +181,7 @@ export class IndeedScraper extends JobScraper {
           }
 
           const newCompany = await this.db
-            .insert(companies)
+            .insert(employerTable)
             .values({
               name: companyName,
               indeed: companySourceId,
@@ -189,7 +189,7 @@ export class IndeedScraper extends JobScraper {
             })
             .returning();
 
-          company = newCompany[0];
+          employer = newCompany[0];
         }
 
         const location = await (
@@ -206,15 +206,15 @@ export class IndeedScraper extends JobScraper {
 
         const job = await this.db
           .select()
-          .from(jobs)
-          .where(eq(jobs.sourceId, sourceId));
+          .from(jobTable)
+          .where(eq(jobTable.sourceId, sourceId));
 
         if (job.length) {
           console.log(`${job[0].title} already exists`);
         } else {
           await this.processJob(
             {
-              companyId: company.id,
+              employerId: employer.id,
               location,
               source: "indeed",
               sourceId,

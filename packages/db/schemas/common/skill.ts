@@ -13,10 +13,16 @@ export const skillTypeTable = pgTable("skill_type", {
   name: text("name").notNull(),
 });
 
+export type SkillType = typeof skillTypeTable.$inferSelect;
+export type NewSkillType = typeof skillTypeTable.$inferInsert;
+
 export const skillCategoryTable = pgTable("skill_category", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
 });
+
+export type SkillCategory = typeof skillCategoryTable.$inferSelect;
+export type NewSkillCategory = typeof skillCategoryTable.$inferInsert;
 
 export const skillSubcategoryTable = pgTable("skill_subcategory", {
   id: integer("id").primaryKey(),
@@ -28,6 +34,9 @@ export const skillSubcategoryTable = pgTable("skill_subcategory", {
       onUpdate: "cascade",
     }),
 });
+
+export type SkillSubcategory = typeof skillSubcategoryTable.$inferSelect;
+export type NewSkillSubcategory = typeof skillSubcategoryTable.$inferInsert;
 
 export const skillTable = pgTable("skill", {
   id: text("id").primaryKey(),
@@ -53,9 +62,15 @@ export const skillTable = pgTable("skill", {
   aliases: text("aliases").array(),
 });
 
+export type NewSkill = typeof skillTable.$inferInsert;
+export type Skill = typeof skillTable.$inferSelect;
+
 export const skillMissingTable = pgTable("skill_missing", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   embedding: embedding("embedding").notNull(),
   created: timestamp("created").notNull().defaultNow(),
 });
+
+export type NewSkillMissing = typeof skillMissingTable.$inferInsert;
+export type SkillMissing = typeof skillMissingTable.$inferSelect;

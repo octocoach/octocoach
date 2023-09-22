@@ -1,9 +1,12 @@
-import { eq, sql } from "@octocoach/db/src";
-import { type Database } from "@octocoach/db/src/connection";
-import { makeCosineDistance } from "@octocoach/db/src/embedding";
-import { skills, skillsMissing } from "@octocoach/db/src/schema/skills";
-import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
-import { tasksToSkillsMissing } from "@octocoach/db/src/schema/tasks-to-skills-missing";
+import { type Database } from "@octocoach/db/connection";
+import { makeCosineDistance } from "@octocoach/db/data-types/embedding";
+import { eq, sql } from "@octocoach/db/operators";
+import {
+  skillMissingTable,
+  skillTable,
+} from "@octocoach/db/schemas/common/skill";
+import { skillsMissingTasksTable } from "@octocoach/db/schemas/common/skills-missing-tasks";
+import { skillsTasksTable } from "@octocoach/db/schemas/common/skills-tasks";
 import chalk from "chalk";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
@@ -26,7 +29,7 @@ const createSkillMissing = async (description: string, db: Database) => {
 
   return (
     await db
-      .insert(skillsMissing)
+      .insert(skillMissingTable)
       .values({
         name: description,
         embedding,
@@ -38,7 +41,7 @@ const createSkillMissing = async (description: string, db: Database) => {
 const findWithStringMatch = async (description: string, db: Database) => {
   const removeParens = (input: string) => input.replace(/\s*\([^)]*\)/g, "");
 
-  return db.query.skills.findFirst({
+  return db.query.skillTable.findFirst({
     where: (skills, { or, sql }) =>
       or(
         sql`${skills.name} ILIKE ${description}`,
@@ -97,16 +100,16 @@ const findWithLLM = async (description: string, db: Database) => {
 
   const order = sql`
   CASE
-    WHEN ${skills.descriptionEmbedding} IS NULL
-    THEN (${distance(skills.nameEmbedding)})
+    WHEN ${skillTable.descriptionEmbedding} IS NULL
+    THEN (${distance(skillTable.nameEmbedding)})
     ELSE 
       (
-        (${distance(skills.nameEmbedding)}) + 
-        (${distance(skills.descriptionEmbedding)})
+        (${distance(skillTable.nameEmbedding)}) + 
+        (${distance(skillTable.descriptionEmbedding)})
       ) / 2
   END`;
 
-  const results = await db.select().from(skills).orderBy(order).limit(10);
+  const results = await db.select().from(skillTable).orderBy(order).limit(10);
 
   const possibleMatches = results.map(({ name }) => `- ${name}`).join("\n");
 
@@ -133,16 +136,16 @@ const findWithLLM = async (description: string, db: Database) => {
     );
 
     await db
-      .update(skills)
+      .update(skillTable)
       .set({ aliases })
-      .where(eq(skills.id, selectedSkill.id));
+      .where(eq(skillTable.id, selectedSkill.id));
 
     return selectedSkill;
   }
 };
 
 const findSkillMissing = async (description: string, db: Database) =>
-  db.query.skillsMissing.findFirst({
+  db.query.skillMissingTable.findFirst({
     where: (skillsMissing, { eq }) => eq(skillsMissing.name, description),
   });
 
@@ -159,7 +162,7 @@ export const matchSkill = async ({
 
   const skillMissing = await findSkillMissing(description, db);
   if (skillMissing) {
-    await db.insert(tasksToSkillsMissing).values({
+    await db.insert(skillsMissingTasksTable).values({
       taskId,
       skillMissingId: skillMissing.id,
     });
@@ -174,13 +177,13 @@ export const matchSkill = async ({
     (await findWithLLM(description, db));
 
   if (skill) {
-    await db.insert(tasksToSkills).values({ taskId, skillId: skill.id });
+    await db.insert(skillsTasksTable).values({ taskId, skillId: skill.id });
     console.log(chalk.magenta(`Skill: ${description} -> ${skill.name}`));
     return;
   }
 
   const newSkillMissing = await createSkillMissing(description, db);
-  await db.insert(tasksToSkillsMissing).values({
+  await db.insert(skillsMissingTasksTable).values({
     taskId,
     skillMissingId: newSkillMissing.id,
   });

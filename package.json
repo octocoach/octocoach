@@ -1,4 +1,5 @@
 {
+  "name": "octocoach",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -16,7 +17,6 @@
     "vitest": "^0.33.0"
   },
   "packageManager": "pnpm@7.15.0",
-  "name": "octocoach",
   "pnpm": {
     "patchedDependencies": {
       "drizzle-kit@0.19.13": "patches/drizzle-kit@0.19.13.patch"

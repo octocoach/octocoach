@@ -1,4 +1,4 @@
-import { db, end } from "@octocoach/db/src/connection";
+import { db, end } from "@octocoach/db/connection";
 import { chromium } from "playwright";
 import { IndeedScraper } from "./indeed/index";
 

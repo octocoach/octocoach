@@ -32,3 +32,6 @@ export const jobTable = pgTable("job", {
   location: text("location"),
   created: timestamp("created").notNull().defaultNow(),
 });
+
+export type NewJob = typeof jobTable.$inferInsert;
+export type Job = typeof jobTable.$inferSelect;

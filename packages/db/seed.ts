@@ -18,7 +18,7 @@ type SkillSubcategory = (typeof lightcastSkills)[0]["subcategory"] & {
 };
 
 const access_token = await getAccessToken();
-const { embedQuery } = new OpenAIEmbeddings();
+const e = new OpenAIEmbeddings();
 
 console.log("🛫");
 console.log("Getting Lightcast Skills");
@@ -35,9 +35,10 @@ const { skillCategories, skillSubcategories, skillTypes } =
         skillTypes[type.id] = type;
       }
 
-      if (category && !skillCategories[category.id]) {
-        skillCategories[category.id] = category;
-
+      if (category) {
+        if (!skillCategories[category.id]) {
+          skillCategories[category.id] = category;
+        }
         if (subcategory && !skillSubcategories[subcategory.id]) {
           skillSubcategories[subcategory.id] = {
             ...subcategory,
@@ -79,10 +80,10 @@ const mapSkill = async (skill: LightcastSkill): Promise<Skill> => {
   let nameEmbedding: number[];
   let descriptionEmbedding: number[] | null;
   try {
-    nameEmbedding = await embedQuery(skill.name);
+    nameEmbedding = await e.embedQuery(skill.name);
 
     descriptionEmbedding = skill.description
-      ? await embedQuery(skill.description)
+      ? await e.embedQuery(skill.description)
       : null;
   } catch (err) {
     console.error(`Error embedding ${skill.name} \n ${skill.description}}`);
@@ -109,7 +110,7 @@ console.log("Inserting Skills");
 const mapsSkillBar = new cliProgress.SingleBar({}, cliProgress.Presets.rect);
 mapsSkillBar.start(lightcastSkills.length, 0);
 
-const chunkSize = 1;
+const chunkSize = 512;
 for (let i = 0; i < lightcastSkills.length; i += chunkSize) {
   const chunk = await Promise.all(
     lightcastSkills.slice(i, i + chunkSize).map(mapSkill)

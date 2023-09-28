@@ -15,12 +15,12 @@ import * as skillLevel from "../common/skill-level";
 import * as skillType from "../common/skill-type";
 import * as skillCategory from "../common/skill-category";
 import * as skillSubcategory from "../common/skill-subcategory";
-import * as skill from "../common/skill";
+import * as skill from "./skill";
 import * as skillMissing from "../common/skill-missing";
 import * as skillsMissingTasks from "../common/skills-missing-tasks";
 import * as skillsTasks from "../common/skills-tasks";
 
-import * as task from "../common/task";
+import * as task from "./task";
 
 export const { accountTable } = account;
 export const { sessionTable } = session;

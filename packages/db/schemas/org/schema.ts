@@ -3,35 +3,38 @@ import { employerTable } from "../common/employer";
 import { jobTable } from "../common/job";
 import { mkOrganizationTable } from "../common/organization";
 
-import { skillsTasksTable } from "../common/skills-tasks";
-import { taskTable } from "../common/task";
-import { mkOrgAccountTable } from "./account";
-import { mkOrgSessionTable } from "./session";
-import { mkOrgUserTable, mkOrgUserTableRelations } from "./user";
-import { mkOrgVerificationTokenTable } from "./verification-token";
-import { skillsMissingTasksTable } from "../common/skills-missing-tasks";
+import { mkSkillRelations, skillTable } from "./skill";
 import {
-  mkUsersSkillLevelsTable,
-  mkUsersSkillLevelsRelations,
-} from "./users-skill-levels";
-import { skillTypeTable, skillTypeRelations } from "../common/skill-type";
-import {
-  skillCategoryTable,
   skillCategoryRelations,
+  skillCategoryTable,
 } from "../common/skill-category";
 import {
-  skillSubcategoryTable,
-  skillSubcategoryRelations,
-} from "../common/skill-subcategory";
-import { skillTable, skillRelations } from "../common/skill";
-import {
-  skillMissingTable,
   skillMissingRelations,
+  skillMissingTable,
 } from "../common/skill-missing";
+import {
+  skillSubcategoryRelations,
+  skillSubcategoryTable,
+} from "../common/skill-subcategory";
+import { skillTypeRelations, skillTypeTable } from "../common/skill-type";
+import {
+  skillsMissingTasksTable,
+  skillsMissingTasksRelations,
+} from "../common/skills-missing-tasks";
+import { skillsTasksTable, skillsTasksRelations } from "../common/skills-tasks";
+import { mkOrgAccountTable } from "./account";
+import { mkOrgSessionTable } from "./session";
+import { mkTaskRelations, taskTable } from "./task";
+import { mkOrgUserTable, mkOrgUserTableRelations } from "./user";
+import {
+  mkUsersSkillLevelsRelations,
+  mkUsersSkillLevelsTable,
+} from "./users-skill-levels";
 import {
   mkUsersTaskInterestRelations,
   mkUsersTaskInterestTable,
 } from "./users-task-interest";
+import { mkOrgVerificationTokenTable } from "./verification-token";
 
 export const mkOrgPgSchema = (slug: string) => pgSchema(`org_${slug}`);
 
@@ -55,6 +58,7 @@ export const mkOrgSchema = (slug: string) => ({
   jobTable,
 
   taskTable,
+  taskRelations: mkTaskRelations(slug),
 
   skillTypeTable,
   skillTypeRelations,
@@ -63,12 +67,14 @@ export const mkOrgSchema = (slug: string) => ({
   skillSubcategoryTable,
   skillSubcategoryRelations,
   skillTable,
-  skillRelations,
+  skillRelations: mkSkillRelations(slug),
   skillMissingTable,
   skillMissingRelations,
 
   skillsTasksTable,
+  skillsTasksRelations,
   skillsMissingTasksTable,
+  skillsMissingTasksRelations,
 
   // org
   usersSkillLevelsTable: mkUsersSkillLevelsTable(slug),

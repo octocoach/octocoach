@@ -30,7 +30,7 @@ export default (request: NextRequest) => {
     request.nextUrl.pathname.startsWith("/org") &&
     !["/org", "/org/new"].includes(request.nextUrl.pathname)
   ) {
-    const org = request.nextUrl.pathname.replace("/org/", "");
+    const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);
     console.log("set org cookie", org);
   } else if (!request.nextUrl.pathname.startsWith("/api")) {

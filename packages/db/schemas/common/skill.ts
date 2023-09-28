@@ -1,7 +1,5 @@
-import { relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { embedding } from "../data-types/embedding";
-import { skillsTasksTable } from "./skills-tasks";
 import { skillSubcategoryTable } from "./skill-subcategory";
 import { skillTypeTable } from "./skill-type";
 
@@ -31,16 +29,3 @@ export const skillTable = pgTable("skill", {
     }),
   aliases: text("aliases").array(),
 });
-
-export const skillRelations = relations(skillTable, ({ one, many }) => ({
-  subcategory: one(skillSubcategoryTable, {
-    fields: [skillTable.subcategoryId],
-    references: [skillSubcategoryTable.id],
-  }),
-  type: one(skillTypeTable, {
-    fields: [skillTable.typeId],
-    references: [skillTypeTable.id],
-  }),
-
-  skillsTasks: many(skillsTasksTable),
-}));

@@ -14,12 +14,12 @@ export default async function Page({
   const tasks = shuffle(
     await db.query.taskTable.findMany({
       with: {
-        usersTasksInterest: true,
-        tasksToSkills: {
+        usersTaskInterest: true,
+        skillsTasks: {
           with: {
             skill: {
               with: {
-                usersSkillsLevels: true,
+                usersSkillLevels: true,
               },
             },
           },
@@ -27,6 +27,8 @@ export default async function Page({
       },
     })
   );
+
+  console.log("Tasks", tasks);
 
   return <TaskCheck tasks={tasks} />;
 }

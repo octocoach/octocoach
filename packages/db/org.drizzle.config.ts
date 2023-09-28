@@ -1,6 +1,9 @@
 import type { Config } from "drizzle-kit";
 
 export default {
-  schema: "./schemas/org/migration-schema.ts",
-  out: "./drizzle-org",
+  schema: "{schemasDir}/org/migration-schema.ts",
+  schemaFilter: "org_{slug}",
+  dbCredentials: {
+    connectionString: "{connectionString}",
+  },
 } satisfies Config;

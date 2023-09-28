@@ -13,7 +13,7 @@ export default async function createOrg(slug: string) {
 
   const tmpDir = join(".tmp", nanoid(6));
   const configDir = join(tmpDir, "config");
-  const schemaDir = join(tmpDir, "schema");
+  const schemasDir = join(tmpDir, "schemas");
 
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -73,9 +73,9 @@ export default async function createOrg(slug: string) {
   await fetchContents({
     owner: "octocoach",
     repo: "octocoach",
-    path: "packages/db/src/org/schema",
+    path: "packages/db/schemas",
     ref: "avanderbergh/issue70",
-    outputDir: schemaDir,
+    outputDir: schemasDir,
   });
 
   const { data } = await octokit.request(
@@ -95,7 +95,7 @@ export default async function createOrg(slug: string) {
   const drizzleConfig = data
     .toString()
     .replace("{slug}", slug)
-    .replace("{schemaDir}", schemaDir)
+    .replace("{schemasDir}", schemasDir)
     .replace("{connectionString}", connectionString);
 
   await mkdir(configDir);

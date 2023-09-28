@@ -1,6 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import { db, orgDb } from "@octocoach/db/src/connection";
+import { db, orgDb } from "@octocoach/db/connection";
 import { authDrizzleAdapter } from "@octocoach/auth-drizzle-adapter";
 
 export default function mkAuthOptions(org?: string): NextAuthOptions {

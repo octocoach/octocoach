@@ -2,5 +2,5 @@ import type { Config } from "drizzle-kit";
 
 export default {
   schema: "./schemas/public/schema.ts",
-  out: "./drizzle-public",
+  out: "./migrations-public",
 } satisfies Config;

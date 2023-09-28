@@ -6,7 +6,7 @@
   "scripts": {
     "generate": "drizzle-kit generate:pg",
     "generate:org": "drizzle-kit generate:pg --config=./org.drizzle.config.ts",
-    "migrate": "tsx -r dotenv/config src/migrate.ts",
+    "migrate": "tsx -r dotenv/config ./migrate.ts",
     "seed": "tsx -r dotenv/config seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
     "test": "vitest",

@@ -1,22 +1,31 @@
 {
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5432,
-            "driver": "PostgreSQL",
-            "name": "octocoach local",
-            "database": "octocoach",
-            "username": "octocoach"
-        },
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5432,
-            "driver": "PostgreSQL",
-            "name": "octocoach local",
-            "database": "octocoach_test",
-            "username": "octocoach"
-        }
-    ]
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "octocoach local",
+      "database": "octocoach",
+      "username": "octocoach"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "octocoach local",
+      "database": "octocoach_test",
+      "username": "octocoach"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "octocoach local",
+      "database": "octocoach_1",
+      "username": "octocoach"
+    }
+  ]
 }

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "lib": ["ES2015", "DOM"],
-    "module": "ESNext"
+    "module": "ES2022",
+    "target": "ES2022"
   },
+  "include": ["."],
   "extends": "tsconfig/base.json"
 }

@@ -1,6 +1,10 @@
 import { integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
-import { skillMissingTable } from "./skill";
 import { taskTable } from "./task";
+import { skillMissingTable } from "./skill-missing";
+import { relations } from "drizzle-orm";
+
+export type SkillMissing = typeof skillsMissingTasksTable.$inferSelect;
+export type NewSkillMissing = typeof skillsMissingTasksTable.$inferInsert;
 
 export const skillsMissingTasksTable = pgTable(
   "skills_missing_tasks",
@@ -13,4 +17,18 @@ export const skillsMissingTasksTable = pgTable(
       .references(() => taskTable.id),
   },
   ({ skillMissingId, taskId }) => ({ pk: primaryKey(skillMissingId, taskId) })
+);
+
+export const skillsMissingTasksRelations = relations(
+  skillsMissingTasksTable,
+  ({ one }) => ({
+    skillMissing: one(skillMissingTable, {
+      fields: [skillsMissingTasksTable.skillMissingId],
+      references: [skillMissingTable.id],
+    }),
+    task: one(taskTable, {
+      fields: [skillsMissingTasksTable.taskId],
+      references: [taskTable.id],
+    }),
+  })
 );

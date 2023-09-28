@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
-import { embedding } from "../../data-types/embedding";
+import { embedding } from "../data-types/embedding";
 import { skillsTasksTable } from "./skills-tasks";
 import { skillSubcategoryTable } from "./skill-subcategory";
 import { skillTypeTable } from "./skill-type";

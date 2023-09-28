@@ -6,7 +6,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { embedding } from "../../data-types/embedding";
+import { embedding } from "../data-types/embedding";
 import { employerTable } from "./employer";
 import { relations } from "drizzle-orm";
 import { taskTable } from "./task";

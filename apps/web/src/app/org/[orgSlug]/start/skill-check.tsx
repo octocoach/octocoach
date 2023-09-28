@@ -1,12 +1,12 @@
-import { Skill } from "@octocoach/db/src/schema/skills";
-import {
-  SkillLevel,
-  skillLevel,
-} from "@octocoach/db/src/schema/users-skills-levels";
 import Message from "@octocoach/i18n/src/react-message";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useEffect, useState, useTransition } from "react";
 import { submitSkillAssessment } from "./actions";
+import { Skill } from "@octocoach/db/schemas/common/skill";
+import {
+  SkillLevel,
+  skillLevelEnum,
+} from "@octocoach/db/schemas/common/skill-level";
 
 export const SkillCheck = ({
   skills,
@@ -62,7 +62,7 @@ export const SkillCheck = ({
         </Text>
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
-          {skillLevel.enumValues.map((skillLevel, key) => (
+          {skillLevelEnum.enumValues.map((skillLevel, key) => (
             <Button onPress={() => onAnswer({ skillLevel })} key={key}>
               <Message id={`skillLevels.${skillLevel}.title`} />
             </Button>

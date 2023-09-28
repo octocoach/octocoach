@@ -1,13 +1,19 @@
 import { BarChart } from "@octocoach/charts";
-import { db } from "@octocoach/db/src/connection";
+import { orgDb } from "@octocoach/db/connection";
 import { Card, Stack, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const user = await db.query.users.findFirst({
+export default async function Page({
+  params,
+}: {
+  params: { orgSlug: string; userId: string };
+}) {
+  const db = orgDb(params.orgSlug);
+
+  const user = await db.query.userTable.findFirst({
     with: {
-      usersTasksInterest: {
+      usersTaskInterest: {
         with: {
           task: true,
         },
@@ -34,7 +40,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         height={500}
         data={Object.entries(likeLevel).map(([label, value]) => ({
           label,
-          value: user.usersTasksInterest.filter((i) => i.interest === value)
+          value: user.usersTaskInterest.filter((i) => i.interest === value)
             .length,
         }))}
       />
@@ -50,7 +56,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
             </Text>
 
             <Stack>
-              {user.usersTasksInterest
+              {user.usersTaskInterest
                 .filter((x) => x.interest === interest)
                 .map(({ task }) => (
                   <Link href={`/admin/tasks/${task.id}`} key={task.id}>

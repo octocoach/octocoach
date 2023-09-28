@@ -1,42 +1,12 @@
-import {
-  boolean,
-  integer,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { embedding } from "../../data-types/embedding";
+import { skillsTasksTable } from "./skills-tasks";
+import { skillSubcategoryTable } from "./skill-subcategory";
+import { skillTypeTable } from "./skill-type";
 
-export const skillTypeTable = pgTable("skill_type", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-});
-
-export type SkillType = typeof skillTypeTable.$inferSelect;
-export type NewSkillType = typeof skillTypeTable.$inferInsert;
-
-export const skillCategoryTable = pgTable("skill_category", {
-  id: integer("id").primaryKey(),
-  name: text("name").notNull(),
-});
-
-export type SkillCategory = typeof skillCategoryTable.$inferSelect;
-export type NewSkillCategory = typeof skillCategoryTable.$inferInsert;
-
-export const skillSubcategoryTable = pgTable("skill_subcategory", {
-  id: integer("id").primaryKey(),
-  name: text("name").notNull(),
-  categoryId: integer("category_id")
-    .notNull()
-    .references(() => skillCategoryTable.id, {
-      onDelete: "restrict",
-      onUpdate: "cascade",
-    }),
-});
-
-export type SkillSubcategory = typeof skillSubcategoryTable.$inferSelect;
-export type NewSkillSubcategory = typeof skillSubcategoryTable.$inferInsert;
+export type NewSkill = typeof skillTable.$inferInsert;
+export type Skill = typeof skillTable.$inferSelect;
 
 export const skillTable = pgTable("skill", {
   id: text("id").primaryKey(),
@@ -62,15 +32,15 @@ export const skillTable = pgTable("skill", {
   aliases: text("aliases").array(),
 });
 
-export type NewSkill = typeof skillTable.$inferInsert;
-export type Skill = typeof skillTable.$inferSelect;
+export const skillRelations = relations(skillTable, ({ one, many }) => ({
+  subcategory: one(skillSubcategoryTable, {
+    fields: [skillTable.subcategoryId],
+    references: [skillSubcategoryTable.id],
+  }),
+  type: one(skillTypeTable, {
+    fields: [skillTable.typeId],
+    references: [skillTypeTable.id],
+  }),
 
-export const skillMissingTable = pgTable("skill_missing", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  embedding: embedding("embedding").notNull(),
-  created: timestamp("created").notNull().defaultNow(),
-});
-
-export type NewSkillMissing = typeof skillMissingTable.$inferInsert;
-export type SkillMissing = typeof skillMissingTable.$inferSelect;
+  skillsTasks: many(skillsTasksTable),
+}));

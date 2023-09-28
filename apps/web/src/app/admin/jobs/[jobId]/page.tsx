@@ -1,17 +1,17 @@
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
-  const job = await db.query.jobs.findFirst({
+  const job = await db.query.jobTable.findFirst({
     where: (jobs, { eq }) => eq(jobs.id, params.jobId),
     with: {
-      company: true,
+      employer: true,
       tasks: {
         with: {
-          tasksToSkills: {
+          skillsTasks: {
             with: {
               skill: true,
             },
@@ -31,9 +31,9 @@ export default async function Page({ params }: { params: { jobId: number } }) {
       <Text size="l" weight="extraBold" variation="heading">
         {job.title}
       </Text>
-      <Link href={`/admin/companies/${job.company.id}`}>
+      <Link href={`/admin/companies/${job.employer.id}`}>
         <Text weight="light" size="s">
-          {job.company.name}
+          {job.employer.name}
         </Text>
       </Link>
 
@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: { jobId: number } }) {
               <Stack>
                 <Text>{task.description}</Text>
                 <Stack direction="horizontal" wrap spacing="tight">
-                  {task.tasksToSkills.map(({ skill }) => (
+                  {task.skillsTasks.map(({ skill }) => (
                     <Tag key={skill.id}>
                       <Text size="s">{skill.name}</Text>
                     </Tag>

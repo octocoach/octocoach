@@ -1,11 +1,13 @@
 "use server";
 
 import mkAuthOptions from "@config/next-auth";
-import { db } from "@octocoach/db/src/connection";
-import createOrg from "@octocoach/db/src/org/create-org";
-import { organizations } from "@octocoach/db/src/schema/organizations";
+import { db } from "@octocoach/db/connection";
+
+import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
+import createOrg from "@octocoach/db/actions/create-org";
 
 export async function create({ name, slug }: { name: string; slug: string }) {
   const { user } = await getServerSession(mkAuthOptions());
@@ -15,7 +17,7 @@ export async function create({ name, slug }: { name: string; slug: string }) {
   if (!name) throw Error("Missing name");
   if (!slug) throw Error("Missing slug");
 
-  await db.insert(organizations).values({
+  await db.insert(organizationTable).values({
     name,
     slug,
     owner: user.id,

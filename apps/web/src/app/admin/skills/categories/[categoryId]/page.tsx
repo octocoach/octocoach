@@ -1,12 +1,12 @@
-import { desc, eq, sql } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
+import { desc, eq, sql } from "@octocoach/db/operators";
 import {
-  skillCategories,
-  skillSubcategories,
-  skills,
-} from "@octocoach/db/src/schema/skills";
-import { tasks } from "@octocoach/db/src/schema/tasks";
-import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+  skillCategoryTable,
+  skillSubcategoryTable,
+  skillTable,
+  skillsTasksTable,
+  taskTable,
+} from "@octocoach/db/schemas/public/schema";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
@@ -15,30 +15,30 @@ export default async function Page({
 }: {
   params: { categoryId: number };
 }) {
-  const category = await db.query.skillCategories.findFirst({
+  const category = await db.query.skillCategoryTable.findFirst({
     where: (skillCategories, { eq }) =>
       eq(skillCategories.id, params.categoryId),
   });
 
   const t = await db
     .select({
-      id: skillSubcategories.id,
-      subCategory: skillSubcategories.name,
-      count: sql<number>`count(${tasks.id})`,
+      id: skillSubcategoryTable.id,
+      subCategory: skillSubcategoryTable.name,
+      count: sql<number>`count(${taskTable.id})`,
     })
-    .from(tasks)
-    .leftJoin(tasksToSkills, eq(tasksToSkills.taskId, tasks.id))
-    .leftJoin(skills, eq(skills.id, tasksToSkills.skillId))
+    .from(taskTable)
+    .leftJoin(skillsTasksTable, eq(skillsTasksTable.taskId, taskTable.id))
+    .leftJoin(skillTable, eq(skillTable.id, skillsTasksTable.skillId))
     .leftJoin(
-      skillSubcategories,
-      eq(skillSubcategories.id, skills.subcategoryId)
+      skillSubcategoryTable,
+      eq(skillSubcategoryTable.id, skillTable.subcategoryId)
     )
     .leftJoin(
-      skillCategories,
-      eq(skillCategories.id, skillSubcategories.categoryId)
+      skillCategoryTable,
+      eq(skillCategoryTable.id, skillSubcategoryTable.categoryId)
     )
-    .where(eq(skillCategories.id, params.categoryId))
-    .groupBy(skillSubcategories.id, skillCategories.id)
+    .where(eq(skillCategoryTable.id, params.categoryId))
+    .groupBy(skillSubcategoryTable.id, skillCategoryTable.id)
     .orderBy(({ count }) => desc(count));
 
   return (

@@ -1,14 +1,14 @@
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { taskId: number } }) {
-  const task = await db.query.tasks.findFirst({
+  const task = await db.query.taskTable.findFirst({
     where: (tasks, { eq }) => eq(tasks.id, params.taskId),
     with: {
       job: true,
-      tasksToSkills: {
+      skillsTasks: {
         with: {
           skill: true,
         },
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { taskId: number } }) {
         </Text>
 
         <Stack>
-          {task.tasksToSkills.map(({ skill }) => (
+          {task.skillsTasks.map(({ skill }) => (
             <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
               <Card>
                 <Text size="l" weight="bold">

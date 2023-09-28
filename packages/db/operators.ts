@@ -23,4 +23,6 @@ export {
   arrayContains,
   arrayContained,
   arrayOverlaps,
+  desc,
+  asc,
 } from "drizzle-orm";

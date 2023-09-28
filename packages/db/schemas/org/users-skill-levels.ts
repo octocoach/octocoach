@@ -1,10 +1,16 @@
-import { pgEnum, timestamp } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { text, timestamp } from "drizzle-orm/pg-core";
+import { skillTable } from "../common/skill";
+import { skillLevelEnum } from "../common/skill-level";
 import { mkOrgPgSchema } from "./schema";
 import { mkOrgUserTable } from "./user";
-import { text } from "drizzle-orm/pg-core";
-import { skillTable } from "../common/skill";
-import { relations } from "drizzle-orm";
-import { skillLevelEnum } from "../common/skill-level";
+
+export type UsersSkillLevels = ReturnType<
+  typeof mkUsersSkillLevelsTable
+>["$inferSelect"];
+export type NewUsersSkillLevels = ReturnType<
+  typeof mkUsersSkillLevelsTable
+>["$inferInsert"];
 
 export const mkUsersSkillLevelsTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);
@@ -22,7 +28,7 @@ export const mkUsersSkillLevelsTable = (slug: string) => {
   });
 };
 
-export const mkUsersSkillLevelsTableRelations = (slug: string) => {
+export const mkUsersSkillLevelsRelations = (slug: string) => {
   const usersSkillLevelsTable = mkUsersSkillLevelsTable(slug);
   const orgUserTable = mkOrgUserTable(slug);
 

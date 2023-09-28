@@ -1,9 +1,10 @@
 "use server";
 
-import { eq, sql } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
-import { organizations } from "@octocoach/db/src/schema/organizations";
+import { eq, sql } from "@octocoach/db/operators";
+import { db } from "@octocoach/db/connection";
+
 import { redirect } from "next/navigation";
+import { organizationTable } from "@octocoach/db/schemas/public/schema";
 
 export async function deleteOrgAction(slug: string) {
   console.log("deleteOrgAction", slug);
@@ -12,7 +13,7 @@ export async function deleteOrgAction(slug: string) {
     throw new Error("Slug is required");
   }
   await db.execute(sql.raw(`DROP SCHEMA org_${slug} CASCADE`));
-  await db.delete(organizations).where(eq(organizations.slug, slug));
+  await db.delete(organizationTable).where(eq(organizationTable.slug, slug));
 
   redirect("/org");
 }

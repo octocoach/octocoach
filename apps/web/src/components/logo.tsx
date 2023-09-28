@@ -1,17 +1,18 @@
 "use client";
 
+import { Employer } from "@octocoach/db/schemas/common/employer";
 import { Company } from "@octocoach/db/src/schema/companies";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Logo({
-  company,
+  employer,
   size,
 }: {
-  company: Company;
+  employer: Employer;
   size: number;
 }) {
-  const { name, url } = company;
+  const { name, url } = employer;
 
   const createSrc = (url: string) => `https://logo.clearbit.com/${url}`;
 

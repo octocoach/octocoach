@@ -1,4 +1,4 @@
-import { db, orgDb } from "@octocoach/db/src/connection";
+import { db, orgDb } from "@octocoach/db/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -10,7 +10,7 @@ export default async function Layout({
   children: ReactNode;
   params: { orgSlug: string };
 }) {
-  const organization = await db.query.organizations.findFirst({
+  const organization = await db.query.organizationTable.findFirst({
     where: (organizations, { eq }) => eq(organizations.slug, params.orgSlug),
   });
 
@@ -18,7 +18,7 @@ export default async function Layout({
     notFound();
   }
 
-  const members = await orgDb(params.orgSlug).query.members.findMany({
+  const members = await orgDb(params.orgSlug).query.userTable.findMany({
     with: {},
   });
 

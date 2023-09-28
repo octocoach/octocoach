@@ -6,7 +6,7 @@ const en = {
   ADMIN: "Admin",
   JOBS: "Jobs",
   TASKS: "Tasks",
-  COMPANIES: "Companies",
+  EMPLOYERS: "Employers",
   SKILLS: "Skills",
   skillLevels: {
     novice: {

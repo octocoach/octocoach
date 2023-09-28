@@ -11,5 +11,5 @@ export const {
   sessionTable,
   verificationTokenTable,
   usersSkillLevelsTable,
-  usersSkillLevelsTableRelations,
+  usersTaskInterestTable,
 } = mkOrgSchema(slug);

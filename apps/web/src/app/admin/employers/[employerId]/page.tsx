@@ -1,7 +1,7 @@
 import Logo from "@components/logo";
-import { eq } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
-import { companies } from "@octocoach/db/src/schema/companies";
+import { eq } from "@octocoach/db/operators";
+import { db } from "@octocoach/db/connection";
+import { employerTable } from "@octocoach/db/schemas/common/employer";
 import Message from "@octocoach/i18n/src/react-message";
 import {
   Button,
@@ -17,10 +17,10 @@ import Link from "next/link";
 export default async function Page({
   params,
 }: {
-  params: { companyId: number };
+  params: { employerId: number };
 }) {
-  const company = await db.query.companies.findFirst({
-    where: (companies, { eq }) => eq(companies.id, params.companyId),
+  const employer = await db.query.employerTable.findFirst({
+    where: (employers, { eq }) => eq(employers.id, params.employerId),
     with: {
       jobs: true,
     },
@@ -28,43 +28,46 @@ export default async function Page({
 
   async function changeUrl({
     url,
-    companyId,
+    employerId,
   }: {
     url: string;
-    companyId: number;
+    employerId: number;
   }) {
     "use server";
 
     if (!url) throw Error("Missing URL");
-    if (!companyId) throw Error("Missing Company ID");
+    if (!employerId) throw Error("Missing Employer ID");
 
-    await db.update(companies).set({ url }).where(eq(companies.id, companyId));
+    await db
+      .update(employerTable)
+      .set({ url })
+      .where(eq(employerTable.id, employerId));
 
-    revalidatePath("/admin/companies/[companyId]");
+    revalidatePath("/admin/employers/[employerId]");
   }
 
   return (
     <Stack>
-      <Link href="/admin/companies">
+      <Link href="/admin/employers">
         <Text size="m">
-          <Message id="COMPANIES" />
+          <Message id="EMPLOYERS" />
         </Text>
       </Link>
-      <Logo company={company} size={100} />
+      <Logo company={employer} size={100} />
       <Form
         formStoreProps={{
-          defaultValues: { url: company.url || "", companyId: company.id },
+          defaultValues: { url: employer.url || "", employerId: employer.id },
         }}
         onSubmit={changeUrl}
       >
         <FormField name="url" label="URL" inputType="FormInput" />
-        <HiddenInput name="companyId" />
+        <HiddenInput name="employerId" />
         <Button type="submit">Submit</Button>
       </Form>
-      <Text size="xl">{company.name}</Text>
-      <Text>{company.url}</Text>
+      <Text size="xl">{employer.name}</Text>
+      <Text>{employer.url}</Text>
       <Stack>
-        {company.jobs.map((job) => (
+        {employer.jobs.map((job) => (
           <Link href={`/admin/jobs/${job.id}`} key={job.id}>
             <Text>{job.title}</Text>
           </Link>

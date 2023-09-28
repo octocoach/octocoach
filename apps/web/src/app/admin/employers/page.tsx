@@ -1,29 +1,29 @@
 import Logo from "@components/logo";
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page() {
-  const companies = await db.query.companies.findMany({
+  const employers = await db.query.employerTable.findMany({
     with: {},
   });
 
   return (
     <Stack>
       <Text size="xl">
-        <Message id="COMPANIES" />
+        <Message id="EMPLOYERS" />
       </Text>
       <Stack>
-        {companies
+        {employers
           .sort((a, b) =>
             a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
           )
-          .map((company) => (
-            <Link href={`/admin/companies/${company.id}`} key={company.id}>
+          .map((employer) => (
+            <Link href={`/admin/employers/${employer.id}`} key={employer.id}>
               <Stack direction="horizontal">
-                <Logo company={company} size={50} />
-                <Text>{company.name}</Text>
+                <Logo employer={employer} size={50} />
+                <Text>{employer.name}</Text>
               </Stack>
             </Link>
           ))}

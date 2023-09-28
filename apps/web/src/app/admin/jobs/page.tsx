@@ -1,13 +1,13 @@
 import Logo from "@components/logo";
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page() {
-  const jobs = await db.query.jobs.findMany({
+  const jobs = await db.query.jobTable.findMany({
     with: {
-      company: true,
+      employer: true,
       tasks: {
         with: {
           tasksToSkills: {
@@ -29,7 +29,7 @@ export default async function Page() {
         {jobs.map((job) => (
           <Card key={job.id}>
             <Stack direction="horizontal">
-              <Logo company={job.company} size={100} />
+              <Logo employer={job.employer} size={100} />
 
               <Stack direction="vertical" spacing="tight">
                 <Link href={`/admin/jobs/${job.id}`} key={job.id}>
@@ -37,7 +37,7 @@ export default async function Page() {
                     {job.title}
                   </Text>
                 </Link>
-                <Text variation="casual">{job.company.name}</Text>
+                <Text variation="casual">{job.employer.name}</Text>
                 <Text size="s" weight="light">
                   {job.location}
                 </Text>

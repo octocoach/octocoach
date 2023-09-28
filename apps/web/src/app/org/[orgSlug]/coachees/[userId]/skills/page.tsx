@@ -1,19 +1,25 @@
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
 import { BarChartItem } from "@octocoach/charts/bar";
-import { db } from "@octocoach/db/src/connection";
-import {
-  SkillLevel,
-  skillLevel,
-} from "@octocoach/db/src/schema/users-skills-levels";
+import { orgDb } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
+import {
+  skillLevelEnum,
+  type SkillLevel,
+} from "@octocoach/db/schemas/common/skill-level";
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const user = await db.query.users.findFirst({
+export default async function Page({
+  params,
+}: {
+  params: { orgSlug: string; userId: string };
+}) {
+  const db = orgDb(params.orgSlug);
+
+  const user = await db.query.userTable.findFirst({
     with: {
-      usersSkillsLevels: {
+      usersSkillLevels: {
         with: {
           skill: {
             with: {
@@ -31,21 +37,19 @@ export default async function Page({ params }: { params: { userId: string } }) {
   });
 
   const countSkills = (skillLevel: SkillLevel) =>
-    user.usersSkillsLevels.filter((s) => s.skillLevel === skillLevel).length;
+    user.usersSkillLevels.filter((s) => s.skillLevel === skillLevel).length;
 
   const containerId = nanoid();
 
-  const data = user.usersSkillsLevels.map((s) => ({
+  const data = user.usersSkillLevels.map((s) => ({
     fill: s.skillLevel,
     name: s.skill.name,
   }));
 
-  const categoryLevels = user.usersSkillsLevels.map(
-    ({ skill, skillLevel }) => ({
-      category: skill.subcategory.category.name,
-      skillLevel,
-    })
-  );
+  const categoryLevels = user.usersSkillLevels.map(({ skill, skillLevel }) => ({
+    category: skill.subcategory.category.name,
+    skillLevel,
+  }));
 
   return (
     <Stack id={containerId}>
@@ -58,7 +62,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         containerId={containerId}
         height={300}
         data={Object.entries(
-          user.usersSkillsLevels.reduce(
+          user.usersSkillLevels.reduce(
             (acc, curr) => ({
               ...acc,
               [curr.skill.subcategory.name]:
@@ -71,7 +75,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           .sort((a, b) => b.value - a.value)}
       />
 
-      {skillLevel.enumValues.map((level) => (
+      {skillLevelEnum.enumValues.map((level) => (
         <Card key={level}>
           <Stack>
             <Text size="l" variation="casual" weight="bold">
@@ -79,7 +83,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
               {` (${countSkills(level)})`}
             </Text>
             <Stack direction="horizontal" wrap>
-              {user.usersSkillsLevels
+              {user.usersSkillLevels
                 .filter(({ skillLevel }) => skillLevel === level)
                 .map(({ skill }) => (
                   <Link href={`/admin/skills/${skill.id}`} key={skill.id}>

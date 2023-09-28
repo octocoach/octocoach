@@ -8,6 +8,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { embedding } from "../../data-types/embedding";
 import { employerTable } from "./employer";
+import { relations } from "drizzle-orm";
+import { taskTable } from "./task";
 
 export const jobSourceEnum = pgEnum("job_source", [
   "indeed",
@@ -35,3 +37,11 @@ export const jobTable = pgTable("job", {
 
 export type NewJob = typeof jobTable.$inferInsert;
 export type Job = typeof jobTable.$inferSelect;
+
+export const jobRelations = relations(jobTable, ({ one, many }) => ({
+  employer: one(employerTable, {
+    fields: [jobTable.employerId],
+    references: [employerTable.id],
+  }),
+  tasks: many(taskTable),
+}));

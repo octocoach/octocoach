@@ -1,13 +1,7 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
     "lib": ["ES2015", "DOM"],
-    "module": "ESNext",
-    "outDir": "./build",
-    "target": "ES2017"
+    "module": "ESNext"
   },
-  "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts"],
-  "exclude": ["build", "node_modules"]
+  "extends": "tsconfig/base.json"
 }

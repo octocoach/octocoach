@@ -1,31 +1,35 @@
-import { sql, eq, desc } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
-import {
-  skillCategories,
-  skillSubcategories,
-  skills,
-} from "@octocoach/db/src/schema/skills";
-import { tasks } from "@octocoach/db/src/schema/tasks";
-import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+import { sql, eq, desc } from "@octocoach/db/operators";
+import { db } from "@octocoach/db/connection";
+
 import { Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+import {
+  skillCategoryTable,
+  skillSubcategoryTable,
+  skillTable,
+  skillsTasksTable,
+  taskTable,
+} from "@octocoach/db/schemas/public/schema";
 
 export default async function Page() {
   const categories = await db
     .select({
-      id: skillCategories.id,
-      category: skillCategories.name,
-      taskCount: sql<number>`count(${tasks.id})`,
+      id: skillCategoryTable.id,
+      category: skillCategoryTable.name,
+      taskCount: sql<number>`count(${taskTable.id})`,
     })
-    .from(skillCategories)
+    .from(skillCategoryTable)
     .leftJoin(
-      skillSubcategories,
-      eq(skillSubcategories.categoryId, skillCategories.id)
+      skillSubcategoryTable,
+      eq(skillSubcategoryTable.categoryId, skillCategoryTable.id)
     )
-    .leftJoin(skills, eq(skills.subcategoryId, skillSubcategories.id))
-    .leftJoin(tasksToSkills, eq(tasksToSkills.skillId, skills.id))
-    .leftJoin(tasks, eq(tasks.id, tasksToSkills.taskId))
-    .groupBy(skillCategories.id)
+    .leftJoin(
+      skillTable,
+      eq(skillTable.subcategoryId, skillSubcategoryTable.id)
+    )
+    .leftJoin(skillsTasksTable, eq(skillsTasksTable.skillId, skillTable.id))
+    .leftJoin(taskTable, eq(taskTable.id, skillsTasksTable.taskId))
+    .groupBy(skillCategoryTable.id)
     .orderBy(({ taskCount }) => desc(taskCount));
 
   return (

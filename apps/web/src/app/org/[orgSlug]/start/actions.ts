@@ -1,16 +1,14 @@
 "use server";
 
 import mkAuthOptions from "@config/next-auth";
-import { and, eq } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
-import { Skill } from "@octocoach/db/src/schema/skills";
-import {
-  SkillLevel,
-  usersSkillsLevels,
-} from "@octocoach/db/src/schema/users-skills-levels";
-import { usersTasksInterest } from "@octocoach/db/src/schema/users-tasks-interest";
+import { and, eq } from "@octocoach/db/operators";
+import { orgDb } from "@octocoach/db/connection";
+import type { Skill } from "@octocoach/db/schemas/common/skill";
 import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
+import { mkUsersTaskInterestTable } from "@octocoach/db/schemas/org/users-task-interest";
+import { SkillLevel } from "@octocoach/db/schemas/common/skill-level";
+import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
 
 export type Answer = "yes" | "no" | "dontknow";
 
@@ -23,13 +21,18 @@ export const submitAnswer = async ({
 }) => {
   const c = cookies();
   const org = c.get("org");
-  const { user } = await getServerSession(mkAuthOptions(org?.value));
+  if (!org?.value) throw new Error("Org not found");
 
+  const { user } = await getServerSession(mkAuthOptions(org?.value));
   if (!user) throw new Error("User not found");
+
+  const db = orgDb(org.value);
+
+  const usersTaskInterestTable = mkUsersTaskInterestTable(org.value);
 
   const interest: number = answer === "yes" ? 1 : answer === "no" ? -1 : 0;
 
-  await db.insert(usersTasksInterest).values({
+  await db.insert(usersTaskInterestTable).values({
     taskId,
     userId: user.id,
     interest,
@@ -44,22 +47,28 @@ export const submitSkillAssessment = async ({
   skillLevel: SkillLevel;
 }) => {
   const org = cookies().get("org");
-  const { user } = await getServerSession(mkAuthOptions(org?.value));
+  if (!org?.value) throw new Error("Org not found");
+
+  const { user } = await getServerSession(mkAuthOptions(org.value));
   if (!user) throw new Error("User not found");
 
+  const db = orgDb(org.value);
+
+  const usersSkillLevels = mkUsersSkillLevelsTable(org.value);
+
   await db
-    .insert(usersSkillsLevels)
+    .insert(usersSkillLevels)
     .values({
       skillId,
       userId: user.id,
       skillLevel,
     })
     .onConflictDoUpdate({
-      target: [usersSkillsLevels.userId, usersSkillsLevels.skillId],
+      target: [usersSkillLevels.userId, usersSkillLevels.skillId],
       set: { skillLevel },
       where: and(
-        eq(usersSkillsLevels.userId, user.id),
-        eq(usersSkillsLevels.skillId, skillId)
+        eq(usersSkillLevels.userId, user.id),
+        eq(usersSkillLevels.skillId, skillId)
       ),
     });
 };

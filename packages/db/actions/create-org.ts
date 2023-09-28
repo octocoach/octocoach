@@ -83,7 +83,7 @@ export default async function createOrg(slug: string) {
     {
       owner: "octocoach",
       repo: "octocoach",
-      path: "packages/db/src/config/org.drizzle.config.ts",
+      path: "packages/db/org.drizzle.config.ts",
       ref: "avanderbergh/issue70",
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",

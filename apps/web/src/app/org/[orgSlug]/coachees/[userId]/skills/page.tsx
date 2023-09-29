@@ -38,7 +38,6 @@ export default async function Page({
     where: (users, { eq }) => eq(users.id, params.userId),
   });
 
-  return <p>{params.orgSlug}</p>;
   const countSkills = (skillLevel: SkillLevel) =>
     user.usersSkillLevels.filter((s) => s.skillLevel === skillLevel).length;
 

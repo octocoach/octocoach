@@ -16,6 +16,8 @@ export const mkTaskRelations = (slug: string) => {
     }),
     skillsTasks: many(skillsTasksTable),
     skillsMissingTasks: many(skillsMissingTasksTable),
-    usersTaskInterest: many(usersTaskInterestTable),
+    usersTaskInterest: many(usersTaskInterestTable, {
+      relationName: "taskUser",
+    }),
   }));
 };

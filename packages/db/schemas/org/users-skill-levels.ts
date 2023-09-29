@@ -42,10 +42,12 @@ export const mkUsersSkillLevelsRelations = (slug: string) => {
     user: one(userTable, {
       fields: [usersSkillLevelsTable.userId],
       references: [userTable.id],
+      relationName: "userSkill",
     }),
     skill: one(skillTable, {
       fields: [usersSkillLevelsTable.skillId],
       references: [skillTable.id],
+      relationName: "skillUser",
     }),
   }));
 };

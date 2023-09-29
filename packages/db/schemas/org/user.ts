@@ -19,7 +19,11 @@ export const mkUserTableRelations = (slug: string) => {
       fields: [userTable.id],
       references: [organizationTable.id],
     }),
-    usersSkillLevels: many(usersSkillLevelsTable),
-    usersTaskInterest: many(usersTaskInterestTable),
+    usersSkillLevels: many(usersSkillLevelsTable, {
+      relationName: "userSkill",
+    }),
+    usersTaskInterest: many(usersTaskInterestTable, {
+      relationName: "userTask",
+    }),
   }));
 };

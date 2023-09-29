@@ -21,6 +21,8 @@ export const mkSkillRelations = (slug: string) => {
     }),
 
     skillsTasks: many(skillsTasksTable),
-    usersSkillLevels: many(usersSkillLevelsTable),
+    usersSkillLevels: many(usersSkillLevelsTable, {
+      relationName: "skillUser",
+    }),
   }));
 };

@@ -40,10 +40,12 @@ export const mkUsersTaskInterestRelations = (slug: string) => {
     user: one(orgUserTable, {
       fields: [usersTaskInterestTable.userId],
       references: [orgUserTable.id],
+      relationName: "userTask",
     }),
     task: one(taskTable, {
       fields: [usersTaskInterestTable.taskId],
       references: [taskTable.id],
+      relationName: "taskUser",
     }),
   }));
 };

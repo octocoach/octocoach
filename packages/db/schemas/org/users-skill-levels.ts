@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { text, timestamp } from "drizzle-orm/pg-core";
+import { primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { skillTable } from "../common/skill";
 import { skillLevelEnum } from "../common/skill-level";
 import { mkOrgPgSchema } from "./schema";
@@ -16,16 +16,22 @@ export const mkUsersSkillLevelsTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);
   const orgUserTable = mkOrgUserTable(slug);
 
-  return table("users_skill_levels", {
-    userId: text("user_id")
-      .notNull()
-      .references(() => orgUserTable.id),
-    skillId: text("skill_id")
-      .notNull()
-      .references(() => skillTable.id),
-    skillLevel: skillLevelEnum("skill_level").notNull(),
-    created: timestamp("created").defaultNow(),
-  });
+  return table(
+    "users_skill_levels",
+    {
+      userId: text("user_id")
+        .notNull()
+        .references(() => orgUserTable.id),
+      skillId: text("skill_id")
+        .notNull()
+        .references(() => skillTable.id),
+      skillLevel: skillLevelEnum("skill_level").notNull(),
+      created: timestamp("created").defaultNow(),
+    },
+    ({ userId, skillId }) => ({
+      pk: primaryKey(userId, skillId),
+    })
+  );
 };
 
 export const mkUsersSkillLevelsRelations = (slug: string) => {

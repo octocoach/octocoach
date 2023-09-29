@@ -1,9 +1,8 @@
-import { text } from "drizzle-orm/pg-core";
-import { integer } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { integer, primaryKey, text } from "drizzle-orm/pg-core";
+import { taskTable } from "../common/task";
 import { mkOrgPgSchema } from "./schema";
 import { mkOrgUserTable } from "./user";
-import { relations } from "drizzle-orm";
-import { taskTable } from "../common/task";
 
 export type UsersTaskInterest = ReturnType<
   typeof mkUsersTaskInterestTable
@@ -16,15 +15,21 @@ export const mkUsersTaskInterestTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);
   const orgUserTable = mkOrgUserTable(slug);
 
-  return table("users_task_interest", {
-    userId: text("user_id")
-      .notNull()
-      .references(() => orgUserTable.id),
-    taskId: integer("task_id")
-      .notNull()
-      .references(() => taskTable.id),
-    interest: integer("integer").notNull(),
-  });
+  return table(
+    "users_task_interest",
+    {
+      userId: text("user_id")
+        .notNull()
+        .references(() => orgUserTable.id),
+      taskId: integer("task_id")
+        .notNull()
+        .references(() => taskTable.id),
+      interest: integer("integer").notNull(),
+    },
+    ({ userId, taskId }) => ({
+      pk: primaryKey(userId, taskId),
+    })
+  );
 };
 
 export const mkUsersTaskInterestRelations = (slug: string) => {

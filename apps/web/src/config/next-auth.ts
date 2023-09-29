@@ -7,7 +7,7 @@ export default function mkAuthOptions(org?: string): NextAuthOptions {
   const adapterDb = org ? orgDb(org) : db;
   console.log(org ? `Using org ${org} db` : "Using default db");
   return {
-    adapter: authDrizzleAdapter(adapterDb),
+    adapter: authDrizzleAdapter(adapterDb, org),
     callbacks: {
       async session({ session, user }) {
         return {

@@ -1,7 +1,6 @@
 "use client";
 
 import { Employer } from "@octocoach/db/schemas/common/employer";
-import { Company } from "@octocoach/db/src/schema/companies";
 import Image from "next/image";
 import { useState } from "react";
 

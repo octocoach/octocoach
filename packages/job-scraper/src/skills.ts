@@ -1,12 +1,10 @@
 import { type Database } from "@octocoach/db/connection";
-import { makeCosineDistance } from "@octocoach/db/data-types/embedding";
 import { eq, sql } from "@octocoach/db/operators";
-import {
-  skillMissingTable,
-  skillTable,
-} from "@octocoach/db/schemas/common/skill";
 import { skillsMissingTasksTable } from "@octocoach/db/schemas/common/skills-missing-tasks";
 import { skillsTasksTable } from "@octocoach/db/schemas/common/skills-tasks";
+import { makeCosineDistance } from "@octocoach/db/schemas/data-types/embedding";
+import { skillMissingTable } from "@octocoach/db/schemas/public/schema";
+import { skillTable } from "@octocoach/db/schemas/public/skill";
 import chalk from "chalk";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";

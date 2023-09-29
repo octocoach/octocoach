@@ -1,4 +1,4 @@
-import { eq } from "@octocoach/db/src/index";
+import { eq } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
 import { jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";

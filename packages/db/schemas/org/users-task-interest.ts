@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { integer, primaryKey, text } from "drizzle-orm/pg-core";
 import { taskTable } from "../common/task";
 import { mkOrgPgSchema } from "./schema";
-import { mkOrgUserTable } from "./user";
+import { mkUserTable } from "./user";
 
 export type UsersTaskInterest = ReturnType<
   typeof mkUsersTaskInterestTable
@@ -13,7 +13,7 @@ export type NewUsersTaskInterest = ReturnType<
 
 export const mkUsersTaskInterestTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);
-  const orgUserTable = mkOrgUserTable(slug);
+  const orgUserTable = mkUserTable(slug);
 
   return table(
     "users_task_interest",
@@ -34,7 +34,7 @@ export const mkUsersTaskInterestTable = (slug: string) => {
 
 export const mkUsersTaskInterestRelations = (slug: string) => {
   const usersTaskInterestTable = mkUsersTaskInterestTable(slug);
-  const orgUserTable = mkOrgUserTable(slug);
+  const orgUserTable = mkUserTable(slug);
 
   return relations(usersTaskInterestTable, ({ one }) => ({
     user: one(orgUserTable, {

@@ -1,9 +1,10 @@
 import { pgSchema } from "drizzle-orm/pg-core";
 import { employerTable } from "../common/employer";
 import { jobTable } from "../common/job";
-import { mkOrganizationTable } from "../common/organization";
-
-import { mkSkillRelations, skillTable } from "./skill";
+import {
+  mkOrganizationTable,
+  mkOrganizationTableRelations,
+} from "../common/organization";
 import {
   skillCategoryRelations,
   skillCategoryTable,
@@ -18,14 +19,15 @@ import {
 } from "../common/skill-subcategory";
 import { skillTypeRelations, skillTypeTable } from "../common/skill-type";
 import {
-  skillsMissingTasksTable,
   skillsMissingTasksRelations,
+  skillsMissingTasksTable,
 } from "../common/skills-missing-tasks";
-import { skillsTasksTable, skillsTasksRelations } from "../common/skills-tasks";
+import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
 import { mkOrgAccountTable } from "./account";
 import { mkOrgSessionTable } from "./session";
+import { mkSkillRelations, skillTable } from "./skill";
 import { mkTaskRelations, taskTable } from "./task";
-import { mkOrgUserTable, mkOrgUserTableRelations } from "./user";
+import { mkUserTable, mkUserTableRelations } from "./user";
 import {
   mkUsersSkillLevelsRelations,
   mkUsersSkillLevelsTable,
@@ -44,14 +46,16 @@ export const mkOrgSchema = (slug: string) => ({
 
   sessionTable: mkOrgSessionTable(slug),
 
-  userTable: mkOrgUserTable(slug),
-  userTableRelations: mkOrgUserTableRelations(slug),
+  userTable: mkUserTable(slug),
+  userTableRelations: mkUserTableRelations(slug),
 
   verificationTokenTable: mkOrgVerificationTokenTable(slug),
 
   // common
-  organizationTable: mkOrganizationTable(mkOrgUserTable(slug)),
-  organizationTableRelations: mkOrgUserTableRelations(slug),
+  organizationTable: mkOrganizationTable(mkUserTable(slug)),
+  organizationTableRelations: mkOrganizationTableRelations(
+    mkUserTable(slug)
+  ),
 
   employerTable,
 

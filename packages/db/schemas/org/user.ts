@@ -5,18 +5,18 @@ import { mkOrganizationTable } from "../common/organization";
 import { mkUsersSkillLevelsTable } from "./users-skill-levels";
 import { mkUsersTaskInterestTable } from "./users-task-interest";
 
-export const mkOrgUserTable = (slug: string) =>
+export const mkUserTable = (slug: string) =>
   mkOrgPgSchema(slug).table("user", mkUserCols());
 
-export const mkOrgUserTableRelations = (slug: string) => {
-  const orgUserTable = mkOrgUserTable(slug);
-  const organizationTable = mkOrganizationTable(orgUserTable);
+export const mkUserTableRelations = (slug: string) => {
+  const userTable = mkUserTable(slug);
+  const organizationTable = mkOrganizationTable(userTable);
   const usersSkillLevelsTable = mkUsersSkillLevelsTable(slug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(slug);
 
-  return relations(orgUserTable, ({ one, many }) => ({
+  return relations(userTable, ({ one, many }) => ({
     organization: one(organizationTable, {
-      fields: [orgUserTable.id],
+      fields: [userTable.id],
       references: [organizationTable.id],
     }),
     usersSkillLevels: many(usersSkillLevelsTable),

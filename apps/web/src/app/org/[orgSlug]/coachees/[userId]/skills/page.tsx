@@ -15,6 +15,8 @@ export default async function Page({
 }: {
   params: { orgSlug: string; userId: string };
 }) {
+  console.log(`OrgSlug: ${params.orgSlug}`);
+
   const db = orgDb(params.orgSlug);
 
   const user = await db.query.userTable.findFirst({
@@ -36,6 +38,7 @@ export default async function Page({
     where: (users, { eq }) => eq(users.id, params.userId),
   });
 
+  return <p>{params.orgSlug}</p>;
   const countSkills = (skillLevel: SkillLevel) =>
     user.usersSkillLevels.filter((s) => s.skillLevel === skillLevel).length;
 

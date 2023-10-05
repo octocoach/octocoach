@@ -1,25 +1,6 @@
-import { db } from "@octocoach/db/src/connection";
 import { Text } from "@octocoach/ui";
-import shuffle from "just-shuffle";
 
 export default async function Page() {
-  const tasks = shuffle(
-    await db.query.tasks.findMany({
-      with: {
-        usersTasksInterest: true,
-        tasksToSkills: {
-          with: {
-            skill: {
-              with: {
-                usersSkillsLevels: true,
-              },
-            },
-          },
-        },
-      },
-    })
-  );
-
   return (
     <main
       style={{
@@ -28,7 +9,7 @@ export default async function Page() {
         placeItems: "center",
       }}
     >
-      <Text>Hello</Text>
+      <Text>Welcome</Text>
     </main>
   );
 }

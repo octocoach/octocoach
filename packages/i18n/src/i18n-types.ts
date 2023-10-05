@@ -35,9 +35,9 @@ type RootTranslation = {
 	 */
 	TASKS: string
 	/**
-	 * C​o​m​p​a​n​i​e​s
+	 * E​m​p​l​o​y​e​r​s
 	 */
-	COMPANIES: string
+	EMPLOYERS: string
 	/**
 	 * S​k​i​l​l​s
 	 */
@@ -118,9 +118,9 @@ export type TranslationFunctions = {
 	 */
 	TASKS: () => LocalizedString
 	/**
-	 * Companies
+	 * Employers
 	 */
-	COMPANIES: () => LocalizedString
+	EMPLOYERS: () => LocalizedString
 	/**
 	 * Skills
 	 */

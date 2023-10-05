@@ -6,7 +6,7 @@ const de = {
   ADMIN: "Verwaltung",
   JOBS: "Jobs",
   TASKS: "Aufgaben",
-  COMPANIES: "Firmen",
+  EMPLOYERS: "Arbeitgeber",
   SKILLS: "Skills",
   skillLevels: {
     novice: {

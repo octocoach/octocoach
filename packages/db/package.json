@@ -5,27 +5,41 @@
   "private": true,
   "scripts": {
     "generate": "drizzle-kit generate:pg",
-    "migrate": "tsx -r dotenv/config src/migrate.ts",
-    "seed": "tsx -r dotenv/config src/seed.ts",
+    "generate:org": "drizzle-kit generate:pg --config=./org.drizzle.config.ts",
+    "migrate": "tsx -r dotenv/config ./migrate.ts",
+    "seed": "tsx -r dotenv/config seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "check": "tsx src/schema/organization/members.ts",
+    "create:org": "tsx -r dotenv/config src/create-org.ts",
+    "new:org": "tsx -r dotenv/config src/new-org.ts",
+    "get:schema": "tsx -r dotenv/config src/get-schema-files.ts"
   },
   "dependencies": {
+    "@auth/core": "^0.14.0",
     "@types/cli-progress": "^3.11.0",
     "cli-progress": "^3.12.0",
-    "drizzle-orm": "^0.28.5",
+    "drizzle-orm": "^0.28.6",
     "drizzle-zod": "^0.4.4",
     "got": "^12.6.0",
-    "langchain": "^0.0.103",
+    "langchain": "^0.0.153",
+    "minimist": "^1.2.8",
+    "nanoid": "^4.0.2",
+    "octokit": "^3.1.0",
     "postgres": "^3.3.5",
-    "zod": "^3.21.4"
+    "superjson": "^1.13.1",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@types/minimist": "^1.2.2",
     "@types/node": "^20.3.2",
     "dotenv": "^16.0.3",
     "drizzle-kit": "^0.19.13",
     "tsconfig": "workspace:*",
     "tsx": "^3.12.7",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "drizzle-kit": "^0.19.13"
   }
 }

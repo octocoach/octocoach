@@ -1,25 +1,18 @@
+import mkAuthOptions from "@config/next-auth";
 import NextAuth from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
+import { NextRequest } from "next/server";
 
-const handler = NextAuth({
-  callbacks: {
-    async jwt({ token, user, account, profile }) {
-      return token;
-    },
-    async session({ session, token, user }) {
-      // ToDo: Remove this temporary hack
-      return {
-        ...session,
-        user: { ...session.user, id: "user_2TTNLbfCmGjhhayy6RDBMBuuGY8" },
-      };
-    },
-  },
-  providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-  ],
-});
+const handler = (
+  req: NextRequest,
+  context: { params: { nextauth: string[] } }
+) => {
+  console.log("Auth handler");
+  const org = req.cookies.get("org");
+  if (org) {
+    console.log("org", org.value);
+  }
+
+  return NextAuth(req, context, mkAuthOptions(org?.value));
+};
 
 export { handler as GET, handler as POST };

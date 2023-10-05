@@ -1,4 +1,4 @@
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Tag, Text } from "@octocoach/ui";
@@ -6,14 +6,14 @@ import Link from "next/link";
 
 export default async function Page() {
   const tasks = (
-    await db.query.tasks.findMany({
+    await db.query.taskTable.findMany({
       with: {
         job: {
           with: {
-            company: true,
+            employer: true,
           },
         },
-        tasksToSkills: {
+        skillsTasks: {
           with: {
             skill: true,
           },
@@ -38,8 +38,8 @@ export default async function Page() {
                       {task.job.title}
                     </Link>
                     {" @ "}
-                    <Link href={`/admin/companies/${task.job.companyId}`}>
-                      {task.job.company.name}
+                    <Link href={`/admin/employers/${task.job.employerId}`}>
+                      {task.job.employer.name}
                     </Link>
                   </Text>
                   <Link href={`/admin/tasks/${task.id}`}>
@@ -52,7 +52,7 @@ export default async function Page() {
                   </Link>
                 </Stack>
                 <Stack direction="horizontal" spacing="tight" wrap>
-                  {task.tasksToSkills.map(({ skill }) => (
+                  {task.skillsTasks.map(({ skill }) => (
                     <Link href={`/admin/skills/${skill.id}`} key={skill.id}>
                       <Tag>
                         <Text size="s" key={skill.id}>

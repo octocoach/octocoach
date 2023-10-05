@@ -1,4 +1,5 @@
 import SessionProvider from "@components/session-provider";
+import mkAuthOptions from "@config/next-auth";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
@@ -20,11 +21,18 @@ export default async function RootLayout({
   header: React.ReactNode;
 }) {
   const cookieStore = cookies();
+  cookieStore
+    .getAll()
+    .forEach((cookie) => console.log(`🍪 ${cookie.name}: ${cookie.value}`));
   const locale = (cookieStore.get("locale")?.value || "en") as Locales;
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];
-  const session = await getServerSession();
+
+  const org = cookieStore.get("org")?.value;
+
+  console.log("session org provider", org || "none");
+  const session = await getServerSession(mkAuthOptions(org));
 
   return (
     <html lang={locale} className={`${themeClass.mocha} ${bg}`}>

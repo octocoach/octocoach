@@ -1,0 +1,88 @@
+diff --git a/index.cjs b/index.cjs
+index d6085807f138fca830a8fb8bf9470779f091fa61..6395f1dbabed07abecc9bbc12527832e0bfb1d5b 100755
+--- a/index.cjs
++++ b/index.cjs
+@@ -4903,6 +4903,7 @@ var init_pgSchema = __esm({
+       name: stringType(),
+       tableFrom: stringType(),
+       columnsFrom: stringType().array(),
++      schemaTo: stringType().optional(),
+       tableTo: stringType(),
+       columnsTo: stringType().array(),
+       onUpdate: stringType().optional(),
+@@ -5061,7 +5062,7 @@ var init_pgSchema = __esm({
+         return result;
+       },
+       squashFK: (fk4) => {
+-        return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
++        return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.schemaTo || ""};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
+       },
+       squashPK: (pk) => {
+         return `${pk.columns.join(",")}`;
+@@ -5085,6 +5086,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFromStr,
++          schemaTo,
+           tableTo,
+           columnsToStr,
+           onUpdate,
+@@ -5094,6 +5096,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFrom: columnsFromStr.split(","),
++          schemaTo,
+           tableTo,
+           columnsTo: columnsToStr.split(","),
+           onUpdate,
+@@ -12210,12 +12213,15 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+           const onUpdate = fk4.onUpdate;
+           const reference = fk4.reference();
+           const tableTo = (0, import_drizzle_orm6.getTableName)(reference.foreignTable);
++          // Patched
++          const schemaTo = reference.foreignTable[Symbol.for("drizzle:Schema")];
+           const columnsFrom = reference.columns.map((it) => it.name);
+           const columnsTo = reference.foreignColumns.map((it) => it.name);
+           return {
+             name,
+             tableFrom,
+             tableTo,
++            schemaTo,
+             columnsFrom,
+             columnsTo,
+             onDelete,
+@@ -15130,13 +15136,15 @@ var init_sqlgenerator = __esm({
+       "interval day to second",
+       "interval hour to minute",
+       "interval hour to second",
+-      "interval minute to second"
++      "interval minute to second",
++      // Patched for Extensions
++      "vector"
+     ]);
+     isPgNativeType = (it) => {
+       if (pgNativeTypes.has(it))
+         return true;
+       const toCheck = it.replace(/ /g, "");
+-      return toCheck.startsWith("varchar(") || toCheck.startsWith("char(") || toCheck.startsWith("numeric(") || toCheck.startsWith("timestamp(") || toCheck.startsWith("intervalyear(") || toCheck.startsWith("intervalmonth(") || toCheck.startsWith("intervalday(") || toCheck.startsWith("intervalhour(") || toCheck.startsWith("intervalminute(") || toCheck.startsWith("intervalsecond(") || toCheck.startsWith("intervalyeartomonth(") || toCheck.startsWith("intervaldaytohour(") || toCheck.startsWith("intervaldaytominute(") || toCheck.startsWith("intervaldaytosecond(") || toCheck.startsWith("intervalhourtominute(") || toCheck.startsWith("intervalhourtosecond(") || toCheck.startsWith("intervalminutetosecond(") || /^(\w+)(\[\d*])+$/.test(it);
++      return toCheck.startsWith("vector(") || toCheck.startsWith("varchar(") || toCheck.startsWith("char(") || toCheck.startsWith("numeric(") || toCheck.startsWith("timestamp(") || toCheck.startsWith("intervalyear(") || toCheck.startsWith("intervalmonth(") || toCheck.startsWith("intervalday(") || toCheck.startsWith("intervalhour(") || toCheck.startsWith("intervalminute(") || toCheck.startsWith("intervalsecond(") || toCheck.startsWith("intervalyeartomonth(") || toCheck.startsWith("intervaldaytohour(") || toCheck.startsWith("intervaldaytominute(") || toCheck.startsWith("intervaldaytosecond(") || toCheck.startsWith("intervalhourtominute(") || toCheck.startsWith("intervalhourtosecond(") || toCheck.startsWith("intervalminutetosecond(") || /^(\w+)(\[\d*])+$/.test(it);
+     };
+     Convertor = class {
+     };
+@@ -15963,6 +15971,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+       convert(statement) {
+         const {
+           name,
++          schemaTo,
+           tableFrom,
+           tableTo,
+           columnsFrom,
+@@ -15975,7 +15984,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+         const fromColumnsString = columnsFrom.map((it) => `"${it}"`).join(",");
+         const toColumnsString = columnsTo.map((it) => `"${it}"`).join(",");
+         const tableNameWithSchema = statement.schema ? `"${statement.schema}"."${tableFrom}"` : `"${tableFrom}"`;
+-        const tableToNameWithSchema = statement.schema ? `"${statement.schema}"."${tableTo}"` : `"${tableTo}"`;
++        const tableToNameWithSchema = schemaTo ? `"${schemaTo}"."${tableTo}"` : `"${tableTo}"`;
+         const alterStatement = `ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT "${name}" FOREIGN KEY (${fromColumnsString}) REFERENCES ${tableToNameWithSchema}(${toColumnsString})${onDeleteStatement}${onUpdateStatement}`;
+         let sql = "DO $$ BEGIN\n";
+         sql += " " + alterStatement + ";\n";

@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
     "lib": ["ES2015", "DOM"],
-    "module": "ESNext",
-    "outDir": "./build",
-    "target": "ES2017"
+    "module": "ES2022",
+    "target": "ES2022"
   },
-  "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts"],
-  "exclude": ["build", "node_modules"]
+  "include": ["."],
+  "extends": "tsconfig/base.json"
 }

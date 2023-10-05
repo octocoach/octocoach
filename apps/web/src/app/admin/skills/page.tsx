@@ -1,10 +1,10 @@
 import { WC } from "@octocoach/charts";
-import { desc, eq, gte, sql } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
-import { jobs } from "@octocoach/db/src/schema/jobs";
-import { skills } from "@octocoach/db/src/schema/skills";
-import { tasks } from "@octocoach/db/src/schema/tasks";
-import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+import { db } from "@octocoach/db/connection";
+import { desc, eq, gte, sql } from "@octocoach/db/operators";
+import { jobTable } from "@octocoach/db/schemas/common/job";
+import { skillTable } from "@octocoach/db/schemas/common/skill";
+import { skillsTasksTable } from "@octocoach/db/schemas/common/skills-tasks";
+import { taskTable } from "@octocoach/db/schemas/common/task";
 import Message from "@octocoach/i18n/src/react-message";
 import { Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
@@ -15,16 +15,16 @@ export default async function Page() {
 
   const s = await db
     .select({
-      id: skills.id,
-      name: skills.name,
-      count: sql<number>`(select count(*) from ${tasksToSkills} where ${tasksToSkills.skillId} = ${skills.id})`,
+      id: skillTable.id,
+      name: skillTable.name,
+      count: sql<number>`(select count(*) from ${skillsTasksTable} where ${skillsTasksTable.skillId} = ${skillTable.id})`,
     })
-    .from(skills)
-    .leftJoin(tasksToSkills, eq(skills.id, tasksToSkills.skillId))
-    .leftJoin(tasks, eq(tasksToSkills.taskId, tasks.id))
-    .leftJoin(jobs, eq(tasks.jobId, jobs.id))
-    .where(gte(jobs.created, twoWeeksAgo))
-    .groupBy(skills.id)
+    .from(skillTable)
+    .leftJoin(skillsTasksTable, eq(skillTable.id, skillsTasksTable.skillId))
+    .leftJoin(taskTable, eq(skillsTasksTable.taskId, taskTable.id))
+    .leftJoin(jobTable, eq(taskTable.jobId, jobTable.id))
+    .where(gte(jobTable.created, twoWeeksAgo))
+    .groupBy(skillTable.id)
     .having(({ count }) => sql`${count} > 0`)
     .orderBy(({ count }) => desc(count));
 

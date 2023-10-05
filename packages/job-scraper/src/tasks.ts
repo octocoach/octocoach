@@ -1,6 +1,6 @@
-import { type Database } from "@octocoach/db/src/connection";
-import { Job } from "@octocoach/db/src/schema/jobs";
-import { tasks } from "@octocoach/db/src/schema/tasks";
+import { type Database } from "@octocoach/db/connection";
+import { Job } from "@octocoach/db/schemas/common/job";
+import { taskTable } from "@octocoach/db/schemas/common/task";
 import chalk from "chalk";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
@@ -99,7 +99,7 @@ export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
     const embedding = await embeddingsApi.embedQuery(description);
 
     const task = await db
-      .insert(tasks)
+      .insert(taskTable)
       .values({ description, question, embedding, jobId: job.id })
       .returning();
 

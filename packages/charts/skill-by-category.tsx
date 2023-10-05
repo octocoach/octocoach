@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  SkillLevel,
-  skillLevel as skillLevelEnum,
-} from "@octocoach/db/src/schema/users-skills-levels";
+  type SkillLevel,
+  skillLevelEnum,
+} from "@octocoach/db/schemas/common/skill-level";
 import { Text, vars } from "@octocoach/ui";
 import { AxisLeft } from "@visx/axis";
 import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";

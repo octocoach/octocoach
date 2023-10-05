@@ -1,4 +1,4 @@
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
@@ -16,7 +16,7 @@ export default async function Page({
 }: {
   params: { skillId: string };
 }) {
-  const skill = await db.query.skills.findFirst({
+  const skill = await db.query.skillTable.findFirst({
     where: (skills, { eq }) => eq(skills.id, params.skillId),
     with: {
       subcategory: {
@@ -24,7 +24,7 @@ export default async function Page({
           category: true,
         },
       },
-      tasksToSkills: {
+      skillsTasksTable: {
         with: {
           task: true,
         },

@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  skillLevel,
   type SkillLevel,
-} from "@octocoach/db/src/schema/users-skills-levels";
+  skillLevelEnum,
+} from "@octocoach/db/schemas/common/skill-level";
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Card, Text, vars } from "@octocoach/ui";
 import { localPoint } from "@visx/event";
@@ -41,7 +41,7 @@ export const PackCircles = ({
   }).count();
 
   const colorScale = scaleOrdinal({
-    domain: skillLevel.enumValues,
+    domain: skillLevelEnum.enumValues,
     range: [
       vars.color.accent.normal,
       vars.color.brand.normal,
@@ -52,8 +52,8 @@ export const PackCircles = ({
   });
 
   const sizeScale = scaleOrdinal({
-    domain: skillLevel.enumValues,
-    range: skillLevel.enumValues.map((_, i) => 0.5 + i * 0.12),
+    domain: skillLevelEnum.enumValues,
+    range: skillLevelEnum.enumValues.map((_, i) => 0.5 + i * 0.12),
   });
 
   if (width < 300) return null;
@@ -124,7 +124,7 @@ export const PackCircles = ({
         style={{ position: "absolute" }}
         itemDirection="row"
         labelFormat={(id) => LL.skillLevels[id].title()}
-        domain={skillLevel.enumValues}
+        domain={skillLevelEnum.enumValues}
       />
     </div>
   );

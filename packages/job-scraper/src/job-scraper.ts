@@ -1,5 +1,5 @@
-import { Database } from "@octocoach/db/src/connection";
-import { NewJob, jobs } from "@octocoach/db/src/schema/jobs";
+import { Database } from "@octocoach/db/connection";
+import { NewJob, jobTable } from "@octocoach/db/schemas/common/job";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { Browser, BrowserContext, Page, devices } from "playwright";
@@ -203,18 +203,17 @@ export abstract class JobScraper {
     const [titleEmbedding, descriptionEmbedding] =
       await this.openAIEmbeddings.embedDocuments([newJob.title, description]);
 
-    const job = (
-      await this.db
-        .insert(jobs)
-        .values({
-          ...newJob,
-          titleEmbedding,
-          description,
-          descriptionEmbedding,
-        })
-        .onConflictDoNothing()
-        .returning()
-    )[0];
+    const job = await this.db
+      .insert(jobTable)
+      .values({
+        ...newJob,
+        titleEmbedding,
+        description,
+        descriptionEmbedding,
+      })
+      .onConflictDoNothing()
+      .returning()
+      .then((rows) => rows[0] ?? null);
 
     await extractTasks({ db: this.db, job });
   }

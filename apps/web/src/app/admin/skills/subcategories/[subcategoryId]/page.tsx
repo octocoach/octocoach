@@ -1,11 +1,11 @@
-import { desc, eq, sql } from "@octocoach/db/src";
-import { db } from "@octocoach/db/src/connection";
+import { db } from "@octocoach/db/connection";
+import { desc, eq, sql } from "@octocoach/db/operators";
 import {
-  skillSubcategories,
-  skills as skillsTable,
-} from "@octocoach/db/src/schema/skills";
-import { tasks as tasksTable } from "@octocoach/db/src/schema/tasks";
-import { tasksToSkills } from "@octocoach/db/src/schema/tasks-to-skills";
+  skillSubcategoryTable,
+  skillTable,
+  skillsTasksTable,
+  taskTable,
+} from "@octocoach/db/schemas/public/schema";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ export default async function Page({
 }: {
   params: { subcategoryId: number };
 }) {
-  const { name, category } = await db.query.skillSubcategories.findFirst({
+  const { name, category } = await db.query.skillSubcategoryTable.findFirst({
     with: {
       category: true,
     },
@@ -24,19 +24,19 @@ export default async function Page({
 
   const tasks = await db
     .select({
-      name: skillsTable.name,
-      id: skillsTable.id,
-      taskCount: sql<number>`count(${tasksTable.id})`,
+      name: skillTable.name,
+      id: skillTable.id,
+      taskCount: sql<number>`count(${taskTable.id})`,
     })
-    .from(skillsTable)
+    .from(skillTable)
     .leftJoin(
-      skillSubcategories,
-      eq(skillsTable.subcategoryId, skillSubcategories.id)
+      skillSubcategoryTable,
+      eq(skillTable.subcategoryId, skillSubcategoryTable.id)
     )
-    .leftJoin(tasksToSkills, eq(tasksToSkills.skillId, skillsTable.id))
-    .leftJoin(tasksTable, eq(tasksTable.id, tasksToSkills.taskId))
-    .where(eq(skillSubcategories.id, params.subcategoryId))
-    .groupBy(skillsTable.name, skillsTable.id)
+    .leftJoin(skillsTasksTable, eq(skillsTasksTable.skillId, skillTable.id))
+    .leftJoin(taskTable, eq(taskTable.id, skillsTasksTable.taskId))
+    .where(eq(skillSubcategoryTable.id, params.subcategoryId))
+    .groupBy(skillTable.name, skillTable.id)
     .orderBy(({ taskCount }) => desc(taskCount))
     .having(({ taskCount }) => sql<number>`${taskCount} > 0`);
 

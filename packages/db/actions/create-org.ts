@@ -70,11 +70,13 @@ export default async function createOrg(slug: string) {
     }
   }
 
+  const ref = "main";
+
   await fetchContents({
     owner: "octocoach",
     repo: "octocoach",
     path: "packages/db/schemas",
-    ref: "avanderbergh/issue70",
+    ref,
     outputDir: schemasDir,
   });
 
@@ -84,7 +86,7 @@ export default async function createOrg(slug: string) {
       owner: "octocoach",
       repo: "octocoach",
       path: "packages/db/org.drizzle.config.ts",
-      ref: "avanderbergh/issue70",
+      ref,
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
         accept: "application/vnd.github.v3.raw",

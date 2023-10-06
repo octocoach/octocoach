@@ -1,25 +1,24 @@
-import type {
-  SignedInAuthObject,
-  SignedOutAuthObject,
-} from "@clerk/nextjs/api";
-import { getAuth } from "@clerk/nextjs/server";
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { NextRequest } from "next/server";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { Session, getServerSession } from "next-auth";
+import { cookies } from "next/headers";
 
 interface AuthContext {
-  auth: SignedInAuthObject | SignedOutAuthObject;
+  session: Session | null;
 }
 
-export const createContextInner = async ({ auth }: AuthContext) => {
+export const createContextInner = async ({ session }: AuthContext) => {
   return {
-    auth,
+    session,
   };
 };
 
-export const createContext = async ({ req }: FetchCreateContextFnOptions) => {
+export const createContext = async () => {
+  const orgCookie = cookies().get("org");
+  const session = await getServerSession(mkAuthOptions(orgCookie?.value));
+
   return await createContextInner({
-    auth: getAuth(req as NextRequest),
+    session,
   });
 };
 
-export type Context = Pick<AuthContext, "auth">;
+export type Context = Pick<AuthContext, "session">;

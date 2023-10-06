@@ -4,6 +4,7 @@ import { mkOrgPgSchema } from "./schema";
 import { mkOrganizationTable } from "../common/organization";
 import { mkUsersSkillLevelsTable } from "./users-skill-levels";
 import { mkUsersTaskInterestTable } from "./users-task-interest";
+import { mkUserProfileTable } from "./user-profile";
 
 export const mkUserTable = (slug: string) =>
   mkOrgPgSchema(slug).table("user", mkUserCols());
@@ -13,6 +14,7 @@ export const mkUserTableRelations = (slug: string) => {
   const organizationTable = mkOrganizationTable(userTable);
   const usersSkillLevelsTable = mkUsersSkillLevelsTable(slug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(slug);
+  const userProfileTable = mkUserProfileTable(slug);
 
   return relations(userTable, ({ one, many }) => ({
     organization: one(organizationTable, {
@@ -24,6 +26,10 @@ export const mkUserTableRelations = (slug: string) => {
     }),
     usersTaskInterest: many(usersTaskInterestTable, {
       relationName: "userTask",
+    }),
+    userProfile: one(userProfileTable, {
+      fields: [userTable.id],
+      references: [userProfileTable.userId],
     }),
   }));
 };

@@ -11,6 +11,8 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.2",
     "@formatjs/intl-localematcher": "^0.4.0",
+    "@octocoach/auth": "workspace:^",
+    "@octocoach/auth-drizzle-adapter": "workspace:*",
     "@octocoach/azav": "workspace:^",
     "@octocoach/charts": "workspace:^",
     "@octocoach/db": "workspace:^",
@@ -18,7 +20,6 @@
     "@octocoach/i18n": "workspace:^",
     "@octocoach/trpc": "workspace:^",
     "@octocoach/ui": "workspace:*",
-    "@octocoach/auth-drizzle-adapter": "workspace:*",
     "@visx/visx": "^3.3.0",
     "@visx/wordcloud": "^3.3.0",
     "drizzle-kit": "^0.19.13",

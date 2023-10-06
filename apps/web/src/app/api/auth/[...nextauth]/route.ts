@@ -1,4 +1,4 @@
-import mkAuthOptions from "@config/next-auth";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import NextAuth from "next-auth";
 import { NextRequest } from "next/server";
 

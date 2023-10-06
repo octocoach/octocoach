@@ -19,9 +19,31 @@ export const stack = recipe({
         alignItems: "flex-end",
       },
     },
+    justify: {
+      none: {},
+      left: {
+        justifyContent: "flex-start",
+      },
+      center: {
+        justifyContent: "center",
+      },
+      right: {
+        justifyContent: "flex-end",
+      },
+      between: {
+        justifyContent: "space-between",
+      },
+      around: {
+        justifyContent: "space-around",
+      },
+      evenly: {
+        justifyContent: "space-evenly",
+      },
+    },
     direction: {
       horizontal: {
         flexDirection: "row",
+        flexGrow: 1,
       },
       vertical: {
         flexDirection: "column",

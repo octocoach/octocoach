@@ -9,9 +9,8 @@ export default function Page() {
   const { data: session } = useSession();
 
   return (
-    <Container element="header">
-      <Stack direction="horizontal" align="right">
-        {session?.user ? <Text>{session.user.name}</Text> : null}
+    <Container element="header" display="flex">
+      <Stack direction="horizontal" justify="right">
         {session ? (
           <Button onPress={() => signOut()}>Sign Out</Button>
         ) : (

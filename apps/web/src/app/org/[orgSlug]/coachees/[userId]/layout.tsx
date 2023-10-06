@@ -13,7 +13,7 @@ export default async function Layout({
   return (
     <Container element="section">
       <Stack>
-        <UserSummary userId={params.userId} />
+        <UserSummary {...params} />
         <div>{children}</div>
       </Stack>
     </Container>

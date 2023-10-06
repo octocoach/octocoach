@@ -1,6 +1,5 @@
 import { orgDb } from "@octocoach/db/connection";
-import { eq } from "@octocoach/db/operators";
-import { mkUserTable } from "@octocoach/db/schemas/org/user";
+import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { LLMChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import {
@@ -11,7 +10,6 @@ import {
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 
 export const userRouter = router({
   summary: publicProcedure
@@ -21,7 +19,6 @@ export const userRouter = router({
 
       const db = orgDb(input.orgSlug);
 
-      const userTable = mkUserTable(input.orgSlug);
       const userProfileTable = mkUserProfileTable(input.orgSlug);
 
       const user = await db.query.userTable.findFirst({
@@ -76,9 +73,16 @@ export const userRouter = router({
       });
 
       await db
-        .update(userProfileTable)
-        .set({ summary: text, summaryHash: hash })
-        .where(eq(userProfileTable.userId, input.userId));
+        .insert(userProfileTable)
+        .values({
+          userId: input.userId,
+          summary: text,
+          summaryHash: hash,
+        })
+        .onConflictDoUpdate({
+          target: userProfileTable.userId,
+          set: { summary: text, summaryHash: hash },
+        });
 
       return text;
     }),

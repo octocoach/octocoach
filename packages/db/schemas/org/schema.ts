@@ -28,6 +28,7 @@ import { mkOrgSessionTable } from "./session";
 import { mkSkillRelations, skillTable } from "./skill";
 import { mkTaskRelations, taskTable } from "./task";
 import { mkUserTable, mkUserTableRelations } from "./user";
+import { mkUserProfileTable, mkUserProfileRelations } from "./user-profile";
 import {
   mkUsersSkillLevelsRelations,
   mkUsersSkillLevelsTable,
@@ -52,10 +53,11 @@ export const mkOrgSchema = (slug: string) => ({
   verificationTokenTable: mkOrgVerificationTokenTable(slug),
 
   // common
+  userProfileTable: mkUserProfileTable(slug),
+  userProfileRelations: mkUserProfileRelations(slug),
+
   organizationTable: mkOrganizationTable(mkUserTable(slug)),
-  organizationTableRelations: mkOrganizationTableRelations(
-    mkUserTable(slug)
-  ),
+  organizationTableRelations: mkOrganizationTableRelations(mkUserTable(slug)),
 
   employerTable,
 

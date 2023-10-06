@@ -1,5 +1,5 @@
 import SessionProvider from "@components/session-provider";
-import mkAuthOptions from "@config/next-auth";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";

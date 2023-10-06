@@ -1,6 +1,6 @@
 "use server";
 
-import mkAuthOptions from "@config/next-auth";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { db } from "@octocoach/db/connection";
 
 import { organizationTable } from "@octocoach/db/schemas/public/schema";

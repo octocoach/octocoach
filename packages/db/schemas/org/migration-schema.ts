@@ -10,6 +10,8 @@ export const {
   accountTable,
   sessionTable,
   verificationTokenTable,
+  userProfileTable,
+  userProfileRelations,
   usersSkillLevelsTable,
   usersSkillLevelsRelations,
   usersTaskInterestTable,

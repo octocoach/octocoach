@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "chalk": "^5.3.0",
-    "playwright": "^1.37.0",
+    "playwright": "^1.38.1",
     "tsx": "^3.12.7"
   },
   "dependencies": {

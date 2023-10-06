@@ -17,14 +17,13 @@ export default function Page({ params }: { params: { orgSlug } }) {
   return (
     <Container element="main">
       <Stack>
-        <Link href={`/${params.orgSlug}/start`}>
-          <Text>Welcome</Text>
+        <Link href={`/org/${params.orgSlug}/start`}>
+          <Button>Start</Button>
         </Link>
+        <Button onPress={onDelete} disabled={isPending}>
+          Delete
+        </Button>
       </Stack>
-
-      <Button onPress={onDelete} disabled={isPending}>
-        Delete
-      </Button>
     </Container>
   );
 }

@@ -28,11 +28,7 @@ export default async function Layout({
         <Text size="l" variation="casual">
           {organization.name}
         </Text>
-        <div>
-          {members.map(({ id }) => (
-            <p key={id}>{id}</p>
-          ))}
-        </div>
+
         <Container element="section">{children}</Container>
       </Stack>
     </Container>

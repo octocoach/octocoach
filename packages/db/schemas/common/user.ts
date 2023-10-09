@@ -6,6 +6,7 @@ export const mkUserCols = () => ({
   email: text("email").notNull(),
   emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
+  phone: text("phone"),
 });
 
 const _userTable = pgTable("user", mkUserCols());

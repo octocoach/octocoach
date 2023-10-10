@@ -5,13 +5,19 @@ import { PropsWithChildren } from "react";
 
 export const Form = ({
   children,
+  store,
   formStoreProps,
   onSubmit,
 }: PropsWithChildren<{
-  formStoreProps: Ariakit.FormStoreProps;
+  store?: Ariakit.FormStore;
+  formStoreProps?: Ariakit.FormStoreProps;
   onSubmit: (data: any) => Promise<void>;
 }>) => {
-  const store = Ariakit.useFormStore(formStoreProps);
+  if (!store) {
+    if (!formStoreProps)
+      throw new Error("You must either provide a store or formStoreProps");
+    store = Ariakit.useFormStore(formStoreProps);
+  }
 
   store.useSubmit(async (state) => {
     onSubmit(state.values);

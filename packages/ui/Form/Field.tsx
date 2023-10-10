@@ -1,8 +1,8 @@
 "use client";
 
 import * as Ariakit from "@ariakit/react";
-import { field, input } from "./field.css";
 import { Text } from "../Text/Text";
+import { field, input } from "./field.css";
 
 export type FormInputTypes = "FormInput" | "FormField";
 
@@ -10,10 +10,12 @@ export const FormField = ({
   inputType,
   label,
   name,
+  pattern,
 }: {
   inputType: FormInputTypes;
   label: string;
   name: string;
+  pattern?: string;
 }) => {
   const Component = Ariakit[inputType];
 
@@ -22,7 +24,7 @@ export const FormField = ({
       <Ariakit.FormLabel name={name}>
         <Text>{label}</Text>
       </Ariakit.FormLabel>
-      <Component type="text" className={input} name={name} />
+      <Component type="text" className={input} name={name} pattern={pattern} />
       <Ariakit.FormError name={name} />
     </div>
   );

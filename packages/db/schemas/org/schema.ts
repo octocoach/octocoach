@@ -38,6 +38,7 @@ import {
   mkUsersTaskInterestTable,
 } from "./users-task-interest";
 import { mkOrgVerificationTokenTable } from "./verification-token";
+import { mkCoachTable, mkCoachTableRelations } from "./coach";
 
 export const mkOrgPgSchema = (slug: string) => pgSchema(`org_${slug}`);
 
@@ -88,4 +89,7 @@ export const mkOrgSchema = (slug: string) => ({
 
   usersTaskInterestTable: mkUsersTaskInterestTable(slug),
   usersTaskInterestRelations: mkUsersTaskInterestRelations(slug),
+
+  coachTable: mkCoachTable(slug),
+  coachTableRelations: mkCoachTableRelations(slug),
 });

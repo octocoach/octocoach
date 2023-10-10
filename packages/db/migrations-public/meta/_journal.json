@@ -8,6 +8,13 @@
       "when": 1695899240337,
       "tag": "0000_past_maelstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1696924468414,
+      "tag": "0001_premium_harpoon",
+      "breakpoints": true
     }
   ]
 }

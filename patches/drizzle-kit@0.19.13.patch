@@ -1,5 +1,5 @@
 diff --git a/index.cjs b/index.cjs
-index d6085807f138fca830a8fb8bf9470779f091fa61..6395f1dbabed07abecc9bbc12527832e0bfb1d5b 100755
+index d6085807f138fca830a8fb8bf9470779f091fa61..f7aa5e8b622d684d596122a125e5a4e280740026 100755
 --- a/index.cjs
 +++ b/index.cjs
 @@ -4903,6 +4903,7 @@ var init_pgSchema = __esm({
@@ -51,6 +51,15 @@ index d6085807f138fca830a8fb8bf9470779f091fa61..6395f1dbabed07abecc9bbc12527832e
              columnsFrom,
              columnsTo,
              onDelete,
+@@ -12460,7 +12466,7 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+                 WHERE  contype = 'p' 
+                 AND    connamespace = '${tableSchema}'::regnamespace  
+                 AND    (conrelid::regclass::text = $1 OR conrelid::regclass::text = $2);`,
+-                  [`"${tableName}"`, tableName]
++                  [`${tableSchema}."${tableName}"`, `${tableSchema}.${tableName}`]
+                 );
+                 primaryKeys[`${tableName}_${cprimaryKey.map((pk) => pk.column_name).join("_")}`] = {
+                   name: tableCompositePkName[0].primary_key,
 @@ -15130,13 +15136,15 @@ var init_sqlgenerator = __esm({
        "interval day to second",
        "interval hour to minute",

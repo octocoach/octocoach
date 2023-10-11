@@ -1,10 +1,14 @@
 "use client";
 
+import { legalForm } from "@octocoach/db/schemas/common/legal-form";
 import {
   Button,
   Container,
   Form,
   FormField,
+  FormInput,
+  FormSelect,
+  SelectItem,
   Text,
   useFormStore,
 } from "@octocoach/ui";
@@ -31,16 +35,22 @@ export default function Page() {
       );
 
   const [name, setName] = useState("");
+  const [legalFormAbbreviation, setLegalFormAbbreviation] = useState("");
+  const [legalFormFullName, setLegalFormFullName] = useState("");
 
   const onChange = (values) => {
-    if (store.getValue("name") !== name) {
-      store.setValue("slug", sluggify(values.name));
-      setName(store.getValue("name"));
+    const abbreviation = legalForm[values.legalForm]?.abbreviation;
+    const fullName = legalForm[values.legalForm]?.fullName;
+    if (store.getValue("displayName") !== name) {
+      store.setValue("slug", sluggify(values.displayName));
+      setName(store.getValue("displayName"));
     }
+    setLegalFormAbbreviation(abbreviation);
+    setLegalFormFullName(fullName);
   };
 
   const store = useFormStore({
-    defaultValues: { name: "", slug: "" },
+    defaultValues: { displayName: "", slug: "", legalName: "", legalForm: "" },
     setValues: onChange,
   });
 
@@ -50,13 +60,24 @@ export default function Page() {
         Create an Organization
       </Text>
       <Form onSubmit={create} store={store}>
-        <FormField name="name" label="Name" inputType="FormInput" />
-        <FormField
-          name="slug"
-          label="Slug"
-          inputType="FormInput"
-          pattern="^[a-z0-9\-]+$"
-        />
+        <FormField name="displayName" label="Display Name">
+          <FormInput name="displayName" />
+        </FormField>
+        <FormField name="slug" label="Slug">
+          <FormInput name="slug" />
+        </FormField>
+        <FormField name="legalName" label="Legal name">
+          <FormInput name="legalName" suffix={legalFormAbbreviation} />
+        </FormField>
+        <FormField name={"legalForm"} label="Legal Form">
+          <FormSelect name={"legalForm"} displayValue={legalFormFullName}>
+            {Object.entries(legalForm).map(([value, { fullName }], key) => (
+              <SelectItem key={key} value={value}>
+                <Text>{fullName}</Text>
+              </SelectItem>
+            ))}
+          </FormSelect>
+        </FormField>
         <Button type="submit">Create</Button>
       </Form>
     </Container>

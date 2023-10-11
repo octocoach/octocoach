@@ -12,7 +12,24 @@ import { useState } from "react";
 import { create } from "./actions";
 
 export default function Page() {
-  const sluggify = (input: string) => input.toLowerCase().replaceAll(" ", "-");
+  const sluggify = (input: string): string =>
+    input
+      .replace(/[\-_\+]/g, " ")
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .split(" ")
+      .reduce(
+        (acc, curr) => `${acc}${curr.charAt(0).toUpperCase()}${curr.slice(1)}`,
+        ""
+      )
+      .split(/(?=[A-Z])/)
+      .reduce(
+        (acc, curr) =>
+          `${acc}${curr.charAt(0).toLowerCase()}${
+            curr.length > 1 ? curr.length - 1 : ""
+          }`,
+        ""
+      );
+
   const [name, setName] = useState("");
 
   const onChange = (values) => {

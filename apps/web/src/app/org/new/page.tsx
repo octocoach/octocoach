@@ -2,6 +2,7 @@
 
 import { legalForm } from "@octocoach/db/schemas/common/legal-form";
 import {
+  Address,
   Button,
   Container,
   Form,
@@ -9,6 +10,7 @@ import {
   FormInput,
   FormSelect,
   SelectItem,
+  Stack,
   Text,
   useFormStore,
 } from "@octocoach/ui";
@@ -37,11 +39,12 @@ export default function Page() {
   const [name, setName] = useState("");
   const [legalFormAbbreviation, setLegalFormAbbreviation] = useState("");
   const [legalFormFullName, setLegalFormFullName] = useState("");
+  const [isSlugModified, setIsSlugModified] = useState(false);
 
   const onChange = (values) => {
     const abbreviation = legalForm[values.legalForm]?.abbreviation;
     const fullName = legalForm[values.legalForm]?.fullName;
-    if (store.getValue("displayName") !== name) {
+    if (!isSlugModified && store.getValue("displayName") !== name) {
       store.setValue("slug", sluggify(values.displayName));
       setName(store.getValue("displayName"));
     }
@@ -50,21 +53,28 @@ export default function Page() {
   };
 
   const store = useFormStore({
-    defaultValues: { displayName: "", slug: "", legalName: "", legalForm: "" },
+    defaultValues: {
+      displayName: "",
+      slug: "",
+      legalName: "",
+      legalForm: "",
+      street: "",
+      housenumber: "",
+      city: "",
+      postcode: "",
+      state: "",
+    },
     setValues: onChange,
   });
 
   return (
     <Container element="section">
-      <Text size="l" variation="casual">
-        Create an Organization
-      </Text>
       <Form onSubmit={create} store={store}>
         <FormField name="displayName" label="Display Name">
           <FormInput name="displayName" />
         </FormField>
         <FormField name="slug" label="Slug">
-          <FormInput name="slug" />
+          <FormInput name="slug" onChange={() => setIsSlugModified(true)} />
         </FormField>
         <FormField name="legalName" label="Legal name">
           <FormInput name="legalName" suffix={legalFormAbbreviation} />
@@ -78,6 +88,9 @@ export default function Page() {
             ))}
           </FormSelect>
         </FormField>
+
+        <Address />
+
         <Button type="submit">Create</Button>
       </Form>
     </Container>

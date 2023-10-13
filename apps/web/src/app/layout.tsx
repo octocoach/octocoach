@@ -4,7 +4,6 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import TrpcProvider from "@octocoach/trpc/src/next/provider";
-import { SSRProvider } from "@octocoach/ui";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
@@ -36,16 +35,14 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
-      <SSRProvider>
-        <body>
-          <SessionProvider session={session}>
-            {header}
-            <RootLayoutClient dictionary={dictionary} locale={locale}>
-              <TrpcProvider>{children}</TrpcProvider>
-            </RootLayoutClient>
-          </SessionProvider>
-        </body>
-      </SSRProvider>
+      <body>
+        <SessionProvider session={session}>
+          {header}
+          <RootLayoutClient dictionary={dictionary} locale={locale}>
+            <TrpcProvider>{children}</TrpcProvider>
+          </RootLayoutClient>
+        </SessionProvider>
+      </body>
     </html>
   );
 }

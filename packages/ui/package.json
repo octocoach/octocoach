@@ -44,6 +44,7 @@
     "@vanilla-extract/vite-plugin": "^3.8.2",
     "clsx": "^2.0.0",
     "colord": "^2.9.3",
+    "just-debounce-it": "^3.2.0",
     "react-aria": "^3.25.0"
   },
   "peerDependencies": {

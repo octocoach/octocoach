@@ -16,4 +16,5 @@ export * from "./Stack/Stack";
 export * from "./Tag/Tag";
 export * from "./Text/Text";
 export * from "./TextArea/TextArea";
+export * from "./Address/Address";
 export { vars } from "./theme.css";

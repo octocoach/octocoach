@@ -4,7 +4,6 @@ import { toTuple } from "../helpers";
 import { addressTable } from "./address";
 import { legalForm } from "./legal-form";
 import { OrgUserTable, UserTable, mkUserCols } from "./user";
-import { mkUserTable } from "../org/user";
 
 export const legalFormEnum = pgEnum(
   "organization_type",
@@ -25,7 +24,7 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
         onUpdate: "cascade",
       }),
     addressId: integer("address_id").references(() => addressTable.id, {
-      onDelete: "no action",
+      onDelete: "cascade",
       onUpdate: "set null",
     }),
     domain: text("domain"),

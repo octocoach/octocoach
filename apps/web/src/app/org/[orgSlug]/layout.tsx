@@ -26,7 +26,7 @@ export default async function Layout({
     <Container element="main">
       <Stack>
         <Text size="l" variation="casual">
-          {organization.name}
+          {organization.displayName}
         </Text>
 
         <Container element="section">{children}</Container>

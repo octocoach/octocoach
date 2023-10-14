@@ -7,10 +7,10 @@ export const countryEnum = pgEnum("country", ["de"]);
 
 export const addressTable = pgTable("address", {
   id: serial("id").notNull().primaryKey(),
-  country: countryEnum("country").notNull(),
-  state: text("state").notNull(),
+  addressLine1: text("address_line_1").notNull(),
+  addressLine2: text("address_line_2"),
   city: text("city").notNull(),
   postcode: text("postcode").notNull(),
-  street: text("street").notNull(),
-  housenumber: text("housenumber").notNull(),
+  state: text("state").notNull(),
+  country: countryEnum("country").notNull(),
 });

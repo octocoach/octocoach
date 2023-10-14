@@ -18,6 +18,7 @@ export const selectButton = style({
   justifyContent: "space-between",
   flexGrow: 0,
   gap: space[2],
+  height: "2.5rem",
 });
 
 export const selectPopover = style([

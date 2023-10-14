@@ -1,7 +1,7 @@
 "use client";
 import * as Ariakit from "@ariakit/react";
 import debounce from "just-debounce-it";
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { FormField } from "../Form/FormField";
 import { FormInput } from "../Form/FormInput";
 import { formInput, formInputWrapper } from "../Form/formInput.css";
@@ -15,15 +15,17 @@ const Combobox = ({
   store,
   setValue,
   suggestions = [],
+  flexGrow = 1,
 }: {
   label: string;
   store: Ariakit.ComboboxStore;
   setValue: (text: string) => void;
   suggestions: Feature[];
+  flexGrow?: number;
 }) => {
   return (
     <Ariakit.ComboboxProvider store={store} setValue={setValue}>
-      <label>
+      <label style={{ flexGrow, position: "relative" }}>
         <Text>{label}</Text>
         <div className={formInputWrapper}>
           <Ariakit.Combobox className={formInput} />
@@ -43,29 +45,30 @@ const Combobox = ({
   );
 };
 
-export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
-  const form = Ariakit.useFormContext();
-  if (!form) throw new Error("FormSelect must be used within a Form");
+export const Address = ({ store }: { store: Ariakit.FormStore }) => {
+  const [addressLine1Suggestions, setAddressLine1Suggestions] = useState<
+    Feature[]
+  >([]);
+  const addressLine1ComboboxStore = Ariakit.useComboboxStore({
+    defaultValue: "",
+  });
 
-  const [streetSuggestions, setStreetSuggestions] = useState<Feature[]>([]);
-  const streetComboboxStore = Ariakit.useComboboxStore({ defaultValue: "" });
-
-  const onStreetChanged = debounce(async (street: string) => {
-    const s = streetComboboxStore.getState();
+  const onAddressLine1Changed = debounce(async (addressLine1: string) => {
+    store.setValue("addressLine1", addressLine1);
+    const s = addressLine1ComboboxStore.getState();
     const hit = s.items.find(
       (item) => item.value === s.value
     ) as unknown as Feature["properties"];
     if (hit) {
-      streetComboboxStore.setValue(hit.street);
-      if (hit.housenumber) {
-        form.setValue("housenumber", hit.housenumber);
-      }
+      addressLine1ComboboxStore.setValue(
+        `${hit.street} ${hit.housenumber || ""}`
+      );
       postcodeComboboxStore.setValue(hit.postcode);
       cityComboboxStore.setValue(hit.city);
       stateComboboxStore.setValue(hit.state);
     } else {
-      const features = await autocomplete(street);
-      setStreetSuggestions(features);
+      const features = await autocomplete(addressLine1);
+      setAddressLine1Suggestions(features);
     }
   }, 500);
 
@@ -73,6 +76,7 @@ export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
   const postcodeComboboxStore = Ariakit.useComboboxStore();
 
   const onPostcodeChanged = debounce(async (postcode: string) => {
+    store.setValue("postcode", postcode);
     const s = postcodeComboboxStore.getState();
     const hit = s.items.find(
       (item) => item.value === s.value
@@ -92,6 +96,7 @@ export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
   const cityComboboxStore = Ariakit.useComboboxStore();
 
   const onCityChanged = debounce(async (city: string) => {
+    store.setValue("city", city);
     const s = cityComboboxStore.getState();
     const hit = s.items.find(
       (item) => item.value === s.value
@@ -110,6 +115,7 @@ export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
   const stateComboboxStore = Ariakit.useComboboxStore();
 
   const onStateChanged = debounce(async (state: string) => {
+    store.setValue("state", state);
     const s = stateComboboxStore.getState();
     const hit = s.items.find(
       (item) => item.value === s.value
@@ -128,27 +134,32 @@ export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
 
   return (
     <Stack>
+      <Text size="l">Address</Text>
       <Combobox
-        label="Street"
-        store={streetComboboxStore}
-        setValue={onStreetChanged}
-        suggestions={streetSuggestions}
+        label="Address line 1"
+        store={addressLine1ComboboxStore}
+        setValue={onAddressLine1Changed}
+        suggestions={addressLine1Suggestions}
       />
-      <FormField name={"housenumber"} label="House number">
-        <FormInput name={"housenumber"} type="number" />
+      <FormField name={"addressLine2"} label="Address line 2">
+        <FormInput name={"addressLine2"} />
       </FormField>
-      <Combobox
-        label="Postcode"
-        store={postcodeComboboxStore}
-        setValue={onPostcodeChanged}
-        suggestions={postcodeSuggestions}
-      />
-      <Combobox
-        label="City"
-        store={cityComboboxStore}
-        setValue={onCityChanged}
-        suggestions={citySuggestions}
-      />
+      <Stack direction="horizontal">
+        <Combobox
+          label="Postcode"
+          store={postcodeComboboxStore}
+          setValue={onPostcodeChanged}
+          suggestions={postcodeSuggestions}
+          flexGrow={0}
+        />
+        <Combobox
+          label="City"
+          store={cityComboboxStore}
+          setValue={onCityChanged}
+          suggestions={citySuggestions}
+          flexGrow={1}
+        />
+      </Stack>
       <Combobox
         label="State"
         store={stateComboboxStore}
@@ -157,4 +168,4 @@ export const Address = forwardRef<HTMLDivElement>(({ ...props }, ref) => {
       />
     </Stack>
   );
-});
+};

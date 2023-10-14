@@ -10,11 +10,20 @@ export interface SelectProps extends Ariakit.SelectProps {
   setValue?: (value: string) => void;
   defaultValue?: string;
   onBlur?: React.FocusEventHandler<HTMLElement>;
+  sameWidth?: boolean;
 }
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
   (
-    { children, value, setValue, defaultValue, displayValue, ...props },
+    {
+      children,
+      value,
+      setValue,
+      defaultValue,
+      displayValue,
+      sameWidth,
+      ...props
+    },
     ref
   ) => {
     const select = Ariakit.useSelectStore({
@@ -54,7 +63,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         <Ariakit.SelectPopover
           store={select}
           modal
-          sameWidth
+          sameWidth={sameWidth}
           gutter={4}
           onBlur={onBlur}
           portalRef={portalRef}

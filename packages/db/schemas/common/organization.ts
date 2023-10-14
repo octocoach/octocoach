@@ -3,7 +3,8 @@ import { integer, pgEnum, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { toTuple } from "../helpers";
 import { addressTable } from "./address";
 import { legalForm } from "./legal-form";
-import { OrgUserTable, UserTable } from "./user";
+import { OrgUserTable, UserTable, mkUserCols } from "./user";
+import { mkUserTable } from "../org/user";
 
 export const legalFormEnum = pgEnum(
   "organization_type",
@@ -52,3 +53,8 @@ export const mkOrganizationTableRelations = (
     }),
   }));
 };
+
+const _userTable = pgTable("user", mkUserCols());
+const _organizationTable = mkOrganizationTable(_userTable);
+export type NewOragnization = typeof _organizationTable.$inferInsert;
+export type Organization = typeof _organizationTable.$inferSelect;

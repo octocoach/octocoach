@@ -8,12 +8,13 @@ import { formField } from "./formField.css";
 export interface FormFieldProps extends ComponentPropsWithoutRef<"div"> {
   name: Ariakit.FormFieldProps["name"];
   label: string;
+  grow?: boolean;
 }
 
 export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
-  ({ children, name, label, ...props }, ref) => {
+  ({ children, name, label, grow, ...props }, ref) => {
     return (
-      <div ref={ref} {...props} className={formField}>
+      <div ref={ref} {...props} className={formField({ grow })}>
         <Ariakit.FormLabel name={name}>
           <Text>{label}</Text>
         </Ariakit.FormLabel>

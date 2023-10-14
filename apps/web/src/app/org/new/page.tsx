@@ -15,7 +15,7 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import { useState } from "react";
-import { create } from "./actions";
+import { CreateOrganization, create } from "./actions";
 
 export default function Page() {
   const sluggify = (input: string): string =>
@@ -38,7 +38,6 @@ export default function Page() {
 
   const [name, setName] = useState("");
   const [legalFormAbbreviation, setLegalFormAbbreviation] = useState("");
-  const [legalFormFullName, setLegalFormFullName] = useState("");
   const [isSlugModified, setIsSlugModified] = useState(false);
 
   const onChange = (values) => {
@@ -49,20 +48,20 @@ export default function Page() {
       setName(store.getValue("displayName"));
     }
     setLegalFormAbbreviation(abbreviation);
-    setLegalFormFullName(fullName);
   };
 
-  const store = useFormStore({
+  const store = useFormStore<CreateOrganization>({
     defaultValues: {
       displayName: "",
       slug: "",
       legalName: "",
       legalForm: "",
-      street: "",
-      housenumber: "",
+      addressLine1: "",
+      addressLine2: "",
       city: "",
       postcode: "",
       state: "",
+      country: "de",
     },
     setValues: onChange,
   });
@@ -70,28 +69,44 @@ export default function Page() {
   return (
     <Container element="section">
       <Form onSubmit={create} store={store}>
-        <FormField name="displayName" label="Display Name">
-          <FormInput name="displayName" />
-        </FormField>
-        <FormField name="slug" label="Slug">
-          <FormInput name="slug" onChange={() => setIsSlugModified(true)} />
-        </FormField>
-        <FormField name="legalName" label="Legal name">
-          <FormInput name="legalName" suffix={legalFormAbbreviation} />
-        </FormField>
-        <FormField name={"legalForm"} label="Legal Form">
-          <FormSelect name={"legalForm"} displayValue={legalFormFullName}>
-            {Object.entries(legalForm).map(([value, { fullName }], key) => (
-              <SelectItem key={key} value={value}>
-                <Text>{fullName}</Text>
-              </SelectItem>
-            ))}
-          </FormSelect>
-        </FormField>
+        <Stack spacing="loose">
+          <Stack>
+            <Stack direction="horizontal">
+              <FormField name="displayName" label="Display Name" grow>
+                <FormInput name="displayName" />
+              </FormField>
+              <FormField name="slug" label="Slug">
+                <FormInput
+                  name="slug"
+                  onChange={() => setIsSlugModified(true)}
+                />
+              </FormField>
+            </Stack>
+            <Stack direction="horizontal">
+              <FormField name="legalName" label="Legal name" grow>
+                <FormInput name="legalName" />
+              </FormField>
+              <FormField name={"legalForm"} label="Legal Form">
+                <FormSelect
+                  name={"legalForm"}
+                  displayValue={legalFormAbbreviation}
+                >
+                  {Object.entries(legalForm).map(
+                    ([value, { fullName }], key) => (
+                      <SelectItem key={key} value={value}>
+                        <Text>{fullName}</Text>
+                      </SelectItem>
+                    )
+                  )}
+                </FormSelect>
+              </FormField>
+            </Stack>
+          </Stack>
 
-        <Address />
+          <Address store={store} />
 
-        <Button type="submit">Create</Button>
+          <Button type="submit">Create</Button>
+        </Stack>
       </Form>
     </Container>
   );

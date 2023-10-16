@@ -39,6 +39,7 @@
     "@ariakit/react": "^0.3.4",
     "@catppuccin/palette": "^0.1.8",
     "@vanilla-extract/css": "^1.13.0",
+    "@vanilla-extract/dynamic": "^2.0.3",
     "@vanilla-extract/recipes": "^0.4.0",
     "@vanilla-extract/sprinkles": "^1.6.0",
     "@vanilla-extract/vite-plugin": "^3.9.0",

@@ -48,5 +48,5 @@ export async function create({
 
   await createOrg(slug);
 
-  redirect(`/org/${slug}`);
+  redirect(`/org/${slug}/admin`);
 }

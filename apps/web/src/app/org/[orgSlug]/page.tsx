@@ -20,6 +20,9 @@ export default function Page({ params }: { params: { orgSlug } }) {
         <Link href={`/org/${params.orgSlug}/start`}>
           <Button>Start</Button>
         </Link>
+        <Link href={`/org/${params.orgSlug}/admin`}>
+          <Button>Admin</Button>
+        </Link>
         <Button onPress={onDelete} disabled={isPending}>
           Delete
         </Button>

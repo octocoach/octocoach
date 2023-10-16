@@ -2,14 +2,19 @@ import { style } from "@vanilla-extract/css";
 import { space, sprinkles } from "../sprinkles.css";
 import { vars } from "../theme.css";
 
-export const field = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: space[2],
-});
-
-export const input = style([
+export const formInputWrapper = style([
   {
+    display: "flex",
+    alignItems: "center",
+    gap: space[2],
+    borderRadius: space[2],
+    backgroundColor: vars.color.background.crust,
+  },
+]);
+
+export const formInput = style([
+  {
+    flexGrow: 1,
     height: "2.5rem",
     backgroundColor: vars.color.background.mantle,
     borderRadius: space[2],

@@ -16,4 +16,6 @@ export const {
   usersSkillLevelsRelations,
   usersTaskInterestTable,
   usersTaskInterestRelations,
+  coachTable,
+  coachTableRelations,
 } = mkOrgSchema(slug);

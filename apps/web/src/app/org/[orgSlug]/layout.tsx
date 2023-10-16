@@ -2,6 +2,7 @@ import { db, orgDb } from "@octocoach/db/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+import ThemeContainer from "./theme-container";
 
 export default async function Layout({
   children,
@@ -23,14 +24,16 @@ export default async function Layout({
   });
 
   return (
-    <Container element="main">
-      <Stack>
-        <Text size="l" variation="casual">
-          {organization.name}
-        </Text>
+    <ThemeContainer organization={organization}>
+      <Container element="main">
+        <Stack>
+          <Text size="l" variation="casual">
+            {organization.displayName}
+          </Text>
 
-        <Container element="section">{children}</Container>
-      </Stack>
-    </Container>
+          <Container element="section">{children}</Container>
+        </Stack>
+      </Container>
+    </ThemeContainer>
   );
 }

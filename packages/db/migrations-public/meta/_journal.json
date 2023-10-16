@@ -8,6 +8,27 @@
       "when": 1695899240337,
       "tag": "0000_past_maelstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1696924468414,
+      "tag": "0001_premium_harpoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697289678653,
+      "tag": "0002_complex_diamondback",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1697290656952,
+      "tag": "0003_right_rhino",
+      "breakpoints": true
     }
   ]
 }

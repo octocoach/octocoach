@@ -4,9 +4,11 @@ import * as user from "./user";
 import * as verificationToken from "./verification-token";
 
 import {
+  legalFormEnum,
   mkOrganizationTable,
   mkOrganizationTableRelations,
 } from "../common/organization";
+import * as address from "../common/address";
 
 import * as employer from "../common/employer";
 import * as job from "../common/job";
@@ -30,6 +32,8 @@ export const { verificationTokenTable } = verificationToken;
 export const organizationTable = mkOrganizationTable(userTable);
 export const organizationTableRelations =
   mkOrganizationTableRelations(userTable);
+export { legalFormEnum };
+export const { addressTable, countryEnum } = address;
 
 export const { employerTable } = employer;
 export const { jobTable, jobSourceEnum } = job;
@@ -56,8 +60,10 @@ export const publicSchema = {
   ...verificationToken,
 
   // common
+  legalFormEnum,
   organizationTable,
   organizationTableRelations,
+  ...address,
 
   ...employer,
 

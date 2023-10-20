@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { CreateOrganization, create } from "./actions";
 
-export default function Page() {
+export const NewOrganization = () => {
   const sluggify = (input: string): string =>
     input
       .replace(/[\-_\+]/g, " ")
@@ -110,4 +110,4 @@ export default function Page() {
       </Form>
     </Container>
   );
-}
+};

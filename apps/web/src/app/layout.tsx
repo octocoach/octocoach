@@ -30,7 +30,6 @@ export default async function RootLayout({
 
   const org = cookieStore.get("org")?.value;
 
-  console.log("session org provider", org || "none");
   const session = await getServerSession(mkAuthOptions(org));
 
   return (

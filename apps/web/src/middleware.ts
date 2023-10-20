@@ -22,9 +22,11 @@ function detectLocale(request: NextRequest) {
 
 export default (request: NextRequest) => {
   const response = NextResponse.next();
+
   const locale = detectLocale(request);
 
   response.cookies.set("locale", locale);
+  response.headers.set("x-url", request.nextUrl.pathname);
 
   if (
     request.nextUrl.pathname.startsWith("/org") &&

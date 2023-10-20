@@ -1,7 +1,22 @@
 import { withAuth } from "@components/withAuth";
-import { NewOrganization } from "./new";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { db } from "@octocoach/db/connection";
+import { getServerSession } from "next-auth";
+import Admin from "./admin";
+import { NewOrganization } from "./new-organization";
 
 export default withAuth(Page);
-function Page() {
+
+async function Page() {
+  const { user } = await getServerSession(mkAuthOptions());
+
+  const organization = await db.query.organizationTable.findFirst({
+    where: (organization, { eq }) => eq(organization.owner, user.id),
+  });
+
+  console.log(organization);
+
+  if (organization) return <Admin organization={organization} />;
+
   return <NewOrganization />;
 }

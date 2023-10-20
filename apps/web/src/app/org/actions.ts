@@ -3,8 +3,12 @@
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import createOrg from "@octocoach/db/actions/create-org";
 import { db } from "@octocoach/db/connection";
+import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
-import { NewOragnization } from "@octocoach/db/schemas/common/organization";
+import {
+  NewOragnization,
+  Organization,
+} from "@octocoach/db/schemas/common/organization";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -15,7 +19,7 @@ export type CreateOrganization = Pick<
 > &
   NewAddress;
 
-export async function create({
+export async function createOrganization({
   displayName,
   legalName,
   legalForm,
@@ -47,6 +51,11 @@ export async function create({
   });
 
   await createOrg(slug);
+}
 
-  redirect(`/org/${slug}/admin`);
+export async function deleteOrgAction({ slug, id }: Organization) {
+  await db.execute(sql.raw(`DROP SCHEMA org_${slug} CASCADE`));
+  await db.delete(organizationTable).where(eq(organizationTable.id, id));
+
+  redirect("/org");
 }

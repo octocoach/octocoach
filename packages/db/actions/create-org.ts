@@ -70,7 +70,7 @@ export default async function createOrg(slug: string) {
     }
   }
 
-  const ref = "octocoach/main";
+  const ref = "main";
 
   await fetchContents({
     owner: "octocoach",

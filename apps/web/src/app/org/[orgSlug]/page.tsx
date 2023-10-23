@@ -1,17 +1,19 @@
 "use client";
 
-import { Button, Container, Stack } from "@octocoach/ui";
+import { useSession } from "@octocoach/auth/react";
+import { Button, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default function Page({ params }: { params: { orgSlug } }) {
+  const { data: session } = useSession();
+
+  if (!session) return <Text>Signed out</Text>;
+
   return (
     <Container element="main">
       <Stack>
         <Link href={`/org/${params.orgSlug}/start`}>
           <Button>Start</Button>
-        </Link>
-        <Link href={`/org/${params.orgSlug}/admin`}>
-          <Button>Admin</Button>
         </Link>
       </Stack>
     </Container>

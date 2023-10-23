@@ -2,8 +2,9 @@
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
-import { deleteOrgAction } from "./actions";
 import { useTransition } from "react";
+import { deleteOrgAction } from "./actions";
+import { Edit } from "./edit";
 
 export default function Admin({
   organization,
@@ -21,6 +22,7 @@ export default function Admin({
     <Container element="section">
       <Text size="l">{organization.displayName}</Text>
       <Stack>
+        <Edit organization={organization} />
         <Button onPress={onDelete} disabled={isPending}>
           Delete
         </Button>

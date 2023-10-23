@@ -1,4 +1,5 @@
 import SessionProvider from "@components/session-provider";
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
@@ -7,7 +8,6 @@ import TrpcProvider from "@octocoach/trpc/src/next/provider";
 import "@octocoach/ui/font.css";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
-import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 import React from "react";
 import RootLayoutClient from "./layout-client";

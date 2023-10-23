@@ -16,7 +16,7 @@
     "get:schema": "tsx -r dotenv/config src/get-schema-files.ts"
   },
   "dependencies": {
-    "@auth/core": "^0.14.0",
+    "@octocoach/auth": "workspace:^",
     "@types/cli-progress": "^3.11.0",
     "cli-progress": "^3.12.0",
     "drizzle-orm": "^0.28.6",

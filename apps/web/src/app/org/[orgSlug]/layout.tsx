@@ -1,4 +1,4 @@
-import { db, orgDb } from "@octocoach/db/connection";
+import { db } from "@octocoach/db/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -18,10 +18,6 @@ export default async function Layout({
   if (!organization) {
     notFound();
   }
-
-  const members = await orgDb(params.orgSlug).query.userTable.findMany({
-    with: {},
-  });
 
   return (
     <ThemeContainer organization={organization}>

@@ -1,6 +1,6 @@
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { Container, Stack, Text } from "@octocoach/ui";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { UserSummary } from "./user-summary";

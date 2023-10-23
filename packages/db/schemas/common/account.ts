@@ -1,4 +1,4 @@
-import type { AdapterAccount } from "@auth/core/adapters";
+import type { AdapterAccount } from "@octocoach/auth/adapters";
 import { integer, primaryKey, text } from "drizzle-orm/pg-core";
 import type { OrgUserTable, UserTable } from "./user";
 
@@ -18,6 +18,7 @@ export const mkAccountCols = (users: UserTable | OrgUserTable) => ({
   session_state: text("session_state"),
 });
 
-export const accountKey = (account) => ({
+// TODO: Fix any type on account composite key
+export const accountKey = (account: any) => ({
   compoundKey: primaryKey(account.provider, account.providerAccountId),
 });

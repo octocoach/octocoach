@@ -1,5 +1,5 @@
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ComponentType } from "react";
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
@@ -7,7 +8,6 @@ import type { Skill } from "@octocoach/db/schemas/common/skill";
 import { SkillLevel } from "@octocoach/db/schemas/common/skill-level";
 import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
 import { mkUsersTaskInterestTable } from "@octocoach/db/schemas/org/users-task-interest";
-import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 
 export type Answer = "yes" | "no" | "dontknow";

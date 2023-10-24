@@ -1,7 +1,7 @@
 import { withAuth } from "@components/withAuth";
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { db } from "@octocoach/db/connection";
-import { getServerSession } from "next-auth";
 import Admin from "./admin";
 import { NewOrganization } from "./new-organization";
 

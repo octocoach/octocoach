@@ -1,5 +1,5 @@
+import { Session, getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
-import { Session, getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 
 interface AuthContext {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession } from "@octocoach/auth/react";
 import { redirect } from "next/navigation";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export default function Protected({ children }: { children: ReactNode }) {
   const { data: session } = useSession();

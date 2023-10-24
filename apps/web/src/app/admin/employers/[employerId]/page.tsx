@@ -1,12 +1,13 @@
 import Logo from "@components/logo";
-import { eq } from "@octocoach/db/operators";
 import { db } from "@octocoach/db/connection";
+import { eq } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
 import Message from "@octocoach/i18n/src/react-message";
 import {
   Button,
   Form,
   FormField,
+  FormInput,
   HiddenInput,
   Stack,
   Text,
@@ -53,14 +54,16 @@ export default async function Page({
           <Message id="EMPLOYERS" />
         </Text>
       </Link>
-      <Logo company={employer} size={100} />
+      <Logo employer={employer} size={100} />
       <Form
         formStoreProps={{
           defaultValues: { url: employer.url || "", employerId: employer.id },
         }}
         onSubmit={changeUrl}
       >
-        <FormField name="url" label="URL" inputType="FormInput" />
+        <FormField name="url" label="URL">
+          <FormInput name="url" />
+        </FormField>
         <HiddenInput name="employerId" />
         <Button type="submit">Submit</Button>
       </Form>

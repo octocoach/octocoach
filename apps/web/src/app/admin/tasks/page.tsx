@@ -1,5 +1,4 @@
 import { db } from "@octocoach/db/connection";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";

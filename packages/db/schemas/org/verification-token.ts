@@ -1,4 +1,4 @@
-import { mkOrgPgSchema } from "./schema";
+import { mkOrgPgSchema } from "../common/pg-schema";
 import {
   mkVerificationTokensCols,
   verificationTokenKey,

@@ -6,9 +6,11 @@ import ThemeContainer from "./theme-container";
 
 export default async function Layout({
   children,
+  userAccount,
   params,
 }: {
   children: ReactNode;
+  userAccount: ReactNode;
   params: { orgSlug: string };
 }) {
   const organization = await db.query.organizationTable.findFirst({
@@ -26,7 +28,7 @@ export default async function Layout({
           <Text size="l" variation="casual">
             {organization.displayName}
           </Text>
-
+          {userAccount}
           <Container element="section">{children}</Container>
         </Stack>
       </Container>

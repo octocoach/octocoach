@@ -11,6 +11,7 @@ export * from "./Form/FormField";
 export * from "./Form/FormInput";
 export * from "./Form/FormSelect";
 export * from "./Form/HiddenInput";
+export * from "./Icon/Icon";
 export * from "./Progress/Progress";
 export * from "./SSRProvider";
 export * from "./Select/Select";

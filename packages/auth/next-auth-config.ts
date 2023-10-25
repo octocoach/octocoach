@@ -2,6 +2,7 @@ import { db, orgDb } from "@octocoach/db/connection";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import { authDrizzleAdapter } from "./adapters/drizzle";
 
+import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
 import LinkedInProvider from "next-auth/providers/linkedin";
 import { Adapter } from "./adapters";
@@ -34,6 +35,11 @@ export default function mkAuthOptions(org?: string): FixedAdapter {
       },
     },
     providers: [
+      DiscordProvider({
+        clientId: process.env.DISCORD_ID ?? "",
+        clientSecret: process.env.DISCORD_SECRET ?? "",
+        allowDangerousEmailAccountLinking: true,
+      }),
       GitHubProvider({
         clientId: process.env.GITHUB_ID ?? "",
         clientSecret: process.env.GITHUB_SECRET ?? "",

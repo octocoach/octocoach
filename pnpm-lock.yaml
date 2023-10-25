@@ -639,6 +639,9 @@ importers:
       '@catppuccin/palette':
         specifier: ^0.1.8
         version: 0.1.8
+      '@iconscout/react-unicons':
+        specifier: ^2.0.2
+        version: 2.0.2(react@18.2.0)
       '@vanilla-extract/css':
         specifier: ^1.13.0
         version: 1.13.0
@@ -4198,6 +4201,14 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.1:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
+    dev: false
+
+  /@iconscout/react-unicons@2.0.2(react@18.2.0):
+    resolution: {integrity: sha512-0HRi/sZaSQf9OMjlKypWfkyh7R4fknxJeKmDpRdtfjnTM21qzzmmYYZ7p1qzw+VmEyqNdFoQP89oLmW5pcyIoA==}
+    peerDependencies:
+      react: '>=15.0.0 <17.0.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@internationalized/date@3.4.0:

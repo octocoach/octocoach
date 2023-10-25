@@ -25,6 +25,7 @@ export default function mkAuthOptions(org?: string): FixedAdapter {
 
         return true;
       },
+
       async session({ session, user }) {
         return {
           ...session,

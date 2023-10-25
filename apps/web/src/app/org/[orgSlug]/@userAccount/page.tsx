@@ -4,12 +4,17 @@ import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import UserAccount from "./client";
 
 export default async function UserAccountServer({
-  orgSlug,
+  params,
 }: {
-  orgSlug: string;
+  params: {
+    orgSlug: string;
+  };
 }) {
-  const session = await getServerSession(mkAuthOptions(orgSlug));
-  const userAccounts = await getUserAccounts(session?.user?.id);
+  const session = await getServerSession(mkAuthOptions(params.orgSlug));
+  if (!session?.user) return null;
+
+  const userId = session.user.id;
+  const userAccounts = await getUserAccounts(userId, params.orgSlug);
 
   return <UserAccount accounts={userAccounts} />;
 }

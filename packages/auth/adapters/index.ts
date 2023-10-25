@@ -1,14 +1,25 @@
-import { db } from "@octocoach/db/connection";
+import { orgDb } from "@octocoach/db/connection";
 
 export type { Adapter, AdapterAccount } from "@auth/core/adapters";
 export { authDrizzleAdapter } from "./drizzle";
 
-export const getUserAccounts = async (userId: string | undefined) => {
-  if (!userId) {
-    return [];
-  }
+import { oauthProviders } from "..";
 
-  return await db.query.accountTable.findMany({
+export const getUserAccounts = async (userId: string, orgSlug: string) => {
+  const db = orgDb(orgSlug);
+
+  const dbAccounts = await db.query.accountTable.findMany({
     where: (account, { eq }) => eq(account.userId, userId),
   });
+
+  return Object.fromEntries(
+    Object.entries(oauthProviders).map(
+      ([provider, { displayName, required }]) => {
+        const dbAccount = dbAccounts.find(
+          (account) => account.provider === provider
+        );
+        return [provider, { displayName, required, dbAccount }];
+      }
+    )
+  );
 };

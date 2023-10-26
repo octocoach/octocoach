@@ -34,9 +34,7 @@ export default (request: NextRequest) => {
   ) {
     const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);
-    console.log("set org cookie", org);
   } else if (!request.nextUrl.pathname.startsWith("/api")) {
-    console.log("delete org cookie");
     response.cookies.delete("org");
   }
 

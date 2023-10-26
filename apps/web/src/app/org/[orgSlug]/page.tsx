@@ -7,13 +7,11 @@ import Link from "next/link";
 export default function Page({ params }: { params: { orgSlug } }) {
   const { data: session } = useSession();
 
-  if (!session) return <Text>Signed out</Text>;
-
   return (
-    <Container element="main">
+    <Container element="main" display="flex" justifyItems="center">
       <Stack>
-        <Link href={`/org/${params.orgSlug}/start`}>
-          <Button>Start</Button>
+        <Link href={`/org/${params.orgSlug}/signup`}>
+          <Button>Sign Up</Button>
         </Link>
       </Stack>
     </Container>

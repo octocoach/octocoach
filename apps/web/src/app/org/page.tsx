@@ -14,8 +14,6 @@ async function Page() {
     where: (organization, { eq }) => eq(organization.owner, user.id),
   });
 
-  console.log(organization);
-
   if (organization) return <Admin organization={organization} />;
 
   return <NewOrganization />;

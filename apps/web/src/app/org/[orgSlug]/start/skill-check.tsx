@@ -17,7 +17,6 @@ export const SkillCheck = ({
   onComplete: () => void;
   addCheckedSkillId: (skillId: Skill["id"]) => void;
 }) => {
-  console.log("skills", skills);
   const [isPending, startTransition] = useTransition();
 
   const [skill, setSkill] = useState(skills[0]);
@@ -41,7 +40,6 @@ export const SkillCheck = ({
       addCheckedSkillId(skill.id);
 
       if (index + 1 === totalSkills) {
-        console.log("done");
         onComplete();
       } else {
         setIndex((index) => index + 1);

@@ -20,9 +20,6 @@ export default async function RootLayout({
   header: React.ReactNode;
 }) {
   const cookieStore = cookies();
-  cookieStore
-    .getAll()
-    .forEach((cookie) => console.log(`🍪 ${cookie.name}: ${cookie.value}`));
   const locale = (cookieStore.get("locale")?.value || "en") as Locales;
 
   await loadLocaleAsync(locale);

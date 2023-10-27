@@ -1,4 +1,7 @@
-import { db, orgDb } from "@octocoach/db/connection";
+import { getServerSession } from "@octocoach/auth";
+import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { SessionProvider } from "@octocoach/auth/react";
+import { db } from "@octocoach/db/connection";
 import { Container, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -19,21 +22,20 @@ export default async function Layout({
     notFound();
   }
 
-  const members = await orgDb(params.orgSlug).query.userTable.findMany({
-    with: {},
-  });
+  const session = await getServerSession(mkAuthOptions(params.orgSlug));
 
   return (
-    <ThemeContainer organization={organization}>
-      <Container element="main">
-        <Stack>
-          <Text size="l" variation="casual">
-            {organization.displayName}
-          </Text>
-
-          <Container element="section">{children}</Container>
-        </Stack>
-      </Container>
-    </ThemeContainer>
+    <SessionProvider session={session}>
+      <ThemeContainer organization={organization}>
+        <Container element="main">
+          <Stack>
+            <Text size="l" variation="casual">
+              {organization.displayName}
+            </Text>
+            <Container>{children}</Container>
+          </Stack>
+        </Container>
+      </ThemeContainer>
+    </SessionProvider>
   );
 }

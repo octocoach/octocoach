@@ -1,15 +1,17 @@
-import { Container, Stack, Text } from "@octocoach/ui";
-import Link from "next/link";
+import { getServerSessionOrRedirect } from "@helpers/auth";
+import { db } from "@octocoach/db/connection";
+import Admin from "./admin";
+import { NewOrganization } from "./new-organization";
 
-export default function Page() {
-  return (
-    <Container element="section">
-      <Stack>
-        <Text size="xl">Organizations</Text>
-        <Link href="/org/new">
-          <Text>New</Text>
-        </Link>
-      </Stack>
-    </Container>
-  );
+export default async function Page() {
+  const session = await getServerSessionOrRedirect();
+  const { user } = session;
+
+  const organization = await db.query.organizationTable.findFirst({
+    where: (organization, { eq }) => eq(organization.owner, user.id),
+  });
+
+  if (organization) return <Admin organization={organization} />;
+
+  return <NewOrganization />;
 }

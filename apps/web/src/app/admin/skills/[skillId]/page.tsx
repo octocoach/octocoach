@@ -24,7 +24,7 @@ export default async function Page({
           category: true,
         },
       },
-      skillsTasksTable: {
+      skillsTasks: {
         with: {
           task: true,
         },
@@ -59,7 +59,7 @@ export default async function Page({
 
       <Text size="l">Tasks</Text>
       <Stack>
-        {skill.tasksToSkills.map(({ task }) => (
+        {skill.skillsTasks.map(({ task }) => (
           <Link href={`/admin/tasks/${task.id}`} key={task.id}>
             <Card>
               <Text>{task.description}</Text>

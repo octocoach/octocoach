@@ -1,4 +1,4 @@
-import type { Adapter } from "@auth/core/adapters";
+import { Adapter } from "@auth/core/adapters";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { publicSchema } from "@octocoach/db/schemas/public/schema";
 import { and, eq } from "drizzle-orm";

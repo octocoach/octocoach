@@ -8,6 +8,7 @@
       "@app/*": ["src/app/*"],
       "@components/*": ["src/components/*"],
       "@config/*": ["src/config/*"],
+      "@helpers/*": ["src/helpers/*"],
       // https://github.com/facebook/react/issues/24304#issuecomment-1092563688
       "react": ["./node_modules/@types/react"]
     }

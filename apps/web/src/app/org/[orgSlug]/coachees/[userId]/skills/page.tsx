@@ -15,8 +15,6 @@ export default async function Page({
 }: {
   params: { orgSlug: string; userId: string };
 }) {
-  console.log(`OrgSlug: ${params.orgSlug}`);
-
   const db = orgDb(params.orgSlug);
 
   const user = await db.query.userTable.findFirst({

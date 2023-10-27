@@ -1,12 +1,17 @@
 "use server";
 
+import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import createOrg from "@octocoach/db/actions/create-org";
 import { db } from "@octocoach/db/connection";
+import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
-import { NewOragnization } from "@octocoach/db/schemas/common/organization";
+import {
+  NewOragnization,
+  Organization,
+} from "@octocoach/db/schemas/common/organization";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
-import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export type CreateOrganization = Pick<
@@ -15,7 +20,17 @@ export type CreateOrganization = Pick<
 > &
   NewAddress;
 
-export async function create({
+export type OrganizationDetails = Pick<
+  Organization,
+  | "slug"
+  | "primaryColor"
+  | "secondaryColor"
+  | "tagLine"
+  | "registrationNumber"
+  | "taxNumber"
+>;
+
+export async function createOrganization({
   displayName,
   legalName,
   legalForm,
@@ -47,6 +62,23 @@ export async function create({
   });
 
   await createOrg(slug);
+  revalidatePath("/org", "page");
+}
 
-  redirect(`/org/${slug}/admin`);
+export async function deleteOrgAction({ slug, id }: Organization) {
+  await db.execute(sql.raw(`DROP SCHEMA org_${slug} CASCADE`));
+  await db.delete(organizationTable).where(eq(organizationTable.id, id));
+
+  revalidatePath("/org", "page");
+}
+
+export async function onSubmit(organizationDetails: OrganizationDetails) {
+  const { slug, ...rest } = organizationDetails;
+
+  await db
+    .update(organizationTable)
+    .set(rest)
+    .where(eq(organizationTable.slug, organizationDetails.slug));
+
+  revalidatePath("/org", "page");
 }

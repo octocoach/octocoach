@@ -1,6 +1,6 @@
-import type { AdapterAccount } from "@auth/core/adapters";
-import { integer, primaryKey, text } from "drizzle-orm/pg-core";
-import type { OrgUserTable, UserTable } from "./user";
+import type { AdapterAccount } from "@octocoach/auth/adapters";
+import { integer, text } from "drizzle-orm/pg-core";
+import { type OrgUserTable, type UserTable } from "./user";
 
 export const mkAccountCols = (users: UserTable | OrgUserTable) => ({
   userId: text("user_id")
@@ -16,8 +16,4 @@ export const mkAccountCols = (users: UserTable | OrgUserTable) => ({
   scope: text("scope"),
   id_token: text("id_token"),
   session_state: text("session_state"),
-});
-
-export const accountKey = (account) => ({
-  compoundKey: primaryKey(account.provider, account.providerAccountId),
 });

@@ -17,17 +17,14 @@ export default function Page() {
       <Link href="/admin/tasks">
         <Text>{LL.TASKS()}</Text>
       </Link>
-      <Link href="/admin/companies">
-        <Text>{LL.COMPANIES()}</Text>
+      <Link href="/admin/employers">
+        <Text>{LL.EMPLOYERS()}</Text>
       </Link>
       <Link href="/admin/skills">
         <Text>{LL.SKILLS()}</Text>
       </Link>
       <Link href="/admin/organizations">
         <Text>Organizations</Text>
-      </Link>
-      <Link href="/admin/users">
-        <Text>Users</Text>
       </Link>
     </Stack>
   );

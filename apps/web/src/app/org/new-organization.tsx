@@ -15,9 +15,9 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import { useState } from "react";
-import { CreateOrganization, create } from "./actions";
+import { CreateOrganization, createOrganization } from "./actions";
 
-export default function Page() {
+export const NewOrganization = () => {
   const sluggify = (input: string): string =>
     input
       .replace(/[\-_\+]/g, " ")
@@ -42,7 +42,6 @@ export default function Page() {
 
   const onChange = (values) => {
     const abbreviation = legalForm[values.legalForm]?.abbreviation;
-    const fullName = legalForm[values.legalForm]?.fullName;
     if (!isSlugModified && store.getValue("displayName") !== name) {
       store.setValue("slug", sluggify(values.displayName));
       setName(store.getValue("displayName"));
@@ -68,7 +67,7 @@ export default function Page() {
 
   return (
     <Container element="section">
-      <Form onSubmit={create} store={store}>
+      <Form onSubmit={createOrganization} store={store}>
         <Stack spacing="loose">
           <Stack>
             <Stack direction="horizontal">
@@ -110,4 +109,4 @@ export default function Page() {
       </Form>
     </Container>
   );
-}
+};

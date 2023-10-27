@@ -28,7 +28,5 @@ export default async function Page({
     })
   );
 
-  console.log("Tasks", tasks);
-
   return <TaskCheck tasks={tasks} />;
 }

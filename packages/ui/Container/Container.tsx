@@ -8,14 +8,18 @@ export const Container = ({
   id,
   element = "div",
   display = "block",
-}: PropsWithChildren<{
-  element: AllowedElement;
-  id?: string;
-  display?: Properties["display"];
-}>) => {
+  justifyItems = "initial",
+}: PropsWithChildren<
+  Partial<{
+    element: AllowedElement;
+    id: string;
+    display: Properties["display"];
+    justifyItems: Properties["justifyItems"];
+  }>
+>) => {
   const Component = element;
   return (
-    <Component id={id} className={container} style={{ display }}>
+    <Component id={id} className={container} style={{ display, justifyItems }}>
       {children}
     </Component>
   );

@@ -1,32 +1,25 @@
 "use client";
 
-import { Button, Container, Stack, Text } from "@octocoach/ui";
+import { useSession } from "@octocoach/auth/react";
+import { Button, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
-import { useTransition } from "react";
-import { deleteOrgAction } from "./actions";
 
 export default function Page({ params }: { params: { orgSlug } }) {
-  const [isPending, startTransition] = useTransition();
-
-  async function onDelete() {
-    await startTransition(async () => {
-      deleteOrgAction(params.orgSlug);
-    });
-  }
+  const { data: session } = useSession();
 
   return (
-    <Container element="main">
-      <Stack>
+    <Stack align="center" spacing="loose">
+      <Text>Welcome</Text>
+
+      {!session?.user ? (
+        <Link href={`/org/${params.orgSlug}/signup`}>
+          <Button>Sign Up</Button>
+        </Link>
+      ) : (
         <Link href={`/org/${params.orgSlug}/start`}>
           <Button>Start</Button>
         </Link>
-        <Link href={`/org/${params.orgSlug}/admin`}>
-          <Button>Admin</Button>
-        </Link>
-        <Button onPress={onDelete} disabled={isPending}>
-          Delete
-        </Button>
-      </Stack>
-    </Container>
+      )}
+    </Stack>
   );
 }

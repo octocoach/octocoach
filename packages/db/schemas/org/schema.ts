@@ -40,8 +40,6 @@ import {
 import { mkOrgVerificationTokenTable } from "./verification-token";
 import { mkCoachTable, mkCoachTableRelations } from "./coach";
 
-export const mkOrgPgSchema = (slug: string) => pgSchema(`org_${slug}`);
-
 export const mkOrgSchema = (slug: string) => ({
   // auth
   accountTable: mkOrgAccountTable(slug),

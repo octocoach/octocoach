@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { integer, primaryKey, text } from "drizzle-orm/pg-core";
 import { taskTable } from "../common/task";
-import { mkOrgPgSchema } from "./schema";
+import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkUserTable } from "./user";
 
 export type UsersTaskInterest = ReturnType<

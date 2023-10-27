@@ -10,7 +10,7 @@ export default async function Page() {
       employer: true,
       tasks: {
         with: {
-          tasksToSkills: {
+          skillsTasks: {
             with: {
               skill: true,
             },

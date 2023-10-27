@@ -7,8 +7,6 @@ import { redirect } from "next/navigation";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 
 export async function deleteOrgAction(slug: string) {
-  console.log("deleteOrgAction", slug);
-
   if (!slug) {
     throw new Error("Slug is required");
   }

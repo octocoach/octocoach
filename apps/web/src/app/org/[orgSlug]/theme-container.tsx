@@ -15,8 +15,6 @@ export default function ThemeContainer({
   children: ReactNode;
   organization: Organization;
 }) {
-  console.log(vars);
-
   const base = createThemeBase("frappe");
 
   return (

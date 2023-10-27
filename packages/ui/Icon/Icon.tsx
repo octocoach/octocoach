@@ -1,2 +1,1 @@
-import "./types";
-export { UilDiscord, UilGithub, UilLinkedin } from "@iconscout/react-unicons";
+export * from "@carbon/icons-react";

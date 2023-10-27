@@ -1,22 +1,17 @@
-"use client";
+import { getServerSessionOrRedirect } from "@helpers/auth";
+import { SessionProvider } from "@octocoach/auth/react";
+import LayoutClient from "./layout-client";
 
-import Protected from "@components/protected";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
-import { Container, Stack, Text } from "@octocoach/ui";
-import Link from "next/link";
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await getServerSessionOrRedirect();
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const { LL } = useI18nContext();
   return (
-    <Protected>
-      <Container element="section">
-        <Stack>
-          <Text element="h1" size="l">
-            <Link href="/admin">{LL.ADMIN()}</Link>
-          </Text>
-          <section>{children}</section>
-        </Stack>
-      </Container>
-    </Protected>
+    <SessionProvider session={session}>
+      <LayoutClient>{children}</LayoutClient>
+    </SessionProvider>
   );
 }

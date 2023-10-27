@@ -1,4 +1,3 @@
-import got from "got";
 import { ZodTypeAny, z } from "zod";
 
 const client_id = process.env.LIGHTCAST_CLIENT_ID;
@@ -25,16 +24,20 @@ const lightcastSchema = z.object({
 export type LightcastSkill = z.infer<typeof lightcastSchema>;
 
 export const getAccessToken = async (): Promise<string> => {
-  const { access_token } = (await got
-    .post("https://auth.emsicloud.com/connect/token", {
-      form: {
-        client_id,
-        client_secret,
-        grant_type: "client_credentials",
-        scope: "emsi_open",
-      },
-    })
-    .json()) as { access_token: string };
+  const response = await fetch("https://auth.emsicloud.com/connect/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: JSON.stringify({
+      client_id,
+      client_secret,
+      grant_type: "client_credentials",
+      scope: "emsi_open",
+    }),
+  });
+
+  const { access_token } = (await response.json()) as { access_token: string };
 
   return access_token;
 };
@@ -54,24 +57,28 @@ export const getSkills = async ({
   if (q) params.q = q;
   const searchParams = new URLSearchParams(params);
 
-  const response = (await got
-    .get("https://emsiservices.com/skills/versions/latest/skills", {
+  const response = await fetch(
+    `https://emsiservices.com/skills/versions/latest/skills?${searchParams}`,
+    {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-      searchParams,
-    })
-    .json()) as { data: LightcastSkill[] };
+    }
+  );
 
-  return response.data;
+  const { data } = (await response.json()) as { data: LightcastSkill[] };
+
+  return data;
 };
 
 export const extractSkills = async (
   text: string,
   access_token: string
 ): Promise<LightcastSkill[]> => {
-  const response = (await got
-    .post("https://emsiservices.com/skills/versions/latest/extract", {
+  const response = await fetch(
+    "https://emsiservices.com/skills/versions/latest/extract",
+    {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${access_token}`,
         "Content-Type": "application/json",
@@ -80,8 +87,12 @@ export const extractSkills = async (
         text,
         confidenceThreshold: 0.6,
       }),
-    })
-    .json()) as { data: { skill: LightcastSkill; confidence: number }[] };
+    }
+  );
 
-  return response.data.map(({ skill }) => skill);
+  const { data } = (await response.json()) as {
+    data: { skill: LightcastSkill; confidence: number }[];
+  };
+
+  return data.map(({ skill }) => skill);
 };

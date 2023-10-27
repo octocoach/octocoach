@@ -1,4 +1,3 @@
-import got from "got";
 import { nanoid } from "nanoid";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -55,7 +54,9 @@ export default async function createOrg(slug: string) {
     for (const item of contents) {
       if (item.type === "file" && item.download_url) {
         // Fetch and write the file
-        const body = await got(item.download_url).text();
+        const res = await fetch(item.download_url);
+        const body = await res.text();
+
         await writeFile(join(outputDir, item.name), body, "utf-8");
       } else if (item.type === "dir") {
         // If it's a directory, fetch its contents recursively

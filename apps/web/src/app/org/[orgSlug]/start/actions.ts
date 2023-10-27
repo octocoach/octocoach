@@ -23,7 +23,7 @@ export const submitAnswer = async ({
   const org = c.get("org");
   if (!org?.value) throw new Error("Org not found");
 
-  const { user } = await getServerSession(mkAuthOptions(org?.value));
+  const { user } = await getServerSession(mkAuthOptions(org.value));
   if (!user) throw new Error("User not found");
 
   const db = orgDb(org.value);

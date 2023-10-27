@@ -8,7 +8,12 @@ const handler = (
 ) => {
   const org = req.cookies.get("org");
 
-  return NextAuth(req, context, mkAuthOptions(org?.value));
+  const isSignInPage =
+    req.method === "GET" &&
+    context.params.nextauth.length === 1 &&
+    context.params.nextauth[0] === "signin";
+
+  return NextAuth(req, context, mkAuthOptions(org?.value, isSignInPage));
 };
 
 export { handler as GET, handler as POST };

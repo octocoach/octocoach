@@ -1,17 +1,14 @@
 "use client";
 
-import { Icon, UilCheckCircle, UilQuestion } from "@iconscout/react-unicons";
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import { signIn } from "@octocoach/auth/react";
 import {
   Button,
   Card,
   Container,
+  Icon,
   Stack,
   Text,
-  UilDiscord,
-  UilGithub,
-  UilLinkedin,
   vars,
 } from "@octocoach/ui";
 import { ReactElement } from "react";
@@ -22,17 +19,17 @@ export type AsyncReturnType<T extends (..._args: any) => Promise<any>> =
 const getProviderIcon = (provider: string): ReactElement => {
   switch (provider) {
     case "github":
-      return <UilGithub />;
+      return <Icon.LogoGithub size="32" />;
     case "linkedin":
-      return <UilLinkedin />;
+      return <Icon.LogoLinkedin size="32" />;
     case "discord":
-      return <UilDiscord />;
+      return <Icon.LogoDiscord size="32" />;
     default:
-      return <UilQuestion />;
+      return <Icon.Help size="32" />;
   }
 };
 
-export default function UserAccount({
+export default function LinkAccounts({
   accounts,
 }: {
   accounts: AsyncReturnType<typeof getUserAccounts>;
@@ -55,7 +52,10 @@ export default function UserAccount({
                 {!provider.dbAccount ? (
                   <Button onClick={() => signIn(key)}>Link Account</Button>
                 ) : (
-                  <UilCheckCircle color={vars.color.typography.success} />
+                  <Icon.CheckmarkFilled
+                    size="32"
+                    color={vars.color.typography.success}
+                  />
                 )}
               </Stack>
             </Card>

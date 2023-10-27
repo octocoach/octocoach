@@ -7,6 +7,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     serverComponentsExternalPackages: ["hnswlib-node"],
+    typedRoutes: true,
   },
   images: {
     remotePatterns: [

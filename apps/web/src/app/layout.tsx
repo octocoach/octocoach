@@ -1,6 +1,4 @@
-import { getServerSession } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
-import { SessionProvider } from "@octocoach/auth/react";
+import { I18nProvider } from "@octocoach/i18n";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
@@ -10,14 +8,11 @@ import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { cookies } from "next/headers";
 import React from "react";
-import RootLayoutClient from "./layout-client";
 
 export default async function RootLayout({
   children,
-  header,
 }: {
   children: React.ReactNode;
-  header: React.ReactNode;
 }) {
   const cookieStore = cookies();
   const locale = (cookieStore.get("locale")?.value || "en") as Locales;
@@ -25,19 +20,12 @@ export default async function RootLayout({
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];
 
-  const org = cookieStore.get("org")?.value;
-
-  const session = await getServerSession(mkAuthOptions(org));
-
   return (
     <html lang={locale} className={`${themeClass.mocha} ${bg}`}>
       <body>
-        <SessionProvider session={session}>
-          {header}
-          <RootLayoutClient dictionary={dictionary} locale={locale}>
-            <TrpcProvider>{children}</TrpcProvider>
-          </RootLayoutClient>
-        </SessionProvider>
+        <I18nProvider dictionary={dictionary} locale={locale}>
+          <TrpcProvider>{children}</TrpcProvider>
+        </I18nProvider>
       </body>
     </html>
   );

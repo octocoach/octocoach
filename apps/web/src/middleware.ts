@@ -3,18 +3,20 @@ import Negotiator from "negotiator";
 
 import { NextRequest, NextResponse } from "next/server";
 
-const locales = ["en", "de"];
-
 // TODO: This is a workaround until this is solved:
 // https://github.com/ivanhofer/typesafe-i18n/discussions/580#discussioncomment-6465405
+/**
+ * Detects the locale based on the request headers.
+ * @param {NextRequest} request - The request object.
+ * @returns {string} The detected locale.
+ */
 function detectLocale(request: NextRequest) {
   const headers = {
     "accept-language": request.headers.get("accept-language"),
   };
   const languages = new Negotiator({ headers }).languages();
-
+  const locales = ["en", "de"];
   const defaultLocale = "en";
-
   const locale = match(languages, locales, defaultLocale);
 
   return locale;
@@ -30,7 +32,7 @@ export default (request: NextRequest) => {
 
   if (
     request.nextUrl.pathname.startsWith("/org") &&
-    !["/org", "/org/new"].includes(request.nextUrl.pathname)
+    !(request.nextUrl.pathname === "/org")
   ) {
     const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);

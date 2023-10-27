@@ -5,8 +5,10 @@ export { authDrizzleAdapter } from "./drizzle";
 
 import { oauthProviders } from "..";
 
-export const getUserAccounts = async (userId: string, orgSlug: string) => {
-  const db = orgDb(orgSlug);
+export const getUserAccounts = async (userId: string, orgSlug?: string) => {
+  const db = orgSlug
+    ? orgDb(orgSlug)
+    : await import("@octocoach/db/connection").then(({ db }) => db);
 
   const dbAccounts = await db.query.accountTable.findMany({
     where: (account, { eq }) => eq(account.userId, userId),

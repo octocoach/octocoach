@@ -1,8 +1,10 @@
 "use client";
 
 export { useFormStore } from "@ariakit/react";
+export { Player } from "@lottiefiles/react-lottie-player";
 export { assignInlineVars } from "@vanilla-extract/dynamic";
 export * from "./Address/Address";
+export * from "./Box/Box";
 export * from "./Button/Button";
 export * from "./Card/Card";
 export * from "./Container/Container";
@@ -11,6 +13,9 @@ export * from "./Form/FormField";
 export * from "./Form/FormInput";
 export * from "./Form/FormSelect";
 export * from "./Form/HiddenInput";
+export * from "./Grid/Grid";
+export * as Icon from "./Icon/Icon";
+export * from "./PixelBackground/PixelBackground";
 export * from "./Progress/Progress";
 export * from "./SSRProvider";
 export * from "./Select/Select";
@@ -18,5 +23,4 @@ export * from "./Stack/Stack";
 export * from "./Tag/Tag";
 export * from "./Text/Text";
 export * from "./TextArea/TextArea";
-export * as Icon from "./Icon/Icon";
 export { vars } from "./theme.css";

@@ -68,6 +68,11 @@ export const stack = recipe({
         flexWrap: "nowrap",
       },
     },
+    fullWidth: {
+      true: {
+        width: "100%",
+      },
+    },
   },
   defaultVariants: {
     align: "none",

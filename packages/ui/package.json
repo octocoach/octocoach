@@ -40,6 +40,7 @@
     "@ariakit/react": "^0.3.4",
     "@carbon/icons-react": "^11.28.0",
     "@catppuccin/palette": "^0.1.8",
+    "@lottiefiles/react-lottie-player": "^3.5.3",
     "@vanilla-extract/css": "^1.13.0",
     "@vanilla-extract/dynamic": "^2.0.3",
     "@vanilla-extract/recipes": "^0.4.0",

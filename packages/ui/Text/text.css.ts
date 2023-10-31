@@ -56,6 +56,17 @@ export const text = recipe({
         lineHeight: "0.95",
       },
     },
+    textAlign: {
+      left: {
+        textAlign: "left",
+      },
+      center: {
+        textAlign: "center",
+      },
+      right: {
+        textAlign: "right",
+      },
+    },
   },
   defaultVariants: {
     size: "m",

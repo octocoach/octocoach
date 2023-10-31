@@ -24,6 +24,7 @@ const responsiveProps = defineProperties({
     gap: space,
   },
   shorthands: {
+    padding: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
     paddingX: ["paddingLeft", "paddingRight"],
     paddingY: ["paddingTop", "paddingBottom"],
   },

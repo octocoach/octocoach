@@ -48,40 +48,43 @@ export default function Page({ params }: { params: { orgSlug } }) {
     );
 
   return (
-    <PixelBackground pixelSize={20} backgroundColor="#1e1e2e">
-      <Grid placeItems="center" gap="medium">
-        <Image src={debugImage} width={500} height={500} alt="Debugging" />
+    <>
+      <PixelBackground>
+        <Grid placeItems="center" gap="medium">
+          <Image src={debugImage} width={500} height={500} alt="Debugging" />
 
-        <Stack spacing="loose">
-          <Stack spacing="tight">
-            <Text element="h1" size="xl" weight="extraBlack">
-              Debug your{" "}
-              <span
-                style={{
-                  textDecoration: "underline wavy",
-                  textDecorationColor: "#e78284",
-                }}
-              >
-                career
-              </span>
-            </Text>
-            <Text>
-              At Q15, we delve into the code of your career aspirations, helping
-              you articulate and debug the challenges between you and your ideal
-              tech role.
-            </Text>
-            <Text>
-              It's more than just landing a job; it's about navigating the
-              experience paradox and ensuring your first professional chapters
-              are written with logic, precision, and a dash of inspiration.
-            </Text>
-            <Text variation="casual">Ready to start debugging?</Text>
+          <Stack spacing="loose">
+            <Stack spacing="tight">
+              <Text element="h1" size="xl" weight="extraBlack">
+                Debug your{" "}
+                <span
+                  style={{
+                    textDecoration: "underline wavy",
+                    textDecorationColor: "#e78284",
+                  }}
+                >
+                  career
+                </span>
+              </Text>
+              <Text>
+                At Q15, we delve into the code of your career aspirations,
+                helping you articulate and debug the challenges between you and
+                your ideal tech role.
+              </Text>
+              <Text>
+                It's more than just landing a job; it's about navigating the
+                experience paradox and ensuring your first professional chapters
+                are written with logic, precision, and a dash of inspiration.
+              </Text>
+              <Text variation="casual">Ready to start debugging?</Text>
+            </Stack>
+            <Box textAlign="center" padding="none">
+              {getCTA()}
+            </Box>
           </Stack>
-          <Box textAlign="center" padding="none">
-            {getCTA()}
-          </Box>
-        </Stack>
-      </Grid>
+        </Grid>
+      </PixelBackground>
+
       <Stack spacing="loose" align="center">
         <Text size="l" weight="light">
           Our Method
@@ -110,6 +113,6 @@ export default function Page({ params }: { params: { orgSlug } }) {
           />
         </Stack>
       </Stack>
-    </PixelBackground>
+    </>
   );
 }

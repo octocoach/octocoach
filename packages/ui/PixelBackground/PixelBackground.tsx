@@ -1,94 +1,32 @@
 "use client";
 
-import { colord } from "colord";
-import {
-  PropsWithChildren,
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  pixel,
-  pixelBackground,
-  pixelBackgroundWrapper,
-} from "./pixelBackground.css";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { makePixelBackground } from "./helpers";
 
-type PixelBackgroundProps = PropsWithChildren<{
-  pixelSize: number;
-  backgroundColor: string;
-}>;
+export const PixelBackground = ({
+  children,
+  pixelSize = 10,
+}: PropsWithChildren<{ pixelSize?: number }>) => {
+  const ref = useRef(null);
 
-const mkPalette = (baseColor: string) => ({
-  normal: colord(baseColor).toHex(),
-  light: colord(baseColor).lighten(0.015).toHex(),
-  dark: colord(baseColor).darken(0.015).toHex(),
-});
-
-const Pixel = ({ colors }: { colors: ReturnType<typeof mkPalette> }) => {
-  const [backgroundColor, setBackgroundColor] = useState(colors.normal);
+  const [backgroundImage, setBackgroundImage] = useState("none");
 
   useEffect(() => {
-    const randomNumber = Math.random();
-    setBackgroundColor(colors.normal);
-    setTimeout(() => {
-      if (randomNumber < 0.1) {
-        setBackgroundColor(colors.dark);
-      } else if (randomNumber > 0.9) {
-        setBackgroundColor(colors.light);
-      }
-    }, Math.random() * 1000 * 10);
-  }, [colors]);
+    if (ref.current) {
+      setBackgroundImage(makePixelBackground({ el: ref.current, pixelSize }));
+    } else {
+      setBackgroundImage("none");
+    }
+  }, [ref.current]);
 
-  return <div style={{ backgroundColor }} className={pixel} />;
+  return (
+    <div
+      ref={ref}
+      style={{
+        backgroundImage,
+      }}
+    >
+      {children}
+    </div>
+  );
 };
-
-export const PixelBackground = forwardRef<HTMLDivElement, PixelBackgroundProps>(
-  ({ children, pixelSize, backgroundColor }, ref) => {
-    const innerRef = useRef<HTMLDivElement>(null);
-
-    const [pixels, setPixels] = useState<number[]>([]);
-
-    const [colors, setColors] = useState(mkPalette(backgroundColor));
-
-    useEffect(() => {
-      window.addEventListener("resize", onResize);
-      return () => window.removeEventListener("resize", onResize);
-    }, []);
-
-    useEffect(() => {
-      setColors(mkPalette(backgroundColor));
-    }, [backgroundColor]);
-
-    const onResize = () => {
-      const el = innerRef.current;
-
-      const cols = el ? Math.ceil(el.clientWidth / pixelSize) : 0;
-      const rows = el ? Math.ceil(el.clientHeight / pixelSize) : 0;
-      const newArray = Array.from(Array(rows * cols).keys());
-      setPixels(newArray);
-    };
-
-    useEffect(() => {
-      onResize();
-    }, [pixelSize, innerRef.current, innerRef.current?.clientWidth]);
-
-    return (
-      <div
-        ref={ref}
-        className={pixelBackgroundWrapper}
-        style={{
-          gridTemplateColumns: `repeat(auto-fill, ${pixelSize}px)`,
-          height: innerRef.current?.clientHeight,
-        }}
-      >
-        {pixels.map((key) => (
-          <Pixel colors={colors} key={key} />
-        ))}
-        <div className={pixelBackground} ref={innerRef}>
-          {children}
-        </div>
-      </div>
-    );
-  }
-);

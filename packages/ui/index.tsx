@@ -15,6 +15,7 @@ export * from "./Form/FormSelect";
 export * from "./Form/HiddenInput";
 export * from "./Grid/Grid";
 export * as Icon from "./Icon/Icon";
+export * from "./Markdown/Markdown";
 export * from "./PixelBackground/PixelBackground";
 export * from "./Progress/Progress";
 export * from "./SSRProvider";

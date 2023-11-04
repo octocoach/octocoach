@@ -15,9 +15,9 @@ export const vars = createThemeContract({
     brand: colorAlphas,
     accent: colorAlphas,
     background: {
-      base: "",
-      mantle: "",
-      crust: "",
+      base: colorAlphas,
+      mantle: colorAlphas,
+      crust: colorAlphas,
     },
     surface: {
       0: "",
@@ -59,6 +59,6 @@ export const themeValue = flavors.reduce(
 ) as Record<Flavor, ReturnType<typeof createThemeBase>>;
 
 export const bg = style({
-  backgroundColor: vars.color.background.base,
+  backgroundColor: vars.color.background.base.normal,
   color: vars.color.typography.body,
 });

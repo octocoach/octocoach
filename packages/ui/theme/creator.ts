@@ -31,9 +31,9 @@ export const createThemeBase = (flavor: Flavor) => {
       brand: createColorAlphas(variant.mauve.hsl),
       accent: createColorAlphas(variant.sapphire.hsl),
       background: {
-        base: variant.base.hsl,
-        mantle: variant.mantle.hsl,
-        crust: variant.crust.hsl,
+        base: createColorAlphas(variant.base.hsl),
+        mantle: createColorAlphas(variant.mantle.hsl),
+        crust: createColorAlphas(variant.crust.hsl),
       },
       surface: {
         0: variant.surface0.hsl,

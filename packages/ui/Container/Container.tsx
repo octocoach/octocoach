@@ -1,25 +1,22 @@
 import { PropsWithChildren } from "react";
-import { container } from "./container.css";
-import { Properties } from "csstype";
+import { ContainerVariants, container } from "./container.css";
 type AllowedElement = "div" | "section" | "main" | "article" | "header" | "nav";
 
 export const Container = ({
   children,
   id,
   element = "div",
-  display = "block",
-  justifyItems = "initial",
+  ...props
 }: PropsWithChildren<
-  Partial<{
-    element: AllowedElement;
-    id: string;
-    display: Properties["display"];
-    justifyItems: Properties["justifyItems"];
-  }>
+  ContainerVariants &
+    Partial<{
+      element: AllowedElement;
+      id: string;
+    }>
 >) => {
   const Component = element;
   return (
-    <Component id={id} className={container} style={{ display, justifyItems }}>
+    <Component id={id} className={container(props)}>
       {children}
     </Component>
   );

@@ -2,9 +2,7 @@ import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { SessionProvider } from "@octocoach/auth/react";
 import { db } from "@octocoach/db/connection";
-import { Box, Container, PixelBackground, Stack, Text } from "@octocoach/ui";
-import Image from "next/image";
-import Link from "next/link";
+import { Container, Nav } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import logo from "./_images/logo.svg";
@@ -31,17 +29,8 @@ export default async function Layout({
   return (
     <SessionProvider session={session}>
       <ThemeContainer organization={organization}>
-        <Container>
-          <PixelBackground>
-            <Link href={`/org/${organization.slug}`}>
-              <Stack direction="horizontal" align="center">
-                <Image src={logo} height={64} width={64} alt="Q15 Logo" />{" "}
-                <Text size="xl" weight="extraBold">
-                  Q15
-                </Text>
-              </Stack>
-            </Link>
-          </PixelBackground>
+        <Container width="contained">
+          <Nav logoSrc={logo.src} displayName={organization.displayName} />
 
           <OrganizationProvider organization={organization}>
             {children}

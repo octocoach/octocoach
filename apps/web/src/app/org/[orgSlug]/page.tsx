@@ -1,5 +1,6 @@
 "use client";
 
+import { Faq } from "@components/Faq";
 import { useSession } from "@octocoach/auth/react";
 import {
   Box,
@@ -10,15 +11,16 @@ import {
   Stack,
   Text,
 } from "@octocoach/ui";
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import coachImage from "./_images/coach.png";
 import discover from "./_images/discover.png";
 import grow from "./_images/grow.png";
 import thrive from "./_images/thrive.png";
 import debugImage from "./_images/woman-with-laptop.png";
-import coachImage from "./_images/coach.png";
+import { about, coach, faqs } from "./content";
 import { useOrganization } from "./context";
-import { about, coach } from "./content";
 
 const Section = ({
   title,
@@ -52,6 +54,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
   const { data: session } = useSession();
   const organization = useOrganization();
 
+  const [openQA, setOpenQA] = useState<number | null>(null);
+
   const getCTA = () =>
     !session?.user ? (
       <Link href={`/org/${params.orgSlug}/signup`}>
@@ -66,12 +70,11 @@ export default function Page({ params }: { params: { orgSlug } }) {
   return (
     <>
       <PixelBackground>
-        <Box>
+        <Box paddingX="none">
           <Grid placeItems="center" gap="medium">
             <img
               src={debugImage.src}
-              width={512}
-              height={256}
+              width={400}
               alt="Debugging"
               style={{ imageRendering: "pixelated" }}
             />
@@ -102,7 +105,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
                 </Text>
                 <Text variation="casual">Ready to start debugging?</Text>
               </Stack>
-              <Box textAlign="center" padding="none">
+              <Box textAlign="center" paddingX="none">
                 {getCTA()}
               </Box>
             </Stack>
@@ -142,7 +145,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
         </Box>
       </PixelBackground>
       <PixelBackground pixelSize={40}>
-        <Box>
+        <Box paddingX="none">
           <Text element="h2" size="l" weight="bold">
             About Q15
           </Text>
@@ -150,7 +153,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
         </Box>
       </PixelBackground>
       <PixelBackground pixelSize={80}>
-        <Box>
+        <Box paddingX="none">
           <Stack align="center">
             <img
               src={coachImage.src}
@@ -161,7 +164,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
               }}
               alt="Adriaan"
             />
-            <Box padding="none">
+            <Box paddingX="none">
               <Text element="h2" size="l" weight="bold">
                 Meet the coach
               </Text>
@@ -170,6 +173,28 @@ export default function Page({ params }: { params: { orgSlug } }) {
           </Stack>
         </Box>
       </PixelBackground>
+      <Box paddingX="none">
+        <Text element="h2" size="l" weight="bold">
+          FAQs
+        </Text>
+        <Stack>
+          {faqs.map((qa, idx) => (
+            <Faq
+              key={idx}
+              qa={qa}
+              idx={idx}
+              onOpen={(i) => {
+                if (openQA === idx) {
+                  setOpenQA(null);
+                } else {
+                  setOpenQA(i);
+                }
+              }}
+              isOpen={idx === openQA}
+            />
+          ))}
+        </Stack>
+      </Box>
     </>
   );
 }

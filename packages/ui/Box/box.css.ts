@@ -2,23 +2,26 @@ import { style } from "@vanilla-extract/css";
 import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
 import { sprinkles } from "../sprinkles.css";
 
+const mkSizes = (key: string) =>
+  ({
+    none: "0px",
+    extraSmall: sprinkles({ [key]: 1 }),
+    small: sprinkles({ [key]: 3 }),
+    medium: sprinkles({ [key]: 6 }),
+    large: sprinkles({ [key]: 8 }),
+    extraLarge: sprinkles({ [key]: 10 }),
+  } as const);
+
 const sizes = {
-  none: "0px",
-  extraSmall: sprinkles({ padding: 1 }),
-  small: sprinkles({ padding: 3 }),
-  medium: sprinkles({ padding: 6 }),
-  large: sprinkles({ padding: 8 }),
-  extraLarge: sprinkles({ padding: 10 }),
-};
+  paddingX: mkSizes("paddingX"),
+  paddingY: mkSizes("paddingY"),
+  marginX: mkSizes("marginX"),
+  marginY: mkSizes("marginY"),
+} as const;
 
 export const box = recipe({
   variants: {
-    padding: sizes,
-    paddingX: sizes,
-    paddingY: sizes,
-    margin: sizes,
-    marginX: sizes,
-    marginY: sizes,
+    ...sizes,
     textAlign: {
       left: style({ textAlign: "left" }),
       center: style({ textAlign: "center" }),
@@ -49,8 +52,10 @@ export const box = recipe({
     justifyItems: "left",
     display: "block",
     textAlign: "left",
-    padding: "medium",
-    margin: "none",
+    paddingX: "medium",
+    paddingY: "medium",
+    marginX: "none",
+    marginY: "none",
   },
 });
 

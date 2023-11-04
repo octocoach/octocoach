@@ -3,6 +3,7 @@ import { vars } from "../theme.css";
 
 export const markdown = style({
   fontFamily: vars.fonts.base,
+  color: vars.color.typography.body,
 });
 
 globalStyle(`${markdown} h1`, {
@@ -24,11 +25,12 @@ globalStyle(`${markdown} h3`, {
 });
 
 globalStyle(`${markdown} ul`, {
-  listStyle: "inside",
+  listStylePosition: "outside",
+  paddingLeft: "1rem",
 });
 
 globalStyle(`${markdown} li`, {
-  listStyleType: "disc",
+  listStyleType: "square",
   margin: "0.5rem 0",
 });
 

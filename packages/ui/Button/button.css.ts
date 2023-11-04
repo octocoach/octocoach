@@ -30,7 +30,7 @@ export const button = recipe({
   variants: {
     color: {
       primary: {
-        background: vars.color.background.base,
+        background: vars.color.background.base.normal,
         border: `2px solid ${vars.color.brand[50]}`,
         boxShadow: `
         -10px 0px 20px ${vars.color.brand[20]},
@@ -39,7 +39,7 @@ export const button = recipe({
       },
       secondary: {
         background: vars.color.typography.body,
-        color: vars.color.background.mantle,
+        color: vars.color.background.mantle.normal,
       },
     },
   },

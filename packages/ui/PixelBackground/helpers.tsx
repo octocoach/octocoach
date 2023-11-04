@@ -23,8 +23,8 @@ export const makePixelBackground = ({
       if (rnd > 0.8) {
         const fill =
           rnd > 0.9
-            ? theme.color.background.crust
-            : theme.color.background.mantle;
+            ? theme.color.background.crust.normal
+            : theme.color.background.mantle.normal;
         rects.push(
           `<rect x="${x}" y="${y}" width="${pixelSize}" height="${pixelSize}" fill="${fill}" />`
         );

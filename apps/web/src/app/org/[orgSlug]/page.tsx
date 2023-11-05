@@ -98,8 +98,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
                   and your ideal tech role.
                 </Text>
                 <Text>
-                  It's more than just landing a job; it's about navigating the
-                  experience paradox and ensuring your first professional
+                  It&lsquo;s more than just landing a job; it&lsquo;s about navigating
+                  the experience paradox and ensuring your first professional
                   chapters are written with logic, precision, and a dash of
                   inspiration.
                 </Text>

@@ -8,7 +8,7 @@ export const formInputWrapper = style([
     alignItems: "center",
     gap: space[2],
     borderRadius: space[2],
-    backgroundColor: vars.color.background.crust,
+    backgroundColor: vars.color.background.crust.normal,
   },
 ]);
 
@@ -16,7 +16,7 @@ export const formInput = style([
   {
     flexGrow: 1,
     height: "2.5rem",
-    backgroundColor: vars.color.background.mantle,
+    backgroundColor: vars.color.background.mantle.normal,
     borderRadius: space[2],
     borderWidth: 0,
     color: vars.color.typography.body,

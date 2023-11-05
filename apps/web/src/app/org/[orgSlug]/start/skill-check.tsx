@@ -34,17 +34,17 @@ export const SkillCheck = ({
     if (index !== undefined) setSkill(skills[index]);
   }, [index]);
 
-  const onAnswer = async ({ skillLevel }: { skillLevel: SkillLevel }) => {
-    startTransition(async () => {
-      await submitSkillAssessment({ skillId: skill.id, skillLevel });
-      addCheckedSkillId(skill.id);
-
-      if (index + 1 === totalSkills) {
-        onComplete();
-      } else {
-        setIndex((index) => index + 1);
-      }
+  const onAnswer = ({ skillLevel }: { skillLevel: SkillLevel }) => {
+    startTransition(() => {
+      submitSkillAssessment({ skillId: skill.id, skillLevel });
     });
+    addCheckedSkillId(skill.id);
+
+    if (index + 1 === totalSkills) {
+      onComplete();
+    } else {
+      setIndex((index) => index + 1);
+    }
   };
 
   if (!skill) return null;

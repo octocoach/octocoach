@@ -13,13 +13,15 @@ export default async function Page({
     where: ({ id }, { eq }) => eq(id, params.userId),
   });
 
-  const currentPath = `/org/${params.orgSlug}/coachees/${params.userId}`;
-
   return (
     <Stack>
       <Text>{user.name}</Text>
-      <Link href={`${currentPath}/skills`}>Skills</Link>
-      <Link href={`${currentPath}/tasks`}>Tasks</Link>
+      <Link href={`/org/${params.orgSlug}/coachees/${params.userId}/skills`}>
+        Skills
+      </Link>
+      <Link href={`/org/${params.orgSlug}/coachees/${params.userId}/tasks`}>
+        Tasks
+      </Link>
     </Stack>
   );
 }

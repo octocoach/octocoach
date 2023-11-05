@@ -61,7 +61,7 @@ export const BarChart = ({
               x={(xScale(label) || 0) + 8}
               y={height - 8}
               fontFamily={vars.fonts.base}
-              fill={vars.color.background.base}
+              fill={vars.color.background.base.normal}
             >
               {`${label} (${value})`}
             </Text>

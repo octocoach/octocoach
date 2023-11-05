@@ -2,7 +2,6 @@ import { type Database } from "@octocoach/db/connection";
 import { eq, sql } from "@octocoach/db/operators";
 import { skillsMissingTasksTable } from "@octocoach/db/schemas/common/skills-missing-tasks";
 import { skillsTasksTable } from "@octocoach/db/schemas/common/skills-tasks";
-import { makeCosineDistance } from "@octocoach/db/schemas/data-types/embedding";
 import { skillMissingTable } from "@octocoach/db/schemas/public/schema";
 import { skillTable } from "@octocoach/db/schemas/public/skill";
 import chalk from "chalk";
@@ -17,6 +16,17 @@ import {
 } from "langchain/prompts";
 import { z } from "zod";
 import { createFunctionFromZodSchema } from "./helpers";
+import {
+  AnyColumn,
+  cosineDistance,
+} from "@octocoach/db/schemas/data-types/embedding";
+
+export const makeCosineDistance = async (input: string) => {
+  const e = new OpenAIEmbeddings();
+  const inputEmbeddings = await e.embedQuery(input);
+
+  return (column: AnyColumn) => cosineDistance(column, inputEmbeddings);
+};
 
 const createSkillMissing = async (description: string, db: Database) => {
   console.log(chalk.yellow("Model returned undefined, returning null"));

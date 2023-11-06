@@ -6,10 +6,11 @@ import {
   Box,
   Button,
   Grid,
-  Markdown,
+  Tagline,
   PixelBackground,
   Stack,
   Text,
+  Markdown,
 } from "@octocoach/ui";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
@@ -19,7 +20,7 @@ import discover from "./_images/discover.png";
 import grow from "./_images/grow.png";
 import thrive from "./_images/thrive.png";
 import debugImage from "./_images/woman-with-laptop.png";
-import { about, coach, faqs } from "./content";
+import { about, coach, faqs, heroText } from "./content";
 import { useOrganization } from "./context";
 
 const Section = ({
@@ -70,7 +71,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
   return (
     <>
       <PixelBackground>
-        <Box paddingX="none">
+        <Box paddingX="small">
           <Grid placeItems="center" gap="medium">
             <img
               src={debugImage.src}
@@ -81,29 +82,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
 
             <Stack spacing="loose">
               <Stack spacing="tight">
-                <Text element="h1" size="xl" weight="extraBlack">
-                  Debug your{" "}
-                  <span
-                    style={{
-                      textDecoration: "underline wavy",
-                      textDecorationColor: "#e78284",
-                    }}
-                  >
-                    career
-                  </span>
-                </Text>
-                <Text>
-                  At Q15, we delve into the code of your career aspirations,
-                  helping you articulate and debug the challenges between you
-                  and your ideal tech role.
-                </Text>
-                <Text>
-                  It&lsquo;s more than just landing a job; it&lsquo;s about navigating
-                  the experience paradox and ensuring your first professional
-                  chapters are written with logic, precision, and a dash of
-                  inspiration.
-                </Text>
-                <Text variation="casual">Ready to start debugging?</Text>
+                <Tagline>{organization.tagLine}</Tagline>
+                <Markdown>{heroText}</Markdown>
               </Stack>
               <Box textAlign="center" paddingX="none">
                 {getCTA()}
@@ -156,7 +136,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
         <Box paddingX="none">
           <Stack align="center">
             <img
-              src={coachImage.src}
+              src="https://kwplc549faxwhcci.public.blob.vercel-storage.com/image-removebg-preview-pWOP7xDhiQSU9CbsLcxlKbtcA37laM.png"
               style={{
                 imageRendering: "pixelated",
                 width: "clamp(280px, 50%, 400px)",

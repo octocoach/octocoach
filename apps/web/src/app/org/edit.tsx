@@ -1,5 +1,6 @@
 "use client";
 
+import Upload from "@components/Upload";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import {
   Button,
@@ -61,6 +62,7 @@ export const Edit = ({ organization }: { organization: Organization }) => {
           <Button type="submit">Save</Button>
         </Stack>
       </Form>
+      <Upload />
     </Container>
   );
 };

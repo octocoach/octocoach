@@ -80,5 +80,5 @@ export async function onSubmit(organizationDetails: OrganizationDetails) {
     .set(rest)
     .where(eq(organizationTable.slug, organizationDetails.slug));
 
-  revalidatePath("/org", "page");
+  revalidatePath("/org", "layout");
 }

@@ -7,7 +7,7 @@ type FormProps = PropsWithChildren<{
   store?: Ariakit.FormStore;
   formStoreProps?: Ariakit.FormStoreProps;
   onSubmit: (data: any) => Promise<void>;
-}>
+}>;
 
 export const Form: React.FC<FormProps> = ({
   children,
@@ -29,5 +29,9 @@ export const Form: React.FC<FormProps> = ({
     });
   });
 
-  return <Ariakit.Form store={store}>{children}</Ariakit.Form>;
+  return (
+    <Ariakit.Form store={store} resetOnSubmit={false}>
+      {children}
+    </Ariakit.Form>
+  );
 };

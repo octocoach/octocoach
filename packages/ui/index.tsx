@@ -23,6 +23,7 @@ export * from "./SSRProvider";
 export * from "./Select/Select";
 export * from "./Stack/Stack";
 export * from "./Tag/Tag";
+export * from "./Tagline/Tagline";
 export * from "./Text/Text";
 export * from "./TextArea/TextArea";
 export { vars } from "./theme.css";

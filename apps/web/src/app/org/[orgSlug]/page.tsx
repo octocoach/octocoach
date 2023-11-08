@@ -6,21 +6,20 @@ import {
   Box,
   Button,
   Grid,
-  Tagline,
+  Markdown,
   PixelBackground,
   Stack,
+  Tagline,
   Text,
-  Markdown,
 } from "@octocoach/ui";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import coachImage from "./_images/coach.png";
+import coachImage from "./_images/coach2.png";
 import discover from "./_images/discover.png";
 import grow from "./_images/grow.png";
 import thrive from "./_images/thrive.png";
-import debugImage from "./_images/woman-with-laptop.png";
-import { about, coach, faqs, heroText } from "./content";
+import { about, coach } from "./content";
 import { useOrganization } from "./context";
 
 const Section = ({
@@ -68,22 +67,30 @@ export default function Page({ params }: { params: { orgSlug } }) {
       </Link>
     );
 
+  type HeroSection = {
+    title: string;
+    text: string;
+  };
+
+  const heroSection = organization.content.find((c) => c.id === "hero");
+  const heroSectionValue = heroSection.value as HeroSection;
+
   return (
     <>
       <PixelBackground>
         <Box paddingX="small">
           <Grid placeItems="center" gap="medium">
             <img
-              src={debugImage.src}
+              src={heroSection.image.src}
               width={400}
-              alt="Debugging"
+              alt={heroSection.image.alt}
               style={{ imageRendering: "pixelated" }}
             />
 
             <Stack spacing="loose">
               <Stack spacing="tight">
-                <Tagline>{organization.tagLine}</Tagline>
-                <Markdown>{heroText}</Markdown>
+                <Tagline>{heroSectionValue.title}</Tagline>
+                <Markdown>{heroSectionValue.text}</Markdown>
               </Stack>
               <Box textAlign="center" paddingX="none">
                 {getCTA()}
@@ -136,7 +143,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
         <Box paddingX="none">
           <Stack align="center">
             <img
-              src="https://kwplc549faxwhcci.public.blob.vercel-storage.com/image-removebg-preview-pWOP7xDhiQSU9CbsLcxlKbtcA37laM.png"
+              src={coachImage.src}
               style={{
                 imageRendering: "pixelated",
                 width: "clamp(280px, 50%, 400px)",
@@ -158,9 +165,9 @@ export default function Page({ params }: { params: { orgSlug } }) {
           FAQs
         </Text>
         <Stack>
-          {faqs.map((qa, idx) => (
+          {[].map((qa, idx) => (
             <Faq
-              key={idx}
+              key={qa.id}
               qa={qa}
               idx={idx}
               onOpen={(i) => {

@@ -8,6 +8,7 @@ export * from "./Box/Box";
 export * from "./Button/Button";
 export * from "./Card/Card";
 export * from "./Container/Container";
+export * from "./Form/FileSelect";
 export * from "./Form/Form";
 export * from "./Form/FormField";
 export * from "./Form/FormInput";

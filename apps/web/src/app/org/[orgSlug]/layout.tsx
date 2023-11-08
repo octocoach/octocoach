@@ -1,8 +1,15 @@
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { SessionProvider } from "@octocoach/auth/react";
-import { db } from "@octocoach/db/connection";
+import { db, orgDb } from "@octocoach/db/connection";
+import { and, eq } from "@octocoach/db/operators";
+import {
+  mkContentLocaleTable,
+  mkContentTable,
+} from "@octocoach/db/schemas/org/content";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Container, Nav } from "@octocoach/ui";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import logo from "./_images/logo.svg";
@@ -24,6 +31,27 @@ export default async function Layout({
     notFound();
   }
 
+  const locale = (cookies().get("locale")?.value || "de") as Locales;
+
+  const organizationDb = orgDb(organization.slug);
+  const contentTable = mkContentTable(organization.slug);
+  const contentLocaleTable = mkContentLocaleTable(organization.slug);
+
+  const content = await organizationDb
+    .select({
+      id: contentTable.id,
+      image: contentTable.image,
+      value: contentLocaleTable.value,
+    })
+    .from(contentTable)
+    .innerJoin(
+      contentLocaleTable,
+      and(
+        eq(contentTable.id, contentLocaleTable.id),
+        eq(contentLocaleTable.locale, locale)
+      )
+    );
+
   const session = await getServerSession(mkAuthOptions(params.orgSlug));
 
   return (
@@ -32,7 +60,7 @@ export default async function Layout({
         <Container width="contained">
           <Nav logoSrc={logo.src} displayName={organization.displayName} />
 
-          <OrganizationProvider organization={organization}>
+          <OrganizationProvider organization={{ ...organization, content }}>
             {children}
           </OrganizationProvider>
         </Container>

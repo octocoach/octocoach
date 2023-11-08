@@ -33,7 +33,6 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
     secondaryColor: text("secondary_color").notNull().default("#dc8a78"),
     registrationNumber: text("registration_number"),
     taxNumber: text("tax_number"),
-    tagLine: text("tag_line"),
   });
 
 export const mkOrganizationTableRelations = (

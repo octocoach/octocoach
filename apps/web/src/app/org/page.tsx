@@ -1,5 +1,10 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
-import { db } from "@octocoach/db/connection";
+import { db, orgDb } from "@octocoach/db/connection";
+import { eq } from "@octocoach/db/operators";
+import {
+  mkContentLocaleTable,
+  mkContentTable,
+} from "@octocoach/db/schemas/org/content";
 import Admin from "./admin";
 import { NewOrganization } from "./new-organization";
 
@@ -11,7 +16,23 @@ export default async function Page() {
     where: (organization, { eq }) => eq(organization.owner, user.id),
   });
 
-  if (organization) return <Admin organization={organization} />;
+  const orgDB = orgDb(organization.slug);
+
+  const contentTable = mkContentTable(organization.slug);
+  const contentLocaleTable = mkContentLocaleTable(organization.slug);
+
+  const content = await orgDB
+    .select({
+      id: contentTable.id,
+      locale: contentLocaleTable.locale,
+      image: contentTable.image,
+      value: contentLocaleTable.value,
+    })
+    .from(contentTable)
+    .innerJoin(contentLocaleTable, eq(contentTable.id, contentLocaleTable.id));
+
+  if (organization)
+    return <Admin organization={organization} content={content} />;
 
   return <NewOrganization />;
 }

@@ -47,6 +47,11 @@ export const box = recipe({
       row: style({ flexDirection: "row" }),
       column: style({ flexDirection: "column" }),
     },
+    grow: {
+      true: {
+        flexGrow: 1,
+      },
+    },
   },
   defaultVariants: {
     justifyItems: "left",

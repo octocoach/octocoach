@@ -1,21 +1,25 @@
-import { mkOrgPgSchema, mkOrgSchema } from "./schema";
+import { mkOrgPgSchema } from "../common/pg-schema";
+import { mkOrgSchema } from "./schema";
 
 const slug = process.env.SLUG as string;
 
 export const orgPgSchema = mkOrgPgSchema(slug);
 
 export const {
-  userTable,
-  userTableRelations,
   accountTable,
-  sessionTable,
-  verificationTokenTable,
-  userProfileTable,
-  userProfileRelations,
-  usersSkillLevelsTable,
-  usersSkillLevelsRelations,
-  usersTaskInterestTable,
-  usersTaskInterestRelations,
   coachTable,
   coachTableRelations,
+  contentLocaleTable,
+  contentTable,
+  localeEnum,
+  sessionTable,
+  userProfileRelations,
+  userProfileTable,
+  usersSkillLevelsRelations,
+  usersSkillLevelsTable,
+  usersTaskInterestRelations,
+  usersTaskInterestTable,
+  userTable,
+  userTableRelations,
+  verificationTokenTable,
 } = mkOrgSchema(slug);

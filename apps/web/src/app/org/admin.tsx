@@ -5,11 +5,22 @@ import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
+import { ContentImage } from "@octocoach/db/schemas/org/content";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+
+export interface SectionContent {
+  id: string;
+  locale: Locales;
+  image: ContentImage;
+  value: unknown;
+}
 
 export default function Admin({
   organization,
+  content,
 }: {
   organization: Organization;
+  content: SectionContent[];
 }) {
   const [isPending, startTransition] = useTransition();
 
@@ -22,7 +33,7 @@ export default function Admin({
     <Container element="section">
       <Text size="l">{organization.displayName}</Text>
       <Stack>
-        <Edit organization={organization} />
+        <Edit organization={organization} content={content} />
         <Button onPress={onDelete} disabled={isPending}>
           Delete
         </Button>

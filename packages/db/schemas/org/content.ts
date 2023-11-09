@@ -1,21 +1,17 @@
 import { json, pgEnum, primaryKey, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 
-export interface ContentImage {
-  src: string;
-  alt: string;
-}
 export type Content = typeof _contentTable.$inferSelect;
 export type NewContent = typeof _contentTable.$inferInsert;
 export type ContentLocale = typeof _contentLocaleTable.$inferSelect;
 export type NewContentLocale = typeof _contentLocaleTable.$inferInsert;
+export type SectionId = "hero" | "about" | "coach";
 
 export const localeEnum = pgEnum("locale", ["en", "de"]);
 
 export const mkContentTable = (slug: string) => {
   return mkOrgPgSchema(slug).table("content", {
-    id: text("id").notNull().primaryKey(),
-    image: json("image").$type<ContentImage>(),
+    id: text("id").notNull().primaryKey().$type<SectionId>(),
   });
 };
 
@@ -30,7 +26,8 @@ export const mkContentLocaleTable = (slug: string) => {
         .references(() => contentTable.id, {
           onDelete: "cascade",
           onUpdate: "cascade",
-        }),
+        })
+        .$type<SectionId>(),
       locale: localeEnum("locale").notNull(),
       value: json("value"),
     },

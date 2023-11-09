@@ -1,11 +1,11 @@
 "use client";
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
-import { ContentImage } from "@octocoach/db/schemas/org/content";
+import { SectionId } from "@octocoach/db/schemas/org/content";
 import { ReactNode, createContext, useContext } from "react";
 
 export type OrganizationWithContent = Organization & {
-  content: { id: string; image: ContentImage; value: unknown }[];
+  content: { id: SectionId; value: unknown }[];
 };
 
 const OrganizationContext = createContext<OrganizationWithContent>(

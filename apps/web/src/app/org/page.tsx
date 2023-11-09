@@ -25,7 +25,6 @@ export default async function Page() {
     .select({
       id: contentTable.id,
       locale: contentLocaleTable.locale,
-      image: contentTable.image,
       value: contentLocaleTable.value,
     })
     .from(contentTable)

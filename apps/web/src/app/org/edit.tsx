@@ -1,19 +1,27 @@
 "use client";
 
+import { EditSection } from "@components/EditSection";
 import Upload from "@components/Upload";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import {
+  AboutSectionContent,
   Box,
   Button,
+  CoachSectionContent,
   Container,
   Form,
   FormField,
   FormInput,
+  HeroSectionContent,
   HiddenInput,
   Stack,
   Text,
+  aboutSectionId,
+  coachSectionId,
+  heroSectionId,
   useFormStore,
 } from "@octocoach/ui";
+import { filterContentByLocale, getContentById } from "@octocoach/ui/helpers";
 import { onSubmit, type OrganizationDetails } from "./actions";
 import { SectionContent } from "./admin";
 
@@ -24,28 +32,34 @@ export const Edit = ({
   organization: Organization;
   content: SectionContent[];
 }) => {
-  const heroSections = content.filter(({ id }) => id === "hero");
+  const heroSectionEn = getContentById<HeroSectionContent>(
+    filterContentByLocale(content, "en"),
+    heroSectionId
+  );
+  const heroSectionDe = getContentById<HeroSectionContent>(
+    filterContentByLocale(content, "de"),
+    heroSectionId
+  );
 
-  const heroSectionImage = heroSections.length
-    ? heroSections[0].image
-    : { src: "", alt: "" };
+  const aboutSectionEn = getContentById<AboutSectionContent>(
+    filterContentByLocale(content, "en"),
+    aboutSectionId
+  );
 
-  const heroSectionEn = heroSections.find(({ locale }) => locale === "en");
-  const heroSectionDe = heroSections.find(({ locale }) => locale === "de");
+  const aboutSectionDe = getContentById<AboutSectionContent>(
+    filterContentByLocale(content, "de"),
+    aboutSectionId
+  );
 
-  interface HeroSectionValue {
-    title: string;
-    text: string;
-  }
+  const coachSectionEn = getContentById<CoachSectionContent>(
+    filterContentByLocale(content, "en"),
+    coachSectionId
+  );
 
-  const heroSectionValueEn = (heroSectionEn?.value as HeroSectionValue) || {
-    title: "",
-    text: "",
-  };
-  const heroSectionValueDe = (heroSectionDe?.value as HeroSectionValue) || {
-    title: "",
-    text: "",
-  };
+  const coachSectionDe = getContentById<CoachSectionContent>(
+    filterContentByLocale(content, "de"),
+    coachSectionId
+  );
 
   const store = useFormStore<OrganizationDetails>({
     defaultValues: {
@@ -54,12 +68,24 @@ export const Edit = ({
       secondaryColor: organization.secondaryColor || "",
       registrationNumber: organization.registrationNumber || "",
       taxNumber: organization.taxNumber || "",
-      heroSectionImageSrc: heroSectionImage.src,
-      heroSectionImageAlt: heroSectionImage.alt,
-      heroSectionTitleEn: heroSectionValueEn.title,
-      heroSectionTextEn: heroSectionValueEn.text,
-      heroSectionTitleDe: heroSectionValueDe.title,
-      heroSectionTextDe: heroSectionValueDe.text,
+      heroSectionImageSrc: heroSectionEn.image?.src || "",
+      heroSectionImageAltEn: heroSectionEn.image?.alt || "",
+      heroSectionTitleEn: heroSectionEn.title,
+      heroSectionTextEn: heroSectionEn.text,
+      heroSectionImageAltDe: heroSectionDe.image?.alt || "",
+      heroSectionTitleDe: heroSectionDe.title,
+      heroSectionTextDe: heroSectionDe.text,
+      aboutSectionTitleEn: aboutSectionEn.title || "",
+      aboutSectionTextEn: aboutSectionEn.text || "",
+      aboutSectionTitleDe: aboutSectionDe.title || "",
+      aboutSectionTextDe: aboutSectionEn.text || "",
+      coachSectionImageSrc: coachSectionEn.image?.src || "",
+      coachSectionImageAltEn: coachSectionEn.image?.alt || "",
+      coachSectionTitleEn: coachSectionEn.title || "",
+      coachSectionTextEn: coachSectionEn.text || "",
+      coachSectionImageAltDe: coachSectionDe.image?.alt || "",
+      coachSectionTitleDe: coachSectionDe.title || "",
+      coachSectionTextDe: coachSectionDe.text || "",
     },
   });
 
@@ -82,48 +108,62 @@ export const Edit = ({
           <Stack>
             <Box paddingX="none" paddingY="none">
               <Text size="l">Hero Section</Text>
-              <img
-                src={store.getValue($.heroSectionImageSrc)}
-                alt={store.getValue($.heroSectionImageAlt)}
-              />
+              <img src={store.getValue($.heroSectionImageSrc)} />
               <Upload
                 onUploaded={(url) => store.setValue($.heroSectionImageSrc, url)}
               />
-              <FormField name={$.heroSectionImageAlt} label="Alt Text">
-                <FormInput name={$.heroSectionImageAlt} />
-              </FormField>
               <Stack direction="horizontal">
-                <Box paddingX="none" grow>
-                  <Text size="l">English</Text>
-                  <FormField name={$.heroSectionTitleEn} label="Title">
-                    <FormInput name={$.heroSectionTitleEn} />
-                  </FormField>
-                  <FormField name={$.heroSectionTextEn} label="Text">
-                    <FormInput
-                      name={$.heroSectionTextEn}
-                      render={<textarea style={{ height: "10rem" }} />}
-                    />
-                  </FormField>
-                </Box>
-                <Box paddingX="none" grow>
-                  <Text size="l">German</Text>
-                  <FormField name={$.heroSectionTitleDe} label="Title">
-                    <FormInput name={$.heroSectionTitleDe} />
-                  </FormField>
-                  <FormField name={$.heroSectionTextDe} label="Text">
-                    <FormInput
-                      name={$.heroSectionTextDe}
-                      render={<textarea style={{ height: "10rem" }} />}
-                    />
-                  </FormField>
-                </Box>
+                <EditSection
+                  locale="en"
+                  altText={$.heroSectionImageAltEn}
+                  text={$.heroSectionTextEn}
+                  title={$.heroSectionTitleEn}
+                />
+                <EditSection
+                  locale="de"
+                  altText={$.heroSectionImageAltDe}
+                  text={$.heroSectionTextDe}
+                  title={$.heroSectionTitleDe}
+                />
               </Stack>
             </Box>
             <Box paddingX="none" paddingY="none">
               <Text size="l">About Section</Text>
+              <Stack direction="horizontal">
+                <EditSection
+                  locale="en"
+                  text={$.aboutSectionTextEn}
+                  title={$.aboutSectionTitleEn}
+                />
+                <EditSection
+                  locale="de"
+                  text={$.aboutSectionTextDe}
+                  title={$.aboutSectionTitleDe}
+                />
+              </Stack>
             </Box>
             <Box paddingX="none" paddingY="none">
               <Text size="l">Coach Section</Text>
+              <img src={store.getValue($.coachSectionImageSrc)} />
+              <Upload
+                onUploaded={(url) =>
+                  store.setValue($.coachSectionImageSrc, url)
+                }
+              />
+              <Stack direction="horizontal">
+                <EditSection
+                  locale="en"
+                  altText={$.coachSectionImageAltEn}
+                  title={$.coachSectionTitleEn}
+                  text={$.coachSectionTextEn}
+                />
+                <EditSection
+                  locale="de"
+                  altText={$.coachSectionImageAltDe}
+                  title={$.coachSectionTitleDe}
+                  text={$.coachSectionTextDe}
+                />
+              </Stack>
             </Box>
           </Stack>
           <Text size="xl">Business Information</Text>

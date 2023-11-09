@@ -3,23 +3,26 @@
 import { Faq } from "@components/Faq";
 import { useSession } from "@octocoach/auth/react";
 import {
+  AboutSection,
+  AboutSectionContent,
   Box,
-  Button,
-  Grid,
-  Markdown,
+  CoachSection,
+  CoachSectionContent,
+  HeroSection,
+  HeroSectionContent,
   PixelBackground,
   Stack,
-  Tagline,
   Text,
+  aboutSectionId,
+  coachSectionId,
+  heroSectionId,
 } from "@octocoach/ui";
+import { getContentById } from "@octocoach/ui/helpers";
 import { StaticImageData } from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import coachImage from "./_images/coach2.png";
 import discover from "./_images/discover.png";
 import grow from "./_images/grow.png";
 import thrive from "./_images/thrive.png";
-import { about, coach } from "./content";
 import { useOrganization } from "./context";
 
 const Section = ({
@@ -56,48 +59,29 @@ export default function Page({ params }: { params: { orgSlug } }) {
 
   const [openQA, setOpenQA] = useState<number | null>(null);
 
-  const getCTA = () =>
-    !session?.user ? (
-      <Link href={`/org/${params.orgSlug}/signup`}>
-        <Button>Sign Up</Button>
-      </Link>
-    ) : (
-      <Link href={`/org/${params.orgSlug}/start`}>
-        <Button>Start Debugging</Button>
-      </Link>
-    );
+  const heroSection = getContentById<HeroSectionContent>(
+    organization.content,
+    heroSectionId
+  );
 
-  type HeroSection = {
-    title: string;
-    text: string;
-  };
+  const aboutSection = getContentById<AboutSectionContent>(
+    organization.content,
+    aboutSectionId
+  );
 
-  const heroSection = organization.content.find((c) => c.id === "hero");
-  const heroSectionValue = heroSection.value as HeroSection;
+  const coachSection = getContentById<CoachSectionContent>(
+    organization.content,
+    coachSectionId
+  );
 
   return (
     <>
       <PixelBackground>
-        <Box paddingX="small">
-          <Grid placeItems="center" gap="medium">
-            <img
-              src={heroSection.image.src}
-              width={400}
-              alt={heroSection.image.alt}
-              style={{ imageRendering: "pixelated" }}
-            />
-
-            <Stack spacing="loose">
-              <Stack spacing="tight">
-                <Tagline>{heroSectionValue.title}</Tagline>
-                <Markdown>{heroSectionValue.text}</Markdown>
-              </Stack>
-              <Box textAlign="center" paddingX="none">
-                {getCTA()}
-              </Box>
-            </Stack>
-          </Grid>
-        </Box>
+        <HeroSection
+          content={heroSection}
+          orgSlug={params.orgSlug}
+          signedIn={!!session?.user}
+        />
       </PixelBackground>
       <PixelBackground pixelSize={20}>
         <Box>
@@ -132,33 +116,10 @@ export default function Page({ params }: { params: { orgSlug } }) {
         </Box>
       </PixelBackground>
       <PixelBackground pixelSize={40}>
-        <Box paddingX="none">
-          <Text element="h2" size="l" weight="bold">
-            About Q15
-          </Text>
-          <Markdown>{about}</Markdown>
-        </Box>
+        <AboutSection content={aboutSection} />
       </PixelBackground>
       <PixelBackground pixelSize={80}>
-        <Box paddingX="none">
-          <Stack align="center">
-            <img
-              src={coachImage.src}
-              style={{
-                imageRendering: "pixelated",
-                width: "clamp(280px, 50%, 400px)",
-                minWidth: 280,
-              }}
-              alt="Adriaan"
-            />
-            <Box paddingX="none">
-              <Text element="h2" size="l" weight="bold">
-                Meet the coach
-              </Text>
-              <Markdown>{coach}</Markdown>
-            </Box>
-          </Stack>
-        </Box>
+        <CoachSection content={coachSection} />
       </PixelBackground>
       <Box paddingX="none">
         <Text element="h2" size="l" weight="bold">

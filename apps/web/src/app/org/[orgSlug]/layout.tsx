@@ -40,7 +40,6 @@ export default async function Layout({
   const content = await organizationDb
     .select({
       id: contentTable.id,
-      image: contentTable.image,
       value: contentLocaleTable.value,
     })
     .from(contentTable)

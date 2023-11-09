@@ -1,17 +1,16 @@
 "use client";
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
+import { SectionId } from "@octocoach/db/schemas/org/content";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
-import { ContentImage } from "@octocoach/db/schemas/org/content";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export interface SectionContent {
-  id: string;
+  id: SectionId;
   locale: Locales;
-  image: ContentImage;
   value: unknown;
 }
 

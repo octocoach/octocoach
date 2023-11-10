@@ -6,7 +6,7 @@ import React, { PropsWithChildren, useTransition } from "react";
 type FormProps = PropsWithChildren<{
   store?: Ariakit.FormStore;
   formStoreProps?: Ariakit.FormStoreProps;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit?: (data: any) => Promise<void>;
 }>;
 
 export const Form: React.FC<FormProps> = ({
@@ -23,11 +23,13 @@ export const Form: React.FC<FormProps> = ({
     store = Ariakit.useFormStore(formStoreProps);
   }
 
-  store.useSubmit(async (state) => {
-    startTransition(() => {
-      onSubmit(state.values);
+  if (onSubmit) {
+    store.useSubmit(async (state) => {
+      startTransition(() => {
+        onSubmit(state.values);
+      });
     });
-  });
+  }
 
   return (
     <Ariakit.Form store={store} resetOnSubmit={false}>

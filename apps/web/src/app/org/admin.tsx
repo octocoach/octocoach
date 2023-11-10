@@ -1,7 +1,7 @@
 "use client";
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
-import { SectionWithLocale } from "@octocoach/db/schemas/org/content";
+import { ContentLocale } from "@octocoach/db/schemas/org/content";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
@@ -13,7 +13,7 @@ export default function Admin({
   content,
 }: {
   organization: Organization;
-  content: SectionWithLocale[];
+  content: ContentLocale[];
 }) {
   const [isPending, startTransition] = useTransition();
 

@@ -1,7 +1,8 @@
 import {
+  ContentLocale,
+  ContentLocaleTypeOf,
   SectionContent,
   SectionId,
-  SectionWithLocale,
 } from "@octocoach/db/schemas/org/content";
 import type { Locales } from "@octocoach/i18n/src/i18n-types";
 import { colord } from "colord";
@@ -27,20 +28,20 @@ export const filterContentByLocale = (
   locale: Locales
 ) => content.filter((c) => c.locale === locale);
 
-export const filterContentById = (
-  content: { id: SectionId; value: SectionContent; locale: Locales }[],
+export const filterContentById = <T = SectionContent>(
+  content: ContentLocale[],
   id: SectionId
-) => content.filter((c) => c.id === id);
+) => content.filter((c) => c.id === id) as ContentLocaleTypeOf<T>[];
 
-export const getContentByLocale = (
-  content: SectionWithLocale[],
+export const getContentByLocale = <T = SectionContent>(
+  content: ContentLocale[],
   locale: Locales
 ) => {
   const found = content.find((c) => c.locale === locale);
   if (!found) {
     console.warn(`Content with locale ${locale} not found`);
-    return {} as SectionContent;
+    return {} as T;
   }
 
-  return found.value as SectionContent;
+  return found.value as T;
 };

@@ -1,16 +1,13 @@
 "use client";
 
-import {
-  SectionId,
-  SectionWithLocale,
-} from "@octocoach/db/schemas/org/content";
+import { ContentLocale, SectionId } from "@octocoach/db/schemas/org/content";
 import { locales } from "@octocoach/i18n/src/i18n-util";
 import { Box, Button, Form, Stack, Text, useFormStore } from "@octocoach/ui";
 import { getContentByLocale } from "@octocoach/ui/helpers";
-import { EditSectionLocale } from "./EditSectionLocale";
-import Upload from "./Upload";
 import { useTransition } from "react";
 import { saveContent } from "src/actions/content";
+import { EditSectionLocale } from "./EditSectionLocale";
+import Upload from "./Upload";
 
 export const EditSection = ({
   id,
@@ -20,27 +17,31 @@ export const EditSection = ({
 }: {
   id: SectionId;
   name: string;
-  section: SectionWithLocale[];
+  section: ContentLocale[];
   slug: string;
 }) => {
   let imgSrc = "";
-  const defaultValues = locales.reduce((acc, locale) => {
-    const sectionLocale = getContentByLocale(section, locale);
-    const value = {
-      [`title_${locale}`]: sectionLocale.title,
-      [`text_${locale}`]: sectionLocale.text,
-    };
+  // TODO: This components my be deleted
 
-    if ("image" in sectionLocale) {
-      if (!imgSrc) {
-        imgSrc = sectionLocale.image.src;
-        value["src"] = imgSrc;
-      }
-      value[`alt_${locale}`] = sectionLocale.image.alt;
-    }
+  const defaultValues = {};
+  // const defaultValues = locales.reduce((acc, locale) => {
+  //   const sectionLocale = getContentByLocale(section, locale);
 
-    return { ...acc, ...value };
-  }, {});
+  //   const value = {
+  //     [`title_${locale}`]: sectionLocale.title,
+  //     [`text_${locale}`]: sectionLocale.text,
+  //   };
+
+  //   if ("image" in sectionLocale) {
+  //     if (!imgSrc) {
+  //       imgSrc = sectionLocale.image.src;
+  //       value["src"] = imgSrc;
+  //     }
+  //     value[`alt_${locale}`] = sectionLocale.image.alt;
+  //   }
+
+  //   return { ...acc, ...value };
+  // }, {});
 
   const [isPending, startTransition] = useTransition();
 

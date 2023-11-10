@@ -10,6 +10,7 @@ export * from "./Button/Button";
 export * from "./Card/Card";
 export * from "./CoachSection/CoachSection";
 export * from "./Container/Container";
+export * from "./EditSection/EditSectionContentSimple";
 export * from "./Form/FileSelect";
 export * from "./Form/Form";
 export * from "./Form/FormField";

@@ -1,4 +1,3 @@
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { json, pgEnum, primaryKey, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 
@@ -7,14 +6,16 @@ export type NewContent = typeof _contentTable.$inferInsert;
 export type ContentLocale = typeof _contentLocaleTable.$inferSelect;
 export type NewContentLocale = typeof _contentLocaleTable.$inferInsert;
 
-export type SectionId = "hero" | "about" | "coach";
-export type SectionContent = SectionContentSimple | SectionContentWithImage;
-
-export type SectionWithLocale<T = SectionContent> = {
-  id: SectionId;
-  locale: Locales;
+export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
   value: T;
 };
+
+export type SectionId = "hero" | "about" | "coach" | "method";
+export type SectionContent =
+  | SectionContentSimple
+  | SectionContentWithImage
+  | SectionContentWithSubSections;
+
 export interface ContentImage {
   src: string;
   alt: string;
@@ -27,6 +28,11 @@ export type SectionContentSimple = {
 
 export type SectionContentWithImage = SectionContentSimple & {
   image: ContentImage;
+};
+
+export type SectionContentWithSubSections = {
+  title: string;
+  subSections: SectionContentWithImage[];
 };
 
 export const localeEnum = pgEnum("locale", ["en", "de"]);

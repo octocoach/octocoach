@@ -2,7 +2,7 @@ import { getServerSessionOrRedirect } from "@helpers/auth";
 import { db, orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import {
-  SectionWithLocale,
+  ContentLocale,
   mkContentLocaleTable,
   mkContentTable,
 } from "@octocoach/db/schemas/org/content";
@@ -22,7 +22,7 @@ export default async function Page() {
   const contentTable = mkContentTable(organization.slug);
   const contentLocaleTable = mkContentLocaleTable(organization.slug);
 
-  const content: SectionWithLocale[] = await orgDB
+  const content: ContentLocale[] = await orgDB
     .select({
       id: contentTable.id,
       locale: contentLocaleTable.locale,

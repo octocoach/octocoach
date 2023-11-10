@@ -1,17 +1,15 @@
-import { SectionId } from "@octocoach/db/schemas/org/content";
+import {
+  SectionContentWithImage,
+  SectionId,
+} from "@octocoach/db/schemas/org/content";
 import { Box } from "../Box/Box";
 import { Markdown } from "../Markdown/Markdown";
 import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
-import { ContentImage } from "../types";
 
 export const coachSectionId: SectionId = "coach";
 
-export interface CoachSectionContent {
-  image: ContentImage;
-  title: string;
-  text: string;
-}
+export type CoachSectionContent = SectionContentWithImage;
 
 export interface CoachSectionProps {
   content: CoachSectionContent;

@@ -1,19 +1,17 @@
+import type {
+  SectionContentWithImage,
+  SectionId,
+} from "@octocoach/db/schemas/org/content";
 import { Box } from "../Box/Box";
 import { Button } from "../Button/Button";
 import { Grid } from "../Grid/Grid";
 import { Markdown } from "../Markdown/Markdown";
 import { Stack } from "../Stack/Stack";
 import { Tagline } from "../Tagline/Tagline";
-import { ContentImage } from "../types";
-import type { SectionId } from "@octocoach/db/schemas/org/content";
 
 export const heroSectionId: SectionId = "hero";
 
-export interface HeroSectionContent {
-  image: ContentImage;
-  text: string;
-  title: string;
-}
+export type HeroSectionContent = SectionContentWithImage;
 
 export interface HeroSectionProps {
   orgSlug: string;

@@ -383,6 +383,9 @@ importers:
         specifier: ^3.22.2
         version: 3.22.2
     devDependencies:
+      '@octocoach/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       '@types/minimist':
         specifier: ^1.2.2
         version: 1.2.2

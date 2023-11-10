@@ -1,14 +1,14 @@
-import { SectionId } from "@octocoach/db/schemas/org/content";
+import {
+  SectionContentSimple,
+  SectionId,
+} from "@octocoach/db/schemas/org/content";
 import { Box } from "../Box/Box";
 import { Markdown } from "../Markdown/Markdown";
 import { Text } from "../Text/Text";
 
 export const aboutSectionId: SectionId = "about";
 
-export interface AboutSectionContent {
-  title: string;
-  text: string;
-}
+export type AboutSectionContent = SectionContentSimple;
 
 export interface AboutSectionProps {
   content: AboutSectionContent;

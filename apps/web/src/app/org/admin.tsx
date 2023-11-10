@@ -1,25 +1,19 @@
 "use client";
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
-import { SectionId } from "@octocoach/db/schemas/org/content";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { SectionWithLocale } from "@octocoach/db/schemas/org/content";
 import { Button, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
-
-export interface SectionContent {
-  id: SectionId;
-  locale: Locales;
-  value: unknown;
-}
+import { EditContent } from "./edit-content";
 
 export default function Admin({
   organization,
   content,
 }: {
   organization: Organization;
-  content: SectionContent[];
+  content: SectionWithLocale[];
 }) {
   const [isPending, startTransition] = useTransition();
 
@@ -32,7 +26,8 @@ export default function Admin({
     <Container element="section">
       <Text size="l">{organization.displayName}</Text>
       <Stack>
-        <Edit organization={organization} content={content} />
+        <Edit organization={organization} />
+        <EditContent content={content} slug={organization.slug} />
         <Button onPress={onDelete} disabled={isPending}>
           Delete
         </Button>

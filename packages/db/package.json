@@ -30,6 +30,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@octocoach/i18n": "workspace:^",
     "@types/minimist": "^1.2.2",
     "@types/node": "^20.3.2",
     "dotenv": "^16.0.3",

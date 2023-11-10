@@ -1,40 +1,82 @@
 "use client";
 
-import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { Box, FormField, FormInput, StringLike, Text } from "@octocoach/ui";
+import {
+  SectionId,
+  SectionWithLocale,
+} from "@octocoach/db/schemas/org/content";
+import { locales } from "@octocoach/i18n/src/i18n-util";
+import { Box, Button, Form, Stack, Text, useFormStore } from "@octocoach/ui";
+import { getContentByLocale } from "@octocoach/ui/helpers";
+import { EditSectionLocale } from "./EditSectionLocale";
+import Upload from "./Upload";
+import { useTransition } from "react";
+import { saveContent } from "src/actions/content";
 
 export const EditSection = ({
-  altText,
-  locale,
-  text,
-  title,
+  id,
+  name,
+  section,
+  slug,
 }: {
-  altText?: StringLike;
-  locale: Locales;
-  text: StringLike;
-  title: StringLike;
+  id: SectionId;
+  name: string;
+  section: SectionWithLocale[];
+  slug: string;
 }) => {
-  const locales = {
-    en: "English",
-    de: "Deutsch",
-  };
+  let imgSrc = "";
+  const defaultValues = locales.reduce((acc, locale) => {
+    const sectionLocale = getContentByLocale(section, locale);
+    const value = {
+      [`title_${locale}`]: sectionLocale.title,
+      [`text_${locale}`]: sectionLocale.text,
+    };
+
+    if ("image" in sectionLocale) {
+      if (!imgSrc) {
+        imgSrc = sectionLocale.image.src;
+        value["src"] = imgSrc;
+      }
+      value[`alt_${locale}`] = sectionLocale.image.alt;
+    }
+
+    return { ...acc, ...value };
+  }, {});
+
+  const [isPending, startTransition] = useTransition();
+
+  const store = useFormStore({ defaultValues });
+  const saveContentWithSlug = saveContent.bind("data", { slug, id });
+
   return (
-    <Box paddingX="none" grow>
-      <Text size="l">{locales[locale]}</Text>
-      {!!altText && (
-        <FormField name={altText} label="Alt Text">
-          <FormInput name={altText} />
-        </FormField>
-      )}
-      <FormField name={title} label="Title">
-        <FormInput name={title} />
-      </FormField>
-      <FormField name={text} label="Text">
-        <FormInput
-          name={text}
-          render={<textarea style={{ height: "10rem" }} />}
-        />
-      </FormField>
+    <Box paddingX="none" paddingY="none">
+      <Form
+        store={store}
+        onSubmit={async (data) => {
+          startTransition(async () => {
+            console.log(data);
+            await saveContentWithSlug(data);
+          });
+        }}
+      >
+        <Text size="l">{name}</Text>
+        {!!imgSrc && (
+          <>
+            <img src={imgSrc} />
+            <Upload
+              onUploaded={(url) => {
+                store.setValue("src", url);
+              }}
+            />
+          </>
+        )}
+        <Stack direction="horizontal">
+          <EditSectionLocale locale="en" hasImage={!!imgSrc} />
+          <EditSectionLocale locale="de" hasImage={!!imgSrc} />
+        </Stack>
+        <Button type="submit" disabled={isPending}>
+          Save Section
+        </Button>
+      </Form>
     </Box>
   );
 };

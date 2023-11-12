@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ContentLocale,
   ContentLocaleTypeOf,
@@ -9,6 +11,7 @@ import {
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { locales } from "@octocoach/i18n/src/i18n-util";
 import { Box, Form, FormField, FormInput, Stack, Text, useFormStore } from "..";
+import Upload from "../Form/Upload";
 
 const mockData: ContentLocaleTypeOf<SectionContentWithSubSections>[] = [
   {
@@ -145,13 +148,25 @@ const EditSubSection = ({
 
   const $ = store.names;
 
+  const { src, alt } = store.useState().values.en.image;
+
   return (
     <Form store={store}>
+      <Text>SubSection {index + 1}</Text>
+      <Upload
+        onUploaded={(src) => {
+          const { values } = store.getState();
+          locales.forEach((locale) => {
+            values[locale].image.src = src;
+          });
+          onSetValues(index, { ...values });
+        }}
+      />
+      {!!src && <img src={src} alt={alt} />}
       <Stack direction="horizontal">
         {locales.map((locale) => {
           return (
-            <Stack>
-              <Text>SubSection {index}</Text>
+            <Stack key={locale}>
               <FormField name={$[locale].image.alt} label="Alt Text">
                 <FormInput name={$[locale].image.alt} />
               </FormField>
@@ -206,15 +221,16 @@ export const EditSectionContentWithSubSections = ({
     <>
       <Box paddingX="none" paddingY="none">
         <EditTitle value={values.title} onSetValues={onSetTitle} />
-        <div>
+        <Stack>
           {values.subSections.map((subSection, index) => (
             <EditSubSection
+              key={index}
               index={index}
               value={subSection}
               onSetValues={onSetSubSection}
             />
           ))}
-        </div>
+        </Stack>
       </Box>
       <p>{JSON.stringify(values)}</p>
     </>

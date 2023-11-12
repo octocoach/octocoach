@@ -1,20 +1,18 @@
-import { Box } from "@carbon/icons-react";
 import {
-  SectionContentWithImage,
+  SectionContentWithSubSections,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
-import { Stack } from "../Stack/Stack";
-import { Text } from "../Text/Text";
+import { Box, Stack, Text } from "..";
 
 export const methodSectionId: SectionId = "method";
 
-export type MethodSectionContent = SectionContentWithImage[];
+export type MethodSectionContent = SectionContentWithSubSections;
 
 export interface MethodSectionProps {
   content: MethodSectionContent;
 }
 
-const Section = ({
+const SubSection = ({
   title,
   description,
   src,
@@ -58,14 +56,16 @@ export const MethodSection = ({ content }: MethodSectionProps) => {
           justify="center"
           spacing="loose"
         >
-          {content.map(({ title, image, text }) => (
-            <Section
-              title={title}
-              src={image.src}
-              description={text}
-              alt={image.alt}
-            />
-          ))}
+          {content.subSections
+            ? content.subSections.map(({ title, image, text }) => (
+                <SubSection
+                  title={title}
+                  src={image.src}
+                  description={text}
+                  alt={image.alt}
+                />
+              ))
+            : null}
         </Stack>
       </Stack>
     </Box>

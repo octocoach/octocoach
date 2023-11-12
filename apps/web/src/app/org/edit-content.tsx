@@ -1,15 +1,16 @@
-import { EditSection } from "@components/EditSection";
 import { ContentLocale } from "@octocoach/db/schemas/org/content";
 import {
   Container,
   EditSectionContentSimple,
+  EditSectionContentWithImage,
+  EditSectionContentWithSubSections,
   Stack,
   Text,
   aboutSectionId,
   coachSectionId,
   heroSectionId,
+  methodSectionId,
 } from "@octocoach/ui";
-import { filterContentById } from "@octocoach/ui/helpers";
 import { saveContent } from "src/actions/content";
 
 export const EditContent = ({
@@ -19,10 +20,6 @@ export const EditContent = ({
   content: ContentLocale[];
   slug: string;
 }) => {
-  const heroSection = filterContentById(content, heroSectionId);
-  const aboutSection = filterContentById(content, aboutSectionId);
-  const coachSection = filterContentById(content, coachSectionId);
-
   const saveContentWithSlug = saveContent.bind("data", slug);
 
   return (
@@ -30,30 +27,30 @@ export const EditContent = ({
       <Text size="xl">Website Content</Text>
 
       <Stack>
+        <EditSectionContentWithImage
+          content={content}
+          name="Hero"
+          id={heroSectionId}
+          saveContent={saveContentWithSlug}
+        />
+        <EditSectionContentWithSubSections
+          content={content}
+          name="Method"
+          id={methodSectionId}
+          saveContent={saveContentWithSlug}
+        />
         <EditSectionContentSimple
           content={content}
           name="About"
           id={aboutSectionId}
           saveContent={saveContentWithSlug}
         />
-        {/* <EditSection
-          section={heroSection}
-          name="Hero Section"
-          slug={slug}
-          id={heroSectionId}
-        />
-        <EditSection
-          section={aboutSection}
-          name="About Section"
-          slug={slug}
-          id={aboutSectionId}
-        />
-        <EditSection
-          section={coachSection}
-          name="Coach Section"
-          slug={slug}
+        <EditSectionContentWithImage
+          content={content}
+          name="Coach"
           id={coachSectionId}
-        /> */}
+          saveContent={saveContentWithSlug}
+        />
       </Stack>
     </Container>
   );

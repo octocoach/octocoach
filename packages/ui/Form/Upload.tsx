@@ -1,7 +1,7 @@
 "use client";
 
-import { FileSelect } from "@octocoach/ui";
 import { ChangeEvent } from "react";
+import { FileSelect } from "./FileSelect";
 
 export default function Upload({
   onUploaded,
@@ -9,6 +9,9 @@ export default function Upload({
   onUploaded: (url: string) => void;
 }) {
   const onSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target?.files) {
+      throw new Error("No files selected");
+    }
     const file = event.target.files[0];
     const response = await fetch(`/api/blob?filename=${file.name}`, {
       method: "POST",

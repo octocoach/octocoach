@@ -33,14 +33,41 @@ export const filterContentById = <T = SectionContent>(
   id: SectionId
 ) => content.filter((c) => c.id === id) as ContentLocaleTypeOf<T>[];
 
-export const getContentByLocale = <T = SectionContent>(
+const image = {
+  src: "",
+  alt: "",
+};
+
+const defaultContent: Record<SectionId, SectionContent> = {
+  hero: {
+    title: "",
+    text: "",
+    image,
+  },
+  about: {
+    title: "",
+    text: "",
+  },
+  coach: {
+    title: "",
+    text: "",
+    image,
+  },
+  method: {
+    title: "",
+    subSections: [],
+  },
+};
+
+export const getContent = <T = SectionContent>(
   content: ContentLocale[],
+  id: SectionId,
   locale: Locales
 ) => {
-  const found = content.find((c) => c.locale === locale);
+  const found = content.find((c) => c.locale === locale && c.id === id);
   if (!found) {
     console.warn(`Content with locale ${locale} not found`);
-    return {} as T;
+    return defaultContent[id] as T;
   }
 
   return found.value as T;

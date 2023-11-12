@@ -4,10 +4,11 @@ import {
   ContentLocale,
   ContentLocaleTypeOf,
   NewContentLocale,
-  SectionContentSimple,
+  SectionContentWithImage,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { useState, useTransition } from "react";
 import {
   Box,
   Button,
@@ -18,8 +19,8 @@ import {
   Text,
   useFormStore,
 } from "..";
-import { useTransition } from "react";
-import { filterContentById, getContent } from "../helpers";
+import Upload from "../Form/Upload";
+import { getContent } from "../helpers";
 
 const EditSectionLocale = ({
   locale,
@@ -27,18 +28,19 @@ const EditSectionLocale = ({
   onSetValues,
 }: {
   locale: Locales;
-  value: SectionContentSimple;
-  onSetValues: (locale: Locales, values: SectionContentSimple) => void;
+  value: SectionContentWithImage;
+  onSetValues: (locale: Locales, values: SectionContentWithImage) => void;
 }) => {
   const locales = {
     en: "English",
     de: "Deutsch",
   };
 
-  const store = useFormStore<SectionContentSimple>({
+  const store = useFormStore<SectionContentWithImage>({
     defaultValues: {
       text: value.text,
       title: value.title,
+      image: value.image,
     },
     setValues: (values) => onSetValues(locale, values),
   });
@@ -50,6 +52,9 @@ const EditSectionLocale = ({
       <Text size="l">{locales[locale]}</Text>
 
       <Form store={store}>
+        <FormField name={$.image.alt} label="Alt Text">
+          <FormInput name={$.image.alt} />
+        </FormField>
         <FormField name={$.title} label="Title">
           <FormInput name={$.title} />
         </FormField>
@@ -64,7 +69,7 @@ const EditSectionLocale = ({
   );
 };
 
-export const EditSectionContentSimple = ({
+export const EditSectionContentWithImage = ({
   id,
   name,
   content,
@@ -75,12 +80,12 @@ export const EditSectionContentSimple = ({
   content: ContentLocale[];
   saveContent: (data: NewContentLocale[]) => Promise<void>;
 }) => {
-  const contentEn = getContent<SectionContentSimple>(content, id, "en");
-  const contentDe = getContent<SectionContentSimple>(content, id, "de");
+  const contentEn = getContent<SectionContentWithImage>(content, id, "en");
+  const contentDe = getContent<SectionContentWithImage>(content, id, "de");
 
   const [isPending, startTransition] = useTransition();
 
-  const onSetValues = (locale: Locales, values: SectionContentSimple) => {
+  const onSetValues = (locale: Locales, values: SectionContentWithImage) => {
     store.setValues((oldValues) => ({
       ...oldValues,
       [locale]: { id, locale, value: values },
@@ -88,7 +93,7 @@ export const EditSectionContentSimple = ({
   };
 
   const store = useFormStore<{
-    [key in Locales]: ContentLocaleTypeOf<SectionContentSimple>;
+    [key in Locales]: ContentLocaleTypeOf<SectionContentWithImage>;
   }>({
     defaultValues: {
       en: {
@@ -104,7 +109,14 @@ export const EditSectionContentSimple = ({
     },
   });
 
+  const $ = store.names;
+
+  const [image, setImage] = useState(contentEn.image);
+
   const onSubmit = () => {
+    store.setValue($.en.value.image.src, image.src);
+    store.setValue($.de.value.image.src, image.src);
+
     const toSave = Object.values(store.getState().values);
     startTransition(() => {
       saveContent(toSave);
@@ -114,7 +126,19 @@ export const EditSectionContentSimple = ({
   return (
     <Box paddingX="none" paddingY="none">
       <Text size="l">{name}</Text>
-
+      <Stack spacing="tight">
+        <Upload
+          onUploaded={(src) => {
+            setImage((image) => ({ ...image, src }));
+          }}
+        />
+        <img
+          src={image.src}
+          alt={image.alt}
+          width={400}
+          style={{ imageRendering: "pixelated" }}
+        />
+      </Stack>
       <Stack direction="horizontal">
         <EditSectionLocale
           locale="en"

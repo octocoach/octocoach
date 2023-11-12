@@ -10,12 +10,15 @@ import {
   CoachSectionContent,
   HeroSection,
   HeroSectionContent,
+  MethodSection,
+  MethodSectionContent,
   PixelBackground,
   Stack,
   Text,
   aboutSectionId,
   coachSectionId,
   heroSectionId,
+  methodSectionId,
 } from "@octocoach/ui";
 import { getContentById } from "@octocoach/ui/helpers";
 import { StaticImageData } from "next/image";
@@ -74,6 +77,11 @@ export default function Page({ params }: { params: { orgSlug } }) {
     coachSectionId
   );
 
+  const methodSection = getContentById<MethodSectionContent>(
+    organization.content,
+    methodSectionId
+  );
+
   return (
     <>
       <PixelBackground>
@@ -84,36 +92,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
         />
       </PixelBackground>
       <PixelBackground pixelSize={20}>
-        <Box>
-          <Stack spacing="loose" align="center">
-            <Text size="l" weight="light">
-              Our Method
-            </Text>
-            <Stack
-              direction="horizontal"
-              align="left"
-              wrap
-              justify="center"
-              spacing="loose"
-            >
-              <Section
-                title="Discover"
-                src={discover}
-                description="Uncover your key interests, assess your current skills and identify areas for development to better align with your desired job in the tech industry."
-              />
-              <Section
-                title="Grow"
-                src={grow}
-                description="Engage in personalized coaching, hands-on projects, and continuous feedback to bridge any skills gap, ensuring you're well-prepared and confident to tackle real-world challenges."
-              />
-              <Section
-                title="Thrive"
-                src={thrive}
-                description="Secure a position that not only matches your skills and interests, but also propels you into a continuous learning and growth trajectory."
-              />
-            </Stack>
-          </Stack>
-        </Box>
+        <MethodSection content={methodSection} />
       </PixelBackground>
       <PixelBackground pixelSize={40}>
         <AboutSection content={aboutSection} />

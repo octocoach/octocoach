@@ -3,7 +3,7 @@
 import { ContentLocale, SectionId } from "@octocoach/db/schemas/org/content";
 import { locales } from "@octocoach/i18n/src/i18n-util";
 import { Box, Button, Form, Stack, Text, useFormStore } from "@octocoach/ui";
-import { getContentByLocale } from "@octocoach/ui/helpers";
+import { getContent } from "@octocoach/ui/helpers";
 import { useTransition } from "react";
 import { saveContent } from "src/actions/content";
 import { EditSectionLocale } from "./EditSectionLocale";

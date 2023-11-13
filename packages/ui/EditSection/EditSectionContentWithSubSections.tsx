@@ -9,58 +9,30 @@ import {
   SectionId,
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { locales } from "@octocoach/i18n/src/i18n-util";
-import { Box, Form, FormField, FormInput, Stack, Text, useFormStore } from "..";
+import { startTransition, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Card,
+  Form,
+  FormField,
+  FormInput,
+  Stack,
+  Text,
+  useFormStore,
+} from "..";
 import Upload from "../Form/Upload";
 
-const mockData: ContentLocaleTypeOf<SectionContentWithSubSections>[] = [
-  {
-    id: "method",
-    locale: "en",
-    value: {
-      title: "title_en",
-      subSections: [
-        {
-          title: "sub_en_1_title",
-          text: "sub_en_1_text",
-          image: { src: "", alt: "" },
-        },
-        {
-          title: "sub_en_2_title",
-          text: "sub_en_2_text",
-          image: { src: "", alt: "" },
-        },
-      ],
-    },
-  },
-  {
-    id: "method",
-    locale: "de",
-    value: {
-      title: "title_de",
-      subSections: [
-        {
-          title: "sub_de_1_title",
-          text: "sub_de_1_text",
-          image: { src: "", alt: "" },
-        },
-        {
-          title: "sub_de_2_title",
-          text: "sub_de_2_text",
-          image: { src: "", alt: "" },
-        },
-      ],
-    },
-  },
-];
+const locales: Locales[] = ["en", "de"];
 
-const mapFunction = (
-  id: SectionId,
-  input: ContentLocaleTypeOf<SectionContentWithSubSections>[]
-) => {
+const mapContent = (id: SectionId, input: ContentLocale[]) => {
   const filtered = input.filter((i) => i.id === id);
-  const en = filtered.find((i) => i.locale === "en");
-  const de = filtered.find((i) => i.locale === "de");
+  const en = filtered.find(
+    (i) => i.locale === "en"
+  ) as ContentLocaleTypeOf<SectionContentWithSubSections>;
+  const de = filtered.find(
+    (i) => i.locale === "de"
+  ) as ContentLocaleTypeOf<SectionContentWithSubSections>;
 
   const enValue: SectionContentWithSubSections = en
     ? en.value
@@ -96,7 +68,24 @@ const mapFunction = (
   };
 };
 
-type MappedDataType = ReturnType<typeof mapFunction>;
+type MappedDataType = ReturnType<typeof mapContent>;
+
+const unmapData = (data: MappedDataType, id: SectionId): NewContentLocale[] => {
+  const out: NewContentLocale[] = [];
+
+  for (const locale of locales) {
+    const newContent: NewContentLocale = {
+      id,
+      locale,
+      value: {
+        title: data.title[locale],
+        subSections: data.subSections.map((subSection) => subSection[locale]),
+      },
+    };
+    out.push(newContent);
+  }
+  return out;
+};
 
 const EditTitle = ({
   value,
@@ -111,16 +100,27 @@ const EditTitle = ({
       onSetValues(values);
     },
   });
+
+  const $ = store.names;
+
   return (
     <Form store={store}>
-      <Stack direction="horizontal">
-        {locales.map((locale) => {
-          return (
-            <FormField name={locale} label={locale} key={locale}>
-              <FormInput name={locale} />
+      <Stack>
+        <Text size="m" variation="casual" weight="extraBold">
+          Section Title
+        </Text>
+        <Stack direction="horizontal">
+          <Box paddingX="none" paddingY="none" grow>
+            <FormField name={$.en} label="English" key={$.en.toString()}>
+              <FormInput name={$.en} />
             </FormField>
-          );
-        })}
+          </Box>
+          <Box paddingX="none" paddingY="none" grow>
+            <FormField name={$.de} label="Deutsch" key={$.de.toString()}>
+              <FormInput name={$.de} />
+            </FormField>
+          </Box>
+        </Stack>
       </Stack>
     </Form>
   );
@@ -165,18 +165,38 @@ const EditSubSection = ({
       {!!src && <img src={src} alt={alt} />}
       <Stack direction="horizontal">
         {locales.map((locale) => {
+          const ref = useRef<HTMLTextAreaElement>(null);
+
+          const [height, setHeight] = useState<number | "10rem">("10rem");
+
+          const onInput = () => {
+            setHeight("10rem");
+            setHeight(ref.current ? ref.current.scrollHeight : "10rem");
+          };
+
           return (
-            <Stack key={locale}>
-              <FormField name={$[locale].image.alt} label="Alt Text">
-                <FormInput name={$[locale].image.alt} />
-              </FormField>
-              <FormField name={$[locale].title} label="Title">
-                <FormInput name={$[locale].title} />
-              </FormField>
-              <FormField name={$[locale].text} label="Text">
-                <FormInput name={$[locale].text} />
-              </FormField>
-            </Stack>
+            <Box paddingX="none" paddingY="none" grow>
+              <Stack key={locale}>
+                <FormField name={$[locale].image.alt} label="Alt Text">
+                  <FormInput name={$[locale].image.alt} />
+                </FormField>
+                <FormField name={$[locale].title} label="Title">
+                  <FormInput name={$[locale].title} />
+                </FormField>
+                <FormField name={$[locale].text} label="Text">
+                  <FormInput
+                    name={$[locale].text}
+                    render={
+                      <textarea
+                        ref={ref}
+                        onInput={onInput}
+                        style={{ height }}
+                      />
+                    }
+                  />
+                </FormField>
+              </Stack>
+            </Box>
           );
         })}
       </Stack>
@@ -195,7 +215,7 @@ export const EditSectionContentWithSubSections = ({
   content: ContentLocale[];
   saveContent: (data: NewContentLocale[]) => Promise<void>;
 }) => {
-  const defaultValues: MappedDataType = mapFunction("method", mockData);
+  const defaultValues: MappedDataType = mapContent("method", content);
 
   const onSetTitle = (title: Record<Locales, string>) => {
     store.setValues((oldValues) => ({ ...oldValues, title }));
@@ -215,24 +235,52 @@ export const EditSectionContentWithSubSections = ({
     defaultValues,
   });
 
+  const $ = store.names;
+
   const { values } = store.useState();
 
+  const onSubmit = () => {
+    startTransition(() => {
+      const toSave = unmapData(values, id);
+      saveContent(toSave);
+    });
+  };
+
+  const onAddSubSection = () => {
+    const image = { src: "", alt: "" };
+    const blank = {
+      title: "",
+      image,
+    };
+    store.pushValue($.subSections, {
+      en: blank,
+      de: blank,
+    });
+  };
+
   return (
-    <>
-      <Box paddingX="none" paddingY="none">
-        <EditTitle value={values.title} onSetValues={onSetTitle} />
-        <Stack>
+    <Box paddingX="none" paddingY="none">
+      <Text size="l">{name}</Text>
+
+      <EditTitle value={values.title} onSetValues={onSetTitle} />
+      <Box paddingX="none">
+        <Stack spacing="loose">
           {values.subSections.map((subSection, index) => (
-            <EditSubSection
-              key={index}
-              index={index}
-              value={subSection}
-              onSetValues={onSetSubSection}
-            />
+            <Card>
+              <EditSubSection
+                key={index}
+                index={index}
+                value={subSection}
+                onSetValues={onSetSubSection}
+              />
+            </Card>
           ))}
         </Stack>
       </Box>
-      <p>{JSON.stringify(values)}</p>
-    </>
+      <Stack direction="horizontal">
+        <Button onPress={onAddSubSection}>Add Subsection</Button>
+        <Button onPress={onSubmit}>Save Section</Button>
+      </Stack>
+    </Box>
   );
 };

@@ -47,7 +47,7 @@ export const MethodSection = ({ content }: MethodSectionProps) => {
     <Box>
       <Stack spacing="loose" align="center">
         <Text size="l" weight="light">
-          Our Method
+          {content.title}
         </Text>
         <Stack
           direction="horizontal"
@@ -57,8 +57,9 @@ export const MethodSection = ({ content }: MethodSectionProps) => {
           spacing="loose"
         >
           {content.subSections
-            ? content.subSections.map(({ title, image, text }) => (
+            ? content.subSections.map(({ title, image, text }, i) => (
                 <SubSection
+                  key={i}
                   title={title}
                   src={image.src}
                   description={text}

@@ -1,4 +1,4 @@
-import { QA } from "@components/Faq";
+import { FAQQuestion } from "@octocoach/db/schemas/org/content";
 
 export const heroText = `At Q15, we delve into the code of your career aspirations, helping you articulate and debug the challenges between you and your ideal tech role.
 
@@ -21,7 +21,7 @@ His dual perspective as an experienced software developer and bootcamp instructo
 
 Adriaan has navigated the tech world from multiple perspectives: as a dedicated developer honing his craft and securing positions, as an interviewer in corporate settings, and as an entrepreneur, assembling his own creative teams. This has given him a 360-degree view of the dynamics of the industry. His unique combination of technical skills, pedagogical insight, and real-world experience enables him to coach developers beyond coding - navigating their careers with strategic acumen and an informed, holistic approach.`;
 
-export const faqs: QA[] = [
+export const faqs: FAQQuestion[] = [
   {
     question: `What are the prerequisites for joining? I don't have any previous knowledge of programming, can I still join?`,
     answer: `The Q15 coaching program is tailored for individuals who already have a foundational understanding of web development. Participants should be proficient in HTML, CSS, and JavaScript, capable of creating basic websites and small applications. Our program is an excellent fit for those who may have completed a 3-month bootcamp or an online curriculum like freeCodeCamp.

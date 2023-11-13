@@ -57,6 +57,10 @@ const defaultContent: Record<SectionId, SectionContent> = {
     title: "",
     subSections: [],
   },
+  faq: {
+    title: "",
+    questions: [],
+  },
 };
 
 export const getContent = <T = SectionContent>(

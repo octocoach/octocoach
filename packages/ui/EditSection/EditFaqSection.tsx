@@ -1,15 +1,11 @@
-"use client";
-
 import {
   ContentLocale,
   ContentLocaleTypeOf,
+  FAQQuestion,
   NewContentLocale,
-  SectionContentWithImage,
-  SectionContentWithSubSections,
+  SectionContentFAQ,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { startTransition, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -21,39 +17,40 @@ import {
   Text,
   useFormStore,
 } from "..";
-import Upload from "../Form/Upload";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { startTransition, useRef, useState } from "react";
 
 const locales: Locales[] = ["en", "de"];
 
+const blankQA: FAQQuestion = {
+  question: "",
+  answer: "",
+};
+
+const blankFAQSection: SectionContentFAQ = {
+  title: "FAQ",
+  questions: [],
+};
+
 const mapContent = (id: SectionId, input: ContentLocale[]) => {
-  const filtered = input.filter((i) => i.id === id);
+  const filtered = input.filter((x) => x.id === id);
   const en = filtered.find(
     (i) => i.locale === "en"
-  ) as ContentLocaleTypeOf<SectionContentWithSubSections>;
+  ) as ContentLocaleTypeOf<SectionContentFAQ>;
+
   const de = filtered.find(
     (i) => i.locale === "de"
-  ) as ContentLocaleTypeOf<SectionContentWithSubSections>;
+  ) as ContentLocaleTypeOf<SectionContentFAQ>;
 
-  const enValue: SectionContentWithSubSections = en
-    ? en.value
-    : {
-        title: "",
-        subSections: [],
-      };
+  const enValue: SectionContentFAQ = en ? en.value : blankFAQSection;
+  const deValue: SectionContentFAQ = de ? de.value : blankFAQSection;
 
-  const deValue: SectionContentWithSubSections = de
-    ? de.value
-    : {
-        title: "",
-        subSections: [],
-      };
+  const questions: Record<Locales, FAQQuestion>[] = [];
 
-  const subSections: Record<Locales, SectionContentWithImage>[] = [];
-
-  for (let i = 0; i < enValue.subSections.length; i++) {
-    subSections[i] = {
-      en: enValue.subSections[i],
-      de: deValue.subSections[i],
+  for (let i = 0; i < enValue.questions.length; i++) {
+    questions[i] = {
+      en: enValue.questions[i],
+      de: deValue.questions[i],
     };
   }
 
@@ -64,7 +61,7 @@ const mapContent = (id: SectionId, input: ContentLocale[]) => {
 
   return {
     title,
-    subSections,
+    questions,
   };
 };
 
@@ -79,11 +76,12 @@ const unmapData = (data: MappedDataType, id: SectionId): NewContentLocale[] => {
       locale,
       value: {
         title: data.title[locale],
-        subSections: data.subSections.map((subSection) => subSection[locale]),
+        questions: data.questions.map((question) => question[locale]),
       },
     };
     out.push(newContent);
   }
+
   return out;
 };
 
@@ -126,43 +124,26 @@ const EditTitle = ({
   );
 };
 
-const EditSubSection = ({
+const EditQuestion = ({
   index,
   value,
   onSetValues,
 }: {
-  value: Record<Locales, SectionContentWithImage>;
   index: number;
-  onSetValues: (
-    index: number,
-    values: Record<Locales, SectionContentWithImage>
-  ) => void;
+  value: Record<Locales, FAQQuestion>;
+  onSetValues: (index: number, values: Record<Locales, FAQQuestion>) => void;
 }) => {
   const store = useFormStore({
     defaultValues: value,
     setValues: (values) => {
-      console.log(values);
       onSetValues(index, values);
     },
   });
 
   const $ = store.names;
 
-  const { src, alt } = store.useState().values.en.image;
-
   return (
     <Form store={store}>
-      <Text>SubSection {index + 1}</Text>
-      <Upload
-        onUploaded={(src) => {
-          const { values } = store.getState();
-          locales.forEach((locale) => {
-            values[locale].image.src = src;
-          });
-          onSetValues(index, { ...values });
-        }}
-      />
-      {!!src && <img src={src} alt={alt} />}
       <Stack direction="horizontal">
         {locales.map((locale) => {
           const ref = useRef<HTMLTextAreaElement>(null);
@@ -177,15 +158,12 @@ const EditSubSection = ({
           return (
             <Box paddingX="none" paddingY="none" grow key={locale}>
               <Stack>
-                <FormField name={$[locale].image.alt} label="Alt Text">
-                  <FormInput name={$[locale].image.alt} />
+                <FormField name={$[locale].question} label="Question">
+                  <FormInput name={$[locale].question} />
                 </FormField>
-                <FormField name={$[locale].title} label="Title">
-                  <FormInput name={$[locale].title} />
-                </FormField>
-                <FormField name={$[locale].text} label="Text">
+                <FormField name={$[locale].answer} label="Answer">
                   <FormInput
-                    name={$[locale].text}
+                    name={$[locale].answer}
                     render={
                       <textarea
                         ref={ref}
@@ -204,7 +182,7 @@ const EditSubSection = ({
   );
 };
 
-export const EditSectionContentWithSubSections = ({
+export const EditFaqSection = ({
   id,
   name,
   content,
@@ -213,20 +191,20 @@ export const EditSectionContentWithSubSections = ({
   id: SectionId;
   name: string;
   content: ContentLocale[];
-  saveContent: (data: NewContentLocale[]) => Promise<void>;
+  saveContent: (data: NewContentLocale[]) => void;
 }) => {
-  const defaultValues: MappedDataType = mapContent("method", content);
+  const defaultValues: MappedDataType = mapContent("faq", content);
 
   const onSetTitle = (title: Record<Locales, string>) => {
     store.setValues((oldValues) => ({ ...oldValues, title }));
   };
 
-  const onSetSubSection = (
+  const onSetQuestion = (
     index: number,
-    values: Record<Locales, SectionContentWithImage>
+    values: Record<Locales, FAQQuestion>
   ) => {
     store.setValues((oldValues) => {
-      oldValues.subSections[index] = values;
+      oldValues.questions[index] = values;
       return { ...oldValues };
     });
   };
@@ -246,15 +224,10 @@ export const EditSectionContentWithSubSections = ({
     });
   };
 
-  const onAddSubSection = () => {
-    const image = { src: "", alt: "" };
-    const blank = {
-      title: "",
-      image,
-    };
-    store.pushValue($.subSections, {
-      en: blank,
-      de: blank,
+  const onAddQuestion = () => {
+    store.pushValue($.questions, {
+      en: blankQA,
+      de: blankQA,
     });
   };
 
@@ -263,21 +236,25 @@ export const EditSectionContentWithSubSections = ({
       <Text size="l">{name}</Text>
 
       <EditTitle value={values.title} onSetValues={onSetTitle} />
+
       <Box paddingX="none">
         <Stack spacing="loose">
-          {values.subSections.map((subSection, index) => (
-            <Card key={index}>
-              <EditSubSection
-                index={index}
-                value={subSection}
-                onSetValues={onSetSubSection}
-              />
-            </Card>
-          ))}
+          {values.questions.map((question, index) => {
+            return (
+              <Card key={index}>
+                <EditQuestion
+                  index={index}
+                  value={question}
+                  onSetValues={onSetQuestion}
+                />
+              </Card>
+            );
+          })}
         </Stack>
       </Box>
+
       <Stack direction="horizontal">
-        <Button onPress={onAddSubSection}>Add Subsection</Button>
+        <Button onPress={onAddQuestion}>Add Question</Button>
         <Button onPress={onSubmit}>Save Section</Button>
       </Stack>
     </Box>

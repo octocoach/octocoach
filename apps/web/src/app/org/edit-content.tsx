@@ -1,6 +1,7 @@
 import { ContentLocale } from "@octocoach/db/schemas/org/content";
 import {
   Container,
+  EditFaqSection,
   EditSectionContentSimple,
   EditSectionContentWithImage,
   EditSectionContentWithSubSections,
@@ -8,6 +9,7 @@ import {
   Text,
   aboutSectionId,
   coachSectionId,
+  faqSectionId,
   heroSectionId,
   methodSectionId,
 } from "@octocoach/ui";
@@ -49,6 +51,12 @@ export const EditContent = ({
           content={content}
           name="Coach"
           id={coachSectionId}
+          saveContent={saveContentWithSlug}
+        />
+        <EditFaqSection
+          content={content}
+          name="FAQ"
+          id={faqSectionId}
           saveContent={saveContentWithSlug}
         />
       </Stack>

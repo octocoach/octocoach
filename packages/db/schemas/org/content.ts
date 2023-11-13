@@ -10,11 +10,12 @@ export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
   value: T;
 };
 
-export type SectionId = "hero" | "about" | "coach" | "method";
+export type SectionId = "hero" | "about" | "coach" | "method" | "faq";
 export type SectionContent =
   | SectionContentSimple
   | SectionContentWithImage
-  | SectionContentWithSubSections;
+  | SectionContentWithSubSections
+  | SectionContentFAQ;
 
 export interface ContentImage {
   src: string;
@@ -33,6 +34,16 @@ export type SectionContentWithImage = SectionContentSimple & {
 export type SectionContentWithSubSections = {
   title: string;
   subSections: SectionContentWithImage[];
+};
+
+export type FAQQuestion = {
+  question: string;
+  answer: string;
+};
+
+export type SectionContentFAQ = {
+  title: string;
+  questions: FAQQuestion[];
 };
 
 export const localeEnum = pgEnum("locale", ["en", "de"]);

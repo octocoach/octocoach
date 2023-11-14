@@ -2,11 +2,12 @@
 
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import { ContentLocale } from "@octocoach/db/schemas/org/content";
-import { Button, Container, Stack, Text } from "@octocoach/ui";
+import { Button, Card, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
 import { EditContent } from "./edit-content";
+import { EditMission } from "./edit-mission";
 
 export default function Admin({
   organization,
@@ -28,9 +29,12 @@ export default function Admin({
       <Stack>
         <Edit organization={organization} />
         <EditContent content={content} slug={organization.slug} />
-        <Button onPress={onDelete} disabled={isPending}>
-          Delete
-        </Button>
+        <EditMission content={content} slug={organization.slug} />
+        <Card>
+          <Button onPress={onDelete} disabled={isPending} color="secondary">
+            Delete
+          </Button>
+        </Card>
       </Stack>
     </Container>
   );

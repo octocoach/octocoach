@@ -10,7 +10,14 @@ export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
   value: T;
 };
 
-export type SectionId = "hero" | "about" | "coach" | "method" | "faq";
+export type SectionId =
+  | "hero"
+  | "about"
+  | "coach"
+  | "method"
+  | "faq"
+  | "mission";
+
 export type SectionContent =
   | SectionContentSimple
   | SectionContentWithImage

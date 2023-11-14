@@ -61,6 +61,10 @@ const defaultContent: Record<SectionId, SectionContent> = {
     title: "",
     questions: [],
   },
+  mission: {
+    title: "",
+    text: "",
+  },
 };
 
 export const getContent = <T = SectionContent>(

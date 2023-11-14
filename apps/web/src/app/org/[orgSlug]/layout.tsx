@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import logo from "./_images/logo.svg";
 import { OrganizationProvider } from "./context";
+import Footer from "./footer";
 import ThemeContainer from "./theme-container";
 
 export default async function Layout({
@@ -61,6 +62,7 @@ export default async function Layout({
 
           <OrganizationProvider organization={{ ...organization, content }}>
             {children}
+            <Footer organization={organization} />
           </OrganizationProvider>
         </Container>
       </ThemeContainer>

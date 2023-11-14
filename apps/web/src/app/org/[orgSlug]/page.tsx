@@ -78,22 +78,6 @@ export default function Page({ params }: { params: { orgSlug } }) {
       <PixelBackground pixelSize={120}>
         <FAQSection content={faqSection} />
       </PixelBackground>
-      <PixelBackground pixelSize={80}>
-        <Box>
-          <Stack justify="center" spacing="loose">
-            <Stack direction="horizontal" align="center" justify="center">
-              <Link href={`/org/${organization.slug}/imprint`}>Impressum</Link>
-              <Link href={`/org/${organization.slug}/privacy`}>
-                Privacy Policy
-              </Link>
-              <Link href={`/org/${organization.slug}/terms`}>Terms of use</Link>
-            </Stack>
-            <Text size="s" weight="light" textAlign="center">
-              {organization.legalName} © {date.getFullYear()}
-            </Text>
-          </Stack>
-        </Box>
-      </PixelBackground>
     </>
   );
 }

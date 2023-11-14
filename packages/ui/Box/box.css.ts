@@ -1,6 +1,7 @@
 import { style } from "@vanilla-extract/css";
 import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
 import { sprinkles } from "../sprinkles.css";
+import { vars } from "../theme.css";
 
 const mkSizes = (key: string) =>
   ({
@@ -52,8 +53,15 @@ export const box = recipe({
         flexGrow: 1,
       },
     },
+    backgroundColor: {
+      transparent: style({ backgroundColor: "transparent" }),
+      base: style({ backgroundColor: vars.color.background.base.normal }),
+      manlte: style({ backgroundColor: vars.color.background.mantle.normal }),
+      crust: style({ backgroundColor: vars.color.background.crust.normal }),
+    },
   },
   defaultVariants: {
+    backgroundColor: "transparent",
     justifyItems: "left",
     display: "block",
     textAlign: "left",

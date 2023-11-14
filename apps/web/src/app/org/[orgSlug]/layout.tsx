@@ -26,6 +26,10 @@ export default async function Layout({
 }) {
   const organization = await db.query.organizationTable.findFirst({
     where: (organizations, { eq }) => eq(organizations.slug, params.orgSlug),
+    with: {
+      address: true,
+      owner: true,
+    },
   });
 
   if (!organization) {

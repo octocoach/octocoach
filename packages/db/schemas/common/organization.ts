@@ -27,6 +27,8 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
       onDelete: "cascade",
       onUpdate: "set null",
     }),
+    phone: text("phone"),
+    email: text("email"),
     domain: text("domain"),
     logo: text("logo"),
     primaryColor: text("primary_color").notNull().default("#8839ef"),

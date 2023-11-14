@@ -25,9 +25,14 @@ function detectLocale(request: NextRequest) {
 export default (request: NextRequest) => {
   const response = NextResponse.next();
 
-  const locale = detectLocale(request);
+  const localeCookie = request.cookies.get("locale");
 
-  response.cookies.set("locale", locale);
+  if (!localeCookie) {
+    const locale = detectLocale(request);
+
+    response.cookies.set("locale", locale);
+  }
+
   response.headers.set("x-url", request.nextUrl.pathname);
 
   if (

@@ -18,6 +18,8 @@ export const Edit = ({ organization }: { organization: Organization }) => {
   const store = useFormStore<OrganizationDetails>({
     defaultValues: {
       slug: organization.slug,
+      email: organization.email || "",
+      phone: organization.phone || "",
       primaryColor: organization.primaryColor || "",
       secondaryColor: organization.secondaryColor || "",
       registrationNumber: organization.registrationNumber || "",
@@ -43,6 +45,14 @@ export const Edit = ({ organization }: { organization: Organization }) => {
           </Stack>
           <Stack></Stack>
           <Text size="xl">Business Information</Text>
+          <Stack direction="horizontal">
+            <FormField name={$.email} label="Email" grow>
+              <FormInput name={$.email} />
+            </FormField>
+            <FormField name={$.phone} label="Phone" grow>
+              <FormInput name={$.phone} />
+            </FormField>
+          </Stack>
           <Stack direction="horizontal">
             <FormField
               name={$.registrationNumber}

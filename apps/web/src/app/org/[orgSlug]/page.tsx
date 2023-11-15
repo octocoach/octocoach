@@ -18,13 +18,9 @@ import {
   faqSectionId,
   heroSectionId,
   methodSectionId,
-  Text,
-  Box,
-  Stack,
 } from "@octocoach/ui";
 import { getContentById } from "@octocoach/ui/helpers";
 import { useOrganization } from "./context";
-import Link from "next/link";
 
 export default function Page({ params }: { params: { orgSlug } }) {
   const { data: session } = useSession();
@@ -54,8 +50,6 @@ export default function Page({ params }: { params: { orgSlug } }) {
     organization.content,
     faqSectionId
   );
-
-  const date = new Date();
 
   return (
     <>

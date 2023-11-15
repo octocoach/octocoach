@@ -12,7 +12,6 @@ import { Container, Nav } from "@octocoach/ui";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
-import logo from "./_images/logo.svg";
 import { OrganizationProvider } from "./context";
 import Footer from "./footer";
 import ThemeContainer from "./theme-container";
@@ -62,7 +61,7 @@ export default async function Layout({
     <SessionProvider session={session}>
       <ThemeContainer organization={organization}>
         <Container width="contained">
-          <Nav logoSrc={logo.src} displayName={organization.displayName} />
+          <Nav organization={organization} />
 
           <OrganizationProvider organization={{ ...organization, content }}>
             {children}

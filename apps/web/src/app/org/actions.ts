@@ -23,6 +23,7 @@ export type CreateOrganization = Pick<
 export type OrganizationDetails = Pick<
   Organization,
   | "slug"
+  | "logo"
   | "email"
   | "phone"
   | "primaryColor"

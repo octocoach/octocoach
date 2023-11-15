@@ -20,7 +20,7 @@ export const logoWrapper = style([
     alignItems: "center",
     cursor: "pointer",
   },
-  sprinkles({ gap: 2 }),
+  sprinkles({ gap: 3 }),
 ]);
 
 export const logo = style({

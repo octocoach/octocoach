@@ -13,11 +13,13 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import { onSubmit, type OrganizationDetails } from "./actions";
+import Upload from "@octocoach/ui/Form/Upload";
 
 export const Edit = ({ organization }: { organization: Organization }) => {
   const store = useFormStore<OrganizationDetails>({
     defaultValues: {
       slug: organization.slug,
+      logo: organization.logo,
       email: organization.email || "",
       phone: organization.phone || "",
       primaryColor: organization.primaryColor || "",
@@ -29,12 +31,19 @@ export const Edit = ({ organization }: { organization: Organization }) => {
 
   const $ = store.names;
 
+  const { values } = store.useState();
+
+  const onLogoUpload = (src) => store.setValue($.logo, src);
+
   return (
     <Container element="section">
       <Form store={store} onSubmit={onSubmit}>
         <HiddenInput name={`${$.slug}`} />
         <Stack>
           <Text size="xl">Marketing</Text>
+          <Text size="l">Logo</Text>
+          {values.logo ? <img src={values.logo} alt="logo" width={64} /> : null}
+          <Upload onUploaded={onLogoUpload} />
           <Stack direction="horizontal">
             <FormField name={$.primaryColor} label="Primary color" grow>
               <FormInput name={$.primaryColor} />

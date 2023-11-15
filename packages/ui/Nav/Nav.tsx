@@ -1,21 +1,24 @@
 import { Text } from "../Text/Text";
 import { logo, logoWrapper, nav } from "./nav.css";
+import type { Organization } from "@octocoach/db/schemas/common/organization";
 
-export const Nav = ({
-  logoSrc,
-  displayName,
-}: {
-  logoSrc: string;
-  displayName: string;
-}) => {
+export const Nav = ({ organization }: { organization: Organization }) => {
   return (
     <nav className={nav}>
-      <div className={logoWrapper}>
-        <img src={logoSrc} className={logo} />
-        <Text size="l" variation="heading">
-          {displayName}
-        </Text>
-      </div>
+      <a href={`/org/${organization.slug}`}>
+        <div className={logoWrapper}>
+          {organization.logo ? (
+            <img
+              src={organization.logo}
+              className={logo}
+              alt={`${organization.displayName} logo`}
+            />
+          ) : null}
+          <Text size="l" variation="heading">
+            {organization.displayName}
+          </Text>
+        </div>
+      </a>
     </nav>
   );
 };

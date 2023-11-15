@@ -16,7 +16,6 @@ export default function Footer({
           <Link href={`/org/${organization.slug}/mission`}>Mission</Link>
           <Link href={`/org/${organization.slug}/imprint`}>Impressum</Link>
           <Link href={`/org/${organization.slug}/privacy`}>Privacy Policy</Link>
-          <Link href={`/org/${organization.slug}/terms`}>Terms of use</Link>
         </Stack>
         <Text size="s" weight="light" textAlign="center">
           {organization.legalName} © {date.getFullYear()}

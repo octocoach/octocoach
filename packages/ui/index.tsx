@@ -1,7 +1,6 @@
 "use client";
 
 export { useFormStore } from "@ariakit/react";
-export { Player } from "@lottiefiles/react-lottie-player";
 export { assignInlineVars } from "@vanilla-extract/dynamic";
 export * from "./AboutSection/AboutSection";
 export * from "./Address/Address";
@@ -23,7 +22,6 @@ export * from "./Form/FormSelect";
 export * from "./Form/HiddenInput";
 export * from "./Grid/Grid";
 export * from "./HeroSection/Hero";
-export * as Icon from "./Icon/Icon";
 export * from "./Markdown/Markdown";
 export * from "./MethodSection/MethodSection";
 export * from "./Nav/Nav";

@@ -4,7 +4,8 @@ import {
   SectionId,
 } from "@octocoach/db/schemas/org/content";
 import { useRef, useState } from "react";
-import { Box, Card, Icon, Markdown, Stack, Text } from "..";
+import { Box, Card, Markdown, Stack, Text } from "..";
+import * as Icon from "../icons";
 
 export const faqSectionId: SectionId = "faq";
 
@@ -14,17 +15,19 @@ export interface FAQSectionProps {
   content: FaqSectionContent;
 }
 
-export const Faq = ({
-  qa,
-  idx,
-  onOpen,
-  isOpen,
-}: {
+type FAQProps = {
   qa: FAQQuestion;
   idx: number;
   onOpen: (i: number) => void;
   isOpen: boolean;
-}) => {
+};
+
+export const Faq: React.FC<FAQProps> = ({
+  qa,
+  idx,
+  onOpen,
+  isOpen,
+}: FAQProps) => {
   const getButton = () => {
     return (
       <Box paddingX="extraSmall" paddingY="small">
@@ -78,7 +81,9 @@ export const Faq = ({
   );
 };
 
-export const FAQSection = ({ content }: FAQSectionProps) => {
+export const FAQSection: React.FC<FAQSectionProps> = ({
+  content,
+}: FAQSectionProps) => {
   const [openQA, setOpenQA] = useState<number | null>(null);
 
   return (

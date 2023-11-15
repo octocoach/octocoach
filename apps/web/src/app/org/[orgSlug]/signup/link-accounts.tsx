@@ -2,15 +2,8 @@
 
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import { signIn } from "@octocoach/auth/react";
-import {
-  Button,
-  Card,
-  Container,
-  Icon,
-  Stack,
-  Text,
-  vars,
-} from "@octocoach/ui";
+import { Button, Card, Container, Stack, Text, vars } from "@octocoach/ui";
+import * as Icon from "@octocoach/ui/icons";
 import { ReactElement } from "react";
 
 export type AsyncReturnType<T extends (..._args: any) => Promise<any>> =

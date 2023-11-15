@@ -7,32 +7,24 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   en: (organization) => `# Legal Notice ${organization.legalName}
   ## Information in accordance with Section 5 TMG
   
-  ${organization.owner.name}
-
-  ${organization.legalName}
-
-  ${organization.address.addressLine1}
-
-  ${organization.address.addressLine2 || ""}
-
+  ${organization.owner.name}  
+  ${organization.legalName}  
+  ${organization.address.addressLine1}  
+  ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}
   
   ## Contact
   
-  Telephone: ${organization.phone || ""}
-
+  Telephone: ${organization.phone || ""}  
   Email: ${organization.email || ""}
   
    
   
   ## Editorial Responsibility
   
-  ${organization.owner.name}
-
-  ${organization.address.addressLine1}
-
-  ${organization.address.addressLine2 || ""}
-
+  ${organization.owner.name}  
+  ${organization.address.addressLine1}  
+  ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}
   
   ## EU Dispute Resolution
@@ -47,32 +39,25 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   de: (organization) => `# Impressum ${organization.legalName}
   ## Angaben gemäß § 5 TMG
   
-  ${organization.owner.name}
-
+  ${organization.owner.name}  
   ${organization.legalName}
 
-  ${organization.address.addressLine1}
-  
-  ${organization.address.addressLine2 || ""}
-
+  ${organization.address.addressLine1}  
+  ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}
   
   ## Kontakt
   
-  Telefon: ${organization.phone || ""}
-
+  Telefon: ${organization.phone || ""}  
   E-Mail: ${organization.email || ""}
   
    
   
   ## Redaktionell verantwortlich
   
-  ${organization.owner.name}
-
-  ${organization.address.addressLine1}
-
-  ${organization.address.addressLine2 || ""}
-
+  ${organization.owner.name}  
+  ${organization.address.addressLine1}  
+  ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}
 
 

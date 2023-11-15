@@ -5,14 +5,10 @@ import { Box, Markdown } from "@octocoach/ui";
 import { useOrganization } from "../context";
 import { makeImpressum } from "./content";
 
-export default function Page({ params }: { params: { orgSlug } }) {
+export default function Page() {
   const organization = useOrganization();
 
   const { locale } = useI18nContext();
 
-  return (
-    <Box>
-      <Markdown>{makeImpressum[locale](organization)}</Markdown>
-    </Box>
-  );
+  return <Markdown>{makeImpressum[locale](organization)}</Markdown>;
 }

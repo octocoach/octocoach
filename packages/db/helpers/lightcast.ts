@@ -1,7 +1,12 @@
 import { ZodTypeAny, z } from "zod";
+import { request } from "undici";
 
 const client_id = process.env.LIGHTCAST_CLIENT_ID;
 const client_secret = process.env.LIGHTCAST_SECRET;
+
+if (!client_id || !client_secret) {
+  throw new Error("No client id or secret");
+}
 
 const makeIdentifyer = <T extends ZodTypeAny>(id: T) =>
   z.object({
@@ -24,22 +29,36 @@ const lightcastSchema = z.object({
 export type LightcastSkill = z.infer<typeof lightcastSchema>;
 
 export const getAccessToken = async (): Promise<string> => {
-  const response = await fetch("https://auth.emsicloud.com/connect/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: JSON.stringify({
-      client_id,
-      client_secret,
-      grant_type: "client_credentials",
-      scope: "emsi_open",
-    }),
-  });
+  const body = new URLSearchParams({
+    client_id,
+    client_secret,
+    grant_type: "client_credentials",
+    scope: "emsi_open",
+  }).toString();
 
-  const { access_token } = (await response.json()) as { access_token: string };
+  const { statusCode, body: responseBody } = await request(
+    "https://auth.emsicloud.com/connect/token",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body,
+    }
+  );
 
-  return access_token;
+  if (statusCode !== 200) {
+    throw new Error(`Request failed with status code ${statusCode}`);
+  }
+
+  const data = (await responseBody.json()) as { access_token: string };
+
+  if (!data.access_token) {
+    console.log("data", data);
+    throw new Error("No access token");
+  }
+
+  return data.access_token;
 };
 
 export const getSkills = async ({
@@ -65,6 +84,8 @@ export const getSkills = async ({
       },
     }
   );
+
+  console.log("response", response);
 
   const { data } = (await response.json()) as { data: LightcastSkill[] };
 

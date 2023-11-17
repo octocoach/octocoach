@@ -122,10 +122,10 @@ export default function TaskCheck({
         <Stack align="center">
           <Progress max={newTasks.length} value={taskIndex + 1} />
           <Stack direction="horizontal">
-            <Button onPress={() => onAnswer("no")}>No</Button>
-            <Button onPress={() => onAnswer("yes")}>Yes</Button>
+            <Button onClick={() => onAnswer("no")}>No</Button>
+            <Button onClick={() => onAnswer("yes")}>Yes</Button>
           </Stack>
-          <Button color="secondary" onPress={() => onAnswer("dontknow")}>
+          <Button color="secondary" onClick={() => onAnswer("dontknow")}>
             I do not know
           </Button>
         </Stack>

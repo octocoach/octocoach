@@ -20,6 +20,7 @@ import {
   methodSectionId,
 } from "@octocoach/ui";
 import { getContentById } from "@octocoach/ui/helpers";
+import Link from "next/link";
 import { useOrganization } from "./context";
 
 export default function Page({ params }: { params: { orgSlug } }) {
@@ -58,6 +59,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
           content={heroSection}
           orgSlug={params.orgSlug}
           signedIn={!!session?.user}
+          startLink={<Link href={`/org/${params.orgSlug}/start`} />}
+          signupLink={<Link href={`/org/${params.orgSlug}/signup`} />}
         />
       </PixelBackground>
       <PixelBackground pixelSize={20}>

@@ -17,15 +17,26 @@ export interface HeroSectionProps {
   orgSlug: string;
   signedIn: boolean;
   content: HeroSectionContent;
+  startLink: JSX.Element;
+  signupLink: JSX.Element;
 }
 
 export const HeroSection = ({
   content,
   orgSlug,
   signedIn,
+  startLink,
+  signupLink,
 }: HeroSectionProps) => {
-  const getCTA = () =>
-    !signedIn ? <Button>Sign Up</Button> : <Button>Start Debugging</Button>;
+  const getCTA = () => {
+    const base = `/org/${orgSlug}`;
+
+    return !signedIn ? (
+      <Button render={signupLink}>Sign Up</Button>
+    ) : (
+      <Button render={startLink}>Start Debugging</Button>
+    );
+  };
 
   return (
     <Box paddingX="small">

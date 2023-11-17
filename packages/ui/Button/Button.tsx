@@ -1,29 +1,18 @@
-"use client";
-
-import { PropsWithChildren, useRef } from "react";
-import { useButton, AriaButtonProps } from "react-aria";
+import * as Ariakit from "@ariakit/react";
+import * as React from "react";
 import { ButtonVariants, button } from "./button.css";
 
-export const Button = ({
-  color,
-  children,
-  ...props
-}: PropsWithChildren<
-  JSX.IntrinsicElements["button"] & AriaButtonProps & ButtonVariants
->) => {
-  const ref = useRef(null);
+import { ButtonProps } from "@ariakit/react/button";
 
-  const { buttonProps } = useButton(props, ref);
+type Props = ButtonProps & ButtonVariants;
 
+export const Button: React.FC<Props> = React.forwardRef<
+  HTMLButtonElement,
+  Props
+>(({ children, color, ...props }, ref) => {
   return (
-    <button
-      className={button({
-        color,
-      })}
-      ref={ref}
-      {...buttonProps}
-    >
+    <Ariakit.Button className={button({ color })} ref={ref} {...props}>
       {children}
-    </button>
+    </Ariakit.Button>
   );
-};
+});

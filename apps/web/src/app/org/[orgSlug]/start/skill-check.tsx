@@ -61,7 +61,7 @@ export const SkillCheck = ({
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
           {skillLevelEnum.enumValues.map((skillLevel, key) => (
-            <Button onPress={() => onAnswer({ skillLevel })} key={key}>
+            <Button onClick={() => onAnswer({ skillLevel })} key={key}>
               <Message id={`skillLevels.${skillLevel}.title`} />
             </Button>
           ))}

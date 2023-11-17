@@ -254,8 +254,8 @@ export const EditFaqSection = ({
       </Box>
 
       <Stack direction="horizontal">
-        <Button onPress={onAddQuestion}>Add Question</Button>
-        <Button onPress={onSubmit}>Save Section</Button>
+        <Button onClick={onAddQuestion}>Add Question</Button>
+        <Button onClick={onSubmit}>Save Section</Button>
       </Stack>
     </Box>
   );

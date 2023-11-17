@@ -31,7 +31,7 @@ export default function Admin({
         <EditContent content={content} slug={organization.slug} />
         <EditMission content={content} slug={organization.slug} />
         <Card>
-          <Button onPress={onDelete} disabled={isPending} color="secondary">
+          <Button onClick={onDelete} disabled={isPending} color="secondary">
             Delete
           </Button>
         </Card>

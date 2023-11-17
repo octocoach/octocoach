@@ -151,7 +151,7 @@ export const EditSectionContentWithImage = ({
           onSetValues={onSetValues}
         />
       </Stack>
-      <Button type="submit" disabled={isPending} onPress={onSubmit}>
+      <Button type="submit" disabled={isPending} onClick={onSubmit}>
         Save Section
       </Button>
     </Box>

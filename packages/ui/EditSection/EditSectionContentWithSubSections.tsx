@@ -277,8 +277,8 @@ export const EditSectionContentWithSubSections = ({
         </Stack>
       </Box>
       <Stack direction="horizontal">
-        <Button onPress={onAddSubSection}>Add Subsection</Button>
-        <Button onPress={onSubmit}>Save Section</Button>
+        <Button onClick={onAddSubSection}>Add Subsection</Button>
+        <Button onClick={onSubmit}>Save Section</Button>
       </Stack>
     </Box>
   );

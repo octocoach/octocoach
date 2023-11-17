@@ -1,16 +1,19 @@
 "use client";
 
+import { useSession } from "@octocoach/auth/react";
+import { UserProfile } from "@octocoach/db/schemas/types";
 import {
   Button,
+  Card,
   Form,
+  FormCheckbox,
   FormField,
   FormInput,
   Stack,
+  Text,
   useFormStore,
 } from "@octocoach/ui";
 import { ProfileForm, saveProfile } from "./actions";
-import { useSession } from "@octocoach/auth/react";
-import { UserProfile } from "@octocoach/db/schemas/types";
 
 export const Profile = ({
   orgSlug,
@@ -25,6 +28,8 @@ export const Profile = ({
     defaultValues: {
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
+      termsAccepted: profile?.termsAccepted || false,
+      emailCommunicationAccepted: profile?.emailCommunicationAccepted || false,
     },
   });
 
@@ -40,18 +45,33 @@ export const Profile = ({
   const $ = store.names;
 
   return (
-    <Form store={store} onSubmit={onSubmit}>
-      <Stack>
-        <Stack direction="horizontal">
-          <FormField name={$.firstName} label="Given name" grow>
-            <FormInput name={$.firstName} />
-          </FormField>
-          <FormField name={$.lastName} label="Surname" grow>
-            <FormInput name={$.lastName} />
-          </FormField>
+    <Card>
+      <Form store={store} onSubmit={onSubmit}>
+        <Text size="l" variation="casual">
+          User Profile
+        </Text>
+        <Stack spacing="loose">
+          <Stack direction="horizontal">
+            <FormField name={$.firstName} label="Given name" grow>
+              <FormInput name={$.firstName} />
+            </FormField>
+            <FormField name={$.lastName} label="Surname" grow>
+              <FormInput name={$.lastName} />
+            </FormField>
+          </Stack>
+          <Stack spacing="tight">
+            <FormCheckbox
+              name={$.termsAccepted}
+              label="I accept the terms of use"
+            />
+            <FormCheckbox
+              name={$.emailCommunicationAccepted}
+              label="You may send me marketing related emails"
+            />
+          </Stack>
+          <Button type="submit">Save</Button>
         </Stack>
-        <Button type="submit">Save</Button>
-      </Stack>
-    </Form>
+      </Form>
+    </Card>
   );
 };

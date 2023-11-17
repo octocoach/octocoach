@@ -14,6 +14,7 @@ export * from "./EditSection/EditSectionContentSimple";
 export * from "./EditSection/EditSectionContentWithImage";
 export * from "./EditSection/EditSectionContentWithSubSections";
 export * from "./FAQSection/FAQSection";
+export * from "./Form/FormCheckbox";
 export * from "./Form/FileSelect";
 export * from "./Form/Form";
 export * from "./Form/FormField";

@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { text } from "drizzle-orm/pg-core";
+import { boolean, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkUserTable } from "./user";
 
@@ -13,6 +13,8 @@ export const mkUserProfileTable = (slug: string) => {
     lastName: text("last_name"),
     summary: text("summary"),
     summaryHash: text("summary_hash"),
+    termsAccepted: boolean("terms_accepted"),
+    emailCommunicationAccepted: boolean("email_communication_accepted"),
   });
 };
 

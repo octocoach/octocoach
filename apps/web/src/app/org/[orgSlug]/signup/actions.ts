@@ -6,7 +6,10 @@ import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { NewUserProfile } from "@octocoach/db/schemas/types";
 import { revalidatePath } from "next/cache";
 
-export type ProfileForm = Pick<NewUserProfile, "firstName" | "lastName">;
+export type ProfileForm = Pick<
+  NewUserProfile,
+  "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+>;
 
 type BoundValues = {
   userId: string;

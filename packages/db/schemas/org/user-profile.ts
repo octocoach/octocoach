@@ -9,6 +9,8 @@ export const mkUserProfileTable = (slug: string) => {
     userId: text("user_id")
       .primaryKey()
       .references(() => userTable.id),
+    firstName: text("first_name"),
+    lastName: text("last_name"),
     summary: text("summary"),
     summaryHash: text("summary_hash"),
   });

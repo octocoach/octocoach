@@ -1,6 +1,8 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import LinkAccounts from "./link-accounts";
+import { Card, Form, FormField, FormInput, Stack, Text } from "@octocoach/ui";
+import { Profile } from "./profile";
 
 export default async function Page({
   params,
@@ -15,7 +17,10 @@ export default async function Page({
     ({ dbAccount }) => !!dbAccount
   );
 
-  if (allProvidersLinked) return <p>All Providers Linked</p>;
-
-  return <LinkAccounts accounts={userAccounts} />;
+  return (
+    <Stack>
+      <LinkAccounts accounts={userAccounts} />
+      <Profile orgSlug={params.orgSlug} />
+    </Stack>
+  );
 }

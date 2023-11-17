@@ -4,6 +4,7 @@ import { orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { NewUserProfile } from "@octocoach/db/schemas/types";
+import { revalidatePath } from "next/cache";
 
 export type ProfileForm = Pick<NewUserProfile, "firstName" | "lastName">;
 
@@ -33,4 +34,6 @@ export async function saveProfile(
       set: values,
       where: eq(userProfileTable.userId, userId),
     });
+
+  revalidatePath(`/org/${orgSlug}/signup`);
 }

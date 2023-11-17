@@ -10,14 +10,21 @@ import {
 } from "@octocoach/ui";
 import { ProfileForm, saveProfile } from "./actions";
 import { useSession } from "@octocoach/auth/react";
+import { UserProfile } from "@octocoach/db/schemas/types";
 
-export const Profile = ({ orgSlug }: { orgSlug: string }) => {
+export const Profile = ({
+  orgSlug,
+  profile,
+}: {
+  orgSlug: string;
+  profile: UserProfile;
+}) => {
   const { data: session } = useSession();
 
   const store = useFormStore<ProfileForm>({
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
     },
   });
 

@@ -9,10 +9,10 @@ import {
 } from "langchain/prompts";
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedureCoach, router } from "../trpc";
 
 export const userRouter = router({
-  summary: publicProcedure
+  summary: protectedProcedureCoach
     .input(z.object({ userId: z.string(), orgSlug: z.string() }))
     .query(async ({ input }) => {
       const chat = new ChatOpenAI({ temperature: 0.7, modelName: "gpt-4" });

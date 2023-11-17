@@ -11,7 +11,7 @@ export const textareaContainer = style({
 });
 
 export const textarea = style({
-  backgroundColor: vars.color.background.mantle,
+  backgroundColor: vars.color.background.mantle.normal,
   border: `1px solid ${vars.color.surface[1]}`,
   borderRadius: 6,
   color: vars.color.typography.body,

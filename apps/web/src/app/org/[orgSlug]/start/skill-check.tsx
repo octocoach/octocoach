@@ -34,17 +34,17 @@ export const SkillCheck = ({
     if (index !== undefined) setSkill(skills[index]);
   }, [index]);
 
-  const onAnswer = async ({ skillLevel }: { skillLevel: SkillLevel }) => {
-    startTransition(async () => {
-      await submitSkillAssessment({ skillId: skill.id, skillLevel });
-      addCheckedSkillId(skill.id);
-
-      if (index + 1 === totalSkills) {
-        onComplete();
-      } else {
-        setIndex((index) => index + 1);
-      }
+  const onAnswer = ({ skillLevel }: { skillLevel: SkillLevel }) => {
+    startTransition(() => {
+      submitSkillAssessment({ skillId: skill.id, skillLevel });
     });
+    addCheckedSkillId(skill.id);
+
+    if (index + 1 === totalSkills) {
+      onComplete();
+    } else {
+      setIndex((index) => index + 1);
+    }
   };
 
   if (!skill) return null;
@@ -61,7 +61,7 @@ export const SkillCheck = ({
         <Text size="s">{skill.description}</Text>
         <Stack direction="horizontal" key={skill.id} align="center" wrap>
           {skillLevelEnum.enumValues.map((skillLevel, key) => (
-            <Button onPress={() => onAnswer({ skillLevel })} key={key}>
+            <Button onClick={() => onAnswer({ skillLevel })} key={key}>
               <Message id={`skillLevels.${skillLevel}.title`} />
             </Button>
           ))}

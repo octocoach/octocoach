@@ -23,9 +23,11 @@ export type CreateOrganization = Pick<
 export type OrganizationDetails = Pick<
   Organization,
   | "slug"
+  | "logo"
+  | "email"
+  | "phone"
   | "primaryColor"
   | "secondaryColor"
-  | "tagLine"
   | "registrationNumber"
   | "taxNumber"
 >;
@@ -73,12 +75,12 @@ export async function deleteOrgAction({ slug, id }: Organization) {
 }
 
 export async function onSubmit(organizationDetails: OrganizationDetails) {
-  const { slug, ...rest } = organizationDetails;
+  const { slug, ...organization } = organizationDetails;
 
   await db
     .update(organizationTable)
-    .set(rest)
+    .set(organization)
     .where(eq(organizationTable.slug, organizationDetails.slug));
 
-  revalidatePath("/org", "page");
+  revalidatePath("/org", "layout");
 }

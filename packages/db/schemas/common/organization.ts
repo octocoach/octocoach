@@ -27,13 +27,14 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
       onDelete: "cascade",
       onUpdate: "set null",
     }),
+    phone: text("phone"),
+    email: text("email"),
     domain: text("domain"),
     logo: text("logo"),
     primaryColor: text("primary_color").notNull().default("#8839ef"),
     secondaryColor: text("secondary_color").notNull().default("#dc8a78"),
     registrationNumber: text("registration_number"),
     taxNumber: text("tax_number"),
-    tagLine: text("tag_line"),
   });
 
 export const mkOrganizationTableRelations = (

@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { jobId: number } }) {
       <Text size="l" weight="extraBold" variation="heading">
         {job.title}
       </Text>
-      <Link href={`/admin/companies/${job.employer.id}`}>
+      <Link href={`/admin/employers/${job.employer.id}`}>
         <Text weight="light" size="s">
           {job.employer.name}
         </Text>

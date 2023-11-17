@@ -6,10 +6,16 @@ export default function run(
 ) {
   return new Promise((resolve, reject) => {
     const env = options?.env ? { ...process.env, ...options.env } : process.env;
-    exec(command, { env }, (error, stdout, stderr) => {
+    const script = exec(command, { env }, (error, stdout, stderr) => {
       if (error) reject(error);
       if (stderr) console.warn(stderr);
       resolve(stdout);
+    });
+
+    if (script.stdin) process.stdin.pipe(script.stdin);
+
+    script.stdout?.on("data", (data) => {
+      console.log(data);
     });
   });
 }

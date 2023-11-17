@@ -1,5 +1,10 @@
 import { createThemeContract, style } from "@vanilla-extract/css";
-import { Flavor, colorAlphas, createThemeVariant } from "./theme/creator";
+import {
+  Flavor,
+  colorAlphas,
+  createThemeBase,
+  createThemeVariant,
+} from "./theme/creator";
 
 export const vars = createThemeContract({
   fonts: {
@@ -10,9 +15,9 @@ export const vars = createThemeContract({
     brand: colorAlphas,
     accent: colorAlphas,
     background: {
-      base: "",
-      mantle: "",
-      crust: "",
+      base: colorAlphas,
+      mantle: colorAlphas,
+      crust: colorAlphas,
     },
     surface: {
       0: "",
@@ -48,7 +53,12 @@ export const themeClass = flavors.reduce(
   {}
 ) as Record<Flavor, string>;
 
+export const themeValue = flavors.reduce(
+  (acc, cur) => ({ ...acc, [cur]: createThemeBase(cur) }),
+  {}
+) as Record<Flavor, ReturnType<typeof createThemeBase>>;
+
 export const bg = style({
-  backgroundColor: vars.color.background.base,
+  backgroundColor: vars.color.background.base.normal,
   color: vars.color.typography.body,
 });

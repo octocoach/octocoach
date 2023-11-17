@@ -2,14 +2,11 @@ import cliProgress from "cli-progress";
 
 import { db, end } from "./connection";
 import { LightcastSkill, getAccessToken, getSkills } from "./helpers/lightcast";
-import {
-  skillTable,
-  skillTypeTable,
-  skillCategoryTable,
-  skillSubcategoryTable,
-  Skill,
-} from "./schemas/common/skill";
+import { skillTable, Skill } from "./schemas/common/skill";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { skillTypeTable } from "./schemas/common/skill-type";
+import { skillCategoryTable } from "./schemas/common/skill-category";
+import { skillSubcategoryTable } from "./schemas/common/skill-subcategory";
 
 type SkillType = (typeof lightcastSkills)[0]["type"];
 type SkillCategory = (typeof lightcastSkills)[0]["category"];

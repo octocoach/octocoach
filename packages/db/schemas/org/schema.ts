@@ -1,4 +1,3 @@
-import { pgSchema } from "drizzle-orm/pg-core";
 import { employerTable } from "../common/employer";
 import { jobTable } from "../common/job";
 import {
@@ -24,11 +23,13 @@ import {
 } from "../common/skills-missing-tasks";
 import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
 import { mkOrgAccountTable } from "./account";
+import { mkCoachTable, mkCoachTableRelations } from "./coach";
+import { localeEnum, mkContentLocaleTable, mkContentTable } from "./content";
 import { mkOrgSessionTable } from "./session";
 import { mkSkillRelations, skillTable } from "./skill";
 import { mkTaskRelations, taskTable } from "./task";
 import { mkUserTable, mkUserTableRelations } from "./user";
-import { mkUserProfileTable, mkUserProfileRelations } from "./user-profile";
+import { mkUserProfileRelations, mkUserProfileTable } from "./user-profile";
 import {
   mkUsersSkillLevelsRelations,
   mkUsersSkillLevelsTable,
@@ -38,7 +39,6 @@ import {
   mkUsersTaskInterestTable,
 } from "./users-task-interest";
 import { mkOrgVerificationTokenTable } from "./verification-token";
-import { mkCoachTable, mkCoachTableRelations } from "./coach";
 
 export const mkOrgSchema = (slug: string) => ({
   // auth
@@ -90,4 +90,8 @@ export const mkOrgSchema = (slug: string) => ({
 
   coachTable: mkCoachTable(slug),
   coachTableRelations: mkCoachTableRelations(slug),
+
+  contentTable: mkContentTable(slug),
+  localeEnum,
+  contentLocaleTable: mkContentLocaleTable(slug),
 });

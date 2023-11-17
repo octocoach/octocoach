@@ -7,7 +7,6 @@
     "@clerk/nextjs": "^4.23.2",
     "@octocoach/auth": "workspace:^",
     "@octocoach/db": "workspace:^",
-    "@octocoach/embeddings": "workspace:^",
     "@tanstack/react-query": "^4.33.0",
     "@trpc/react-query": "^10.38.0",
     "@trpc/server": "^10.38.0",

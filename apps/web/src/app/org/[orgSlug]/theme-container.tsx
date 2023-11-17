@@ -15,7 +15,7 @@ export default function ThemeContainer({
   children: ReactNode;
   organization: Organization;
 }) {
-  const base = createThemeBase("frappe");
+  const base = createThemeBase("mocha");
 
   return (
     <div

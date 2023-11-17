@@ -13,30 +13,37 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import { onSubmit, type OrganizationDetails } from "./actions";
+import Upload from "@octocoach/ui/Form/Upload";
 
 export const Edit = ({ organization }: { organization: Organization }) => {
   const store = useFormStore<OrganizationDetails>({
     defaultValues: {
       slug: organization.slug,
+      logo: organization.logo,
+      email: organization.email || "",
+      phone: organization.phone || "",
       primaryColor: organization.primaryColor || "",
       secondaryColor: organization.secondaryColor || "",
       registrationNumber: organization.registrationNumber || "",
       taxNumber: organization.taxNumber || "",
-      tagLine: organization.tagLine || "",
     },
   });
 
   const $ = store.names;
+
+  const { values } = store.useState();
+
+  const onLogoUpload = (src) => store.setValue($.logo, src);
 
   return (
     <Container element="section">
       <Form store={store} onSubmit={onSubmit}>
         <HiddenInput name={`${$.slug}`} />
         <Stack>
-          <Text size="l">Marketing</Text>
-          <FormField name={$.tagLine} label="Tagline">
-            <FormInput name={$.tagLine} />
-          </FormField>
+          <Text size="xl">Marketing</Text>
+          <Text size="l">Logo</Text>
+          {values.logo ? <img src={values.logo} alt="logo" width={64} /> : null}
+          <Upload onUploaded={onLogoUpload} />
           <Stack direction="horizontal">
             <FormField name={$.primaryColor} label="Primary color" grow>
               <FormInput name={$.primaryColor} />
@@ -45,7 +52,16 @@ export const Edit = ({ organization }: { organization: Organization }) => {
               <FormInput name={$.secondaryColor} />
             </FormField>
           </Stack>
-          <Text size="l">Business Information</Text>
+          <Stack></Stack>
+          <Text size="xl">Business Information</Text>
+          <Stack direction="horizontal">
+            <FormField name={$.email} label="Email" grow>
+              <FormInput name={$.email} />
+            </FormField>
+            <FormField name={$.phone} label="Phone" grow>
+              <FormInput name={$.phone} />
+            </FormField>
+          </Stack>
           <Stack direction="horizontal">
             <FormField
               name={$.registrationNumber}

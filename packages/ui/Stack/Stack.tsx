@@ -2,15 +2,11 @@ import { PropsWithChildren } from "react";
 import { StackVariants, stack } from "./stack.css";
 
 export const Stack = ({
-  align,
-  justify,
   children,
-  spacing,
-  direction = "vertical",
-  wrap = false,
   id,
+  ...props
 }: PropsWithChildren<StackVariants & { id?: string }>) => (
-  <div id={id} className={stack({ align, justify, spacing, direction, wrap })}>
+  <div id={id} className={stack(props)}>
     {children}
   </div>
 );

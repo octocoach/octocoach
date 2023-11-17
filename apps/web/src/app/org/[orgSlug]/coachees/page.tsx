@@ -13,7 +13,10 @@ export default async function Page({
   return (
     <Stack>
       {members.map((member) => (
-        <Link href={`/org/${params.orgSlug}/coachees/${member.id}`}>
+        <Link
+          href={`/org/${params.orgSlug}/coachees/${member.id}`}
+          key={member.id}
+        >
           <Text>{member.name}</Text>
         </Link>
       ))}

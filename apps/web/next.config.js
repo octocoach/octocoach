@@ -1,4 +1,7 @@
 const { createVanillaExtractPlugin } = require("@vanilla-extract/next-plugin");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
@@ -6,7 +9,6 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   experimental: {
     serverActions: true,
-    serverComponentsExternalPackages: ["hnswlib-node"],
     typedRoutes: true,
   },
   images: {
@@ -22,14 +24,17 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
     "@octocoach/charts",
-    "@octocoach/embeddings",
     "@octocoach/i18n",
     "@octocoach/ui",
+    "@octocoach/db",
   ],
-  webpack: (config) => ({
-    ...config,
-    experiments: { ...config.experiments, topLevelAwait: true },
-  }),
+  webpack: (config) => {
+    config = {
+      ...config,
+      experiments: { ...config.experiments, topLevelAwait: true },
+    };
+    return config;
+  },
 };
 
-module.exports = withVanillaExtract(nextConfig);
+module.exports = withBundleAnalyzer(withVanillaExtract(nextConfig));

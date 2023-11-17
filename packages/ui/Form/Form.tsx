@@ -1,27 +1,39 @@
 "use client";
 
 import * as Ariakit from "@ariakit/react";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useTransition } from "react";
 
-export const Form = ({
+type FormProps = PropsWithChildren<{
+  store?: Ariakit.FormStore;
+  formStoreProps?: Ariakit.FormStoreProps;
+  onSubmit?: (data: any) => Promise<void>;
+}>;
+
+export const Form: React.FC<FormProps> = ({
   children,
   store,
   formStoreProps,
   onSubmit,
-}: PropsWithChildren<{
-  store?: Ariakit.FormStore;
-  formStoreProps?: Ariakit.FormStoreProps;
-  onSubmit: (data: any) => Promise<void>;
-}>) => {
+}) => {
+  const [isPending, startTransition] = useTransition();
+
   if (!store) {
     if (!formStoreProps)
       throw new Error("You must either provide a store or formStoreProps");
     store = Ariakit.useFormStore(formStoreProps);
   }
 
-  store.useSubmit(async (state) => {
-    onSubmit(state.values);
-  });
+  if (onSubmit) {
+    store.useSubmit(async (state) => {
+      startTransition(() => {
+        onSubmit(state.values);
+      });
+    });
+  }
 
-  return <Ariakit.Form store={store}>{children}</Ariakit.Form>;
+  return (
+    <Ariakit.Form store={store} resetOnSubmit={false}>
+      {children}
+    </Ariakit.Form>
+  );
 };

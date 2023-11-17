@@ -7,7 +7,7 @@ export const comboboxPopover = style([
     display: "flex",
     maxHeight: "min(var(--popover-available-height, 300px), 300px)",
     flexDirection: "column",
-    backgroundColor: vars.color.background.base,
+    backgroundColor: vars.color.background.base.normal,
     borderRadius: 6,
     boxShadow: `
           -10px 0px 20px ${vars.color.brand[20]},

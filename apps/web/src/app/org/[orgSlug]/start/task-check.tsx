@@ -14,7 +14,7 @@ import { Task } from "@octocoach/db/schemas/common/task";
 type TaskWithUsersInterestAndSkill = Task & {
   usersTaskInterest: UsersTaskInterest[];
   skillsTasks: (SkillsTasks & {
-    skill: Skill & { usersSkillsLevels: UsersSkillLevels[] };
+    skill: Skill & { usersSkillLevels: UsersSkillLevels[] };
   })[];
 };
 
@@ -33,7 +33,7 @@ export default function TaskCheck({
     tasks
       .flatMap((task) => task.skillsTasks)
       .map(({ skill }) => skill)
-      .flatMap((skill) => skill.usersSkillsLevels)
+      .flatMap((skill) => skill.usersSkillLevels)
       .filter((level) => level)
       .map((level) => level.skillId)
   );
@@ -72,15 +72,17 @@ export default function TaskCheck({
 
   const [showSkillCheck, setShowSkillCheck] = useState(false);
 
-  const onAnswer = (answer: Answer) =>
-    startTransition(async () => {
-      await submitAnswer({ answer, taskId: newTasks[taskIndex].id });
-      if (answer === "no") {
-        goToNext();
-      } else {
-        setShowSkillCheck(true);
-      }
+  const onAnswer = (answer: Answer) => {
+    startTransition(() => {
+      submitAnswer({ answer, taskId: newTasks[taskIndex].id });
     });
+
+    if (answer === "no") {
+      goToNext();
+    } else {
+      setShowSkillCheck(true);
+    }
+  };
 
   if (newTasks.length === 0)
     return (
@@ -120,10 +122,10 @@ export default function TaskCheck({
         <Stack align="center">
           <Progress max={newTasks.length} value={taskIndex + 1} />
           <Stack direction="horizontal">
-            <Button onPress={() => onAnswer("no")}>No</Button>
-            <Button onPress={() => onAnswer("yes")}>Yes</Button>
+            <Button onClick={() => onAnswer("no")}>No</Button>
+            <Button onClick={() => onAnswer("yes")}>Yes</Button>
           </Stack>
-          <Button color="secondary" onPress={() => onAnswer("dontknow")}>
+          <Button color="secondary" onClick={() => onAnswer("dontknow")}>
             I do not know
           </Button>
         </Stack>

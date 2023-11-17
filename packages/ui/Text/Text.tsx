@@ -5,15 +5,15 @@ type AllowedElements = "h1" | "h2" | "p" | "span";
 
 export const Text = ({
   children,
+  width,
   element = "p",
-  size = "m",
-  variation = "default",
-  weight = "regular",
   ...props
-}: PropsWithChildren<{ element?: AllowedElements } & TextVariants>) => {
+}: PropsWithChildren<
+  { element?: AllowedElements; width?: number } & TextVariants
+>) => {
   const Component = element;
   return (
-    <Component className={text({ size, variation, weight })} {...props}>
+    <Component className={text(props)} style={{ width }}>
       {children}
     </Component>
   );

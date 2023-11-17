@@ -1,3 +1,4 @@
+import { orgDb } from "@octocoach/db/connection";
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 
 export default NextAuth;
@@ -17,6 +18,16 @@ export const oauthProviders: Record<AvailableOAuthProviders, OAuthProvider> = {
   discord: { displayName: "Discord", required: true },
 };
 
+export const isCoach = async (userId: string, orgSlug: string) => {
+  const db = orgDb(orgSlug);
+
+  const coach = await db.query.coachTable.findFirst({
+    where: (table, { eq }) => eq(table.userId, userId),
+  });
+
+  return !!coach;
+};
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: User;
@@ -24,5 +35,6 @@ declare module "next-auth" {
 
   interface User extends DefaultUser {
     id: string;
+    isCoach?: boolean;
   }
 }

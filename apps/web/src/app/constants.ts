@@ -1,3 +1,5 @@
+export const superAdminUser = "avanderbergh@gmail.com";
+
 interface Level {
   title: string;
   description: string;

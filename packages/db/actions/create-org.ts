@@ -106,12 +106,11 @@ export default async function createOrg(slug: string) {
 
   await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 
-  const bin = "./drizzle-kit/index.cjs";
+  const bin = "./node_modules/drizzle-kit/index.cjs";
 
   console.log("Drizzle-kit");
 
-  console.log(await run("pwd"));
-  console.log(await run("ls -la"));
+  console.log(await run("ls -la node_modules"));
 
   const command = `node ${bin} push:pg --config=${configDir}/org.drizzle.config.ts`;
 

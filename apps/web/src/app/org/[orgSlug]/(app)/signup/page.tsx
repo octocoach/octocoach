@@ -1,7 +1,7 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import { orgDb } from "@octocoach/db/connection";
-import { Button, Stack } from "@octocoach/ui";
+import { Box, Button, Grid, Stack, Text } from "@octocoach/ui";
 import LinkAccounts from "./link-accounts";
 import { Profile } from "./profile";
 
@@ -20,6 +20,10 @@ export default async function Page({
     where: (table, { eq }) => eq(table.userId, userId),
   });
 
+  const organization = await db.query.organizationTable.findFirst({
+    where: (table, { eq }) => eq(table.slug, params.orgSlug),
+  });
+
   const allProvidersLinked = Object.values(userAccounts).every(
     ({ dbAccount }) => !!dbAccount
   );
@@ -28,10 +32,16 @@ export default async function Page({
     profile?.firstName?.length > 0 && profile?.lastName?.length > 0;
 
   return (
-    <Stack>
-      <LinkAccounts accounts={userAccounts} />
-      <Profile orgSlug={params.orgSlug} profile={profile} />
-      {profileComplete && <Button>Continue</Button>}
-    </Stack>
+    <Box paddingX="none" paddingY="none" marginY="large">
+      <Grid gap="extraLarge">
+        <Box paddingX="none">
+          <Text size="xl" weight="extraBold">
+            Welcome to {organization.displayName}
+          </Text>
+          <Text weight="light">Glad you are here!</Text>
+        </Box>
+        <Profile orgSlug={params.orgSlug} profile={profile} />
+      </Grid>
+    </Box>
   );
 }

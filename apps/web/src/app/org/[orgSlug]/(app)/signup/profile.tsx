@@ -44,18 +44,27 @@ export const Profile = ({
 
   const $ = store.names;
 
+  const signUpDisbled = () => {
+    const { values } = store.useState();
+
+    const firstName = values.firstName && values.firstName.trim().length > 0;
+    const lastName = values.lastName && values.lastName.trim().length > 0;
+
+    return !firstName || !lastName || !values.termsAccepted;
+  };
+
   return (
     <Card>
       <Form store={store} onSubmit={onSubmit}>
-        <Text size="l" variation="casual">
-          User Profile
-        </Text>
         <Stack spacing="loose">
-          <Stack direction="horizontal">
-            <FormField name={$.firstName} label="Given name" grow>
+          <Text variation="casual" weight="light">
+            We need some information to get your account set up...
+          </Text>
+          <Stack spacing="tight">
+            <FormField name={$.firstName} label="First name" grow>
               <FormInput name={$.firstName} />
             </FormField>
-            <FormField name={$.lastName} label="Surname" grow>
+            <FormField name={$.lastName} label="Last name" grow>
               <FormInput name={$.lastName} />
             </FormField>
           </Stack>
@@ -69,7 +78,11 @@ export const Profile = ({
               label="You may send me marketing related emails"
             />
           </Stack>
-          <Button type="submit">Save</Button>
+          <Stack direction="horizontal" justify="right">
+            <Button type="submit" disabled={signUpDisbled()}>
+              Sign Up
+            </Button>
+          </Stack>
         </Stack>
       </Form>
     </Card>

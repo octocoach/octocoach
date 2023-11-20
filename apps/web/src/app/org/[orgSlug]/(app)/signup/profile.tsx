@@ -50,8 +50,15 @@ export const Profile = ({
     const firstName = values.firstName && values.firstName.trim().length > 0;
     const lastName = values.lastName && values.lastName.trim().length > 0;
 
-    return !firstName || !lastName || !values.termsAccepted;
+    return (
+      !firstName ||
+      !lastName ||
+      !values.termsAccepted ||
+      store.getState().submitting
+    );
   };
+
+  const buttonText = store.getState().submitting ? "Signing Up" : "Sign Up";
 
   return (
     <Card>
@@ -80,7 +87,7 @@ export const Profile = ({
           </Stack>
           <Stack direction="horizontal" justify="right">
             <Button type="submit" disabled={signUpDisbled()}>
-              Sign Up
+              {buttonText}
             </Button>
           </Stack>
         </Stack>

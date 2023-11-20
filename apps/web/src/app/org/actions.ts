@@ -1,5 +1,7 @@
 "use server";
 
+export const maxDuration = 120;
+
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import createOrg from "@octocoach/db/actions/create-org";

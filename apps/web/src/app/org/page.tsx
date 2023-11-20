@@ -8,7 +8,6 @@ import {
   mkContentTable,
 } from "@octocoach/db/schemas/org/content";
 import { Box, Text } from "@octocoach/ui";
-import "drizzle-kit";
 import Admin from "./admin";
 import { NewOrganization } from "./new-organization";
 

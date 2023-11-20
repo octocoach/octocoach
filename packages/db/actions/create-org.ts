@@ -106,7 +106,9 @@ export default async function createOrg(slug: string) {
 
   await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 
-  const command = `npx drizzle-kit@${drizzleKitVersion} push:pg --config=${configDir}/org.drizzle.config.ts`;
+  const bin = join(process.cwd(), "node_modules", ".bin", "drizzle-kit");
+
+  const command = `node ${bin} push:pg --config=${configDir}/org.drizzle.config.ts`;
 
   console.log(await run(command, { env: { SLUG: slug } }));
 

@@ -9,6 +9,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   experimental: {
     serverActions: true,
+    serverComponentsExternalPackages: ["drizzle-kit"],
     typedRoutes: true,
   },
   images: {

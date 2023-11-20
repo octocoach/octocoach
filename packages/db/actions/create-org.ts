@@ -10,7 +10,7 @@ const drizzleKitVersion = "0.19.13";
 export default async function createOrg(slug: string) {
   "use server";
 
-  const tmpDir = join(".tmp", nanoid(6));
+  const tmpDir = join("/tmp", nanoid(6));
   const configDir = join(tmpDir, "config");
   const schemasDir = join(tmpDir, "schemas");
 

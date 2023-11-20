@@ -7,6 +7,7 @@ export * from "./Address/Address";
 export * from "./Box/Box";
 export * from "./Button/Button";
 export * from "./Card/Card";
+export * from "./Center/Center";
 export * from "./CoachSection/CoachSection";
 export * from "./Container/Container";
 export * from "./EditSection/EditFaqSection";

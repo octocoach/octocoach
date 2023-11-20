@@ -1,7 +1,7 @@
 const username = process.env.POSTGRES_USER;
-const password = process.env.POSTGRES_PW;
-const host = "localhost";
+const password = process.env.POSTGRES_PASSWORD;
+const host = process.env.POSTGRES_HOST;
+const database = process.env.POSTGRES_DATABASE;
 const port = 5432;
-const database = process.env.POSTGRES_DB;
 
-export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}`;
+export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}?ssl=true`;

@@ -101,7 +101,7 @@ export default async function createOrg(slug: string) {
     .replace("{schemasDir}", schemasDir)
     .replace("{connectionString}", connectionString);
 
-  await mkdir(configDir);
+  await mkdir(configDir, { recursive: true });
 
   await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 

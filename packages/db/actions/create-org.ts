@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { mkdir, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Octokit } from "octokit";
 import { connectionString } from "../config/connection";
@@ -10,7 +11,7 @@ const drizzleKitVersion = "0.19.13";
 export default async function createOrg(slug: string) {
   "use server";
 
-  const tmpDir = join("/tmp", nanoid(6));
+  const tmpDir = join(tmpdir(), nanoid(6));
   const configDir = join(tmpDir, "config");
   const schemasDir = join(tmpDir, "schemas");
 

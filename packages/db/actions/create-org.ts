@@ -108,6 +108,11 @@ export default async function createOrg(slug: string) {
 
   const bin = "./drizzle-kit/index.cjs";
 
+  console.log("Drizzle-kit");
+
+  console.log(await run("pwd"));
+  console.log(await run("ls -la"));
+
   const command = `node ${bin} push:pg --config=${configDir}/org.drizzle.config.ts`;
 
   console.log(await run(command, { env: { SLUG: slug } }));

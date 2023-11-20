@@ -4,4 +4,4 @@ const host = process.env.POSTGRES_HOST;
 const database = process.env.POSTGRES_DATABASE;
 const port = 5432;
 
-export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}`;
+export const connectionString = `postgres://${username}:${password}@${host}:${port}/${database}?ssl=true`;

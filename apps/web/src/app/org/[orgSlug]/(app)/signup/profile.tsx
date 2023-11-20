@@ -13,6 +13,7 @@ import {
   Text,
   useFormStore,
 } from "@octocoach/ui";
+import Link from "next/link";
 import { ProfileForm, saveProfile } from "./actions";
 
 export const Profile = ({
@@ -78,7 +79,7 @@ export const Profile = ({
           <Stack spacing="tight">
             <FormCheckbox
               name={$.termsAccepted}
-              label="I accept the terms of use"
+              label="I accept the privacy policy and terms of use"
             />
             <FormCheckbox
               name={$.emailCommunicationAccepted}
@@ -89,6 +90,14 @@ export const Profile = ({
             <Button type="submit" disabled={signUpDisbled()}>
               {buttonText}
             </Button>
+          </Stack>
+          <Stack direction="horizontal" justify="center">
+            <Link href={`/org/${orgSlug}/privacy`} target="_blank">
+              <Text size="s">Privacy Policy</Text>
+            </Link>
+            <Link href={`/org/${orgSlug}/terms`} target="_blank">
+              <Text size="s">Terms of Use</Text>
+            </Link>
           </Stack>
         </Stack>
       </Form>

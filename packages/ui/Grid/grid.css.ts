@@ -12,15 +12,10 @@ export const grid = recipe({
       none: {
         gap: 0,
       },
-      small: {
-        gap: sprinkles({ gap: 1 }),
-      },
-      medium: {
-        gap: sprinkles({ gap: 2 }),
-      },
-      large: {
-        gap: sprinkles({ gap: 3 }),
-      },
+      small: sprinkles({ gap: 1 }),
+      medium: sprinkles({ gap: 2 }),
+      large: sprinkles({ gap: 3 }),
+      extraLarge: sprinkles({ gap: 4 }),
     },
     placeItems: {
       center: {

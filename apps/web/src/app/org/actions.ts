@@ -64,6 +64,7 @@ export async function createOrganization({
   });
 
   try {
+    console.log("Importing drizzle-kit");
     await import("drizzle-kit/index.cjs");
   } catch (error) {
     console.log("Imported drizzle-kit", error);

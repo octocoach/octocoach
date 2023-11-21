@@ -65,6 +65,7 @@ export async function createOrganization({
 
   const _ = () => {
     import("drizzle-kit/index.cjs");
+    import("drizzle-orm");
   };
 
   await createOrg(slug);

@@ -9,7 +9,11 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   experimental: {
     serverActions: true,
-    serverComponentsExternalPackages: ["drizzle-kit", "drizzle-orm"],
+    serverComponentsExternalPackages: [
+      "drizzle-kit",
+      "drizzle-orm",
+      "drizzle-orm/pg-core",
+    ],
     typedRoutes: true,
   },
   images: {

@@ -65,13 +65,37 @@ export async function createOrganization({
 
   console.log("importing drizzle-kit");
 
-  import("drizzle-kit/loader.mjs")
-    .then((_) => {
-      console.log("imported drizzle-kit then");
-    })
-    .catch((_) => {
-      console.log("Drizzle-kit error caught");
-    });
+  const suppressOutput = async (fn) => {
+    const originalStdoutWrite = process.stdout.write.bind(process.stdout);
+    const originalStderrWrite = process.stderr.write.bind(process.stderr);
+
+    // Function matching the signature of `process.stdout.write` but doing nothing
+    const doNothing = (buffer, cb) => {
+      if (cb) {
+        cb();
+      }
+      return true;
+    };
+
+    // Temporarily suppress output
+    process.stdout.write = doNothing;
+    process.stderr.write = doNothing;
+
+    try {
+      await fn();
+    } catch (error) {
+      console.error("Error during suppressed function execution", error);
+    } finally {
+      // Restore original stdout and stderr
+      process.stdout.write = originalStdoutWrite;
+      process.stderr.write = originalStderrWrite;
+    }
+  };
+
+  // Usage
+  suppressOutput(async () => {
+    await import("drizzle-kit/index.cjs");
+  });
 
   console.log("importing drizzle-kit done");
 

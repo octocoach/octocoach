@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Octokit } from "octokit";
@@ -106,11 +106,11 @@ export default async function createOrg(slug: string) {
 
   await writeFile(join(configDir, "org.drizzle.config.ts"), drizzleConfig);
 
-  const bin = "./node_modules/drizzle-kit/index.cjs";
+  const drizzleKitPath = await realpath("./node_modules/drizzle-kit");
+  const bin = join(drizzleKitPath, "index.cjs");
 
-  console.log("Drizzle-kit");
-
-  console.log(await run("ls -la ./node_modules/drizzle-kit"));
+  console.log(`Drizzle-kit: ${bin}`);
+  console.log(await run(`ls -la ${drizzleKitPath}`));
 
   const command = `node ${bin} push:pg --config=${configDir}/org.drizzle.config.ts`;
 

@@ -63,41 +63,9 @@ export async function createOrganization({
     owner: user.id,
   });
 
-  console.log("importing drizzle-kit");
-
-  const suppressOutput = async (fn) => {
-    const originalStdoutWrite = process.stdout.write.bind(process.stdout);
-    const originalStderrWrite = process.stderr.write.bind(process.stderr);
-
-    // Function matching the signature of `process.stdout.write` but doing nothing
-    const doNothing = (buffer, cb) => {
-      if (cb) {
-        cb();
-      }
-      return true;
-    };
-
-    // Temporarily suppress output
-    process.stdout.write = doNothing;
-    process.stderr.write = doNothing;
-
-    try {
-      await fn();
-    } catch (error) {
-      console.error("Error during suppressed function execution", error);
-    } finally {
-      // Restore original stdout and stderr
-      process.stdout.write = originalStdoutWrite;
-      process.stderr.write = originalStderrWrite;
-    }
+  const _ = () => {
+    import("drizzle-kit/index.cjs");
   };
-
-  // Usage
-  suppressOutput(async () => {
-    await import("drizzle-kit/index.cjs");
-  });
-
-  console.log("importing drizzle-kit done");
 
   await createOrg(slug);
   revalidatePath("/org", "page");

@@ -10,9 +10,6 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     serverComponentsExternalPackages: ["drizzle-kit"],
-    outputFileTracingIncludes: {
-      "app/org": ["./node_modules/drizzle-kit/**/*"],
-    },
     typedRoutes: true,
   },
   images: {

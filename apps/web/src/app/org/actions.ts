@@ -1,5 +1,6 @@
 "use server";
 
+const _ = require("drizzle-kit/index.cjs");
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import createOrg from "@octocoach/db/actions/create-org";

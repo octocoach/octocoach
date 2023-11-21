@@ -65,7 +65,7 @@ export async function createOrganization({
 
   console.log("importing drizzle-kit");
 
-  import("drizzle-kit/index.cjs")
+  import("drizzle-kit/loader.mjs")
     .then((_) => {
       console.log("imported drizzle-kit then");
     })

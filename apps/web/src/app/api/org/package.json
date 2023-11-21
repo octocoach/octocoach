@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "vercel-build": "echo 'running vercel build step' && ls -la"
+  }
+}

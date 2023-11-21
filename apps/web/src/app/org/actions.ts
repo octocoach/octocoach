@@ -1,6 +1,5 @@
 "use server";
 
-const _ = require("drizzle-kit/index.cjs");
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import createOrg from "@octocoach/db/actions/create-org";
@@ -63,6 +62,12 @@ export async function createOrganization({
     slug,
     owner: user.id,
   });
+
+  try {
+    await import("drizzle-kit/index.cjs");
+  } catch (error) {
+    console.log("Imported drizzle-kit", error);
+  }
 
   await createOrg(slug);
   revalidatePath("/org", "page");

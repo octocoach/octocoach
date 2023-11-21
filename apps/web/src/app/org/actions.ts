@@ -63,12 +63,17 @@ export async function createOrganization({
     owner: user.id,
   });
 
-  try {
-    console.log("Importing drizzle-kit");
-    await import("drizzle-kit/index.cjs");
-  } catch (error) {
-    console.log("Imported drizzle-kit", error);
-  }
+  console.log("importing drizzle-kit");
+
+  import("drizzle-kit/index.cjs")
+    .then((_) => {
+      console.log("imported drizzle-kit then");
+    })
+    .catch((_) => {
+      console.log("Drizzle-kit error caught");
+    });
+
+  console.log("importing drizzle-kit done");
 
   await createOrg(slug);
   revalidatePath("/org", "page");

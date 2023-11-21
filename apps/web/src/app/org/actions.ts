@@ -13,8 +13,6 @@ import {
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import * as pgCore from "drizzle-orm/pg-core";
-import * as drizzleOrm from "drizzle-orm";
 
 export type CreateOrganization = Pick<
   NewOragnization,
@@ -67,6 +65,7 @@ export async function createOrganization({
 
   const _ = () => {
     import("drizzle-kit/index.cjs");
+    import("drizzle-orm/pg-core");
   };
 
   await createOrg(slug);

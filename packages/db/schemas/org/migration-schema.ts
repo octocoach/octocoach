@@ -1,7 +1,7 @@
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkOrgSchema } from "./schema";
 
-const slug = process.env.SLUG as string;
+const slug = "{slug}";
 
 export const orgPgSchema = mkOrgPgSchema(slug);
 

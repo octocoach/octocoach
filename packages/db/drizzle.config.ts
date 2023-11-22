@@ -5,6 +5,7 @@ const port = process.env.POSTGRES_PORT;
 const user = process.env.POSTGRES_USER;
 const password = process.env.POSTGRES_PASSWORD;
 const database = process.env.POSTGRES_DB;
+const ssl = process.env.NODE_ENV === "production" ? true : false;
 
 if (!host || !port || !user || !password || !database) {
   throw new Error("POSTGRES vars is not set");
@@ -20,6 +21,6 @@ export default {
     port: parseInt(port),
     user,
     password,
-    ssl: true,
+    ssl,
   },
 } satisfies Config;

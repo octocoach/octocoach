@@ -2,8 +2,8 @@
 
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
-import createOrg from "@octocoach/db/actions/create-org";
 import { db } from "@octocoach/db/connection";
+import { createOrgStatements } from "@octocoach/db/helpers/create-org";
 import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
 import {
@@ -63,13 +63,12 @@ export async function createOrganization({
     owner: user.id,
   });
 
-  const _ = () => {
-    import("drizzle-kit/index.cjs");
-    import("drizzle-orm");
-    import("drizzle-orm/pg-core");
-  };
+  const statements = createOrgStatements(slug);
 
-  await createOrg(slug);
+  for (const statement of statements) {
+    await db.execute(sql.raw(statement.replaceAll("{slug}", slug)));
+  }
+
   revalidatePath("/org", "page");
 }
 

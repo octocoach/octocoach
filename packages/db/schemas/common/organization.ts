@@ -5,7 +5,10 @@ import { addressTable } from "./address";
 import { legalForm } from "./legal-form";
 import { OrgUserTable, UserTable, mkUserCols } from "./user";
 
-export const whitelistedUsers = ["avanderbergh@gmail.com"];
+export const whitelistedUsers = [
+  "avanderbergh@gmail.com",
+  "avanderbergh+gh1@gmail.com",
+];
 
 export const legalFormEnum = pgEnum(
   "organization_type",

@@ -1,11 +1,6 @@
 import type { Config } from "drizzle-kit";
 
 export default {
-  schema: "{schemasDir}/org/migration-schema.ts",
-  schemaFilter: "org_{slug}",
-  driver: "pg",
-  dbCredentials: {
-    connectionString: "{connectionString}",
-    ssl: true,
-  },
+  schema: "./schemas/org/migration-schema.ts",
+  out: "./migrations-org",
 } satisfies Config;

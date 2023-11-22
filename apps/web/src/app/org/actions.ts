@@ -3,6 +3,7 @@
 import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { db } from "@octocoach/db/connection";
+import { createOrgStatements } from "@octocoach/db/helpers/create-org";
 import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
 import {
@@ -10,10 +11,8 @@ import {
   Organization,
 } from "@octocoach/db/schemas/common/organization";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
-import { readFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { join } from "node:path";
 
 export type CreateOrganization = Pick<
   NewOragnization,
@@ -64,12 +63,7 @@ export async function createOrganization({
     owner: user.id,
   });
 
-  const file = await readFile(
-    join(process.cwd(), "../../packages/db/migrations-org/create_org.sql"),
-    "utf-8"
-  );
-
-  const statements = file.split("--> statement-breakpoint");
+  const statements = createOrgStatements(slug);
 
   for (const statement of statements) {
     await db.execute(sql.raw(statement.replaceAll("{slug}", slug)));

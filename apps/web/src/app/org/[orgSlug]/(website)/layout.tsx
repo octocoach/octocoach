@@ -6,7 +6,7 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Container, Nav } from "@octocoach/ui";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { OrganizationProvider } from "./context";
@@ -51,12 +51,14 @@ export default async function Layout({
       )
     );
 
+  const baseUrl = headers().get("x-base");
+
   return (
     <OrganizationProvider organization={{ ...organization, content }}>
       <Container width="contained">
-        <Nav organization={organization} />
+        <Nav organization={organization} href={baseUrl} />
         {children}
-        <Footer organization={organization} />
+        <Footer organization={organization} baseUrl={baseUrl} />
       </Container>
     </OrganizationProvider>
   );

@@ -42,6 +42,7 @@ export default async (request: NextRequest) => {
   if (org) {
     response.headers.set("x-org", org);
     response.cookies.set("org", org);
+    response.cookies.set("x-base", "/");
   }
 
   const localeCookie = request.cookies.get("locale");
@@ -61,6 +62,8 @@ export default async (request: NextRequest) => {
   ) {
     const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);
+    response.headers.set("x-org", org);
+    response.headers.set("x-base", `/org/${org}/`);
   } else if (!request.nextUrl.pathname.startsWith("/api") && !org) {
     response.cookies.delete("org");
   }

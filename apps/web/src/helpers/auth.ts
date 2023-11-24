@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
  * @returns The session object.
  */
 export async function getServerSessionOrRedirect(orgSlug?: string) {
-  const callbackUrl = headers().get("x-url") || "/";
+  const callbackUrl = headers().get("x-path") || "/";
   const session = await getServerSession(mkAuthOptions(orgSlug));
   const searchParams = new URLSearchParams({
     callbackUrl,

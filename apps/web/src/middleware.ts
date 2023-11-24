@@ -42,7 +42,7 @@ export default async (request: NextRequest) => {
   if (org) {
     response.headers.set("x-org", org);
     response.cookies.set("org", org);
-    response.cookies.set("x-base", "/");
+    response.headers.set("x-base", "/");
   }
 
   const localeCookie = request.cookies.get("locale");
@@ -53,7 +53,7 @@ export default async (request: NextRequest) => {
     response.cookies.set("locale", locale);
   }
 
-  response.headers.set("x-url", request.nextUrl.pathname);
+  response.headers.set("x-path", request.nextUrl.pathname);
 
   if (
     !org &&

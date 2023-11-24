@@ -22,8 +22,27 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-export default (request: NextRequest) => {
-  const response = NextResponse.next();
+const orgs: Record<string, string> = {
+  "q15.co": "q15",
+};
+
+export default async (request: NextRequest) => {
+  const url = request.nextUrl;
+  let hostname = request.headers
+    .get("host")
+    .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
+
+  const org = Object.keys(orgs).includes(hostname) ? orgs[hostname] : null;
+
+  const response =
+    org && !url.pathname.startsWith("/api")
+      ? NextResponse.rewrite(new URL(`/org/${org}${url.pathname}`, request.url))
+      : NextResponse.next();
+
+  if (org) {
+    response.headers.set("x-org", org);
+    response.cookies.set("org", org);
+  }
 
   const localeCookie = request.cookies.get("locale");
 
@@ -36,12 +55,13 @@ export default (request: NextRequest) => {
   response.headers.set("x-url", request.nextUrl.pathname);
 
   if (
+    !org &&
     request.nextUrl.pathname.startsWith("/org") &&
     !(request.nextUrl.pathname === "/org")
   ) {
     const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);
-  } else if (!request.nextUrl.pathname.startsWith("/api")) {
+  } else if (!request.nextUrl.pathname.startsWith("/api") && !org) {
     response.cookies.delete("org");
   }
 

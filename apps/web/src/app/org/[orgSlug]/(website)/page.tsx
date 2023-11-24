@@ -52,6 +52,11 @@ export default function Page({ params }: { params: { orgSlug } }) {
     faqSectionId
   );
 
+  const baseUrl =
+    typeof window !== "undefined" && window.location.hostname === "octo.coach"
+      ? `/org/${params.orgSlug}`
+      : "";
+
   return (
     <>
       <PixelBackground>
@@ -59,8 +64,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
           content={heroSection}
           orgSlug={params.orgSlug}
           signedIn={!!session?.user}
-          startLink={<Link href={`/org/${params.orgSlug}/start`} />}
-          signupLink={<Link href={`/org/${params.orgSlug}/signup`} />}
+          startLink={<Link href={`${baseUrl}/start`} />}
+          signupLink={<Link href={`${baseUrl}/signup`} />}
         />
       </PixelBackground>
       <PixelBackground pixelSize={20}>

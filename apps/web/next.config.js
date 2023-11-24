@@ -14,7 +14,7 @@ const nextConfig = {
       "drizzle-orm",
       "drizzle-orm/pg-core",
     ],
-    typedRoutes: true,
+    typedRoutes: false,
   },
   images: {
     remotePatterns: [

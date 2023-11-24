@@ -21,6 +21,7 @@ import {
 } from "@octocoach/ui";
 import { getContentById } from "@octocoach/ui/helpers";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useOrganization } from "./context";
 
 export default function Page({ params }: { params: { orgSlug } }) {
@@ -52,10 +53,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
     faqSectionId
   );
 
-  const baseUrl =
-    typeof window !== "undefined" && window.location.hostname === "octo.coach"
-      ? `/org/${params.orgSlug}`
-      : "";
+  const baseUrl = usePathname();
 
   return (
     <>

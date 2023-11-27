@@ -35,6 +35,8 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
     phone: text("phone"),
     email: text("email"),
     domain: text("domain"),
+    githubId: text("github_id"),
+    githubSecret: text("github_secret"),
     logo: text("logo"),
     primaryColor: text("primary_color").notNull().default("#8839ef"),
     secondaryColor: text("secondary_color").notNull().default("#dc8a78"),

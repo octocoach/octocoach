@@ -8,6 +8,7 @@ import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
 import { EditContent } from "./edit-content";
 import { EditMission } from "./edit-mission";
+import { EditDomain } from "./edit-domain";
 
 export default function Admin({
   organization,
@@ -30,6 +31,7 @@ export default function Admin({
         <Edit organization={organization} />
         <EditContent content={content} slug={organization.slug} />
         <EditMission content={content} slug={organization.slug} />
+        <EditDomain organization={organization} />
         <Card>
           <Button onClick={onDelete} disabled={isPending} color="secondary">
             Delete

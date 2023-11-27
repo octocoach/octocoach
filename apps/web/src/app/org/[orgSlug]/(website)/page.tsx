@@ -53,7 +53,8 @@ export default function Page({ params }: { params: { orgSlug } }) {
     faqSectionId
   );
 
-  const baseUrl = usePathname();
+  const pathName = usePathname();
+  const baseUrl = pathName === "/" ? "" : pathName;
 
   return (
     <>

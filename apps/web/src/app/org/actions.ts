@@ -1,6 +1,7 @@
 "use server";
 
 import { getServerSession } from "@octocoach/auth";
+import { encrypt } from "@octocoach/auth/helpers";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { db } from "@octocoach/db/connection";
 import { createOrgStatements } from "@octocoach/db/helpers/create-org";
@@ -44,7 +45,7 @@ export async function createOrganization({
   state,
   country,
 }: CreateOrganization) {
-  const { user } = await getServerSession(mkAuthOptions());
+  const { user } = await getServerSession(await mkAuthOptions());
 
   if (!user) redirect("/");
 
@@ -86,6 +87,24 @@ export async function onSubmit(organizationDetails: OrganizationDetails) {
     .update(organizationTable)
     .set(organization)
     .where(eq(organizationTable.slug, organizationDetails.slug));
+
+  revalidatePath("/org", "layout");
+}
+
+export type DomainDetails = Pick<
+  Organization,
+  "domain" | "githubId" | "githubSecret"
+>;
+export async function saveDomain(
+  slug,
+  { domain, githubId, githubSecret }: DomainDetails
+) {
+  const encryptedSecret = encrypt(githubSecret);
+
+  await db
+    .update(organizationTable)
+    .set({ domain, githubId, githubSecret: encryptedSecret })
+    .where(eq(organizationTable.slug, slug));
 
   revalidatePath("/org", "layout");
 }

@@ -248,6 +248,9 @@ importers:
       tsconfig:
         specifier: workspace:^
         version: link:../tsconfig
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
 
   packages/azav:
     dependencies:

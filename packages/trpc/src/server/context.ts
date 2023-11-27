@@ -14,7 +14,7 @@ export const createContextInner = async ({ session }: AuthContext) => {
 
 export const createContext = async () => {
   const orgCookie = cookies().get("org");
-  const session = await getServerSession(mkAuthOptions(orgCookie?.value));
+  const session = await getServerSession(await mkAuthOptions(orgCookie?.value));
 
   if (session?.user?.id && orgCookie?.value) {
     session.user.isCoach = await isCoach(session?.user.id, orgCookie?.value);

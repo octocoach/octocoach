@@ -1,8 +1,12 @@
 {
   "name": "@octocoach/auth",
   "private": "true",
+  "scripts": {
+    "generate:keys": "tsx ./generate-keys.ts"
+  },
   "devDependencies": {
-    "tsconfig": "workspace:^"
+    "tsconfig": "workspace:^",
+    "tsx": "^3.12.7"
   },
   "dependencies": {
     "@auth/core": "^0.17.0",

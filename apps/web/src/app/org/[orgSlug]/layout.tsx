@@ -25,7 +25,7 @@ export default async function Layout({
     notFound();
   }
 
-  const session = await getServerSession(mkAuthOptions(params.orgSlug));
+  const session = await getServerSession(await mkAuthOptions(params.orgSlug));
 
   return (
     <SessionProvider session={session}>

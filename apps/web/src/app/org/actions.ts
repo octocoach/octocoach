@@ -45,7 +45,7 @@ export async function createOrganization({
   state,
   country,
 }: CreateOrganization) {
-  const { user } = await getServerSession(mkAuthOptions());
+  const { user } = await getServerSession(await mkAuthOptions());
 
   if (!user) redirect("/");
 

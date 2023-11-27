@@ -4,7 +4,7 @@ import { getServerSession } from "@octocoach/auth";
 import mkAuthOptions from "@octocoach/auth/next-auth-config";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const session = await getServerSession(mkAuthOptions());
+  const session = await getServerSession(await mkAuthOptions());
 
   console.log(session);
 

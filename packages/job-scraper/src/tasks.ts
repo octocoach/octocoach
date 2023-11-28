@@ -1,116 +1,108 @@
-import { type Database } from "@octocoach/db/connection";
+import { Database } from "@octocoach/db/connection";
 import { Job } from "@octocoach/db/schemas/common/job";
 import { taskTable } from "@octocoach/db/schemas/common/task";
 import chalk from "chalk";
-import { LLMChain } from "langchain/chains";
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { JsonKeyOutputFunctionsParser } from "langchain/output_parsers";
-import {
-  ChatPromptTemplate,
-  HumanMessagePromptTemplate,
-  SystemMessagePromptTemplate,
-} from "langchain/prompts";
+import OpenAI from "openai";
+import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { z } from "zod";
-import { createFunctionFromZodSchema } from "./helpers";
+import zodToJsonSchema from "zod-to-json-schema";
+import { getEmbeddings } from "./embeddings";
+import { makeToolChoice, zodParseJSON } from "./helpers";
 import { matchSkill } from "./skills";
 
-const embeddingsApi = new OpenAIEmbeddings();
+const openai = new OpenAI();
 
-const prompt = ChatPromptTemplate.fromPromptMessages([
-  SystemMessagePromptTemplate.fromTemplate(
-    [
-      "You will be provided with a job posting.",
-      "First, Analyse it and identify all duties (tasks) mentioned.",
-      "Each task describes an activity or responsibility a candidate would be expected to perform.",
-      "The task description should include context about the type of work, project, industry and tools used where possible.",
-      "Try to embed the project or industry context into the task description to help provide a more comprehensive understanding of the duty.",
-      'Avoid generating tasks that simply state the use of certain technologies with verbs like "work with", "use", "learn", or "understand".',
-      "Instead, incorporate these technologies into specific responsibilities or activities.",
-      'For example, instead of "Work with .NET", use "Develop back-end services for a parking system using .NET".',
-      "When describing the industry or business context, use indefinite articles (like 'an' or 'a') to keep the task general rather than specific to a single company.",
-      "Each task description should be written in English and be clear and self-explanatory, providing a meaningful understanding of the task even when read out of context.",
-      "Avoid extrapolating or assuming responsibilities that are not mentioned in the job description.",
-      "Do not include the name of the company!",
-      "Next, phrase the task description as a yes/no question to gaugue the user's interest (not ability) in performing it.",
-      "The question should be phrased in such a way that a yes response indicates an interest in doing the task and a no indicates disinterest.",
-      'Questions could be prased as "Would you like to...", "Are you willing to...", "Would you be interested in...", "Are you open to...".',
-      "Use all available context information from the job posting to formulate the question in such a way that the person answering yes/no can make an informed decision when it's read on its",
-      "Use the provided function to save the list of duty description and questions along with an extensive list of descriptors for skills required to complete the duty.",
-      'Skill descriptors could be hard skills like "JavaScript (Programming Language)" or "PHP (Scripting Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)".',
-      "Avoid ambiguous skill names, instead use descriptions that would closely match the skill's description in a database using a cosine distance to the embedding.",
-      "Use any tools or technologies mentioned in the job description combined with your general knowledge to make an informed guess about the skills needed to complete task.",
-    ].join(" ")
-  ),
-  HumanMessagePromptTemplate.fromTemplate("{title}\n\n{description}"),
-]);
-
-const llm = new ChatOpenAI({ temperature: 0.7, modelName: "gpt-4-0613" });
-
-const attrName = "tasks";
-
-const saveTasks = createFunctionFromZodSchema({
-  name: "save_tasks",
-  description: "Save a list of tasks",
-  attrName,
-  zodSchema: z.object({
-    description: z.string().describe("A description of the task"),
-    question: z
-      .string()
-      .describe("The description, phrased as a yes/no question"),
-    skills: z.array(z.string()).describe("An array of skill descriptors"),
-  }),
+const SaveParams = z.object({
+  tasks: z
+    .array(
+      z.object({
+        description: z.string().describe("A description of the task"),
+        question: z
+          .string()
+          .describe("The description, phrased as a yes/no question"),
+        skills: z.array(z.string()).describe("An array of skill descriptors"),
+      })
+    )
+    .describe("An array of tasks with skills required to complete them"),
 });
 
-const outputParser = new JsonKeyOutputFunctionsParser({ attrName });
+const systemMessageContent = [
+  "You will be provided with a job posting.",
+  "First, Analyse it and identify all duties (tasks) mentioned.",
+  "Each task describes an activity or responsibility a candidate would be expected to perform.",
+  "The task description should include context about the type of work, project, industry and tools used where possible.",
+  "Try to embed the project or industry context into the task description to help provide a more comprehensive understanding of the duty.",
+  'Avoid generating tasks that simply state the use of certain technologies with verbs like "work with", "use", "learn", or "understand".',
+  "Instead, incorporate these technologies into specific responsibilities or activities.",
+  'For example, instead of "Work with .NET", use "Develop back-end services for a parking system using .NET".',
+  "When describing the industry or business context, use indefinite articles (like 'an' or 'a') to keep the task general rather than specific to a single company.",
+  "Each task description should be written in English and be clear and self-explanatory, providing a meaningful understanding of the task even when read out of context.",
+  "Avoid extrapolating or assuming responsibilities that are not mentioned in the job description.",
+  "Do not include the name of the company!",
+  "Next, phrase the task description as a yes/no question to gaugue the user's interest (not ability) in performing it.",
+  "The question should be phrased in such a way that a yes response indicates an interest in doing the task and a no indicates disinterest.",
+  'Questions could be prased as "Would you like to...", "Are you willing to...", "Would you be interested in...", "Are you open to...".',
+  "Use all available context information from the job posting to formulate the question in such a way that the person answering yes/no can make an informed decision when it's read on its",
+  "Use the provided function to save the list of duty description and questions along with an extensive list of descriptors for skills required to complete the duty.",
+  'Skill descriptors could be hard skills like "JavaScript (Programming Language)" or "PHP (Scripting Language)" or soft skills like "Interpersonal Communications (Soft Skill)" or "Conflict Resolution (Soft Skill)".',
+  "Avoid ambiguous skill names, instead use descriptions that would closely match the skill's description in a database using a cosine distance to the embedding.",
+  "Use any tools or technologies mentioned in the job description combined with your general knowledge to make an informed guess about the skills needed to complete task.",
+].join(" ");
 
-const chain = new LLMChain({
-  prompt,
-  llm,
-  llmKwargs: {
-    functions: [saveTasks],
-    function_call: {
-      name: saveTasks.name,
+export const extractTasks = async ({
+  job,
+  db,
+}: {
+  job: Pick<Job, "id" | "title" | "description">;
+  db: Database;
+}) => {
+  const saveTasksTool = {
+    type: "function",
+    function: {
+      name: "save",
+      description: "save a list of tasks to the database",
+      parameters: zodToJsonSchema(SaveParams),
+      function: save,
+      parse: zodParseJSON(SaveParams),
     },
-  },
-  outputParser,
-});
+  } as RunnableToolFunction<z.infer<typeof SaveParams>>;
 
-export const extractTasks = async ({ db, job }: { db: Database; job: Job }) => {
-  const { title, description } = job;
-  console.log(`Job: ${title}`);
+  async function save({ tasks }: z.infer<typeof SaveParams>) {
+    for (const { description, question, skills } of tasks) {
+      console.log(chalk.bgWhite(chalk.black(`Task:  ${description}`)));
+      console.log(chalk.bgBlue(chalk.yellowBright(`Question: ${question}`)));
 
-  const { text } = (await chain.call({
-    title,
-    description,
-    timeout: 5 * 60 * 1000, // 5 minutes
-  })) as {
-    text: {
-      description: string;
-      question: string;
-      skills: string[];
-    }[];
-  };
+      const embedding = await getEmbeddings(description);
 
-  for (const { description, question, skills } of text) {
-    console.log(chalk.bgWhite(chalk.black(`Task:  ${description}`)));
-    console.log(chalk.bgBlue(chalk.yellowBright(`Question: ${question}`)));
+      const taskId = await db
+        .insert(taskTable)
+        .values({
+          description,
+          question,
+          embedding,
+          jobId: job.id,
+        })
+        .returning()
+        .then((rows) => rows[0].id);
 
-    const embedding = await embeddingsApi.embedQuery(description);
-
-    const task = await db
-      .insert(taskTable)
-      .values({ description, question, embedding, jobId: job.id })
-      .returning();
-
-    const taskId = task[0].id;
-
-    for (const description of skills) {
-      await matchSkill({
-        db,
-        description,
-        taskId,
-      });
+      for (const description of skills) {
+        await matchSkill({ db, description, taskId });
+      }
     }
   }
+
+  const runner = openai.beta.chat.completions.runTools({
+    model: "gpt-4-1106-preview",
+    messages: [
+      {
+        role: "system",
+        content: systemMessageContent,
+      },
+      { role: "user", content: `${job.title}\n\n${job.description}` },
+    ],
+    tools: [saveTasksTool],
+    tool_choice: makeToolChoice(saveTasksTool),
+  });
+
+  await runner.done();
 };

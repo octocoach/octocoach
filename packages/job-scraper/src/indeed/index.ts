@@ -111,7 +111,7 @@ export class IndeedScraper extends JobScraper {
 
         const viewJobPage = await context.newPage();
         await viewJobPage.goto(`https://de.indeed.com/viewjob?jk=${sourceId}`, {
-          waitUntil: "networkidle",
+          waitUntil: "domcontentloaded",
         });
 
         await client.detach();
@@ -160,7 +160,7 @@ export class IndeedScraper extends JobScraper {
               .locator("a")
               .getAttribute("href");
             if (!companyPage) throw new Error("URL not found");
-            await page.goto(companyPage, { waitUntil: "networkidle" });
+            await page.goto(companyPage, { waitUntil: "domcontentloaded" });
 
             const $link = page.locator(
               '[data-testid="companyInfo-companyWebsite"]'

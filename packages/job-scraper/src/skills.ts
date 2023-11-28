@@ -82,7 +82,7 @@ const findWithLLM = async (
       ) / 2
   END`;
 
-  const results = await db.select().from(skillTable).orderBy(order).limit(10);
+  const results = await db.select().from(skillTable).orderBy(order).limit(25);
 
   const possibleMatches = results.map(({ name }) => `- ${name}`).join("\n");
 

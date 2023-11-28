@@ -1,38 +1,15 @@
+import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ZodSchema } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
-import { JsonSchema7ObjectType } from "zod-to-json-schema/src/parsers/object";
 
-export const createFunctionFromZodSchema = ({
-  name,
-  description,
-  attrName,
-  zodSchema,
-}: {
-  name: string;
-  description: string;
-  attrName: string;
-  zodSchema: ZodSchema;
-}) => {
-  const { type, properties, required } = zodToJsonSchema(
-    zodSchema
-  ) as JsonSchema7ObjectType;
+export function zodParseJSON<T>(schema: ZodSchema<T>) {
+  return (input: string): T => schema.parse(JSON.parse(input));
+}
+
+export function makeToolChoice(tool: RunnableToolFunction<any>) {
+  if (!tool.function?.name) throw new Error("tool.function.name is undefined");
 
   return {
-    name,
-    description,
-    parameters: {
-      type: "object",
-      properties: {
-        [attrName]: {
-          type: "array",
-          items: {
-            type,
-            properties,
-            required,
-          },
-        },
-      },
-      required: [attrName],
-    },
+    type: tool.type,
+    function: { name: tool.function.name },
   };
-};
+}

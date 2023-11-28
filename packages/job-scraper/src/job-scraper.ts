@@ -1,8 +1,9 @@
 import { Database } from "@octocoach/db/connection";
 import { NewJob, jobTable } from "@octocoach/db/schemas/common/job";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import chalk from "chalk";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { Browser, BrowserContext, Page, devices } from "playwright";
+import { getEmbeddings } from "./embeddings";
 import { extractTasks } from "./tasks";
 
 /**
@@ -20,21 +21,12 @@ export abstract class JobScraper {
   protected page: Page;
 
   /**
-   * An instance of the OpenAIEmbeddings class for generating embeddings of job descriptions.
-   *
-   * @protected
-   */
-  protected openAIEmbeddings: OpenAIEmbeddings;
-
-  /**
    * Creates an instance of JobScraper.
    *
    * @param {Browser} browser - The Playwright browser instance to use for scraping.
    * @param {Database} db - The database connection to use for storing job data.
    */
-  constructor(protected browser: Browser, protected db: Database) {
-    this.openAIEmbeddings = new OpenAIEmbeddings();
-  }
+  constructor(protected browser: Browser, protected db: Database) {}
 
   /**
    * The CSS selector for the "next page" button/link.
@@ -198,10 +190,11 @@ export abstract class JobScraper {
     >,
     descriptionHTML: string
   ) {
+    console.log(chalk.bgBlue(chalk.yellow(`Processing job ${newJob.title}`)));
     const description = NodeHtmlMarkdown.translate(descriptionHTML);
 
-    const [titleEmbedding, descriptionEmbedding] =
-      await this.openAIEmbeddings.embedDocuments([newJob.title, description]);
+    const titleEmbedding = await getEmbeddings(newJob.title);
+    const descriptionEmbedding = await getEmbeddings(description);
 
     const job = await this.db
       .insert(jobTable)

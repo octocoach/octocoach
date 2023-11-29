@@ -7,11 +7,31 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Container, Nav } from "@octocoach/ui";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+import SetCookie from "set-cookie-parser";
 import { OrganizationProvider } from "./context";
 import Footer from "./footer";
+
+const getLocale = (): Locales => {
+  let locale: Locales;
+
+  const setCookies = SetCookie.parse(headers().get("set-cookie"));
+  const setLocaleCookie = setCookies.find((cookie) => cookie.name === "locale");
+
+  const existingLocaleCookie = cookies().get("locale");
+
+  if (setLocaleCookie?.value) {
+    locale = setLocaleCookie.value as Locales;
+  } else if (existingLocaleCookie?.value) {
+    locale = existingLocaleCookie.value as Locales;
+  } else {
+    locale = "de";
+  }
+
+  return locale;
+};
 
 export default async function Layout({
   children,
@@ -32,7 +52,7 @@ export default async function Layout({
     notFound();
   }
 
-  const locale = (cookies().get("locale")?.value || "de") as Locales;
+  const locale = getLocale();
 
   const organizationDb = orgDb(organization.slug);
   const contentTable = mkContentTable(organization.slug);

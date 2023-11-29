@@ -198,6 +198,9 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
+      set-cookie-parser:
+        specifier: ^2.6.0
+        version: 2.6.0
     devDependencies:
       '@next/bundle-analyzer':
         specifier: ^14.0.2
@@ -211,6 +214,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.5
         version: 18.2.7
+      '@types/set-cookie-parser':
+        specifier: ^2.4.7
+        version: 2.4.7
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.1
         version: 2.3.1(@types/node@20.4.2)(next@13.5.6)(webpack@5.89.0)
@@ -8015,7 +8021,7 @@ packages:
   /@types/node-fetch@2.6.8:
     resolution: {integrity: sha512-nnH5lV9QCMPsbEVdTb5Y+F3GQxLSw1xQgIydrb2gSfEavRPs50FnMr+KUaa+LoPSqibm2N+ZZxH7lavZlAT4GA==}
     dependencies:
-      '@types/node': 20.4.2
+      '@types/node': 20.10.0
       form-data: 4.0.0
     dev: false
 
@@ -8136,7 +8142,7 @@ packages:
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 20.8.9
+      '@types/node': 20.10.0
     dev: false
 
   /@types/retry@0.12.0:
@@ -8162,6 +8168,12 @@ packages:
       '@types/http-errors': 2.0.1
       '@types/mime': 3.0.1
       '@types/node': 20.10.0
+
+  /@types/set-cookie-parser@2.4.7:
+    resolution: {integrity: sha512-+ge/loa0oTozxip6zmhRIk8Z/boU51wl9Q6QdLZcokIGMzY5lFXYy/x7Htj2HTC6/KZP1hUbZ1ekx8DYXICvWg==}
+    dependencies:
+      '@types/node': 20.10.0
+    dev: true
 
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -17828,6 +17840,10 @@ packages:
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
     dev: true
+
+  /set-cookie-parser@2.6.0:
+    resolution: {integrity: sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==}
+    dev: false
 
   /setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}

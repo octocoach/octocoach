@@ -20,6 +20,9 @@ const getLocale = (): Locales => {
   const setCookies = SetCookie.parse(headers().get("set-cookie"));
   const setLocaleCookie = setCookies.find((cookie) => cookie.name === "locale");
 
+  console.log("setCookies", setCookies);
+  console.log("setLocaleCookie", setLocaleCookie);
+
   const existingLocaleCookie = cookies().get("locale");
 
   if (setLocaleCookie?.value) {
@@ -29,6 +32,8 @@ const getLocale = (): Locales => {
   } else {
     locale = "de";
   }
+
+  console.log("Returning Locale", locale);
 
   return locale;
 };

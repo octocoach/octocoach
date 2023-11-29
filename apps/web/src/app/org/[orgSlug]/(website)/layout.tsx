@@ -17,6 +17,10 @@ import Footer from "./footer";
 const getLocale = (): Locales => {
   let locale: Locales;
 
+  for (const [key, value] of headers().entries()) {
+    console.log(`${key}: ${value}`);
+  }
+
   const setCookies = SetCookie.parse(headers().get("set-cookie"));
   const setLocaleCookie = setCookies.find((cookie) => cookie.name === "locale");
 

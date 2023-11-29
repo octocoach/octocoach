@@ -20,7 +20,6 @@ const getGithubCredentials = (
     organization?.githubId &&
     organization?.githubSecret
   ) {
-    console.log("Using organization github credentials");
     return {
       clientId: organization.githubId,
       clientSecret: decrypt(organization.githubSecret),
@@ -30,7 +29,6 @@ const getGithubCredentials = (
   if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET)
     throw new Error("Missing GITHUB_ID or GITHUB_SECRET");
 
-  console.log("Using default github credentials");
   return {
     clientId: process.env.GITHUB_ID,
     clientSecret: process.env.GITHUB_SECRET,

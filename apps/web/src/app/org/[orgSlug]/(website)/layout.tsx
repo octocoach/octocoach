@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import {
@@ -6,7 +7,7 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Container, Nav } from "@octocoach/ui";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { OrganizationProvider } from "./context";
@@ -51,7 +52,7 @@ export default async function Layout({
       )
     );
 
-  const baseUrl = headers().get("x-base");
+  const baseUrl = getBaseUrl();
 
   return (
     <OrganizationProvider organization={{ ...organization, content }}>

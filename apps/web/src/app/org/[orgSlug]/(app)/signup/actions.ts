@@ -1,11 +1,10 @@
 "use server";
 
+import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { NewUserProfile } from "@octocoach/db/schemas/types";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export type ProfileForm = Pick<
   NewUserProfile,
@@ -39,5 +38,5 @@ export async function saveProfile(
       where: eq(userProfileTable.userId, userId),
     });
 
-  redirect(`/org/${orgSlug}/start`);
+  orgRedirect("/start");
 }

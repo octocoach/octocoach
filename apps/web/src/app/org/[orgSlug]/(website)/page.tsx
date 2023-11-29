@@ -1,5 +1,6 @@
 "use client";
 
+import { useBasePath } from "@hooks/base-path";
 import { useSession } from "@octocoach/auth/react";
 import {
   AboutSection,
@@ -21,7 +22,6 @@ import {
 } from "@octocoach/ui";
 import { getContentById } from "@octocoach/ui/helpers";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useOrganization } from "./context";
 
 export default function Page({ params }: { params: { orgSlug } }) {
@@ -53,8 +53,7 @@ export default function Page({ params }: { params: { orgSlug } }) {
     faqSectionId
   );
 
-  const pathName = usePathname();
-  const baseUrl = pathName === "/" ? "" : pathName;
+  const baseUrl = useBasePath();
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
+import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 export default async function Layout({
@@ -19,7 +19,7 @@ export default async function Layout({
   });
 
   if (!profile?.termsAccepted) {
-    redirect(`/org/${params.orgSlug}/signup`);
+    orgRedirect("/signup");
   }
 
   return <>{children}</>;

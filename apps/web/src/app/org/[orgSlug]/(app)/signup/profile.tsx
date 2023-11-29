@@ -1,5 +1,6 @@
 "use client";
 
+import { useBasePath } from "@hooks/base-path";
 import { useSession } from "@octocoach/auth/react";
 import { UserProfile } from "@octocoach/db/schemas/types";
 import {
@@ -61,6 +62,8 @@ export const Profile = ({
 
   const buttonText = store.getState().submitting ? "Signing Up" : "Sign Up";
 
+  const basePath = useBasePath();
+
   return (
     <Card>
       <Form store={store} onSubmit={onSubmit}>
@@ -92,10 +95,10 @@ export const Profile = ({
             </Button>
           </Stack>
           <Stack direction="horizontal" justify="center">
-            <Link href={`/org/${orgSlug}/privacy`} target="_blank">
+            <Link href={`${basePath}/privacy`} target="_blank">
               <Text size="s">Privacy Policy</Text>
             </Link>
-            <Link href={`/org/${orgSlug}/terms`} target="_blank">
+            <Link href={`${basePath}/terms`} target="_blank">
               <Text size="s">Terms of Use</Text>
             </Link>
           </Stack>

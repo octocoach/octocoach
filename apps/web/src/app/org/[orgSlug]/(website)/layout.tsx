@@ -10,36 +10,23 @@ import { Container, Nav } from "@octocoach/ui";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
-import SetCookie from "set-cookie-parser";
 import { OrganizationProvider } from "./context";
 import Footer from "./footer";
 
 const getLocale = (): Locales => {
-  let locale: Locales;
+  const localeHeader = headers().get("x-locale");
 
-  for (const [key, value] of headers().entries()) {
-    console.log(`${key}: ${value}`);
+  if (localeHeader) {
+    return localeHeader as Locales;
   }
 
-  const setCookies = SetCookie.parse(headers().get("set-cookie"));
-  const setLocaleCookie = setCookies.find((cookie) => cookie.name === "locale");
+  const localeCookie = cookies().get("locale");
 
-  console.log("setCookies", setCookies);
-  console.log("setLocaleCookie", setLocaleCookie);
-
-  const existingLocaleCookie = cookies().get("locale");
-
-  if (setLocaleCookie?.value) {
-    locale = setLocaleCookie.value as Locales;
-  } else if (existingLocaleCookie?.value) {
-    locale = existingLocaleCookie.value as Locales;
-  } else {
-    locale = "de";
+  if (localeCookie?.value) {
+    return localeCookie.value as Locales;
   }
 
-  console.log("Returning Locale", locale);
-
-  return locale;
+  return "de";
 };
 
 export default async function Layout({

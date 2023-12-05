@@ -1,4 +1,5 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
+import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, desc, eq, gte, isNull } from "@octocoach/db/operators";
 import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
@@ -9,8 +10,10 @@ import {
   skillsTasksTable,
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
-import { Text } from "@octocoach/ui";
+import { Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
 import { addUserSkillLevel, addUserTaskInterest } from "./actions";
+import { getMatchingJobs } from "./helpers";
 import { SkillCheck } from "./skill-check";
 import { TaskCheck } from "./task-check";
 
@@ -24,6 +27,8 @@ export default async function Page({
   const db = orgDb(params.orgSlug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(params.orgSlug);
   const usersSkillLevelsTable = mkUsersSkillLevelsTable(params.orgSlug);
+
+  const jobs = await getMatchingJobs(params.orgSlug);
 
   const skill = await db
     .select({
@@ -83,12 +88,10 @@ export default async function Page({
     .limit(1)
     .then((rows) => (rows.length ? rows[0] : null));
 
+  const baseUrl = getBaseUrl();
+
   if (!task) {
-    return (
-      <Text size="xl" textAlign="center">
-        All Done!
-      </Text>
-    );
+    orgRedirect("/discover/jobs");
   }
 
   const boundAddUserTaskInterest = addUserTaskInterest.bind(
@@ -96,5 +99,12 @@ export default async function Page({
     params.orgSlug
   );
 
-  return <TaskCheck task={task} submitAnswer={boundAddUserTaskInterest} />;
+  return (
+    <Stack justify="center">
+      <TaskCheck task={task} submitAnswer={boundAddUserTaskInterest} />
+      <Link href={`${baseUrl}discover/jobs`}>
+        <Text textAlign="center">{jobs.length} possible jobs</Text>
+      </Link>
+    </Stack>
+  );
 }

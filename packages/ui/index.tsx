@@ -6,6 +6,7 @@ export * from "./AboutSection/AboutSection";
 export * from "./Address/Address";
 export * from "./Box/Box";
 export * from "./Button/Button";
+export * from "./Button/ButtonLink";
 export * from "./Card/Card";
 export * from "./Center/Center";
 export * from "./CoachSection/CoachSection";

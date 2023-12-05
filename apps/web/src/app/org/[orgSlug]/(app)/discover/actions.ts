@@ -17,12 +17,11 @@ export interface SkillAssessment {
 export interface AddUserTaskInterest {
   answer: Answer;
   taskId: number;
-  skillAssessments: SkillAssessment[];
 }
 
 export const addUserTaskInterest = async (
   orgSlug: string,
-  { answer, taskId, skillAssessments }: AddUserTaskInterest
+  { answer, taskId }: AddUserTaskInterest
 ) => {
   const { user } = await getServerSession(await mkAuthOptions(orgSlug));
   if (!user) throw new Error("User not found");
@@ -30,7 +29,6 @@ export const addUserTaskInterest = async (
   const db = orgDb(orgSlug);
 
   const usersTaskInterestTable = mkUsersTaskInterestTable(orgSlug);
-  const usersSkillLevelsTable = mkUsersSkillLevelsTable(orgSlug);
 
   const interest: number = answer === "yes" ? 1 : answer === "no" ? -1 : 0;
 
@@ -38,6 +36,26 @@ export const addUserTaskInterest = async (
     taskId,
     userId: user.id,
     interest,
+  });
+
+  revalidatePath(`/org/${orgSlug}/(app)/discover`, "page");
+};
+
+export const addUserSkillLevel = async (
+  orgSlug: string,
+  skillAssessment: SkillAssessment
+) => {
+  const { user } = await getServerSession(await mkAuthOptions(orgSlug));
+  if (!user) throw new Error("User not found");
+
+  const db = orgDb(orgSlug);
+
+  const usersSkillLevelsTable = mkUsersSkillLevelsTable(orgSlug);
+
+  await db.insert(usersSkillLevelsTable).values({
+    userId: user.id,
+    skillId: skillAssessment.id,
+    skillLevel: skillAssessment.level,
   });
 
   revalidatePath(`/org/${orgSlug}/(app)/discover`, "page");

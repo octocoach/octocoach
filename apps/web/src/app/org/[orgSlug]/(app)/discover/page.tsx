@@ -1,6 +1,7 @@
 import { getServerSessionOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
-import { and, desc, eq, isNull } from "@octocoach/db/operators";
+import { and, desc, eq, gte, isNull } from "@octocoach/db/operators";
+import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
 import { mkUsersTaskInterestTable } from "@octocoach/db/schemas/org/users-task-interest";
 import {
   jobTable,
@@ -9,9 +10,9 @@ import {
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Text } from "@octocoach/ui";
-import { addUserTaskInterest } from "./actions";
+import { addUserSkillLevel, addUserTaskInterest } from "./actions";
+import { SkillCheck } from "./skill-check";
 import { TaskCheck } from "./task-check";
-import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
 
 export default async function Page({
   params,
@@ -23,6 +24,45 @@ export default async function Page({
   const db = orgDb(params.orgSlug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(params.orgSlug);
   const usersSkillLevelsTable = mkUsersSkillLevelsTable(params.orgSlug);
+
+  const skill = await db
+    .select({
+      id: skillTable.id,
+      name: skillTable.name,
+      description: skillTable.description,
+    })
+    .from(usersTaskInterestTable)
+    .innerJoin(
+      skillsTasksTable,
+      eq(skillsTasksTable.taskId, usersTaskInterestTable.taskId)
+    )
+    .innerJoin(skillTable, eq(skillTable.id, skillsTasksTable.skillId))
+    .leftJoin(
+      usersSkillLevelsTable,
+      and(
+        eq(usersSkillLevelsTable.skillId, skillTable.id),
+        eq(usersSkillLevelsTable.userId, session.user.id)
+      )
+    )
+    .where(
+      and(
+        isNull(usersSkillLevelsTable.skillLevel),
+        eq(usersTaskInterestTable.userId, session.user.id),
+        gte(usersTaskInterestTable.interest, 0)
+      )
+    )
+    .orderBy(desc(usersTaskInterestTable.interest))
+    .limit(1)
+    .then((row) => (row.length > 0 ? row[0] : null));
+
+  if (skill) {
+    const boundAddUserSkillLevel = addUserSkillLevel.bind(
+      "orgSlug",
+      params.orgSlug
+    );
+
+    return <SkillCheck skill={skill} submitAnswer={boundAddUserSkillLevel} />;
+  }
 
   const task = await db
     .select({
@@ -51,38 +91,10 @@ export default async function Page({
     );
   }
 
-  const skills = await db
-    .select({
-      id: skillTable.id,
-      name: skillTable.name,
-      description: skillTable.description,
-    })
-    .from(skillsTasksTable)
-    .innerJoin(skillTable, eq(skillsTasksTable.skillId, skillTable.id))
-    .leftJoin(
-      usersSkillLevelsTable,
-      and(
-        eq(usersSkillLevelsTable.skillId, skillTable.id),
-        eq(usersSkillLevelsTable.userId, session.user.id)
-      )
-    )
-    .where(
-      and(
-        eq(skillsTasksTable.taskId, task.id),
-        isNull(usersSkillLevelsTable.skillLevel)
-      )
-    );
-
   const boundAddUserTaskInterest = addUserTaskInterest.bind(
     "orgSlug",
     params.orgSlug
   );
 
-  return (
-    <TaskCheck
-      task={task}
-      skills={skills}
-      submitAnswer={boundAddUserTaskInterest}
-    />
-  );
+  return <TaskCheck task={task} submitAnswer={boundAddUserTaskInterest} />;
 }

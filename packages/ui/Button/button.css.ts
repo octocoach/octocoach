@@ -7,10 +7,8 @@ export const button = recipe({
     color: "white",
     cursor: "pointer",
     fontFamily: vars.fonts.base,
-    fontSize: "1rem",
     fontVariationSettings: '"CASL" 0',
     fontWeight: 400,
-    padding: "12px 24px",
     transition: "all 1s",
     width: "fit-content",
 
@@ -42,9 +40,24 @@ export const button = recipe({
         color: vars.color.background.mantle.normal,
       },
     },
+    size: {
+      small: {
+        fontSize: "0.75rem",
+        padding: "8px 16px",
+      },
+      medium: {
+        fontSize: "1rem",
+        padding: "12px 24px",
+      },
+      large: {
+        fontSize: "1.25rem",
+        padding: "16px 32px",
+      },
+    },
   },
   defaultVariants: {
     color: "primary",
+    size: "medium",
   },
 });
 

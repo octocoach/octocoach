@@ -84,7 +84,7 @@ export default async function Page({
       )
     )
     .where(isNull(usersTaskInterestTable.interest))
-    .orderBy(desc(jobTable.created))
+    .orderBy(desc(jobTable.updated))
     .limit(1)
     .then((rows) => (rows.length ? rows[0] : null));
 

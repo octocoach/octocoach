@@ -1,4 +1,4 @@
-import { eq } from "@octocoach/db/operators";
+import { and, eq, or } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
 import { jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
@@ -204,13 +204,29 @@ export class IndeedScraper extends JobScraper {
 
         await viewJobPage.close();
 
-        const job = await this.db
+        const jobs = await this.db
           .select()
           .from(jobTable)
-          .where(eq(jobTable.sourceId, sourceId));
+          .where(
+            or(
+              eq(jobTable.sourceId, sourceId),
+              and(
+                eq(jobTable.employerId, employer.id),
+                eq(jobTable.title, title),
+                eq(jobTable.location, location)
+              )
+            )
+          );
 
-        if (job.length) {
-          console.log(`${job[0].title} already exists`);
+        if (jobs.length) {
+          const updated = new Date();
+          for (const job of jobs) {
+            console.log(`${job.title} already exists`);
+            await this.db
+              .update(jobTable)
+              .set({ updated })
+              .where(eq(jobTable.id, job.id));
+          }
         } else {
           await this.processJob(
             {

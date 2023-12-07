@@ -33,6 +33,7 @@ export const jobTable = pgTable("job", {
   descriptionEmbedding: embedding("description_embedding").notNull(),
   location: text("location"),
   created: timestamp("created").notNull().defaultNow(),
+  updated: timestamp("updated").notNull().defaultNow(),
 });
 
 export type NewJob = typeof jobTable.$inferInsert;

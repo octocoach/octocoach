@@ -26,6 +26,18 @@
       "name": "octocoach local",
       "database": "octocoach_1",
       "username": "octocoach"
+    },
+    {
+      "pgOptions": {
+        "ssl": true
+      },
+      "previewLimit": 50,
+      "server": "ep-crimson-waterfall-50146290-pooler.eu-central-1.postgres.vercel-storage.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "OctoCoach Prod",
+      "database": "verceldb",
+      "username": "default"
     }
   ]
 }

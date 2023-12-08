@@ -1,0 +1,102 @@
+diff --git a/bin.cjs b/bin.cjs
+index 4335b1fd7e1a90cbfb59fe60dd6e7daf7e4f8a75..6bddd483048738a15aa5e333508b955b2e57bbea 100755
+--- a/bin.cjs
++++ b/bin.cjs
+@@ -4906,6 +4906,7 @@ var init_pgSchema = __esm({
+       name: stringType(),
+       tableFrom: stringType(),
+       columnsFrom: stringType().array(),
++      schemaTo: stringType().optional(),
+       tableTo: stringType(),
+       columnsTo: stringType().array(),
+       onUpdate: stringType().optional(),
+@@ -5064,7 +5065,7 @@ var init_pgSchema = __esm({
+         return result;
+       },
+       squashFK: (fk4) => {
+-        return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
++        return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.schemaTo || ""};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
+       },
+       squashPK: (pk) => {
+         return `${pk.columns.join(",")};${pk.name}`;
+@@ -5089,6 +5090,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFromStr,
++          schemaTo,
+           tableTo,
+           columnsToStr,
+           onUpdate,
+@@ -5098,6 +5100,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFrom: columnsFromStr.split(","),
++          schemaTo,
+           tableTo,
+           columnsTo: columnsToStr.split(","),
+           onUpdate,
+@@ -12301,12 +12304,14 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+           const onDelete = fk4.onDelete;
+           const onUpdate = fk4.onUpdate;
+           const reference = fk4.reference();
++          const schemaTo = reference.foreignTable[Symbol.for("drizzle:Schema")];
+           const tableTo = (0, import_drizzle_orm5.getTableName)(reference.foreignTable);
+           const columnsFrom = reference.columns.map((it) => it.name);
+           const columnsTo = reference.foreignColumns.map((it) => it.name);
+           return {
+             name,
+             tableFrom,
++            schemaTo,
+             tableTo,
+             columnsFrom,
+             columnsTo,
+@@ -12492,6 +12497,7 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+             }
+             for (const fk4 of tableForeignKeys) {
+               const columnFrom = fk4.column_name;
++              const schemaTo = fk4.foreign_table_schema;
+               const tableTo = fk4.foreign_table_name;
+               const columnTo = fk4.foreign_column_name;
+               const foreignKeyName = fk4.constraint_name;
+@@ -12504,6 +12510,7 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+                 foreignKeysToReturn[foreignKeyName] = {
+                   name: foreignKeyName,
+                   tableFrom: tableName,
++                  schemaTo,
+                   tableTo,
+                   columnsFrom: [columnFrom],
+                   columnsTo: [columnTo],
+@@ -15425,13 +15432,14 @@ var init_sqlgenerator = __esm({
+       "interval day to second",
+       "interval hour to minute",
+       "interval hour to second",
+-      "interval minute to second"
++      "interval minute to second",
++      "vector"
+     ]);
+     isPgNativeType = (it) => {
+       if (pgNativeTypes.has(it))
+         return true;
+       const toCheck = it.replace(/ /g, "");
+-      return toCheck.startsWith("varchar(") || toCheck.startsWith("char(") || toCheck.startsWith("numeric(") || toCheck.startsWith("timestamp(") || toCheck.startsWith("intervalyear(") || toCheck.startsWith("intervalmonth(") || toCheck.startsWith("intervalday(") || toCheck.startsWith("intervalhour(") || toCheck.startsWith("intervalminute(") || toCheck.startsWith("intervalsecond(") || toCheck.startsWith("intervalyeartomonth(") || toCheck.startsWith("intervaldaytohour(") || toCheck.startsWith("intervaldaytominute(") || toCheck.startsWith("intervaldaytosecond(") || toCheck.startsWith("intervalhourtominute(") || toCheck.startsWith("intervalhourtosecond(") || toCheck.startsWith("intervalminutetosecond(") || /^(\w+)(\[\d*])+$/.test(it);
++      return toCheck.startsWith("vector(") || toCheck.startsWith("varchar(") || toCheck.startsWith("char(") || toCheck.startsWith("numeric(") || toCheck.startsWith("timestamp(") || toCheck.startsWith("intervalyear(") || toCheck.startsWith("intervalmonth(") || toCheck.startsWith("intervalday(") || toCheck.startsWith("intervalhour(") || toCheck.startsWith("intervalminute(") || toCheck.startsWith("intervalsecond(") || toCheck.startsWith("intervalyeartomonth(") || toCheck.startsWith("intervaldaytohour(") || toCheck.startsWith("intervaldaytominute(") || toCheck.startsWith("intervaldaytosecond(") || toCheck.startsWith("intervalhourtominute(") || toCheck.startsWith("intervalhourtosecond(") || toCheck.startsWith("intervalminutetosecond(") || /^(\w+)(\[\d*])+$/.test(it);
+     };
+     Convertor = class {
+     };
+@@ -16259,6 +16267,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+         const {
+           name,
+           tableFrom,
++          schemaTo,
+           tableTo,
+           columnsFrom,
+           columnsTo,
+@@ -16270,7 +16279,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+         const fromColumnsString = columnsFrom.map((it) => `"${it}"`).join(",");
+         const toColumnsString = columnsTo.map((it) => `"${it}"`).join(",");
+         const tableNameWithSchema = statement.schema ? `"${statement.schema}"."${tableFrom}"` : `"${tableFrom}"`;
+-        const tableToNameWithSchema = statement.schema ? `"${statement.schema}"."${tableTo}"` : `"${tableTo}"`;
++        const tableToNameWithSchema = schemaTo ? `"${schemaTo}"."${tableTo}"` : `"${tableTo}"`;
+         const alterStatement = `ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT "${name}" FOREIGN KEY (${fromColumnsString}) REFERENCES ${tableToNameWithSchema}(${toColumnsString})${onDeleteStatement}${onUpdateStatement}`;
+         let sql2 = "DO $$ BEGIN\n";
+         sql2 += " " + alterStatement + ";\n";

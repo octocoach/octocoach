@@ -124,7 +124,7 @@ By immersing you in real-world projects and communities, Q15 ensures that you ga
     answer: `Absolutely! We believe in building a community and fostering connections. If you’re interested, we’d be happy to facilitate a conversation with someone who has completed the program. It’s a great way to get a firsthand account of the Q15 experience and to network with individuals who have navigated the same path you’re embarking on.`,
   },
   {
-    question: `What language will be coahcing be done in?`,
+    question: `What language will be coaching be done in?`,
     answer: `The primary language for coaching at Q15 is English, as it is the predominant language used in the tech industry globally. Being adept in English is crucial not only for job interviews but also for working on open-source projects, where communication is predominantly carried out in English. Moreover, programming languages themselves, including JavaScript, utilize English keywords.
     
 While I am fluent in German and can provide clarification or explanations in German when necessary, the coaching sessions are conducted in English to better prepare you for the linguistic demands of the tech industry. By immersing in an English-speaking coaching environment, you're also honing your technical communication skills in English, which will be invaluable in your tech career.`,

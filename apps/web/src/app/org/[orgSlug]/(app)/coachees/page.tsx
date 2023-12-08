@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
@@ -10,13 +11,12 @@ export default async function Page({
   const db = orgDb(params.orgSlug);
   const members = await db.query.userTable.findMany({ with: {} });
 
+  const baseUrl = getBaseUrl();
+
   return (
     <Stack>
       {members.map((member) => (
-        <Link
-          href={`/org/${params.orgSlug}/coachees/${member.id}`}
-          key={member.id}
-        >
+        <Link href={`${baseUrl}coachees/${member.id}`} key={member.id}>
           <Text>{member.name}</Text>
         </Link>
       ))}

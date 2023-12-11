@@ -1,21 +1,23 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
-    build: 
+    build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: app.Dockerfile
 
     volumes:
       - ../..:/workspaces:cached
-  
+
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
+    network_mode: service:db
+
   db:
-    build: 
+    build:
       context: .
-      dockerfile: postgres.Dockerfile
+      dockerfile: db.Dockerfile
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -29,7 +31,7 @@ services:
   db_proxy:
     image: ghcr.io/neondatabase/wsproxy:latest
     environment:
-      APPEND_PORT: "postgres:6432"
+      APPEND_PORT: "db:5432"
       ALLOW_ADDR_REGEX: ".*"
       LOG_TRAFFIC: "true"
     ports:

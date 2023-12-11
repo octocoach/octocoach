@@ -1,4 +1,4 @@
-import { migrate } from "drizzle-orm/neon-serverless/migrator";
+import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { readFile, unlink, writeFile } from "fs/promises";
 import path, { join } from "path";
 import { connectionString } from "./config/connection";

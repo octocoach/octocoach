@@ -1,53 +1,50 @@
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
-import { WebSocket } from "undici";
+import "./polyfills/crypto";
+import { neonConfig } from "@neondatabase/serverless";
+import { VercelPool, createPool, sql } from "@vercel/postgres";
+import { drizzle } from "drizzle-orm/vercel-postgres";
+import ws from "ws";
 import { mkOrgSchema } from "./schemas/org/schema";
 import { publicSchema } from "./schemas/public/schema";
-import ws from "ws";
 
 const connectionString = process.env.POSTGRES_URL;
 
-console.log(connectionString);
+let client: VercelPool;
 
-let pool: Pool;
+console.log(connectionString);
 
 if (!process.env.VERCEL_ENV) {
   neonConfig.webSocketConstructor = ws;
-  neonConfig.wsProxy = (host) => {
-    console.log(`Proxy for ${host}`);
-    return `${host}:5433/v1`;
-  };
+  neonConfig.wsProxy = (host) => `${host}:5433/v1`;
   neonConfig.useSecureWebSocket = false;
   neonConfig.pipelineTLS = false;
   neonConfig.pipelineConnect = false;
 
   let globalClient = global as typeof globalThis & {
-    pool: Pool;
+    client: VercelPool;
   };
 
-  if (!globalClient.pool) {
-    console.log("Creating global pool");
-    globalClient.pool = new Pool({ connectionString });
+  if (!globalClient.client) {
+    globalClient.client = createPool({ connectionString });
   }
 
-  pool = globalClient.pool;
+  client = globalClient.client;
 } else {
-  pool = new Pool({ connectionString });
+  client = sql;
 }
 
-pool.on("error", (err) => {
+client.on("error", (err) => {
   console.error(err);
 });
 
-export const db = drizzle(pool, { schema: publicSchema });
+export const db = drizzle(client, { schema: publicSchema });
 
 export type Database = typeof db;
 
 export const orgDb = (orgSlug: string) =>
-  drizzle(pool, { schema: mkOrgSchema(orgSlug) });
+  drizzle(client, { schema: mkOrgSchema(orgSlug) });
 
 export type OrgDatabase = ReturnType<typeof orgDb>;
 
 export const end = async () => {
-  await pool.end();
+  await client.end();
 };

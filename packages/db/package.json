@@ -13,7 +13,8 @@
     "check": "tsx src/schema/organization/members.ts",
     "create:org": "tsx -r dotenv/config src/create-org.ts",
     "new:org": "tsx -r dotenv/config src/new-org.ts",
-    "get:schema": "tsx -r dotenv/config src/get-schema-files.ts"
+    "get:schema": "tsx -r dotenv/config src/get-schema-files.ts",
+    "test:connection": "tsx -r dotenv/config ./test-connection.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",

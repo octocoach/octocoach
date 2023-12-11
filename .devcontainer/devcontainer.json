@@ -11,13 +11,10 @@
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // This can be used to network with other containers or with the host.
-  "forwardPorts": [3000],
+  "forwardPorts": [3000, 5433, 6432],
   "customizations": {
     "vscode": {
-      "extensions": [
-        "esbenp.prettier-vscode",
-        "ms-azuretools.vscode-docker"
-      ]
+      "extensions": ["esbenp.prettier-vscode", "ms-azuretools.vscode-docker"]
     }
   }
 

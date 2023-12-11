@@ -38,6 +38,16 @@
       "name": "OctoCoach Prod",
       "database": "verceldb",
       "username": "default"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 6432,
+      "driver": "PostgreSQL",
+      "name": "Container",
+      "database": "octocoach",
+      "username": "octocoach",
+      "password": "octocoach"
     }
   ]
 }

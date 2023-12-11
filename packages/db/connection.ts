@@ -1,34 +1,53 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres, { Sql } from "postgres";
-import { connectionString } from "./config/connection";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { WebSocket } from "undici";
 import { mkOrgSchema } from "./schemas/org/schema";
 import { publicSchema } from "./schemas/public/schema";
+import ws from "ws";
 
-let client: Sql<{}>;
+const connectionString = process.env.POSTGRES_URL;
 
-if (process.env.NODE_ENV === "production") {
-  client = postgres(connectionString);
-} else {
+console.log(connectionString);
+
+let pool: Pool;
+
+if (!process.env.VERCEL_ENV) {
+  neonConfig.webSocketConstructor = ws;
+  neonConfig.wsProxy = (host) => {
+    console.log(`Proxy for ${host}`);
+    return `${host}:5433/v1`;
+  };
+  neonConfig.useSecureWebSocket = false;
+  neonConfig.pipelineTLS = false;
+  neonConfig.pipelineConnect = false;
+
   let globalClient = global as typeof globalThis & {
-    client: Sql<{}>;
+    pool: Pool;
   };
 
-  if (!globalClient.client) {
-    globalClient.client = postgres(connectionString);
+  if (!globalClient.pool) {
+    console.log("Creating global pool");
+    globalClient.pool = new Pool({ connectionString });
   }
 
-  client = globalClient.client;
+  pool = globalClient.pool;
+} else {
+  pool = new Pool({ connectionString });
 }
 
-export const db = drizzle(client, { schema: publicSchema });
+pool.on("error", (err) => {
+  console.error(err);
+});
+
+export const db = drizzle(pool, { schema: publicSchema });
 
 export type Database = typeof db;
 
 export const orgDb = (orgSlug: string) =>
-  drizzle(client, { schema: mkOrgSchema(orgSlug) });
+  drizzle(pool, { schema: mkOrgSchema(orgSlug) });
 
 export type OrgDatabase = ReturnType<typeof orgDb>;
 
 export const end = async () => {
-  await client.end();
+  await pool.end();
 };

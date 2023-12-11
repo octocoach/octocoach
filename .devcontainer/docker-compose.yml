@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+  
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+  db:
+    build: 
+      context: .
+      dockerfile: postgres.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: octocoach
+      POSTGRES_USER: octocoach
+      POSTGRES_DB: octocoach
+    ports:
+      - "6432:5432"
+
+  db_proxy:
+    image: ghcr.io/neondatabase/wsproxy:latest
+    environment:
+      APPEND_PORT: "postgres:6432"
+      ALLOW_ADDR_REGEX: ".*"
+      LOG_TRAFFIC: "true"
+    ports:
+      - "5433:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres-data:

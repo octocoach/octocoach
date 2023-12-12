@@ -11,7 +11,7 @@
   "dependencies": {
     "@auth/core": "^0.17.0",
     "@octocoach/db": "workspace:^",
-    "drizzle-orm": "^0.28.6",
+    "drizzle-orm": "^0.29.1",
     "nanoid": "^4.0.2",
     "next-auth": "^4.24.3"
   }

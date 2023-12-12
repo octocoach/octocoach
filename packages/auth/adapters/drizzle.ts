@@ -1,12 +1,12 @@
 import { Adapter } from "@auth/core/adapters";
+import { Database, OrgDatabase } from "@octocoach/db/connection";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { publicSchema } from "@octocoach/db/schemas/public/schema";
 import { and, eq } from "drizzle-orm";
-import { PgDatabase } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 export function authDrizzleAdapter(
-  db: InstanceType<typeof PgDatabase>,
+  db: Database | OrgDatabase,
   org?: string
 ): Adapter {
   const { userTable, accountTable, sessionTable, verificationTokenTable } = org

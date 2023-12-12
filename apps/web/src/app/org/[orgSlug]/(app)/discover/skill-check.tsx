@@ -11,7 +11,7 @@ import { useState, useTransition } from "react";
 const SkillDescription = ({ description }: { description: string }) => {
   const [showMore, setShowMore] = useState(false);
 
-  const sentences = description.split(". ");
+  const sentences = description ? description.split(". ") : [];
 
   if (!sentences.length) return null;
 

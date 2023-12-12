@@ -14,7 +14,7 @@ console.log(connectionString);
 
 if (!process.env.VERCEL_ENV) {
   neonConfig.webSocketConstructor = ws;
-  neonConfig.wsProxy = (host) => `${host}:5433/v1`;
+  neonConfig.wsProxy = () => `db_proxy:80/v1`;
   neonConfig.useSecureWebSocket = false;
   neonConfig.pipelineTLS = false;
   neonConfig.pipelineConnect = false;

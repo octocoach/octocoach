@@ -92,7 +92,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
         FAQs
       </Text>
       <Stack>
-        {content.questions.map((qa, idx) => (
+        {content.questions?.map((qa, idx) => (
           <Faq
             key={idx}
             qa={qa}

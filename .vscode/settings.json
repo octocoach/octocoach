@@ -41,8 +41,8 @@
     },
     {
       "previewLimit": 50,
-      "server": "localhost",
-      "port": 6432,
+      "server": "db",
+      "port": 5432,
       "driver": "PostgreSQL",
       "name": "Container",
       "database": "octocoach",

@@ -1,9 +1,8 @@
 import { orgDb } from "@octocoach/db/connection";
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 
-export default NextAuth;
-export { getServerSession } from "next-auth";
-export type { DefaultSession, DefaultUser, Session } from "next-auth";
+export type { DefaultSession, Session } from "next-auth";
+
+export { mkAuth } from "./auth";
 
 interface OAuthProvider {
   displayName: string;
@@ -27,14 +26,3 @@ export const isCoach = async (userId: string, orgSlug: string) => {
 
   return !!coach;
 };
-
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: User;
-  }
-
-  interface User extends DefaultUser {
-    id: string;
-    isCoach?: boolean;
-  }
-}

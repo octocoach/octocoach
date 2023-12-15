@@ -1,5 +1,4 @@
-import { Session, getServerSession, isCoach } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { Session, isCoach, mkAuth } from "@octocoach/auth";
 import { cookies } from "next/headers";
 
 interface AuthContext {
@@ -14,7 +13,8 @@ export const createContextInner = async ({ session }: AuthContext) => {
 
 export const createContext = async () => {
   const orgCookie = cookies().get("org");
-  const session = await getServerSession(await mkAuthOptions(orgCookie?.value));
+  const { auth } = await mkAuth(orgCookie?.value);
+  const session = await auth();
 
   if (session?.user?.id && orgCookie?.value) {
     session.user.isCoach = await isCoach(session?.user.id, orgCookie?.value);

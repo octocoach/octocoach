@@ -1,7 +1,6 @@
 "use server";
 
-import { getServerSession } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { authOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
 import { Skill } from "@octocoach/db/schemas/common/skill";
 import { SkillLevel } from "@octocoach/db/schemas/common/skill-level";
@@ -23,7 +22,7 @@ export const addUserTaskInterest = async (
   orgSlug: string,
   { answer, taskId }: AddUserTaskInterest
 ) => {
-  const { user } = await getServerSession(await mkAuthOptions(orgSlug));
+  const { user } = await authOrRedirect(orgSlug);
   if (!user) throw new Error("User not found");
 
   const db = orgDb(orgSlug);
@@ -45,7 +44,7 @@ export const addUserSkillLevel = async (
   orgSlug: string,
   skillAssessment: SkillAssessment
 ) => {
-  const { user } = await getServerSession(await mkAuthOptions(orgSlug));
+  const { user } = await authOrRedirect(orgSlug);
   if (!user) throw new Error("User not found");
 
   const db = orgDb(orgSlug);

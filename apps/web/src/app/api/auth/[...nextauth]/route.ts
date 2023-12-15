@@ -1,19 +1,20 @@
-import NextAuth from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { mkAuth } from "@octocoach/auth";
 import { NextRequest } from "next/server";
 
-const handler = async (
+const handlers = async (
   req: NextRequest,
   context: { params: { nextauth: string[] } }
 ) => {
   const org = req.cookies.get("org");
+  const orgSlug = org?.value;
 
   const isSignInPage =
     req.method === "GET" &&
     context.params.nextauth.length === 1 &&
     context.params.nextauth[0] === "signin";
 
-  return NextAuth(req, context, await mkAuthOptions(org?.value, isSignInPage));
+  return (await mkAuth(orgSlug, isSignInPage)).handlers;
 };
 
-export { handler as GET, handler as POST };
+export { handlers as GET, handlers as POST };
+export const runtime = "edge";

@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, desc, eq, sql } from "@octocoach/db/operators";
 import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
@@ -23,7 +23,7 @@ export default async function Page({
 }: {
   params: { orgSlug: string; jobId: number };
 }) {
-  const session = await getServerSessionOrRedirect(params.orgSlug);
+  const session = await authOrRedirect(params.orgSlug);
 
   const baseUrl = getBaseUrl();
 

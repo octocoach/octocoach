@@ -1,5 +1,4 @@
-import { getServerSession } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { mkAuth } from "@octocoach/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -8,9 +7,10 @@ import { redirect } from "next/navigation";
  * @param orgSlug - The organization slug.
  * @returns The session object.
  */
-export async function getServerSessionOrRedirect(orgSlug?: string) {
+export async function authOrRedirect(orgSlug?: string) {
   const callbackUrl = headers().get("x-path") || "/";
-  const session = await getServerSession(await mkAuthOptions(orgSlug));
+  const { auth } = await mkAuth(orgSlug);
+  const session = await auth();
   const searchParams = new URLSearchParams({
     callbackUrl,
   });

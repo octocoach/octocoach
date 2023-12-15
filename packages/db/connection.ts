@@ -1,4 +1,4 @@
-import "./polyfills/crypto";
+// import "./polyfills/crypto";
 import { neonConfig } from "@neondatabase/serverless";
 import { VercelPool, createPool, sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
@@ -9,8 +9,6 @@ import { publicSchema } from "./schemas/public/schema";
 const connectionString = process.env.POSTGRES_URL;
 
 let client: VercelPool;
-
-console.log(connectionString);
 
 if (!process.env.VERCEL_ENV) {
   neonConfig.webSocketConstructor = ws;

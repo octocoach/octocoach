@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
 import { and, desc, eq, gt, sql } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
@@ -7,7 +7,7 @@ import { taskTable } from "@octocoach/db/schemas/common/task";
 import { mkUsersTaskInterestTable } from "@octocoach/db/schemas/org/users-task-interest";
 
 export const getMatchingJobs = async (orgSlug: string) => {
-  const session = await getServerSessionOrRedirect(orgSlug);
+  const session = await authOrRedirect(orgSlug);
 
   const db = orgDb(orgSlug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(orgSlug);

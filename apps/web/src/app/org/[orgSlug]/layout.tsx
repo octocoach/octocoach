@@ -1,5 +1,4 @@
-import { getServerSession } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { mkAuth } from "@octocoach/auth";
 import { SessionProvider } from "@octocoach/auth/react";
 import { db } from "@octocoach/db/connection";
 import { notFound } from "next/navigation";
@@ -25,7 +24,9 @@ export default async function Layout({
     notFound();
   }
 
-  const session = await getServerSession(await mkAuthOptions(params.orgSlug));
+  const { auth } = await mkAuth(params.orgSlug);
+
+  const session = await auth();
 
   return (
     <SessionProvider session={session}>

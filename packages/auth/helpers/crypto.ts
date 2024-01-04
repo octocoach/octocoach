@@ -1,8 +1,8 @@
 const getCryptoModule = async () => {
   if (typeof (globalThis as any).EdgeRuntime === "string") {
-    return (await eval('import("crypto")')).webcrypto;
-  } else {
     return crypto;
+  } else {
+    throw new Error("Can't use crypto module in this environment");
   }
 };
 

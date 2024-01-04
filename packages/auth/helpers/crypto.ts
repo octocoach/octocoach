@@ -1,7 +1,10 @@
-const getCryptoModule = async () =>
-  typeof (globalThis as any).EdgeRuntime === "string"
-    ? (await import("crypto")).webcrypto
-    : crypto;
+const getCryptoModule = async () => {
+  if (typeof (globalThis as any).EdgeRuntime === "string") {
+    return (await eval('import("crypto")')).webcrypto;
+  } else {
+    return crypto;
+  }
+};
 
 const getKeys = async () => {
   const crypto = await getCryptoModule();

@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
 DO $$ BEGIN
  CREATE TYPE "job_source" AS ENUM('indeed', 'stepstone', 'linkedin');
 EXCEPTION

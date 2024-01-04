@@ -48,7 +48,10 @@ export const mkAuth = async (orgSlug?: string, isSignInPage?: boolean) => {
     ],
     callbacks: {
       async session({ session, user }) {
-        return { ...session, id: user.id };
+        return {
+          ...session,
+          user: { ...session.user, id: user.id },
+        };
       },
     },
   });

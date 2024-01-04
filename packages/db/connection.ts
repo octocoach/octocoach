@@ -11,7 +11,13 @@ const connectionString = process.env.POSTGRES_URL;
 let client: VercelPool;
 
 if (!process.env.VERCEL_ENV) {
-  neonConfig.webSocketConstructor = ws;
+  // We are running locally
+
+  if (!(typeof (globalThis as any).EdgeRuntime === "string")) {
+    // We are running in node and need to provide a WebSocket constructor
+    neonConfig.webSocketConstructor = ws;
+  }
+
   neonConfig.wsProxy = () => `db_proxy:80/v1`;
   neonConfig.useSecureWebSocket = false;
   neonConfig.pipelineTLS = false;

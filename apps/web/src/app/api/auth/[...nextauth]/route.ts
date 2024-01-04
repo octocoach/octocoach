@@ -1,7 +1,7 @@
 import { mkAuth } from "@octocoach/auth";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-const handlers = async (
+export const GET = async (
   req: NextRequest,
   context: { params: { nextauth: string[] } }
 ) => {
@@ -9,12 +9,36 @@ const handlers = async (
   const orgSlug = org?.value;
 
   const isSignInPage =
-    req.method === "GET" &&
     context.params.nextauth.length === 1 &&
     context.params.nextauth[0] === "signin";
 
-  return (await mkAuth(orgSlug, isSignInPage)).handlers;
+  const { handlers } = await mkAuth(orgSlug, isSignInPage);
+
+  if (handlers.GET) {
+    return await handlers.GET(req);
+  }
+
+  return new NextResponse("GET method not allowed", { status: 405 });
 };
 
-export { handlers as GET, handlers as POST };
+export const POST = async (
+  req: NextRequest,
+  context: { params: { nextauth: string[] } }
+) => {
+  const org = req.cookies.get("org");
+  const orgSlug = org?.value;
+
+  const isSignInPage =
+    context.params.nextauth.length === 1 &&
+    context.params.nextauth[0] === "signin";
+
+  const { handlers } = await mkAuth(orgSlug, isSignInPage);
+
+  if (handlers.POST) {
+    return await handlers.POST(req);
+  }
+
+  return new NextResponse("POST method not allowed", { status: 405 });
+};
 export const runtime = "edge";
+export const preferredRegion = ["fra1"];

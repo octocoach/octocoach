@@ -65,6 +65,7 @@ export default async (request: NextRequest) => {
 
   const locale = request.cookies.get("locale")?.value || detectLocale(request);
   requestHeaders.set(xHeaders.locale, locale);
+  requestHeaders.set(xHeaders.path, pathname);
 
   const responseInit = {
     request: {

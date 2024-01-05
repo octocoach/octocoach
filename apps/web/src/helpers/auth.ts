@@ -1,6 +1,7 @@
 import { mkAuth } from "@octocoach/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { xHeaders } from "src/const";
 
 /**
  * Retrieves the server session and redirects to the signin page if the session is not found.
@@ -8,7 +9,7 @@ import { redirect } from "next/navigation";
  * @returns The session object.
  */
 export async function authOrRedirect(orgSlug?: string) {
-  const callbackUrl = headers().get("x-path") || "/";
+  const callbackUrl = headers().get(xHeaders.path) || "/";
   const { auth } = await mkAuth(orgSlug);
   const session = await auth();
   const searchParams = new URLSearchParams({

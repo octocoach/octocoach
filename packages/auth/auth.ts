@@ -9,7 +9,7 @@ const getGithubCredentials = async (
   organization?: Organization
 ): Promise<{ clientId: string; clientSecret: string }> => {
   if (
-    process.env.NODE_ENV === "production" &&
+    process.env.VERCEL_ENV === "production" &&
     organization?.githubId &&
     organization?.githubSecret
   ) {

@@ -56,6 +56,8 @@ export default async (request: NextRequest) => {
 
   response.headers.set("x-path", request.nextUrl.pathname);
 
+  console.log("pathname", request.nextUrl.pathname);
+
   if (
     !org &&
     request.nextUrl.pathname.startsWith("/org") &&

@@ -34,3 +34,6 @@ export default async function Layout({
     </SessionProvider>
   );
 }
+
+export const runtime = "edge";
+export const preferredRegion = ["fra1"];

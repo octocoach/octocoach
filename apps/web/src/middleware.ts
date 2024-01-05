@@ -1,4 +1,7 @@
 import { match } from "@formatjs/intl-localematcher";
+import { db } from "@octocoach/db/connection";
+import { eq } from "@octocoach/db/operators";
+import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import Negotiator from "negotiator";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -27,6 +30,14 @@ const orgs: Record<string, string> = {
 };
 
 export default async (request: NextRequest) => {
+  const orgSlug = await db
+    .select()
+    .from(organizationTable)
+    .where(eq(organizationTable.domain, "q15.co"))
+    .then((res) => res[0]?.slug);
+
+  console.log("orgSlug", orgSlug);
+
   const requestHeaders = new Headers(request.headers);
 
   const pathname = request.nextUrl.pathname;
@@ -35,8 +46,6 @@ export default async (request: NextRequest) => {
     .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
   const org = Object.keys(orgs).includes(hostname) ? orgs[hostname] : null;
-
-  requestHeaders.set("x-test", "123");
 
   const response =
     org && !pathname.startsWith("/api")

@@ -70,9 +70,6 @@ export default async function Layout({
 
   const baseUrl = getBaseUrl();
 
-  const test = headers().get("x-test");
-  console.log("test", test);
-
   return (
     <OrganizationProvider organization={{ ...organization, content }}>
       <Container width="contained">

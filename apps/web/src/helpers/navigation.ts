@@ -22,10 +22,11 @@ export function orgRedirect(path: string) {
 }
 
 export function getBaseUrl() {
-  const basePath = headers().get("x-base");
+  let basePath = headers().get("x-base");
 
   if (!basePath) {
-    throw new Error("No base path found");
+    console.warn("No base path found.");
+    basePath = "/";
   }
 
   return basePath;

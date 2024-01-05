@@ -27,22 +27,34 @@ const orgs: Record<string, string> = {
 };
 
 export default async (request: NextRequest) => {
-  const url = request.nextUrl;
-  let hostname = request.headers
+  const requestHeaders = new Headers(request.headers);
+
+  const pathname = request.nextUrl.pathname;
+  const hostname = request.headers
     .get("host")
     .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
   const org = Object.keys(orgs).includes(hostname) ? orgs[hostname] : null;
 
+  requestHeaders.set("x-test", "123");
+
   const response =
-    org && !url.pathname.startsWith("/api")
-      ? NextResponse.rewrite(new URL(`/org/${org}${url.pathname}`, request.url))
-      : NextResponse.next();
+    org && !pathname.startsWith("/api")
+      ? NextResponse.rewrite(new URL(`/org/${org}${pathname}`, request.url), {
+          request: {
+            headers: requestHeaders,
+          },
+        })
+      : NextResponse.next({
+          request: {
+            headers: requestHeaders,
+          },
+        });
 
   if (org) {
     response.headers.set("x-org", org);
     response.cookies.set("org", org);
-    response.headers.set("x-base", "/");
+    requestHeaders.set("x-base", "/");
   }
 
   const localeCookie = request.cookies.get("locale");
@@ -54,20 +66,14 @@ export default async (request: NextRequest) => {
     response.headers.set("x-locale", locale);
   }
 
-  response.headers.set("x-path", request.nextUrl.pathname);
+  response.headers.set("x-path", pathname);
 
-  console.log("pathname", request.nextUrl.pathname);
-
-  if (
-    !org &&
-    request.nextUrl.pathname.startsWith("/org") &&
-    !(request.nextUrl.pathname === "/org")
-  ) {
-    const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
+  if (!org && pathname.startsWith("/org") && !(pathname === "/org")) {
+    const org = pathname.replace("/org/", "").split("/")[0];
     response.cookies.set("org", org);
     response.headers.set("x-org", org);
-    response.headers.set("x-base", `/org/${org}/`);
-  } else if (!request.nextUrl.pathname.startsWith("/api") && !org) {
+    requestHeaders.set("x-base", `/org/${org}/`);
+  } else if (!pathname.startsWith("/api") && !org) {
     response.cookies.delete("org");
   }
 

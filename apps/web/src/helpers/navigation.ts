@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { xHeaders } from "src/const";
 
 /**
  * Redirects to the specified path within the organization.
@@ -22,7 +23,7 @@ export function orgRedirect(path: string) {
 }
 
 export function getBaseUrl() {
-  let basePath = headers().get("x-base");
+  let basePath = headers().get(xHeaders.base);
 
   if (!basePath) {
     console.warn("No base path found.");

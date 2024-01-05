@@ -1,11 +1,12 @@
 import { mkAuth } from "@octocoach/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { cookieNames } from "src/const";
 
 export const GET = async (
   req: NextRequest,
   context: { params: { nextauth: string[] } }
 ) => {
-  const org = req.cookies.get("org");
+  const org = req.cookies.get(cookieNames.org);
   const orgSlug = org?.value;
 
   const isSignInPage =
@@ -25,7 +26,7 @@ export const POST = async (
   req: NextRequest,
   context: { params: { nextauth: string[] } }
 ) => {
-  const org = req.cookies.get("org");
+  const org = req.cookies.get(cookieNames.org);
   const orgSlug = org?.value;
 
   const isSignInPage =

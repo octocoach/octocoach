@@ -3,8 +3,8 @@ import { db } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import Negotiator from "negotiator";
-
 import { NextRequest, NextResponse } from "next/server";
+import { cookieNames, xHeaders } from "./const";
 
 // TODO: This is a workaround until this is solved:
 // https://github.com/ivanhofer/typesafe-i18n/discussions/580#discussioncomment-6465405
@@ -25,65 +25,65 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-const orgs: Record<string, string> = {
-  "q15.co": "q15",
-};
-
 export default async (request: NextRequest) => {
-  const orgSlug = await db
-    .select()
-    .from(organizationTable)
-    .where(eq(organizationTable.domain, "q15.co"))
-    .then((res) => res[0]?.slug);
-
-  console.log("orgSlug", orgSlug);
-
-  const requestHeaders = new Headers(request.headers);
-
+  const host = request.headers.get("host");
   const pathname = request.nextUrl.pathname;
-  const hostname = request.headers
-    .get("host")
-    .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
+  const requestHeaders = new Headers(request.headers);
+  let orgSlug: string | undefined;
+  let isVanityUrl = false;
 
-  const org = Object.keys(orgs).includes(hostname) ? orgs[hostname] : null;
+  if (
+    host === "localhost:3000" ||
+    host === process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
+    host.endsWith("vercel.app")
+  ) {
+    if (pathname.startsWith("/org") && !(pathname === "/org")) {
+      orgSlug = pathname.replace("/org/", "").split("/")[0];
+      requestHeaders.set(xHeaders.base, `/org/${orgSlug}/`);
+    }
+  } else {
+    orgSlug = await db
+      .select()
+      .from(organizationTable)
+      .where(eq(organizationTable.domain, host))
+      .then((res) => res[0]?.slug);
+
+    if (!orgSlug) {
+      console.log("Invalid domain, redirecting to root domain.");
+      return NextResponse.redirect(
+        `https://${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+      );
+    } else {
+      isVanityUrl = true;
+      requestHeaders.set(xHeaders.base, "/");
+    }
+  }
+
+  if (orgSlug) {
+    requestHeaders.set(xHeaders.org, orgSlug);
+  }
+
+  const locale = request.cookies.get("locale")?.value || detectLocale(request);
+  requestHeaders.set(xHeaders.locale, locale);
+
+  const responseInit = {
+    request: {
+      headers: requestHeaders,
+    },
+  };
 
   const response =
-    org && !pathname.startsWith("/api")
-      ? NextResponse.rewrite(new URL(`/org/${org}${pathname}`, request.url), {
-          request: {
-            headers: requestHeaders,
-          },
-        })
-      : NextResponse.next({
-          request: {
-            headers: requestHeaders,
-          },
-        });
+    isVanityUrl && !pathname.startsWith("/api")
+      ? NextResponse.rewrite(
+          new URL(`/org/${orgSlug}${pathname}`, request.url),
+          responseInit
+        )
+      : NextResponse.next(responseInit);
 
-  if (org) {
-    response.headers.set("x-org", org);
-    response.cookies.set("org", org);
-    requestHeaders.set("x-base", "/");
-  }
-
-  const localeCookie = request.cookies.get("locale");
-
-  if (!localeCookie) {
-    const locale = detectLocale(request);
-
-    response.cookies.set("locale", locale);
-    response.headers.set("x-locale", locale);
-  }
-
-  response.headers.set("x-path", pathname);
-
-  if (!org && pathname.startsWith("/org") && !(pathname === "/org")) {
-    const org = pathname.replace("/org/", "").split("/")[0];
-    response.cookies.set("org", org);
-    response.headers.set("x-org", org);
-    requestHeaders.set("x-base", `/org/${org}/`);
-  } else if (!pathname.startsWith("/api") && !org) {
-    response.cookies.delete("org");
+  if (orgSlug) {
+    response.cookies.set(cookieNames.org, orgSlug);
+  } else if (!pathname.startsWith("/api")) {
+    response.cookies.delete(cookieNames.org);
   }
 
   return response;

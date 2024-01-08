@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { ReactNode } from "react";
@@ -10,7 +10,7 @@ export default async function Layout({
   children: ReactNode;
   params: { orgSlug };
 }) {
-  const session = await getServerSessionOrRedirect(params.orgSlug);
+  const session = await authOrRedirect(params.orgSlug);
 
   const db = orgDb(params.orgSlug);
 

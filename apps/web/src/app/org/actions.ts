@@ -1,8 +1,7 @@
 "use server";
 
-import { getServerSession } from "@octocoach/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { encrypt } from "@octocoach/auth/helpers";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
 import { db } from "@octocoach/db/connection";
 import { createOrgStatements } from "@octocoach/db/helpers/create-org";
 import { eq, sql } from "@octocoach/db/operators";
@@ -45,7 +44,7 @@ export async function createOrganization({
   state,
   country,
 }: CreateOrganization) {
-  const { user } = await getServerSession(await mkAuthOptions());
+  const { user } = await authOrRedirect();
 
   if (!user) redirect("/");
 

@@ -6,6 +6,6 @@ export const accountTable = pgTable(
   "account",
   mkAccountCols(userTable),
   (table) => ({
-    pk: primaryKey(table.provider, table.providerAccountId),
+    pk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
   })
 );

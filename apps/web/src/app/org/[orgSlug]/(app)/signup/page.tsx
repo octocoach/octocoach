@@ -1,8 +1,7 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import { orgDb } from "@octocoach/db/connection";
-import { Box, Button, Grid, Stack, Text } from "@octocoach/ui";
-import LinkAccounts from "./link-accounts";
+import { Box, Grid, Text } from "@octocoach/ui";
 import { Profile } from "./profile";
 
 export default async function Page({
@@ -10,7 +9,7 @@ export default async function Page({
 }: {
   params: { orgSlug: string };
 }) {
-  const session = await getServerSessionOrRedirect(params.orgSlug);
+  const session = await authOrRedirect(params.orgSlug);
   const userId = session.user.id;
   const userAccounts = await getUserAccounts(userId, params.orgSlug);
 

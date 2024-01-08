@@ -1,7 +1,10 @@
 import { match } from "@formatjs/intl-localematcher";
+import { db } from "@octocoach/db/connection";
+import { eq } from "@octocoach/db/operators";
+import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import Negotiator from "negotiator";
-
 import { NextRequest, NextResponse } from "next/server";
+import { cookieNames, xHeaders } from "./const";
 
 // TODO: This is a workaround until this is solved:
 // https://github.com/ivanhofer/typesafe-i18n/discussions/580#discussioncomment-6465405
@@ -22,51 +25,66 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-const orgs: Record<string, string> = {
-  "q15.co": "q15",
-};
-
 export default async (request: NextRequest) => {
-  const url = request.nextUrl;
-  let hostname = request.headers
-    .get("host")
-    .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
-
-  const org = Object.keys(orgs).includes(hostname) ? orgs[hostname] : null;
-
-  const response =
-    org && !url.pathname.startsWith("/api")
-      ? NextResponse.rewrite(new URL(`/org/${org}${url.pathname}`, request.url))
-      : NextResponse.next();
-
-  if (org) {
-    response.headers.set("x-org", org);
-    response.cookies.set("org", org);
-    response.headers.set("x-base", "/");
-  }
-
-  const localeCookie = request.cookies.get("locale");
-
-  if (!localeCookie) {
-    const locale = detectLocale(request);
-
-    response.cookies.set("locale", locale);
-    response.headers.set("x-locale", locale);
-  }
-
-  response.headers.set("x-path", request.nextUrl.pathname);
+  const host = request.headers.get("host");
+  const pathname = request.nextUrl.pathname;
+  const requestHeaders = new Headers(request.headers);
+  let orgSlug: string | undefined;
+  let isVanityUrl = false;
 
   if (
-    !org &&
-    request.nextUrl.pathname.startsWith("/org") &&
-    !(request.nextUrl.pathname === "/org")
+    host === "localhost:3000" ||
+    host === process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
+    host.endsWith("vercel.app")
   ) {
-    const org = request.nextUrl.pathname.replace("/org/", "").split("/")[0];
-    response.cookies.set("org", org);
-    response.headers.set("x-org", org);
-    response.headers.set("x-base", `/org/${org}/`);
-  } else if (!request.nextUrl.pathname.startsWith("/api") && !org) {
-    response.cookies.delete("org");
+    if (pathname.startsWith("/org") && !(pathname === "/org")) {
+      orgSlug = pathname.replace("/org/", "").split("/")[0];
+      requestHeaders.set(xHeaders.base, `/org/${orgSlug}/`);
+    }
+  } else {
+    orgSlug = await db
+      .select()
+      .from(organizationTable)
+      .where(eq(organizationTable.domain, host))
+      .then((res) => res[0]?.slug);
+
+    if (!orgSlug) {
+      console.log("Invalid domain, redirecting to root domain.");
+      return NextResponse.redirect(
+        `https://${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+      );
+    } else {
+      isVanityUrl = true;
+      requestHeaders.set(xHeaders.base, "/");
+    }
+  }
+
+  if (orgSlug) {
+    requestHeaders.set(xHeaders.org, orgSlug);
+  }
+
+  const locale = request.cookies.get("locale")?.value || detectLocale(request);
+  requestHeaders.set(xHeaders.locale, locale);
+  requestHeaders.set(xHeaders.path, pathname);
+
+  const responseInit = {
+    request: {
+      headers: requestHeaders,
+    },
+  };
+
+  const response =
+    isVanityUrl && !pathname.startsWith("/api")
+      ? NextResponse.rewrite(
+          new URL(`/org/${orgSlug}${pathname}`, request.url),
+          responseInit
+        )
+      : NextResponse.next(responseInit);
+
+  if (orgSlug) {
+    response.cookies.set(cookieNames.org, orgSlug);
+  } else if (!pathname.startsWith("/api")) {
+    response.cookies.delete(cookieNames.org);
   }
 
   return response;

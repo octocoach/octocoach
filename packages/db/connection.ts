@@ -1,24 +1,43 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres, { Sql } from "postgres";
-import { connectionString } from "./config/connection";
+import { neonConfig } from "@neondatabase/serverless";
+import { VercelPool, createPool, sql } from "@vercel/postgres";
+import { drizzle } from "drizzle-orm/vercel-postgres";
+import ws from "ws";
 import { mkOrgSchema } from "./schemas/org/schema";
 import { publicSchema } from "./schemas/public/schema";
 
-let client: Sql<{}>;
+const connectionString = process.env.POSTGRES_URL;
 
-if (process.env.NODE_ENV === "production") {
-  client = postgres(connectionString);
-} else {
+let client: VercelPool;
+
+if (!process.env.VERCEL_ENV) {
+  // We are running locally
+
+  if (!(typeof (globalThis as any).EdgeRuntime === "string")) {
+    // We are running in node and need to provide a WebSocket constructor
+    neonConfig.webSocketConstructor = ws;
+  }
+
+  neonConfig.wsProxy = () => `db_proxy:80/v1`;
+  neonConfig.useSecureWebSocket = false;
+  neonConfig.pipelineTLS = false;
+  neonConfig.pipelineConnect = false;
+
   let globalClient = global as typeof globalThis & {
-    client: Sql<{}>;
+    client: VercelPool;
   };
 
   if (!globalClient.client) {
-    globalClient.client = postgres(connectionString);
+    globalClient.client = createPool({ connectionString });
   }
 
   client = globalClient.client;
+} else {
+  client = sql;
 }
+
+client.on("error", (err) => {
+  console.error(err);
+});
 
 export const db = drizzle(client, { schema: publicSchema });
 

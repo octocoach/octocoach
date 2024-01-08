@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { mkAuth } from "@octocoach/auth";
 import { put } from "@vercel/blob";
-import { getServerSession } from "@octocoach/auth";
-import mkAuthOptions from "@octocoach/auth/next-auth-config";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const session = await getServerSession(await mkAuthOptions());
+  const { auth } = await mkAuth();
+  const session = await auth();
 
   console.log(session);
 

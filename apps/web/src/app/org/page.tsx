@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { db, orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { whitelistedUsers } from "@octocoach/db/schemas/common/organization";
@@ -14,7 +14,7 @@ import { NewOrganization } from "./new-organization";
 export const maxDuration = 120;
 
 export default async function Page() {
-  const session = await getServerSessionOrRedirect();
+  const session = await authOrRedirect();
   const { user } = session;
 
   const organization = await db.query.organizationTable.findFirst({

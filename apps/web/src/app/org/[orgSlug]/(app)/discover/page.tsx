@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, desc, eq, gte, isNull } from "@octocoach/db/operators";
@@ -22,7 +22,7 @@ export default async function Page({
 }: {
   params: { orgSlug: string };
 }) {
-  const session = await getServerSessionOrRedirect(params.orgSlug);
+  const session = await authOrRedirect(params.orgSlug);
 
   const db = orgDb(params.orgSlug);
   const usersTaskInterestTable = mkUsersTaskInterestTable(params.orgSlug);

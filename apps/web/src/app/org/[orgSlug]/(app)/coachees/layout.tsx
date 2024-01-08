@@ -1,4 +1,4 @@
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { isCoach } from "@octocoach/auth";
 import { Box, Text } from "@octocoach/ui";
 
@@ -9,7 +9,7 @@ export default async function Layout({
   children: React.ReactElement;
   params: { orgSlug: string };
 }) {
-  const session = await getServerSessionOrRedirect(params.orgSlug);
+  const session = await authOrRedirect(params.orgSlug);
 
   if (!(await isCoach(session.user.id, params.orgSlug))) {
     return (

@@ -1,9 +1,9 @@
 import { orgDb } from "@octocoach/db/connection";
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession } from "next-auth";
 
-export default NextAuth;
-export { getServerSession } from "next-auth";
-export type { DefaultSession, DefaultUser, Session } from "next-auth";
+export type { DefaultSession, Session } from "next-auth";
+
+export { mkAuth } from "./auth";
 
 interface OAuthProvider {
   displayName: string;
@@ -33,7 +33,7 @@ declare module "next-auth" {
     user: User;
   }
 
-  interface User extends DefaultUser {
+  interface User {
     id: string;
     isCoach?: boolean;
   }

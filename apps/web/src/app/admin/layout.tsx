@@ -1,5 +1,5 @@
 import { superAdminUser } from "@app/constants";
-import { getServerSessionOrRedirect } from "@helpers/auth";
+import { authOrRedirect } from "@helpers/auth";
 import { SessionProvider } from "@octocoach/auth/react";
 import { Box, Text } from "@octocoach/ui";
 import LayoutClient from "./layout-client";
@@ -9,7 +9,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSessionOrRedirect();
+  const session = await authOrRedirect();
 
   if (!session.user || !(session.user.email === superAdminUser)) {
     return (

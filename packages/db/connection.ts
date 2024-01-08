@@ -1,4 +1,3 @@
-// import "./polyfills/crypto";
 import { neonConfig } from "@neondatabase/serverless";
 import { VercelPool, createPool, sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";

@@ -37,7 +37,7 @@ export const addUserTaskInterest = async (
     interest,
   });
 
-  revalidatePath(`/org/${orgSlug}/(app)/discover`, "page");
+  revalidatePath("/org/[orgSlug]/(app)/discover", "page");
 };
 
 export const addUserSkillLevel = async (
@@ -57,5 +57,5 @@ export const addUserSkillLevel = async (
     skillLevel: skillAssessment.level,
   });
 
-  revalidatePath(`/org/${orgSlug}/(app)/discover`, "page");
+  revalidatePath("/org/[orgSlug]/(app)/discover", "page");
 };

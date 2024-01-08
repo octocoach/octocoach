@@ -1,14 +1,4 @@
-const getCryptoModule = async () => {
-  if (typeof (globalThis as any).EdgeRuntime === "string") {
-    return crypto;
-  } else {
-    throw new Error("Can't use crypto module in this environment");
-  }
-};
-
 const getKeys = async () => {
-  const crypto = await getCryptoModule();
-
   const keyIv = process.env.CIPHER_KEY;
   if (!keyIv) {
     throw new Error("CIPHER_KEY not found");
@@ -30,8 +20,6 @@ const getKeys = async () => {
 };
 
 export async function encrypt(text: string) {
-  const crypto = await getCryptoModule();
-
   const { key, iv } = await getKeys();
   const textBuffer = new TextEncoder().encode(text);
   const encryptedBuffer = await crypto.subtle.encrypt(
@@ -44,8 +32,6 @@ export async function encrypt(text: string) {
 }
 
 export async function decrypt(hexString: string) {
-  const crypto = await getCryptoModule();
-
   const { key, iv } = await getKeys();
   const encryptedBuffer = hexToBuffer(hexString);
   const decryptedBuffer = await crypto.subtle.decrypt(

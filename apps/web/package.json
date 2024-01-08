@@ -41,5 +41,8 @@
     "sharp": "^0.33.1",
     "tsconfig": "workspace:*",
     "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

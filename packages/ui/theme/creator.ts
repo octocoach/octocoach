@@ -24,7 +24,7 @@ export const createThemeBase = (flavor: Flavor) => {
 
   return {
     fonts: {
-      base: "'Recursive', sans-serif",
+      base: "var(--font-recursive)",
     },
 
     color: {

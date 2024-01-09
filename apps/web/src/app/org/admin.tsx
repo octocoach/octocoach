@@ -20,7 +20,7 @@ export default function Admin({
   const [isPending, startTransition] = useTransition();
 
   async function onDelete() {
-    await startTransition(async () => {
+    await startTransition(() => {
       deleteOrgAction(organization);
     });
   }

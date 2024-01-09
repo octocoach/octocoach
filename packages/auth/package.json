@@ -5,7 +5,7 @@
     "generate:keys": "tsx ./generate-keys.ts"
   },
   "devDependencies": {
-    "next": "^13.5",
+    "next": "^14.0.4",
     "tsconfig": "workspace:^",
     "tsx": "^3.12.7"
   },
@@ -17,6 +17,6 @@
     "next-auth": "5.0.0-beta.4"
   },
   "peerDependencies": {
-    "next": "^13.5"
+    "next": "^14"
   }
 }

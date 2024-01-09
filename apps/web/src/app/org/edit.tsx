@@ -12,8 +12,9 @@ import {
   Text,
   useFormStore,
 } from "@octocoach/ui";
-import { onSubmit, type OrganizationDetails } from "./actions";
 import Upload from "@octocoach/ui/Form/Upload";
+import Image from "next/image";
+import { onSubmit, type OrganizationDetails } from "./actions";
 
 export const Edit = ({ organization }: { organization: Organization }) => {
   const store = useFormStore<OrganizationDetails>({
@@ -42,7 +43,23 @@ export const Edit = ({ organization }: { organization: Organization }) => {
         <Stack>
           <Text size="xl">Marketing</Text>
           <Text size="l">Logo</Text>
-          {values.logo ? <img src={values.logo} alt="logo" width={64} /> : null}
+          <div
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              height: 64,
+              width: "100%",
+            }}
+          >
+            {values.logo ? (
+              <Image
+                src={values.logo}
+                alt="logo"
+                fill
+                style={{ objectFit: "contain", objectPosition: "left" }}
+              />
+            ) : null}
+          </div>
           <Upload onUploaded={onLogoUpload} />
           <Stack direction="horizontal">
             <FormField name={$.primaryColor} label="Primary color" grow>

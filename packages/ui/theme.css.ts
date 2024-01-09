@@ -8,7 +8,7 @@ import {
 
 export const vars = createThemeContract({
   fonts: {
-    base: "'Recursive', sans-serif",
+    base: "",
   },
 
   color: {

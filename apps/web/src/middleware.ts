@@ -25,7 +25,7 @@ function detectLocale(request: NextRequest) {
   return locale;
 }
 
-export default async (request: NextRequest) => {
+export default async function middleware(request: NextRequest) {
   const host = request.headers.get("host");
   const pathname = request.nextUrl.pathname;
   const requestHeaders = new Headers(request.headers);
@@ -88,7 +88,7 @@ export default async (request: NextRequest) => {
   }
 
   return response;
-};
+}
 
 export const config = {
   matcher: [

@@ -7,15 +7,6 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-    serverComponentsExternalPackages: [
-      "drizzle-kit",
-      "drizzle-orm",
-      "drizzle-orm/pg-core",
-    ],
-    typedRoutes: false,
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "logo.clearbit.com" },

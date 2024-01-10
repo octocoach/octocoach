@@ -3,7 +3,7 @@
 import { authOrRedirect } from "@helpers/auth";
 import { encrypt } from "@octocoach/auth/helpers";
 import { db } from "@octocoach/db/connection";
-import { createOrgStatements } from "@octocoach/db/helpers/create-org";
+import { createOrgStatements, meta } from "@octocoach/db/helpers/create-org";
 import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
 import {
@@ -12,7 +12,6 @@ import {
 } from "@octocoach/db/schemas/common/organization";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export type CreateOrganization = Pick<
   NewOragnization,
@@ -45,29 +44,34 @@ export async function createOrganization({
   country,
 }: CreateOrganization) {
   const { user } = await authOrRedirect();
-
-  if (!user) redirect("/");
-
-  const addressId = await db
-    .insert(addressTable)
-    .values({ addressLine1, addressLine2, city, postcode, state, country })
-    .returning()
-    .then(([{ id }]) => id);
-
-  await db.insert(organizationTable).values({
-    displayName,
-    legalName,
-    legalForm,
-    addressId,
-    slug,
-    owner: user.id,
-  });
-
   const statements = createOrgStatements(slug);
 
-  for (const statement of statements) {
-    await db.execute(sql.raw(statement.replaceAll("{slug}", slug)));
-  }
+  await db.transaction(async (tx) => {
+    const addressId = await tx
+      .insert(addressTable)
+      .values({ addressLine1, addressLine2, city, postcode, state, country })
+      .returning()
+      .then(([{ id }]) => id);
+
+    await tx.insert(organizationTable).values({
+      displayName,
+      legalName,
+      legalForm,
+      addressId,
+      slug,
+      owner: user.id,
+    });
+
+    for (const statement of statements) {
+      await tx.execute(sql.raw(statement.replaceAll("{slug}", slug)));
+    }
+
+    await tx.execute(
+      sql.raw(
+        `INSERT INTO "org_${slug}"."__migrations" VALUES (${meta.version}, ${meta.when})`
+      )
+    );
+  });
 
   revalidatePath("/org", "page");
 }

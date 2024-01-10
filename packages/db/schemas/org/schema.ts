@@ -22,9 +22,25 @@ import {
   skillsMissingTasksTable,
 } from "../common/skills-missing-tasks";
 import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
+import { localeEnum } from "../data-types/locale";
 import { mkOrgAccountTable } from "./account";
 import { mkCoachTable, mkCoachTableRelations } from "./coach";
-import { localeEnum, mkContentLocaleTable, mkContentTable } from "./content";
+import { mkContentLocaleTable, mkContentTable } from "./content";
+import {
+  mkMeasureInfoRelations,
+  mkMeasureInfoTable,
+  mkMeasureRelations,
+  mkMeasureTable,
+} from "./measure";
+import {
+  mkMeasureModuleRelations,
+  mkMeasureModuleTable,
+} from "./measure-module";
+import {
+  mkModuleInfoRelations,
+  mkModuleInfoTable,
+  mkModuleTable,
+} from "./module";
 import { mkOrgSessionTable } from "./session";
 import { mkSkillRelations, skillTable } from "./skill";
 import { mkTaskRelations, taskTable } from "./task";
@@ -95,4 +111,15 @@ export const mkOrgSchema = (slug: string) => ({
   contentTable: mkContentTable(slug),
   localeEnum,
   contentLocaleTable: mkContentLocaleTable(slug),
+
+  measureTable: mkMeasureTable(slug),
+  measureRelations: mkMeasureRelations(slug),
+  measureInfoTable: mkMeasureInfoTable(slug),
+  measureInfoRelations: mkMeasureInfoRelations(slug),
+  moduleTable: mkModuleTable(slug),
+  moduleRelations: mkMeasureRelations(slug),
+  moduleInfoTable: mkModuleInfoTable(slug),
+  moduleInfoRelations: mkModuleInfoRelations(slug),
+  measureModuleTable: mkMeasureModuleTable(slug),
+  measureModuleRelations: mkMeasureModuleRelations(slug),
 });

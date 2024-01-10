@@ -1,16 +1,17 @@
+import { relations } from "drizzle-orm";
 import { integer, primaryKey, serial, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
-import { mkMeasureModuleTable } from "./measure-module";
-import { relations } from "drizzle-orm";
-import { mkUserTable } from "./user";
 import { mkCoachTable } from "./coach";
+import { mkMeasureModuleTable } from "./measure-module";
 
-export type Module = typeof _moduleTable.$inferSelect;
-export type NewModule = typeof _moduleTable.$inferInsert;
+export type Module = ReturnType<typeof mkModuleTable>["$inferSelect"];
+export type NewModule = ReturnType<typeof mkModuleTable>["$inferInsert"];
 
-export type ModuleInfo = typeof _moduleInfoTable.$inferSelect;
-export type NewModuleInfo = typeof _moduleInfoTable.$inferInsert;
+export type ModuleInfo = ReturnType<typeof mkModuleInfoTable>["$inferSelect"];
+export type NewModuleInfo = ReturnType<
+  typeof mkModuleInfoTable
+>["$inferInsert"];
 
 export const mkModuleTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
@@ -76,6 +77,3 @@ export const mkModuleInfoRelations = (slug: string) => {
     }),
   }));
 };
-
-const _moduleTable = mkModuleTable("org");
-const _moduleInfoTable = mkModuleInfoTable("org");

@@ -3,7 +3,6 @@ import { integer, primaryKey } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkMeasureTable } from "./measure";
 import { mkModuleTable } from "./module";
-import { table } from "console";
 
 export type MeasureModule = ReturnType<
   typeof mkMeasureModuleTable

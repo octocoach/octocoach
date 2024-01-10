@@ -7,11 +7,13 @@ import { mkCoachTable } from "./coach";
 import { ContentImage } from "./content";
 import { mkMeasureModuleTable } from "./measure-module";
 
-export type Measure = typeof _measureTable.$inferSelect;
-export type NewMeasure = typeof _measureTable.$inferInsert;
+export type Measure = ReturnType<typeof mkMeasureTable>["$inferSelect"];
+export type NewMeasure = ReturnType<typeof mkMeasureTable>["$inferInsert"];
 
-export type MeasureInfo = typeof _measureInfoTable.$inferSelect;
-export type NewMeasureInfo = typeof _measureInfoTable.$inferInsert;
+export type MeasureInfo = ReturnType<typeof mkMeasureInfoTable>["$inferSelect"];
+export type NewMeasureInfo = ReturnType<
+  typeof mkMeasureInfoTable
+>["$inferInsert"];
 
 export const mkMeasureTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
@@ -76,6 +78,3 @@ export const mkMeasureInfoRelations = (slug: string) => {
     }),
   }));
 };
-
-const _measureTable = mkMeasureTable("org");
-const _measureInfoTable = mkMeasureInfoTable("org");

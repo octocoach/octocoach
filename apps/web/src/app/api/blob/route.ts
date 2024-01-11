@@ -3,17 +3,20 @@ import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const { auth } = await mkAuth();
-  const session = await auth();
+  const { searchParams } = new URL(request.url);
+  let filename = searchParams.get("filename");
+  const orgSlug = searchParams.get("orgSlug");
 
-  console.log(session);
+  const { auth } = await mkAuth(orgSlug);
+  const session = await auth();
 
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
 
-  const { searchParams } = new URL(request.url);
-  const filename = searchParams.get("filename");
+  if (orgSlug) {
+    filename = `${orgSlug}/${filename}`;
+  }
 
   const blob = await put(filename, request.body, {
     access: "public",

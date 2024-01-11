@@ -5,15 +5,22 @@ import { FileSelect } from "./FileSelect";
 
 export default function Upload({
   onUploaded,
+  orgSlug,
 }: {
   onUploaded: (url: string) => void;
+  orgSlug?: string;
 }) {
   const onSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target?.files) {
       throw new Error("No files selected");
     }
     const file = event.target.files[0];
-    const response = await fetch(`/api/blob?filename=${file.name}`, {
+    let url = `/api/blob?filename=${file.name}`;
+    if (orgSlug) {
+      url += `&orgSlug=${orgSlug}`;
+    }
+
+    const response = await fetch(url, {
       method: "POST",
       body: file,
     });

@@ -5,29 +5,12 @@ import {
   mkContentLocaleTable,
   mkContentTable,
 } from "@octocoach/db/schemas/org/content";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Container, Nav } from "@octocoach/ui";
-import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { OrganizationProvider } from "./context";
 import Footer from "./footer";
-
-const getLocale = (): Locales => {
-  const localeHeader = headers().get("x-locale");
-
-  if (localeHeader) {
-    return localeHeader as Locales;
-  }
-
-  const localeCookie = cookies().get("locale");
-
-  if (localeCookie?.value) {
-    return localeCookie.value as Locales;
-  }
-
-  return "de";
-};
+import { getLocale } from "@helpers/locale";
 
 export default async function Layout({
   children,

@@ -35,6 +35,10 @@ const en = {
         "You have a deep, intuitive understanding of the skill. You can diagnose problems and innovate solutions effortlessly. You don't rely on rules but rather your vast experience.",
     },
   },
+  languages: {
+    en: "English",
+    de: "German",
+  },
 } satisfies BaseTranslation;
 
 export default en;

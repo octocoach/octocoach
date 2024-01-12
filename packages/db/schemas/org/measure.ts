@@ -1,7 +1,7 @@
-import { json, primaryKey, serial, text } from "drizzle-orm/pg-core";
-import { mkOrgPgSchema } from "../common/pg-schema";
-
 import { relations } from "drizzle-orm";
+import { json, primaryKey, serial, text } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { ContentImage } from "./content";
@@ -78,3 +78,10 @@ export const mkMeasureInfoRelations = (slug: string) => {
     }),
   }));
 };
+
+export const insertMeasureInfoSchema = (slug: string) =>
+  createInsertSchema(mkMeasureInfoTable(slug), {
+    title: (s) => s.title.min(1),
+    description: (s) => s.description.min(1),
+    requirements: (s) => s.requirements.min(1),
+  });

@@ -94,6 +94,16 @@ type RootTranslation = {
 			description: string
 		}
 	}
+	languages: {
+		/**
+		 * E​n​g​l​i​s​h
+		 */
+		en: string
+		/**
+		 * G​e​r​m​a​n
+		 */
+		de: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -176,6 +186,16 @@ export type TranslationFunctions = {
 			 */
 			description: () => LocalizedString
 		}
+	}
+	languages: {
+		/**
+		 * English
+		 */
+		en: () => LocalizedString
+		/**
+		 * German
+		 */
+		de: () => LocalizedString
 	}
 }
 

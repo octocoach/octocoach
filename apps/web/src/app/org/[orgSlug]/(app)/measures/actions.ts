@@ -8,12 +8,13 @@ import {
   Measure,
   NewMeasure,
   NewMeasureInfo,
+  insertMeasureInfoSchema,
   mkMeasureInfoTable,
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { ZodError } from "zod";
 
 export type NewMeasureWithInfo = Omit<
   NewMeasure & NewMeasureInfo,
@@ -42,10 +43,30 @@ export const saveMeasure = async (
     id,
   }));
 
+  const errors: {
+    [key in Locales]?: ZodError<NewMeasureInfo>;
+  } = {};
+
+  const schema = insertMeasureInfoSchema(orgSlug);
+
+  for (const info of measureInfo) {
+    const result = schema.safeParse(info);
+    if (result.success === false) {
+      // We need to clone the error object because it's not serializable
+      errors[info.locale] = JSON.parse(JSON.stringify(result.error));
+    }
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { success: false, errors };
+  }
+
   await db.insert(measureInfoTable).values(measureInfo);
 
-  revalidatePath("org/[orgSlug]/(app)/measures", "page");
+  return { success: true };
 };
+
+export type SaveMeasureRetype = ReturnType<typeof saveMeasure>;
 
 export const deleteMeasure = async (
   orgSlug: Organization["slug"],

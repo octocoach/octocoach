@@ -8,7 +8,7 @@ export const Delete = ({
   deleteAction,
   id,
 }: {
-  deleteAction: (id: Measure["id"]) => void;
+  deleteAction: (id: Measure["id"]) => Promise<{ success: boolean }>;
   id: Measure["id"];
 }) => {
   const [isPending, startTransition] = useTransition();

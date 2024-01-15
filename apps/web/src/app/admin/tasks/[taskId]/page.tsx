@@ -2,6 +2,7 @@ import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { taskId: number } }) {
   const task = await db.query.taskTable.findFirst({
@@ -15,6 +16,8 @@ export default async function Page({ params }: { params: { taskId: number } }) {
       },
     },
   });
+
+  if (!task) notFound();
 
   return (
     <Container element="div">

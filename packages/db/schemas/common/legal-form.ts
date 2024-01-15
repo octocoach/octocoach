@@ -1,11 +1,12 @@
 type LegalFormInfo = {
   fullName: string;
-  abbreviation?: string;
+  abbreviation: string;
 };
 
 export const legalForm: Record<string, LegalFormInfo> = {
   EU: {
     fullName: "Einzelunternehmen", // Sole Proprietorship
+    abbreviation: "EU",
   },
   GbR: {
     fullName: "Gesellschaft bürgerlichen Rechts",

@@ -34,7 +34,7 @@ export const Edit = ({ organization }: { organization: Organization }) => {
 
   const { values } = store.useState();
 
-  const onLogoUpload = (src) => store.setValue($.logo, src);
+  const onLogoUpload = (src: string) => store.setValue($.logo, src);
 
   return (
     <Container element="section">

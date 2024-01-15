@@ -8,19 +8,22 @@ import {
 } from "@octocoach/db/schemas/public/schema";
 import { Card, Container, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
 }: {
   params: { subcategoryId: number };
 }) {
-  const { name, category } = await db.query.skillSubcategoryTable.findFirst({
+  const subCategory = await db.query.skillSubcategoryTable.findFirst({
     with: {
       category: true,
     },
     where: (skillSubCategories, { eq }) =>
       eq(skillSubCategories.id, params.subcategoryId),
   });
+
+  if (!subCategory) notFound();
 
   const tasks = await db
     .select({
@@ -43,10 +46,10 @@ export default async function Page({
   return (
     <Container element="section">
       <Stack>
-        <Link href={`/admin/skills/categories/${category.id}`}>
-          <Text size="s">{category.name}</Text>
+        <Link href={`/admin/skills/categories/${subCategory.category.id}`}>
+          <Text size="s">{subCategory.category.name}</Text>
         </Link>
-        <Text size="xl">{name}</Text>
+        <Text size="xl">{subCategory.name}</Text>
         <Stack>
           {tasks.map(({ name, taskCount, id }) => (
             <Card key={id}>

@@ -24,7 +24,7 @@ import { getContentById } from "@octocoach/ui/helpers";
 import Link from "next/link";
 import { useOrganization } from "./context";
 
-export default function Page({ params }: { params: { orgSlug } }) {
+export default function Page({ params }: { params: { orgSlug: string } }) {
   const { data: session } = useSession();
   const organization = useOrganization();
 

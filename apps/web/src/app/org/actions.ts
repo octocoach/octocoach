@@ -99,9 +99,12 @@ export type DomainDetails = Pick<
   "domain" | "githubId" | "githubSecret"
 >;
 export async function saveDomain(
-  slug,
+  slug: string,
   { domain, githubId, githubSecret }: DomainDetails
 ) {
+  if (!githubSecret) {
+    throw new Error("Github secret is required");
+  }
   const encryptedSecret = encrypt(githubSecret);
 
   await db

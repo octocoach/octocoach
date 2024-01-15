@@ -56,7 +56,9 @@ export const SkillCheck = ({
       <Text element="span" size="xl" variation="casual">
         {skill.name}
       </Text>
-      <SkillDescription description={skill.description} />
+      {skill.description && (
+        <SkillDescription description={skill.description} />
+      )}
       <Stack direction="horizontal" key={skill.id} align="center" wrap>
         {skillLevelEnum.enumValues.map((skillLevel, key) => (
           <Button

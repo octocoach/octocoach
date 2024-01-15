@@ -14,6 +14,7 @@ import {
 } from "@octocoach/ui";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -46,6 +47,8 @@ export default async function Page({
 
     revalidatePath("/admin/employers/[employerId]");
   }
+
+  if (!employer) return notFound();
 
   return (
     <Stack>

@@ -9,6 +9,7 @@ import {
 } from "@octocoach/db/schemas/public/schema";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -19,6 +20,8 @@ export default async function Page({
     where: (skillCategories, { eq }) =>
       eq(skillCategories.id, params.categoryId),
   });
+
+  if (!category) return notFound();
 
   const t = await db
     .select({

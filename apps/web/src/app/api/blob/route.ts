@@ -5,9 +5,18 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   let filename = searchParams.get("filename");
+
+  if (!filename) {
+    throw new Error("filename is required");
+  }
+
+  if (!request.body) {
+    throw new Error("body is required");
+  }
+
   const orgSlug = searchParams.get("orgSlug");
 
-  const { auth } = await mkAuth(orgSlug);
+  const { auth } = await mkAuth(orgSlug ?? undefined);
   const session = await auth();
 
   if (!session?.user) {

@@ -101,7 +101,7 @@ export default async function Page({
 
   return (
     <Stack justify="center">
-      <TaskCheck task={task} submitAnswer={boundAddUserTaskInterest} />
+      <TaskCheck task={task!} submitAnswer={boundAddUserTaskInterest} />
       <Text textAlign="center">
         <Link href={`${baseUrl}discover/jobs`}>
           {jobs.length} possible jobs

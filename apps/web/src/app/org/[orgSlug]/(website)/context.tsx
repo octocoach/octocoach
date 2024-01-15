@@ -8,7 +8,7 @@ import { ReactNode, createContext, useContext } from "react";
 
 export type OrganizationWithContent = Organization & {
   address: Address;
-  owner: PlatformUser;
+  ownerName: string;
   content: { id: SectionId; value: unknown }[];
 };
 

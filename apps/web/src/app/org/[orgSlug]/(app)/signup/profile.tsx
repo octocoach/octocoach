@@ -22,7 +22,7 @@ export const Profile = ({
   profile,
 }: {
   orgSlug: string;
-  profile: UserProfile;
+  profile?: UserProfile;
 }) => {
   const { data: session } = useSession();
 
@@ -37,7 +37,7 @@ export const Profile = ({
 
   const saveProfileWithUserId = saveProfile.bind("boundValues", {
     orgSlug,
-    userId: session.user.id,
+    userId: session!.user.id,
   });
 
   const onSubmit = async () => {

@@ -6,9 +6,11 @@ import { eq } from "@octocoach/db/operators";
 import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { NewUserProfile } from "@octocoach/db/schemas/types";
 
-export type ProfileForm = Pick<
-  NewUserProfile,
-  "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+export type ProfileForm = Required<
+  Pick<
+    NewUserProfile,
+    "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+  >
 >;
 
 type BoundValues = {

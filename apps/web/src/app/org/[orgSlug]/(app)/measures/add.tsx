@@ -19,6 +19,7 @@ import { useEffect, useState, useTransition } from "react";
 import { NewMeasureWithInfo, SaveMeasureRetype } from "./actions";
 import { ZodError } from "zod";
 import { NewMeasureInfo } from "@octocoach/db/schemas/org/measure";
+import { getEntries } from "@octocoach/tshelpers";
 
 const EditMeasureLocale = ({
   locale,
@@ -29,7 +30,7 @@ const EditMeasureLocale = ({
   locale: Locales;
   value: NewMeasureWithInfo;
   onSetValues: (locale: Locales, values: NewMeasureWithInfo) => void;
-  errors: ZodError<NewMeasureInfo>;
+  errors?: ZodError<NewMeasureInfo>;
 }) => {
   const store = useFormStore<NewMeasureWithInfo>({
     defaultValues: value,
@@ -37,6 +38,10 @@ const EditMeasureLocale = ({
       title: true,
       description: true,
       requirements: true,
+      image: {
+        alt: true,
+        src: true,
+      },
     },
     setValues: (values) => onSetValues(locale, values),
   });
@@ -127,9 +132,9 @@ export function AddMeasure({
           store.reset();
           setShow(false);
           router.refresh();
-        } else {
+        } else if (result.errors) {
           console.log(result.errors);
-          for (const [locale, errors] of Object.entries(result.errors)) {
+          for (const [locale, errors] of getEntries(result.errors)) {
             if (locale === "en") {
               setEnErrors(errors);
             }

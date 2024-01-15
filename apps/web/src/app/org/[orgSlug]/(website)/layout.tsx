@@ -1,3 +1,4 @@
+import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
@@ -5,12 +6,16 @@ import {
   mkContentLocaleTable,
   mkContentTable,
 } from "@octocoach/db/schemas/org/content";
+import {
+  addressTable,
+  organizationTable,
+} from "@octocoach/db/schemas/public/schema";
+import { userTable } from "@octocoach/db/schemas/public/user";
 import { Container, Nav } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { OrganizationProvider } from "./context";
 import Footer from "./footer";
-import { getLocale } from "@helpers/locale";
 
 export default async function Layout({
   children,
@@ -19,13 +24,20 @@ export default async function Layout({
   children: ReactNode;
   params: { orgSlug: string };
 }) {
-  const organization = await db.query.organizationTable.findFirst({
-    where: (organizations, { eq }) => eq(organizations.slug, params.orgSlug),
-    with: {
-      address: true,
-      owner: true,
-    },
-  });
+  const organization = await db
+    .select()
+    .from(organizationTable)
+    .innerJoin(addressTable, eq(addressTable.id, organizationTable.addressId))
+    .innerJoin(userTable, eq(userTable.id, organizationTable.owner))
+    .then((rows) => {
+      if (rows.length !== 1) return null;
+
+      return {
+        ...rows[0].organization,
+        address: rows[0].address,
+        ownerName: rows[0].user.name!,
+      };
+    });
 
   if (!organization) {
     notFound();

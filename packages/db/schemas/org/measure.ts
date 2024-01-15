@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
 import { json, primaryKey, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
+import { Image, imageSchema } from "../common/image";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
-import { ContentImage } from "./content";
 import { mkMeasureModuleTable } from "./measure-module";
 
 export type Measure = ReturnType<typeof mkMeasureTable>["$inferSelect"];
@@ -59,7 +59,7 @@ export const mkMeasureInfoTable = (slug: string) => {
       title: text("title").notNull(),
       description: text("description").notNull(),
       requirements: text("requirements").notNull(),
-      image: json("image").$type<ContentImage>(),
+      image: json("image").notNull().$type<Image>(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),
@@ -81,7 +81,10 @@ export const mkMeasureInfoRelations = (slug: string) => {
 
 export const insertMeasureInfoSchema = (slug: string) =>
   createInsertSchema(mkMeasureInfoTable(slug), {
-    title: (s) => s.title.min(1),
-    description: (s) => s.description.min(1),
-    requirements: (s) => s.requirements.min(1),
+    title: (s) => s.title.transform((v) => v.trim()).pipe(s.title.min(1)),
+    description: (s) =>
+      s.description.transform((v) => v.trim()).pipe(s.description.min(1)),
+    requirements: (s) =>
+      s.requirements.transform((v) => v.trim()).pipe(s.requirements.min(1)),
+    image: imageSchema,
   });

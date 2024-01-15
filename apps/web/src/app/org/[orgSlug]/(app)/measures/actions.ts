@@ -14,7 +14,8 @@ import {
 } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { redirect } from "next/navigation";
-import { ZodError } from "zod";
+import { SafeParseSuccess, ZodError } from "zod";
+import { getEntries } from "@octocoach/tshelpers";
 
 export type NewMeasureWithInfo = Omit<
   NewMeasure & NewMeasureInfo,
@@ -30,38 +31,42 @@ export const saveMeasure = async (
   const db = orgDb(orgSlug);
   const measureTable = mkMeasureTable(orgSlug);
   const measureInfoTable = mkMeasureInfoTable(orgSlug);
-
-  const id = await db
-    .insert(measureTable)
-    .values({ owner: user.id })
-    .returning()
-    .then((rows) => rows[0]?.id);
-
-  const measureInfo = Object.entries(data).map(([locale, measure]) => ({
-    locale: locale as Locales,
-    ...measure,
-    id,
-  }));
+  const schema = insertMeasureInfoSchema(orgSlug);
 
   const errors: {
     [key in Locales]?: ZodError<NewMeasureInfo>;
   } = {};
 
-  const schema = insertMeasureInfoSchema(orgSlug);
+  const toInsert: SafeParseSuccess<NewMeasureInfo>["data"][] = [];
 
-  for (const info of measureInfo) {
-    const result = schema.safeParse(info);
+  for (const [locale, measure] of getEntries(data)) {
+    const result = schema.safeParse({
+      locale: locale as Locales,
+      ...measure,
+    });
+
     if (result.success === false) {
       // We need to clone the error object because it's not serializable
-      errors[info.locale] = JSON.parse(JSON.stringify(result.error));
+      errors[locale] = JSON.parse(JSON.stringify(result.error));
+    } else {
+      toInsert.push(result.data);
     }
   }
-
   if (Object.keys(errors).length > 0) {
     return { success: false, errors };
   }
 
-  await db.insert(measureInfoTable).values(measureInfo);
+  await db.transaction(async (trx) => {
+    const id = await trx
+      .insert(measureTable)
+      .values({ owner: user.id })
+      .returning()
+      .then((rows) => rows[0]?.id);
+
+    await trx
+      .insert(measureInfoTable)
+      .values(toInsert.map((v) => ({ ...v, id })));
+  });
 
   return { success: true };
 };

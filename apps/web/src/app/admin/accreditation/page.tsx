@@ -38,7 +38,7 @@ export default function Accreditation() {
                   {val.tips
                     ?.filter(
                       ({ subjectAreas }) =>
-                        !subjectAreas || subjectAreas.includes[s]
+                        !subjectAreas || subjectAreas.includes(s)
                     )
                     .map((t, i) => (
                       <Text key={i}>{t.text[locale]}</Text>

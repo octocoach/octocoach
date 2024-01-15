@@ -2,6 +2,7 @@ import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -13,6 +14,8 @@ export default async function Page({
   const user = await db.query.userTable.findFirst({
     where: ({ id }, { eq }) => eq(id, params.userId),
   });
+
+  if (!user) notFound();
 
   const baseUrl = getBaseUrl();
 

@@ -1,7 +1,10 @@
 "use client";
 
+import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
+import { NewMeasureInfo } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
+import { fromEntries, getEntries } from "@octocoach/tshelpers";
 import {
   Box,
   Button,
@@ -16,10 +19,8 @@ import {
 import Upload from "@octocoach/ui/Form/Upload";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { NewMeasureWithInfo, SaveMeasureRetype } from "./actions";
 import { ZodError } from "zod";
-import { NewMeasureInfo } from "@octocoach/db/schemas/org/measure";
-import { getEntries } from "@octocoach/tshelpers";
+import { NewMeasureWithInfo, SaveMeasureRetype } from "./actions";
 
 const EditMeasureLocale = ({
   locale,
@@ -95,11 +96,11 @@ export function AddMeasure({
     requirements: "",
     image: { src: "", alt: "" },
   };
+
+  const defaultValues = fromEntries(dbLocales.map((locale) => [locale, blank]));
+
   const store = useFormStore<{ [key in Locales]: NewMeasureWithInfo }>({
-    defaultValues: {
-      en: blank,
-      de: blank,
-    },
+    defaultValues,
   });
 
   const [isPending, startTransition] = useTransition();
@@ -110,14 +111,16 @@ export function AddMeasure({
 
   const router = useRouter();
 
-  const [enErrors, setEnErrors] = useState<ZodError<NewMeasureInfo>>();
-  const [deErrors, setDeErrors] = useState<ZodError<NewMeasureInfo>>();
+  const [errors, setErrors] = useState<
+    Partial<Record<Locales, ZodError<NewMeasureInfo>>>
+  >({});
 
   const onSubmit = () => {
     const toSave = store.getState().values;
 
-    toSave.en.image.src = image;
-    toSave.de.image.src = image;
+    for (const locale of dbLocales) {
+      toSave[locale].image.src = image;
+    }
 
     startTransition(() => {
       saveMeasure(toSave).then((result) => {
@@ -127,12 +130,7 @@ export function AddMeasure({
           router.refresh();
         } else if (result.errors) {
           for (const [locale, errors] of getEntries(result.errors)) {
-            if (locale === "en") {
-              setEnErrors(errors);
-            }
-            if (locale === "de") {
-              setDeErrors(errors);
-            }
+            setErrors((cur) => ({ ...cur, [locale]: errors }));
           }
         }
       });
@@ -165,18 +163,14 @@ export function AddMeasure({
         )}
       </Stack>
       <Stack direction="horizontal">
-        <EditMeasureLocale
-          locale="en"
-          value={blank}
-          onSetValues={onSetValues}
-          errors={enErrors}
-        />
-        <EditMeasureLocale
-          locale="de"
-          value={blank}
-          onSetValues={onSetValues}
-          errors={deErrors}
-        />
+        {dbLocales.map((locale) => (
+          <EditMeasureLocale
+            locale={locale}
+            value={blank}
+            onSetValues={onSetValues}
+            errors={errors[locale]}
+          />
+        ))}
       </Stack>
       <Stack direction="horizontal">
         <Button onClick={onCancel} color="secondary">

@@ -34,23 +34,16 @@ const EditMeasureLocale = ({
 }) => {
   const store = useFormStore<NewMeasureWithInfo>({
     defaultValues: value,
-    defaultTouched: {
-      title: true,
-      description: true,
-      requirements: true,
-      image: {
-        alt: true,
-        src: true,
-      },
-    },
     setValues: (values) => onSetValues(locale, values),
   });
 
   useEffect(() => {
     if (errors?.issues?.length) {
-      errors.issues.forEach((issue) => {
-        store.setError(issue.path.join("."), issue.message);
-      });
+      for (const issue of errors.issues) {
+        const path = issue.path.join(".");
+        store.setFieldTouched(path, true);
+        store.setError(path, issue.message);
+      }
     }
   }, [errors]);
 
@@ -133,7 +126,6 @@ export function AddMeasure({
           setShow(false);
           router.refresh();
         } else if (result.errors) {
-          console.log(result.errors);
           for (const [locale, errors] of getEntries(result.errors)) {
             if (locale === "en") {
               setEnErrors(errors);

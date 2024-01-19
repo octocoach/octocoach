@@ -1,5 +1,6 @@
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import {
@@ -7,17 +8,16 @@ import {
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
 import { Card, Stack, Text } from "@octocoach/ui";
-import { AddMeasure } from "./add";
-import { saveMeasure } from "./actions";
-import { getBaseUrl } from "@helpers/navigation";
 import Link from "next/link";
+import { saveMeasure } from "./actions";
+import { AddMeasure } from "./add";
 
 export default async function Page({
   params,
 }: {
   params: { orgSlug: string };
 }) {
-  const { user } = await authOrRedirect(params.orgSlug);
+  await authOrRedirect(params.orgSlug);
 
   const db = orgDb(params.orgSlug);
   const locale = getLocale();
@@ -46,8 +46,8 @@ export default async function Page({
         Measures
       </Text>
       <Stack>
-        {measures.map(({ measure_info: { id, title, description } }) => (
-          <Link href={`${baseUrl}/measures/${id}`} key={id}>
+        {measures.map(({ measure_info: { id, slug, title, description } }) => (
+          <Link href={`${baseUrl}/measures/${slug}`} key={id}>
             <Card>
               <Text size="l" variation="casual">
                 {title}

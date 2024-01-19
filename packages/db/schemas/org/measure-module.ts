@@ -30,6 +30,7 @@ export const mkMeasureModuleTable = (slug: string) => {
           onDelete: "restrict",
           onUpdate: "cascade",
         }),
+      order: integer("order").notNull().unique(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.measure, table.module] }),

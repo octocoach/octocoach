@@ -8,11 +8,12 @@ import {
 import { Stack, Text } from "@octocoach/ui";
 import { deleteMeasure } from "../actions";
 import { Delete } from "./delete";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
 }: {
-  params: { measureId: number; orgSlug: string };
+  params: { measureSlug: string; orgSlug: string };
 }) {
   const db = orgDb(params.orgSlug);
 
@@ -26,13 +27,13 @@ export default async function Page({
     .from(measureInfoTable)
     .where(
       and(
-        eq(measureInfoTable.id, params.measureId),
+        eq(measureInfoTable.slug, params.measureSlug),
         eq(measureInfoTable.locale, locale)
       )
     )
     .then((rows) => rows[0] ?? null);
 
-  if (!measure) return <Text>Not Found</Text>;
+  if (!measure) notFound();
 
   const deleteActionWithSlug = deleteMeasure.bind("orgSlug", params.orgSlug);
 

@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, primaryKey, serial, text } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
@@ -24,8 +25,15 @@ export const mkModuleTable = (slug: string) => {
         onDelete: "restrict",
         onUpdate: "cascade",
       }),
+    units: integer("units").notNull(),
+    imageSrc: text("image_src").notNull(),
   });
 };
+
+export const insertModuleSchema = (slug: string) =>
+  createInsertSchema(mkModuleTable(slug), {
+    units: (s) => s.units.positive(),
+  });
 
 export const mkModuleRelations = (slug: string) => {
   const moduleTable = mkModuleTable(slug);
@@ -47,17 +55,16 @@ export const mkModuleInfoTable = (slug: string) => {
   return mkOrgPgSchema(slug).table(
     "module_info",
     {
-      id: serial("id").notNull(),
-      locale: localeEnum("locale").notNull(),
-      measure_module: integer("measure_module")
+      id: serial("id")
         .notNull()
         .references(() => moduleTable.id, {
           onDelete: "cascade",
           onUpdate: "cascade",
         }),
+      locale: localeEnum("locale").notNull(),
       title: text("title").notNull(),
       description: text("description").notNull(),
-      units: integer("units").notNull(),
+      imageAlt: text("image_alt").notNull(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),
@@ -66,14 +73,17 @@ export const mkModuleInfoTable = (slug: string) => {
 };
 
 export const mkModuleInfoRelations = (slug: string) => {
-  const moduleTable = mkModuleTable(slug);
+  const measureModuleTable = mkMeasureModuleTable(slug);
   const moduleInfo = mkModuleInfoTable(slug);
 
-  return relations(moduleInfo, ({ one }) => ({
-    module: one(moduleTable, {
-      fields: [moduleInfo.measure_module],
-      references: [moduleTable.id],
-      relationName: "moduleMeasure",
-    }),
+  return relations(moduleInfo, ({ many }) => ({
+    measureModule: many(measureModuleTable),
   }));
 };
+
+export const insertModuleInfoSchema = (slug: string) =>
+  createInsertSchema(mkModuleInfoTable(slug), {
+    title: (s) => s.title.transform((v) => v.trim()).pipe(s.title.min(1)),
+    description: (s) =>
+      s.description.transform((v) => v.trim()).pipe(s.description.min(1)),
+  });

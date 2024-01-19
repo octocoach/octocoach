@@ -1,10 +1,14 @@
-import { ReactNode } from "react";
-import { card } from "./card.css";
+import * as React from "react";
 
-export const Card = ({ children, ...props }: { children: ReactNode }) => {
+import { CardVariants, card } from "./card.css";
+
+export const Card = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<CardVariants>
+>(({ children, ...props }, ref) => {
   return (
-    <div className={card()} {...props}>
+    <div ref={ref} className={card(props)}>
       {children}
     </div>
   );
-};
+});

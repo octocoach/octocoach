@@ -9,6 +9,7 @@ import {
   NewMeasure,
   NewMeasureInfo,
   insertMeasureInfoSchema,
+  insertMeasureSchema,
   mkMeasureInfoTable,
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
@@ -17,61 +18,76 @@ import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
 import { getEntries } from "@octocoach/tshelpers";
 
-export type NewMeasureWithInfo = Omit<
-  NewMeasure & NewMeasureInfo,
-  "owner" | "locale"
->;
+export type SaveMeasureData = {
+  measure: Omit<NewMeasure, "owner">;
+  measureInfo: Record<Locales, Omit<NewMeasureInfo, "locale">>;
+};
+
+export type SaveMeasureRetype = ReturnType<typeof saveMeasure>;
 
 export const saveMeasure = async (
   orgSlug: Organization["slug"],
-  data: Record<Locales, NewMeasureWithInfo>
+  data: SaveMeasureData
 ) => {
   const { user } = await authOrRedirect(orgSlug);
 
   const db = orgDb(orgSlug);
   const measureTable = mkMeasureTable(orgSlug);
   const measureInfoTable = mkMeasureInfoTable(orgSlug);
-  const schema = insertMeasureInfoSchema(orgSlug);
+  const measureSchema = insertMeasureSchema(orgSlug);
+  const measureInfoSchema = insertMeasureInfoSchema(orgSlug);
 
   const errors: {
-    [key in Locales]?: ZodError<NewMeasureInfo>;
-  } = {};
+    measure?: ZodError<NewMeasure>;
+    measureInfo: { [key in Locales]?: ZodError<NewMeasureInfo> };
+  } = { measureInfo: {} };
 
-  const toInsert: SafeParseSuccess<NewMeasureInfo>["data"][] = [];
+  const measureResult = measureSchema.safeParse({
+    ...data.measure,
+    owner: user.id,
+  });
 
-  for (const [locale, measure] of getEntries(data)) {
-    const result = schema.safeParse({
+  if (measureResult.success === false) {
+    errors.measure = JSON.parse(JSON.stringify(measureResult.error));
+  }
+
+  const measureInfoToInsert: SafeParseSuccess<NewMeasureInfo>["data"][] = [];
+
+  for (const [locale, measureInfo] of getEntries(data.measureInfo)) {
+    const result = measureInfoSchema.safeParse({
       locale: locale as Locales,
-      ...measure,
+      ...measureInfo,
     });
 
     if (result.success === false) {
       // We need to clone the error object because it's not serializable
-      errors[locale] = JSON.parse(JSON.stringify(result.error));
+      errors.measureInfo[locale] = JSON.parse(JSON.stringify(result.error));
     } else {
-      toInsert.push(result.data);
+      measureInfoToInsert.push(result.data);
     }
   }
-  if (Object.keys(errors).length > 0) {
+  if (errors.measure || Object.keys(errors.measureInfo).length > 0) {
     return { success: false, errors };
+  }
+
+  if (measureResult.success === false) {
+    throw new Error("Measure is not valid");
   }
 
   await db.transaction(async (trx) => {
     const id = await trx
       .insert(measureTable)
-      .values({ owner: user.id })
+      .values(measureResult.data)
       .returning()
       .then((rows) => rows[0]?.id);
 
     await trx
       .insert(measureInfoTable)
-      .values(toInsert.map((v) => ({ ...v, id })));
+      .values(measureInfoToInsert.map((info) => ({ ...info, id })));
   });
 
   return { success: true };
 };
-
-export type SaveMeasureRetype = ReturnType<typeof saveMeasure>;
 
 export const deleteMeasure = async (
   orgSlug: Organization["slug"],

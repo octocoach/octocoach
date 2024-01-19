@@ -15,6 +15,13 @@
       "when": 1704901423854,
       "tag": "0001_uneven_jocasta",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1705676260474,
+      "tag": "0002_dashing_vin_gonzales",
+      "breakpoints": true
     }
   ]
 }

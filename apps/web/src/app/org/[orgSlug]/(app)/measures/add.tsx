@@ -17,10 +17,13 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import Upload from "@octocoach/ui/Form/Upload";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { ZodError } from "zod";
-import { NewMeasureWithInfo, SaveMeasureRetype } from "./actions";
+import { SaveMeasureData, SaveMeasureRetype } from "./actions";
+
+type MeasureInfoLocale = SaveMeasureData["measureInfo"][Locales];
 
 const EditMeasureLocale = ({
   locale,
@@ -29,13 +32,20 @@ const EditMeasureLocale = ({
   errors,
 }: {
   locale: Locales;
-  value: NewMeasureWithInfo;
-  onSetValues: (locale: Locales, values: NewMeasureWithInfo) => void;
-  errors?: ZodError<NewMeasureInfo>;
+  value: MeasureInfoLocale;
+  onSetValues: (locale: Locales, values: MeasureInfoLocale) => void;
+  errors?: ZodError<MeasureInfoLocale>;
 }) => {
-  const store = useFormStore<NewMeasureWithInfo>({
+  const store = useFormStore<MeasureInfoLocale>({
     defaultValues: value,
-    setValues: (values) => onSetValues(locale, values),
+    setValues: (values) => {
+      values.slug = values.slug
+        .toLowerCase()
+        .replace(/[^A-Za-z0-9-\s]+/g, "")
+        .replace(/\s+|-+\s+/g, "-");
+
+      onSetValues(locale, values);
+    },
   });
 
   useEffect(() => {
@@ -58,11 +68,14 @@ const EditMeasureLocale = ({
             <Text size="l" variation="heading">
               <Message id={`languages.${locale}`} />
             </Text>
-            <FormField name={$.image.alt} label="Alt Text">
-              <FormInput name={$.image.alt} />
+            <FormField name={$.imageAlt} label="Alt Text">
+              <FormInput name={$.imageAlt} />
             </FormField>
             <FormField name={$.title} label="Title">
               <FormInput name={$.title} />
+            </FormField>
+            <FormField name={$.slug} label="Slug">
+              <FormInput name={$.slug} />
             </FormField>
             <FormField name={$.description} label="Description">
               <FormInput
@@ -87,59 +100,83 @@ export function AddMeasure({
   saveMeasure,
   orgSlug,
 }: {
-  saveMeasure: (data: Record<Locales, NewMeasureWithInfo>) => SaveMeasureRetype;
+  saveMeasure: (data: SaveMeasureData) => SaveMeasureRetype;
   orgSlug: string;
 }) {
-  const blank: NewMeasureWithInfo = {
+  const blankMeasure: SaveMeasureData["measure"] = {
+    imageSrc: "",
+  };
+
+  const blankMeasureInfo: MeasureInfoLocale = {
     title: "",
     description: "",
     requirements: "",
-    image: { src: "", alt: "" },
+    imageAlt: "",
+    slug: "",
   };
 
-  const defaultValues = fromEntries(dbLocales.map((locale) => [locale, blank]));
+  const defaultValuesMeasureInfo = fromEntries(
+    dbLocales.map((locale) => [locale, blankMeasureInfo])
+  );
 
-  const store = useFormStore<{ [key in Locales]: NewMeasureWithInfo }>({
-    defaultValues,
-  });
+  const stores = {
+    measure: useFormStore<SaveMeasureData["measure"]>({
+      defaultValues: blankMeasure,
+    }),
+    measureInfo: useFormStore<SaveMeasureData["measureInfo"]>({
+      defaultValues: defaultValuesMeasureInfo,
+    }),
+  };
 
   const [isPending, startTransition] = useTransition();
 
-  const onSetValues = (locale: Locales, values: NewMeasureWithInfo) => {
-    store.setValues((oldValues) => ({ ...oldValues, [locale]: values }));
+  const onSetLocaleValues = (locale: Locales, values: MeasureInfoLocale) => {
+    stores.measureInfo.setValues((oldValues) => ({
+      ...oldValues,
+      [locale]: values,
+    }));
   };
 
   const router = useRouter();
 
-  const [errors, setErrors] = useState<
+  const [measureInfoErrors, setMeasureInfoErrors] = useState<
     Partial<Record<Locales, ZodError<NewMeasureInfo>>>
   >({});
 
   const onSubmit = () => {
-    const toSave = store.getState().values;
-
-    for (const locale of dbLocales) {
-      toSave[locale].image.src = image;
-    }
+    const measure = stores.measure.getState().values;
+    const measureInfo = stores.measureInfo.getState().values;
 
     startTransition(() => {
-      saveMeasure(toSave).then((result) => {
+      saveMeasure({ measure, measureInfo }).then((result) => {
         if (result.success === true) {
-          store.reset();
+          stores.measure.reset();
+          stores.measureInfo.reset();
           setShow(false);
           router.refresh();
         } else if (result.errors) {
-          for (const [locale, errors] of getEntries(result.errors)) {
-            setErrors((cur) => ({ ...cur, [locale]: errors }));
+          if (result.errors.measure?.issues?.length) {
+            for (const issue of result.errors.measure.issues) {
+              const path = issue.path.join(".");
+              stores.measure.setFieldTouched(path, true);
+              stores.measure.setError(path, issue.message);
+            }
+          }
+          if (result.errors.measureInfo) {
+            for (const [locale, errors] of getEntries(
+              result.errors.measureInfo
+            )) {
+              setMeasureInfoErrors((cur) => ({ ...cur, [locale]: errors }));
+            }
           }
         }
       });
     });
   };
 
-  const [image, setImage] = useState("");
-
+  const $ = stores.measure.names;
   const [show, setShow] = useState(false);
+  const imageSrc = stores.measure.useValue($.imageSrc);
 
   const onCancel = () => {
     setShow(false);
@@ -152,23 +189,28 @@ export function AddMeasure({
   return (
     <Stack>
       <Stack spacing="tight">
-        <Upload onUploaded={setImage} orgSlug={orgSlug} />
-        {image && (
-          <img
-            src={image}
+        <Upload
+          onUploaded={(src) => stores.measure.setValue($.imageSrc, src)}
+          orgSlug={orgSlug}
+        />
+        {imageSrc && (
+          <Image
+            src={imageSrc}
             height={200}
             width={200}
             style={{ imageRendering: "pixelated" }}
+            alt="Uploaded Image"
           />
         )}
       </Stack>
       <Stack direction="horizontal">
         {dbLocales.map((locale) => (
           <EditMeasureLocale
+            key={locale}
             locale={locale}
-            value={blank}
-            onSetValues={onSetValues}
-            errors={errors[locale]}
+            value={blankMeasureInfo}
+            onSetValues={onSetLocaleValues}
+            errors={measureInfoErrors[locale]}
           />
         ))}
       </Stack>

@@ -129,31 +129,35 @@ export function AddModule({
 
   const onSubmit = () => {
     startTransition(() => {
-      saveModule(store.getState().values).then((result) => {
-        if (result.success === true) {
-          store.reset();
-          setShow(false);
-          router.refresh();
-        } else if (result.errors) {
-          if (result.errors.module?.issues.length) {
-            for (const issue of result.errors.module.issues) {
-              const path = issue.path.join(".");
-              store.setFieldTouched(path, true);
-              store.setError(path, issue.message);
+      const values = store.getState().values;
+      const units = parseInt(values.module.units as any);
+      saveModule({ ...values, module: { ...values.module, units } }).then(
+        (result) => {
+          if (result.success === true) {
+            store.reset();
+            setShow(false);
+            router.refresh();
+          } else if (result.errors) {
+            if (result.errors.module?.issues.length) {
+              for (const issue of result.errors.module.issues) {
+                const path = issue.path.join(".");
+                store.setFieldTouched(path, true);
+                store.setError(path, issue.message);
+              }
             }
-          }
-          if (result.errors.moduleInfo) {
-            for (const [locale, errors] of getEntries(
-              result.errors.moduleInfo
-            )) {
-              setModuleInfoErrors((cur) => ({
-                ...cur,
-                [locale]: errors,
-              }));
+            if (result.errors.moduleInfo) {
+              for (const [locale, errors] of getEntries(
+                result.errors.moduleInfo
+              )) {
+                setModuleInfoErrors((cur) => ({
+                  ...cur,
+                  [locale]: errors,
+                }));
+              }
             }
           }
         }
-      });
+      );
     });
   };
 
@@ -191,7 +195,7 @@ export function AddModule({
         </Stack>
         <Form store={store}>
           <FormField name={$.module.units} label="Units">
-            <FormInput name={$.module.units} />
+            <FormInput name={$.module.units} type="number" />
           </FormField>
         </Form>
 

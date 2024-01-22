@@ -1,14 +1,20 @@
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
+import { and, eq, isNull } from "@octocoach/db/operators";
 import {
   mkMeasureInfoTable,
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
-import { Stack, Text } from "@octocoach/ui";
-import { deleteMeasure } from "../actions";
-import { Delete } from "./delete";
+import { mkMeasureModuleTable } from "@octocoach/db/schemas/org/measure-module";
+import {
+  mkModuleInfoTable,
+  mkModuleTable,
+} from "@octocoach/db/schemas/org/module";
+import { Card, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
+import { deleteMeasure } from "../actions";
+import { AddModuleToMeasure } from "./add-module";
+import { Delete } from "./delete";
 
 export default async function Page({
   params,
@@ -19,21 +25,68 @@ export default async function Page({
 
   const measureTable = mkMeasureTable(params.orgSlug);
   const measureInfoTable = mkMeasureInfoTable(params.orgSlug);
+  const measureModuleTable = mkMeasureModuleTable(params.orgSlug);
+  const moduleTable = mkModuleTable(params.orgSlug);
+  const moduleInfoTable = mkModuleInfoTable(params.orgSlug);
 
   const locale = getLocale();
 
   const measure = await db
-    .select()
-    .from(measureInfoTable)
-    .where(
+    .select({
+      id: measureTable.id,
+      title: measureInfoTable.title,
+      description: measureInfoTable.description,
+    })
+    .from(measureTable)
+    .innerJoin(
+      measureInfoTable,
       and(
-        eq(measureInfoTable.slug, params.measureSlug),
+        eq(measureInfoTable.id, measureTable.id),
         eq(measureInfoTable.locale, locale)
       )
     )
+    .where(eq(measureInfoTable.slug, params.measureSlug))
     .then((rows) => rows[0] ?? null);
 
   if (!measure) notFound();
+
+  const addedModules = await db
+    .select({
+      id: moduleTable.id,
+      title: moduleInfoTable.title,
+      description: moduleInfoTable.description,
+      imageSrc: moduleTable.imageSrc,
+      imageAlt: moduleInfoTable.imageAlt,
+    })
+    .from(measureModuleTable)
+    .innerJoin(moduleTable, eq(measureModuleTable.module, moduleTable.id))
+    .innerJoin(moduleInfoTable, eq(moduleInfoTable.id, moduleTable.id))
+    .where(
+      and(
+        eq(measureModuleTable.measure, measure.id),
+        eq(moduleInfoTable.locale, locale)
+      )
+    );
+
+  const availableModules = await db
+    .select({
+      id: moduleTable.id,
+      title: moduleInfoTable.title,
+      description: moduleInfoTable.description,
+      imageSrc: moduleTable.imageSrc,
+      imageAlt: moduleInfoTable.imageAlt,
+      units: moduleTable.units,
+      owner: moduleTable.owner,
+    })
+    .from(moduleTable)
+    .innerJoin(moduleInfoTable, eq(moduleInfoTable.id, moduleTable.id))
+    .leftJoin(measureModuleTable, eq(measureModuleTable.module, moduleTable.id))
+    .where(
+      and(
+        eq(moduleInfoTable.locale, locale),
+        isNull(measureModuleTable.measure)
+      )
+    );
 
   const deleteActionWithSlug = deleteMeasure.bind("orgSlug", params.orgSlug);
 
@@ -41,6 +94,19 @@ export default async function Page({
     <Stack>
       <Text size="l">{measure.title}</Text>
       <Text>{measure.description}</Text>
+      <Stack>
+        {addedModules.map((mod) => (
+          <Card key={mod.id}>
+            <Text size="l">{mod.title}</Text>
+            <Text>{mod.description}</Text>
+          </Card>
+        ))}
+      </Stack>
+      <AddModuleToMeasure
+        modules={availableModules}
+        measureId={measure.id}
+        orgSlug={params.orgSlug}
+      />
       <Delete deleteAction={deleteActionWithSlug} id={measure.id} />
     </Stack>
   );

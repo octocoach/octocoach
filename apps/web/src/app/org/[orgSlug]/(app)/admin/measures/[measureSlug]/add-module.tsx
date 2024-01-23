@@ -1,13 +1,11 @@
 "use client";
 
-import { Module, ModuleInfo } from "@octocoach/db/schemas/org/module";
-import { Button, Card, Stack, Text } from "@octocoach/ui";
-import { addMeasureToModule } from "./actions";
 import { Measure } from "@octocoach/db/schemas/org/measure";
-import { startTransition } from "react";
+import { Button, Card, Stack, Text } from "@octocoach/ui";
 import { useRouter } from "next/navigation";
-
-type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
+import { startTransition } from "react";
+import { addMeasureToModule } from "./actions";
+import { ModuleWithInfo } from "./page";
 
 export const AddModuleToMeasure = ({
   measureId,
@@ -25,6 +23,20 @@ export const AddModuleToMeasure = ({
     orgSlug
   );
 
+  const onAdd = (mod: ModuleWithInfo) =>
+    startTransition(() => {
+      addMeasureToModuleWithSlug({
+        measureId,
+        moduleId: mod.id,
+      }).then((res): void => {
+        if (res.success) {
+          router.refresh();
+        } else {
+          console.log(res);
+        }
+      });
+    });
+
   return (
     <Card>
       <Text>Add Module</Text>
@@ -37,23 +49,7 @@ export const AddModuleToMeasure = ({
             align="center"
           >
             <Text>{mod.title}</Text>
-            <Button
-              size="small"
-              onClick={() =>
-                startTransition(() => {
-                  addMeasureToModuleWithSlug({
-                    measureId,
-                    moduleId: mod.id,
-                  }).then((res): void => {
-                    if (res.success) {
-                      router.refresh();
-                    } else {
-                      console.log(res);
-                    }
-                  });
-                })
-              }
-            >
+            <Button size="small" onClick={() => onAdd(mod)}>
               Add
             </Button>
           </Stack>

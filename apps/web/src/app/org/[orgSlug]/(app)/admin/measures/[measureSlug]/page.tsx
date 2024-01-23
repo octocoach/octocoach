@@ -7,14 +7,19 @@ import {
 } from "@octocoach/db/schemas/org/measure";
 import { mkMeasureModuleTable } from "@octocoach/db/schemas/org/measure-module";
 import {
+  Module,
+  ModuleInfo,
   mkModuleInfoTable,
   mkModuleTable,
 } from "@octocoach/db/schemas/org/module";
-import { Card, Stack, Text } from "@octocoach/ui";
+import { Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { deleteMeasure } from "../actions";
 import { AddModuleToMeasure } from "./add-module";
 import { Delete } from "./delete";
+import { ModulesCompoent } from "./modules";
+
+export type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
 
 export default async function Page({
   params,
@@ -57,6 +62,8 @@ export default async function Page({
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,
       imageAlt: moduleInfoTable.imageAlt,
+      units: moduleTable.units,
+      owner: moduleTable.owner,
     })
     .from(measureModuleTable)
     .innerJoin(moduleTable, eq(measureModuleTable.module, moduleTable.id))
@@ -66,7 +73,8 @@ export default async function Page({
         eq(measureModuleTable.measure, measure.id),
         eq(moduleInfoTable.locale, locale)
       )
-    );
+    )
+    .orderBy(measureModuleTable.order);
 
   const availableModules = await db
     .select({
@@ -94,14 +102,11 @@ export default async function Page({
     <Stack>
       <Text size="l">{measure.title}</Text>
       <Text>{measure.description}</Text>
-      <Stack>
-        {addedModules.map((mod) => (
-          <Card key={mod.id}>
-            <Text size="l">{mod.title}</Text>
-            <Text>{mod.description}</Text>
-          </Card>
-        ))}
-      </Stack>
+      <ModulesCompoent
+        measureId={measure.id}
+        modules={addedModules}
+        orgSlug={params.orgSlug}
+      />
       <AddModuleToMeasure
         modules={availableModules}
         measureId={measure.id}

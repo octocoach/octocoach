@@ -49,7 +49,7 @@ export default async function Page({
             module_info: { id, title, description, imageAlt },
             module: { units, imageSrc },
           }) => (
-            <Link href={`${baseUrl}/modules/${id}`} key={id}>
+            <Link href={`${baseUrl}/admin/modules/${id}`} key={id}>
               <Card>
                 <Image src={imageSrc} height={100} width={100} alt={imageAlt} />
                 <Text>{title}</Text>

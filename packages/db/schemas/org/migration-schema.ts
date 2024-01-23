@@ -11,6 +11,8 @@ export const {
   coachTableRelations,
   contentLocaleTable,
   contentTable,
+  enrollmentStatusEnum,
+  enrollmentTable,
   localeEnum,
   measureInfoRelations,
   measureInfoTable,

@@ -22,10 +22,12 @@ import {
   skillsMissingTasksTable,
 } from "../common/skills-missing-tasks";
 import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
+import { enrollmentStatusEnum } from "../data-types/enrollment";
 import { localeEnum } from "../data-types/locale";
 import { mkOrgAccountTable } from "./account";
 import { mkCoachTable, mkCoachTableRelations } from "./coach";
 import { mkContentLocaleTable, mkContentTable } from "./content";
+import { mkEnrollmentTable } from "./enrollment";
 import {
   mkMeasureInfoRelations,
   mkMeasureInfoTable,
@@ -122,4 +124,6 @@ export const mkOrgSchema = (slug: string) => ({
   moduleInfoRelations: mkModuleInfoRelations(slug),
   measureModuleTable: mkMeasureModuleTable(slug),
   measureModuleRelations: mkMeasureModuleRelations(slug),
+  enrollmentTable: mkEnrollmentTable(slug),
+  enrollmentStatusEnum,
 });

@@ -23,6 +23,7 @@ import {
 import { getContentById } from "@octocoach/ui/helpers";
 import Link from "next/link";
 import { useOrganization } from "./context";
+import { Measures } from "@components/measures";
 
 export default function Page({ params }: { params: { orgSlug: string } }) {
   const { data: session } = useSession();
@@ -60,14 +61,13 @@ export default function Page({ params }: { params: { orgSlug: string } }) {
       <PixelBackground>
         <HeroSection
           content={heroSection}
-          orgSlug={params.orgSlug}
           signedIn={!!session?.user}
           startLink={<Link href={`${baseUrl}/start`} />}
           signupLink={<Link href={`${baseUrl}/signup`} />}
         />
       </PixelBackground>
-      <PixelBackground pixelSize={20}>
-        <MethodSection content={methodSection} />
+      <PixelBackground pixelSize={30}>
+        <Measures measures={organization.measures} />
       </PixelBackground>
       <PixelBackground pixelSize={40}>
         <AboutSection content={aboutSection} />

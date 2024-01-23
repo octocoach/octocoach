@@ -5,6 +5,7 @@ import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { mkMeasureModuleTable } from "./measure-module";
+import { ModuleWithInfo } from "./module";
 
 export type Measure = ReturnType<typeof mkMeasureTable>["$inferSelect"];
 export type NewMeasure = ReturnType<typeof mkMeasureTable>["$inferInsert"];
@@ -13,6 +14,11 @@ export type MeasureInfo = ReturnType<typeof mkMeasureInfoTable>["$inferSelect"];
 export type NewMeasureInfo = ReturnType<
   typeof mkMeasureInfoTable
 >["$inferInsert"];
+
+export type MeasureWithInfo = Omit<Measure & MeasureInfo, "locale">;
+export type MeasureWithInfoAndModules = MeasureWithInfo & {
+  modules: ModuleWithInfo[];
+};
 
 export const mkMeasureTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);

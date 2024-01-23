@@ -1,11 +1,11 @@
 "use client";
 
-import { Card, Stack, Text, Box, Button } from "@octocoach/ui";
-import { ModuleWithInfo } from "./page";
-import { removeMeasureFromModule } from "./actions";
-import { startTransition } from "react";
 import { Measure } from "@octocoach/db/schemas/org/measure";
+import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
+import { Box, Button, Card, Stack, Text } from "@octocoach/ui";
 import { useRouter } from "next/navigation";
+import { startTransition } from "react";
+import { removeMeasureFromModule } from "./actions";
 
 export const ModulesCompoent = ({
   measureId,

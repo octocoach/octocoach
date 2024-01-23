@@ -7,8 +7,6 @@ import {
 } from "@octocoach/db/schemas/org/measure";
 import { mkMeasureModuleTable } from "@octocoach/db/schemas/org/measure-module";
 import {
-  Module,
-  ModuleInfo,
   mkModuleInfoTable,
   mkModuleTable,
 } from "@octocoach/db/schemas/org/module";
@@ -18,8 +16,6 @@ import { deleteMeasure } from "../actions";
 import { AddModuleToMeasure } from "./add-module";
 import { Delete } from "./delete";
 import { ModulesCompoent } from "./modules";
-
-export type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
 
 export default async function Page({
   params,

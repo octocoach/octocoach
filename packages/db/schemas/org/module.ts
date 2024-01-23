@@ -14,6 +14,8 @@ export type NewModuleInfo = ReturnType<
   typeof mkModuleInfoTable
 >["$inferInsert"];
 
+export type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
+
 export const mkModuleTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
 

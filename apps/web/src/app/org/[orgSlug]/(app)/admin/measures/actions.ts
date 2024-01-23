@@ -116,5 +116,5 @@ export const deleteMeasure = async (
   await db.delete(measureInfoTable).where(eq(measureInfoTable.id, id));
   await db.delete(measureTable).where(eq(measureTable.id, id));
 
-  redirect(`/org/${orgSlug}/measures`);
+  redirect(`/org/${orgSlug}/admin/measures`);
 };

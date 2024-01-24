@@ -1,82 +1,50 @@
-"use client";
-
-import { useBasePath } from "@hooks/base-path";
-import { useSession } from "@octocoach/auth/react";
+import { getBaseUrl } from "@helpers/navigation";
+import { mkAuth } from "@octocoach/auth";
 import {
   AboutSection,
-  AboutSectionContent,
   CoachSection,
-  CoachSectionContent,
   FAQSection,
-  FaqSectionContent,
   HeroSection,
-  HeroSectionContent,
-  MethodSection,
-  MethodSectionContent,
   PixelBackground,
-  aboutSectionId,
-  coachSectionId,
-  faqSectionId,
-  heroSectionId,
-  methodSectionId,
 } from "@octocoach/ui";
-import { getContentById } from "@octocoach/ui/helpers";
 import Link from "next/link";
-import { useOrganization } from "./context";
+import { getContent, getMeasuresWithInfo } from "./helpers";
 import { Measures } from "@components/measures";
 
-export default function Page({ params }: { params: { orgSlug: string } }) {
-  const { data: session } = useSession();
-  const organization = useOrganization();
+export default async function Page({
+  params,
+}: {
+  params: { orgSlug: string };
+}) {
+  const { auth } = await mkAuth(params.orgSlug);
+  const session = await auth();
 
-  const heroSection = getContentById<HeroSectionContent>(
-    organization.content,
-    heroSectionId
-  );
+  const content = await getContent(params.orgSlug);
+  const measures = await getMeasuresWithInfo(params.orgSlug);
 
-  const aboutSection = getContentById<AboutSectionContent>(
-    organization.content,
-    aboutSectionId
-  );
-
-  const coachSection = getContentById<CoachSectionContent>(
-    organization.content,
-    coachSectionId
-  );
-
-  const methodSection = getContentById<MethodSectionContent>(
-    organization.content,
-    methodSectionId
-  );
-
-  const faqSection = getContentById<FaqSectionContent>(
-    organization.content,
-    faqSectionId
-  );
-
-  const baseUrl = useBasePath();
+  const baseUrl = getBaseUrl();
 
   return (
     <>
       <PixelBackground>
         <HeroSection
-          content={heroSection}
+          content={content.hero}
           signedIn={!!session?.user}
           startLink={<Link href={`${baseUrl}/start`} />}
           signupLink={<Link href={`${baseUrl}/signup`} />}
         />
       </PixelBackground>
       <PixelBackground pixelSize={30}>
-        <Measures measures={organization.measures} />
+        <Measures measures={measures} baseUrl={baseUrl} />
       </PixelBackground>
       <PixelBackground pixelSize={40}>
-        <AboutSection content={aboutSection} />
+        <AboutSection content={content.about} />
       </PixelBackground>
       <PixelBackground pixelSize={80}>
-        <CoachSection content={coachSection} />
+        <CoachSection content={content.coach} />
       </PixelBackground>
       <PixelBackground pixelSize={120}>
-        <FAQSection content={faqSection} />
+        <FAQSection content={content.faq} />
       </PixelBackground>
     </>
   );

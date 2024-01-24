@@ -1,3 +1,4 @@
+import { addressTable } from "../common/address";
 import { employerTable } from "../common/employer";
 import { jobRelations, jobTable } from "../common/job";
 import {
@@ -76,6 +77,7 @@ export const mkOrgSchema = (slug: string) => ({
   organizationTable: mkOrganizationTable(mkUserTable(slug)),
   organizationTableRelations: mkOrganizationTableRelations(mkUserTable(slug)),
 
+  addressTable,
   employerTable,
 
   jobTable,

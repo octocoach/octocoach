@@ -1,11 +1,14 @@
-import { MeasureWithInfoAndModules } from "@octocoach/db/schemas/org/measure";
-import { Box, Stack, Text } from "@octocoach/ui";
+import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
+import { Box, ButtonLink, Stack, Text } from "@octocoach/ui";
 import Image from "next/image";
+import Link from "next/link";
 
 export const Measures = ({
   measures,
+  baseUrl,
 }: {
-  measures: MeasureWithInfoAndModules[];
+  measures: MeasureWithInfo[];
+  baseUrl: string;
 }) => {
   if (measures.length === 0) return null;
 
@@ -27,6 +30,11 @@ export const Measures = ({
               {measure.title}
             </Text>
             <Text>{measure.description}</Text>
+            <ButtonLink
+              href={`${baseUrl}/measures/${measure.slug}`}
+              text="Read More"
+              Element={Link}
+            />
           </Stack>
         ))}
       </Stack>

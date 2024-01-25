@@ -31,7 +31,7 @@ export const Measures = ({
             </Text>
             <Text>{measure.description}</Text>
             <ButtonLink
-              href={`${baseUrl}/measures/${measure.slug}`}
+              href={`${baseUrl}measures/${measure.slug}`}
               text="Read More"
               Element={Link}
             />

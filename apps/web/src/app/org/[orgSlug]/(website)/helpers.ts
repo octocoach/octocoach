@@ -20,6 +20,7 @@ import {
 } from "@octocoach/ui";
 import { userTable } from "@octocoach/db/schemas/public/schema";
 import { notFound } from "next/navigation";
+import { Measure, MeasureInfo } from "@octocoach/db/schemas/org/measure";
 
 const getValue = ({
   id,
@@ -200,6 +201,79 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       table.requirements,
     ])
     .orderBy(measureInfoTable.title);
+};
+
+export const getMeasureWithInfoAndModules = async (
+  orgSlug: string,
+  measureSlug: MeasureInfo["slug"]
+) => {
+  const locale = getLocale();
+  const db = orgDb(orgSlug);
+  const {
+    measureTable,
+    measureInfoTable,
+    moduleTable,
+    moduleInfoTable,
+    measureModuleTable,
+  } = mkOrgSchema(orgSlug);
+
+  const measure = await db
+    .select({
+      id: measureTable.id,
+      title: measureInfoTable.title,
+      description: measureInfoTable.description,
+      imageSrc: measureTable.imageSrc,
+      imageAlt: measureInfoTable.imageAlt,
+      owner: measureTable.owner,
+      slug: measureInfoTable.slug,
+      requirements: measureInfoTable.requirements,
+      modules: sql<ModuleWithInfo[]>`
+      json_agg(
+        json_build_object(
+          'id', ${moduleTable.id},
+          'owner', ${moduleTable.owner},
+          'units', ${moduleTable.units},
+          'imageSrc', ${moduleTable.imageSrc},
+          'imageAlt', ${moduleInfoTable.imageAlt},
+          'title', ${moduleInfoTable.title},
+          'description', ${moduleInfoTable.description}
+        ) ORDER BY ${measureModuleTable.order}
+      )`,
+    })
+    .from(measureTable)
+    .innerJoin(
+      measureInfoTable,
+      and(
+        eq(measureInfoTable.id, measureTable.id),
+        eq(measureInfoTable.locale, locale)
+      )
+    )
+    .innerJoin(
+      measureModuleTable,
+      eq(measureModuleTable.measure, measureTable.id)
+    )
+    .innerJoin(moduleTable, eq(moduleTable.id, measureModuleTable.module))
+    .innerJoin(
+      moduleInfoTable,
+      and(
+        eq(moduleTable.id, moduleInfoTable.id),
+        eq(moduleInfoTable.locale, locale)
+      )
+    )
+    .where(eq(measureInfoTable.slug, measureSlug))
+    .groupBy((table) => [
+      table.id,
+      table.title,
+      table.description,
+      table.imageSrc,
+      table.imageAlt,
+      table.owner,
+      table.slug,
+      table.requirements,
+    ])
+    .then((rows) => rows[0] ?? null);
+
+  return measure;
 };
 
 export type OrganizationWithContent = Awaited<

@@ -1,41 +1,82 @@
-import { getLocale } from "@helpers/locale";
-import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
 import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
-import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Stack, Text } from "@octocoach/ui";
+import { Box, ButtonLink, Card, Markdown, Stack, Text } from "@octocoach/ui";
 
+import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getMeasureWithInfoAndModules } from "../../helpers";
+import { getBaseUrl } from "@helpers/navigation";
 
 export default async function Page({
   params,
 }: {
   params: { orgSlug: string; measureSlug: MeasureWithInfo["slug"] };
 }) {
-  const db = orgDb(params.orgSlug);
-  const locale = getLocale();
-
-  const { measureTable, measureInfoTable } = mkOrgSchema(params.orgSlug);
-  const measure = await db
-    .select({ title: measureInfoTable.title })
-    .from(measureTable)
-    .innerJoin(
-      measureInfoTable,
-      and(
-        eq(measureInfoTable.id, measureTable.id),
-        eq(measureInfoTable.locale, locale)
-      )
-    )
-    .where(eq(measureInfoTable.slug, params.measureSlug))
-    .then((rows) => rows[0] ?? null);
+  const measure = await getMeasureWithInfoAndModules(
+    params.orgSlug,
+    params.measureSlug
+  );
 
   if (!measure) notFound();
 
+  const baseUrl = getBaseUrl();
+
   return (
-    <Stack>
-      <Text size="xl" variation="casual">
-        {measure.title}
-      </Text>
-    </Stack>
+    <Box marginY="medium">
+      <Stack>
+        <Stack direction="horizontal" justify="between" wrap>
+          <Stack spacing="loose">
+            <Box>
+              <Text size="xl" variation="casual">
+                {measure.title}
+              </Text>
+              <Text>{measure.description}</Text>
+            </Box>
+            <ButtonLink
+              Element={Link}
+              text="Apply now"
+              href={`${baseUrl}start`}
+            />
+          </Stack>
+          <Image
+            src={measure.imageSrc}
+            alt={measure.imageAlt}
+            width={200}
+            height={200}
+          />
+        </Stack>
+        <Text size="l" weight="light" element="h2">
+          Modules
+        </Text>
+        <Stack>
+          {measure.modules.map((mod) => (
+            <Card key={mod.id}>
+              <Stack direction="horizontal">
+                <Image
+                  src={mod.imageSrc}
+                  alt={mod.imageAlt}
+                  height={150}
+                  width={150}
+                />
+                <Stack>
+                  <Text size="l" weight="heavy">
+                    {mod.title}
+                  </Text>
+                  <Text>{mod.description}</Text>
+                </Stack>
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
+        <Text size="l" weight="light" element="h2">
+          Requirements
+        </Text>
+        <Card>
+          <Text variation="casual" weight="light">
+            <Markdown>{measure.requirements}</Markdown>
+          </Text>
+        </Card>
+      </Stack>
+    </Box>
   );
 }

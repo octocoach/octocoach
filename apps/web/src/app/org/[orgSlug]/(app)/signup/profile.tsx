@@ -15,6 +15,7 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ProfileForm, saveProfile } from "./actions";
 
 export const Profile = ({
@@ -25,6 +26,9 @@ export const Profile = ({
   profile?: UserProfile;
 }) => {
   const { data: session } = useSession();
+
+  const search = useSearchParams();
+  const origin = search.get("origin") ?? undefined;
 
   const store = useFormStore<ProfileForm>({
     defaultValues: {
@@ -38,6 +42,7 @@ export const Profile = ({
   const saveProfileWithUserId = saveProfile.bind("boundValues", {
     orgSlug,
     userId: session!.user.id,
+    origin,
   });
 
   const onSubmit = async () => {

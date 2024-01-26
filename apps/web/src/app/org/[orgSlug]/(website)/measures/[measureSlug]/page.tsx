@@ -35,7 +35,7 @@ export default async function Page({
             <ButtonLink
               Element={Link}
               text="Apply now"
-              href={`${baseUrl}start`}
+              href={`${baseUrl}measures/${measure.slug}/apply`}
             />
           </Stack>
           <Image
@@ -72,9 +72,7 @@ export default async function Page({
           Requirements
         </Text>
         <Card>
-          <Text variation="casual" weight="light">
-            <Markdown>{measure.requirements}</Markdown>
-          </Text>
+          <Markdown>{measure.requirements}</Markdown>
         </Card>
       </Stack>
     </Box>

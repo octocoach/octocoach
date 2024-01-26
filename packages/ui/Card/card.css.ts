@@ -1,6 +1,7 @@
 import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
 import { vars } from "../theme.css";
 import { space } from "../sprinkles.css";
+import { createAlpha } from "../helpers";
 
 export const card = recipe({
   base: {
@@ -12,6 +13,15 @@ export const card = recipe({
     surface: {
       base: {
         background: vars.color.surface[0],
+      },
+      base20: {
+        background: vars.color.background.base[20],
+      },
+      base50: {
+        background: vars.color.background.base[50],
+      },
+      base80: {
+        background: vars.color.background.base[80],
       },
       mantle: {
         background: vars.color.surface[1],

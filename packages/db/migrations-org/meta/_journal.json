@@ -29,6 +29,13 @@
       "when": 1706015861107,
       "tag": "0003_furry_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1706189497517,
+      "tag": "0004_empty_secret_warriors",
+      "breakpoints": true
     }
   ]
 }

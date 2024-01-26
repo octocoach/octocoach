@@ -16,10 +16,11 @@ export type ProfileForm = Required<
 type BoundValues = {
   userId: string;
   orgSlug: string;
+  origin?: string;
 };
 
 export async function saveProfile(
-  { userId, orgSlug }: BoundValues,
+  { userId, orgSlug, origin }: BoundValues,
   userProfile: ProfileForm
 ) {
   const db = orgDb(orgSlug);
@@ -40,5 +41,5 @@ export async function saveProfile(
       where: eq(userProfileTable.userId, userId),
     });
 
-  orgRedirect("/start");
+  orgRedirect(origin ? `${origin}` : "start");
 }

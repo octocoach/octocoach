@@ -15,7 +15,7 @@ import { cookieNames, xHeaders } from "./const";
  */
 function detectLocale(request: NextRequest) {
   const headers = {
-    "accept-language": request.headers.get("accept-language"),
+    "accept-language": request.headers.get("accept-language") || "en",
   };
   const languages = new Negotiator({ headers }).languages();
   const locales = ["en", "de"];
@@ -27,6 +27,9 @@ function detectLocale(request: NextRequest) {
 
 export default async function middleware(request: NextRequest) {
   const host = request.headers.get("host");
+  if (!host) {
+    return NextResponse.error();
+  }
   const pathname = request.nextUrl.pathname;
   const requestHeaders = new Headers(request.headers);
   let orgSlug: string | undefined;
@@ -35,7 +38,7 @@ export default async function middleware(request: NextRequest) {
   if (
     host === "localhost:3000" ||
     host === process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
-    host.endsWith("vercel.app")
+    host?.endsWith("vercel.app")
   ) {
     if (pathname.startsWith("/org") && !(pathname === "/org")) {
       orgSlug = pathname.replace("/org/", "").split("/")[0];

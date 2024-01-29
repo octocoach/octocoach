@@ -35,6 +35,16 @@ const de = {
         "Du hast ein tiefes, intuitives Verständnis der Fertigkeit. Du kannst Probleme diagnostizieren und mühelos innovative Lösungen entwickeln. Du verlässt dich nicht auf Regeln, sondern auf deine große Erfahrung.",
     },
   },
+  languages: {
+    en: "Englisch",
+    de: "Deutsch",
+  },
+  enrollment: {
+    status: {
+      pending:
+        "Deine Anmeldung wird bearbeitet. Wir werden uns in Kürze bei dir melden.",
+    },
+  },
 } satisfies Translation;
 
 export default de;

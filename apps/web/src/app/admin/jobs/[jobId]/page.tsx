@@ -2,6 +2,7 @@ import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
 export default async function Page({ params }: { params: { jobId: number } }) {
@@ -20,6 +21,8 @@ export default async function Page({ params }: { params: { jobId: number } }) {
       },
     },
   });
+
+  if (!job) notFound();
 
   return (
     <Stack>

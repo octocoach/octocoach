@@ -1,5 +1,5 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { OrganizationWithContent } from "../context";
+import { OrganizationWithContent } from "../helpers";
 
 type MakeImpressum = (organization: OrganizationWithContent) => string;
 
@@ -7,7 +7,7 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   en: (organization) => `# Legal Notice ${organization.legalName}
   ## Information in accordance with Section 5 TMG
   
-  ${organization.owner.name}  
+  ${organization.ownerName}  
   ${organization.legalName}  
   ${organization.address.addressLine1}  
   ${organization.address.addressLine2 || ""}  
@@ -22,7 +22,7 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   
   ## Editorial Responsibility
   
-  ${organization.owner.name}  
+  ${organization.ownerName}  
   ${organization.address.addressLine1}  
   ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}
@@ -39,7 +39,7 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   de: (organization) => `# Impressum ${organization.legalName}
   ## Angaben gemäß § 5 TMG
   
-  ${organization.owner.name}  
+  ${organization.ownerName}  
   ${organization.legalName}
 
   ${organization.address.addressLine1}  
@@ -55,7 +55,7 @@ export const makeImpressum: Record<Locales, MakeImpressum> = {
   
   ## Redaktionell verantwortlich
   
-  ${organization.owner.name}  
+  ${organization.ownerName}  
   ${organization.address.addressLine1}  
   ${organization.address.addressLine2 || ""}  
   ${organization.address.postcode} ${organization.address.city}

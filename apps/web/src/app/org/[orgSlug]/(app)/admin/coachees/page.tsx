@@ -16,7 +16,7 @@ export default async function Page({
   return (
     <Stack>
       {members.map((member) => (
-        <Link href={`${baseUrl}coachees/${member.id}`} key={member.id}>
+        <Link href={`${baseUrl}admin/coachees/${member.id}`} key={member.id}>
           <Text>{member.name}</Text>
         </Link>
       ))}

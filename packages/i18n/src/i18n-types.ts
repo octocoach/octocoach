@@ -94,6 +94,24 @@ type RootTranslation = {
 			description: string
 		}
 	}
+	languages: {
+		/**
+		 * E​n​g​l​i​s​h
+		 */
+		en: string
+		/**
+		 * G​e​r​m​a​n
+		 */
+		de: string
+	}
+	enrollment: {
+		status: {
+			/**
+			 * Y​o​u​r​ ​e​n​r​o​l​l​m​e​n​t​ ​i​s​ ​p​e​n​d​i​n​g​.​ ​W​e​ ​w​i​l​l​ ​b​e​ ​i​n​ ​t​o​u​c​h​ ​s​h​o​r​t​l​y​.
+			 */
+			pending: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -175,6 +193,24 @@ export type TranslationFunctions = {
 			 * You have a deep, intuitive understanding of the skill. You can diagnose problems and innovate solutions effortlessly. You don't rely on rules but rather your vast experience.
 			 */
 			description: () => LocalizedString
+		}
+	}
+	languages: {
+		/**
+		 * English
+		 */
+		en: () => LocalizedString
+		/**
+		 * German
+		 */
+		de: () => LocalizedString
+	}
+	enrollment: {
+		status: {
+			/**
+			 * Your enrollment is pending. We will be in touch shortly.
+			 */
+			pending: () => LocalizedString
 		}
 	}
 }

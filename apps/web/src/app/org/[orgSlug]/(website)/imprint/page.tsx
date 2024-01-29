@@ -1,14 +1,20 @@
-"use client";
-
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
-import { Box, Markdown } from "@octocoach/ui";
-import { useOrganization } from "../context";
+import { getLocale } from "@helpers/locale";
+import { Markdown } from "@octocoach/ui";
+import { notFound } from "next/navigation";
+import { getOrganizationWithAddressAndOwnerName } from "../helpers";
 import { makeImpressum } from "./content";
 
-export default function Page() {
-  const organization = useOrganization();
+export default async function Page({
+  params,
+}: {
+  params: { orgSlug: string };
+}) {
+  const organization = await getOrganizationWithAddressAndOwnerName(
+    params.orgSlug
+  );
+  const locale = getLocale();
 
-  const { locale } = useI18nContext();
+  if (!organization) notFound();
 
   return <Markdown>{makeImpressum[locale](organization)}</Markdown>;
 }

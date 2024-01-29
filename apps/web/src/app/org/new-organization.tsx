@@ -40,8 +40,10 @@ export const NewOrganization = () => {
   const [legalFormAbbreviation, setLegalFormAbbreviation] = useState("");
   const [isSlugModified, setIsSlugModified] = useState(false);
 
-  const onChange = (values) => {
-    const abbreviation = legalForm[values.legalForm]?.abbreviation;
+  const onChange = (values: CreateOrganization) => {
+    const abbreviation: string = !!values.legalForm
+      ? legalForm[values.legalForm].abbreviation
+      : "";
     if (!isSlugModified && store.getValue("displayName") !== name) {
       store.setValue("slug", sluggify(values.displayName));
       setName(store.getValue("displayName"));

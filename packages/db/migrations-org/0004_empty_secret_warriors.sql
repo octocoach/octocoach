@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."enrollment" ADD CONSTRAINT "enrollment_measure_coachee_pk" PRIMARY KEY("measure","coachee");

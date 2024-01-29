@@ -2,6 +2,7 @@ import { db } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const Pill = ({ children }: { children: string }) => (
   <Tag>
@@ -31,6 +32,8 @@ export default async function Page({
       },
     },
   });
+
+  if (!skill) notFound();
 
   return (
     <Stack>

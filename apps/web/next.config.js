@@ -15,6 +15,7 @@ const nextConfig = {
         hostname: "ui-avatars.com",
       },
       { protocol: "https", hostname: "img.clerk.com" },
+      { protocol: "https", hostname: "**.blob.vercel-storage.com" },
     ],
   },
   reactStrictMode: true,

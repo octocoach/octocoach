@@ -3,6 +3,7 @@ import { getUserAccounts } from "@octocoach/auth/adapters";
 import { orgDb } from "@octocoach/db/connection";
 import { Box, Grid, Text } from "@octocoach/ui";
 import { Profile } from "./profile";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -23,12 +24,14 @@ export default async function Page({
     where: (table, { eq }) => eq(table.slug, params.orgSlug),
   });
 
+  if (!organization) notFound();
+
   const allProvidersLinked = Object.values(userAccounts).every(
     ({ dbAccount }) => !!dbAccount
   );
 
   const profileComplete =
-    profile?.firstName?.length > 0 && profile?.lastName?.length > 0;
+    profile?.firstName?.length && profile?.lastName?.length;
 
   return (
     <Box paddingX="none" paddingY="none" marginY="large">

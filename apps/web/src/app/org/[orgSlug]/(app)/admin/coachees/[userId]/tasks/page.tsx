@@ -3,6 +3,7 @@ import { orgDb } from "@octocoach/db/connection";
 import { Card, Stack, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -21,6 +22,8 @@ export default async function Page({
     },
     where: (users, { eq }) => eq(users.id, params.userId),
   });
+
+  if (!user) notFound();
 
   const likeLevel = {
     no: -1,

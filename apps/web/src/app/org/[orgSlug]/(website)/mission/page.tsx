@@ -1,5 +1,3 @@
-"use client";
-
 import { SectionContentSimple } from "@octocoach/db/schemas/org/content";
 import {
   Card,
@@ -8,16 +6,20 @@ import {
   PixelBackground,
   Text,
 } from "@octocoach/ui";
-import { getContentById } from "@octocoach/ui/helpers";
-import { useOrganization } from "../context";
+import { notFound } from "next/navigation";
+import { getContentById } from "../helpers";
 
-export default function Page({ params }: { params: { orgSlug: string } }) {
-  const organization = useOrganization();
-
-  const missionContent = getContentById<SectionContentSimple>(
-    organization.content,
+export default async function Page({
+  params,
+}: {
+  params: { orgSlug: string };
+}) {
+  const missionContent = await getContentById<SectionContentSimple>(
+    params.orgSlug,
     "mission"
   );
+
+  if (!missionContent) notFound();
 
   return (
     <PixelBackground pixelSize={80}>

@@ -9,6 +9,7 @@ import {
   skillLevelEnum,
   type SkillLevel,
 } from "@octocoach/db/schemas/common/skill-level";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -35,6 +36,8 @@ export default async function Page({
     },
     where: (users, { eq }) => eq(users.id, params.userId),
   });
+
+  if (!user) notFound();
 
   const countSkills = (skillLevel: SkillLevel) =>
     user.usersSkillLevels.filter((s) => s.skillLevel === skillLevel).length;
@@ -68,7 +71,7 @@ export default async function Page({
               [curr.skill.subcategory.name]:
                 acc[curr.skill.subcategory.name] + 1 || 1,
             }),
-            {} as BarChartItem
+            {} as Record<string, number>
           )
         )
           .map(([label, value]) => ({ label, value }))

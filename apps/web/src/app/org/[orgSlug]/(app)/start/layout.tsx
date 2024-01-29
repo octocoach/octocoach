@@ -8,7 +8,7 @@ export default async function Layout({
   params,
 }: {
   children: ReactNode;
-  params: { orgSlug };
+  params: { orgSlug: string };
 }) {
   const session = await authOrRedirect(params.orgSlug);
 

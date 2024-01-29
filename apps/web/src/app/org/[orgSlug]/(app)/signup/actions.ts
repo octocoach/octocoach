@@ -6,18 +6,21 @@ import { eq } from "@octocoach/db/operators";
 import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { NewUserProfile } from "@octocoach/db/schemas/types";
 
-export type ProfileForm = Pick<
-  NewUserProfile,
-  "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+export type ProfileForm = Required<
+  Pick<
+    NewUserProfile,
+    "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+  >
 >;
 
 type BoundValues = {
   userId: string;
   orgSlug: string;
+  origin?: string;
 };
 
 export async function saveProfile(
-  { userId, orgSlug }: BoundValues,
+  { userId, orgSlug, origin }: BoundValues,
   userProfile: ProfileForm
 ) {
   const db = orgDb(orgSlug);
@@ -38,5 +41,5 @@ export async function saveProfile(
       where: eq(userProfileTable.userId, userId),
     });
 
-  orgRedirect("/start");
+  orgRedirect(origin ? `${origin}` : "start");
 }

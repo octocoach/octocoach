@@ -1,47 +1,62 @@
+import { sql } from "drizzle-orm";
 import { migrate } from "drizzle-orm/vercel-postgres/migrator";
-import { readFile, unlink, writeFile } from "fs/promises";
-import path, { join } from "path";
-import { connectionString } from "./config/connection";
-import { db, end } from "./connection";
-import run from "./helpers/run";
-import { organizationTable } from "./schemas/public/schema";
+import { readFile } from "fs/promises";
+import { join } from "path";
 import { cwd } from "process";
+import { db, end } from "./connection";
+import { organizationTable } from "./schemas/public/schema";
 
 console.log("Migrating public schema...");
 await migrate(db, { migrationsFolder: "migrations-public" });
 console.log("Migrated public schema");
 
-// console.log("Migrating org schemas...");
-// const orgs = await db.select().from(organizationTable);
+console.log("Migrating org schemas...");
+const orgs = await db.select().from(organizationTable);
 
-// const configTemplate = await readFile(
-//   path.join(cwd(), "org.drizzle.config.ts"),
-//   "utf-8"
-// );
+const journalAsString = await readFile(
+  join(cwd(), "migrations-org/meta/_journal.json"),
+  "utf-8"
+);
 
-// for (const org of orgs) {
-//   console.log(`Migrating org schema for ${org.slug}...`);
+const journalEntries = JSON.parse(journalAsString) as {
+  entries: { idx: number; when: number; tag: string; breakpoints: boolean }[];
+};
 
-//   const config = configTemplate
-//     .replace("{slug}", org.slug)
-//     .replace("{schemasDir}", path.join(cwd(), "schemas"))
-//     .replace("{connectionString}", connectionString);
+for (const org of orgs) {
+  console.log(`Migrating org schema for ${org.slug}...`);
 
-//   const orgConfigFile = join(cwd(), `${org.slug}.drizzle.config.ts`);
+  const schemaVersion = (await db
+    .execute(sql.raw(`SELECT max(id) from "org_${org.slug}"."__migrations"`))
+    .then(({ rows }) => rows[0]?.max ?? 0)) as number;
 
-//   await writeFile(orgConfigFile, config);
+  console.log(`Version: ${schemaVersion}`);
 
-//   try {
-//     await run(`npx drizzle-kit push:pg --config=${orgConfigFile}`, {
-//       env: { SLUG: org.slug },
-//     });
-//   } catch (e) {
-//     console.error(e);
-//   }
+  for (const entry of journalEntries.entries) {
+    if (entry.idx > schemaVersion) {
+      console.log(`Running ${entry.tag}`);
 
-//   await unlink(orgConfigFile);
+      const rawSQL = (
+        await readFile(join(cwd(), `migrations-org/${entry.tag}.sql`), "utf-8")
+      ).replaceAll("{slug}", org.slug);
 
-//   console.log(`Migrated org schema for ${org.slug}`);
-// }
+      const statements = rawSQL.split("--> statement-breakpoint");
+
+      await db.transaction(async (tx) => {
+        for (const statement of statements) {
+          await tx.execute(sql.raw(statement));
+        }
+        await tx.execute(
+          sql.raw(
+            `INSERT INTO "org_${org.slug}"."__migrations" VALUES (${entry.idx}, ${entry.when})`
+          )
+        );
+      });
+    } else {
+      console.log(`Entry ${entry.tag} has already been run`);
+    }
+  }
+
+  console.log(`Migrated org schema for ${org.slug}`);
+}
 
 await end();

@@ -14,7 +14,6 @@ export const heroSectionId: SectionId = "hero";
 export type HeroSectionContent = SectionContentWithImage;
 
 export interface HeroSectionProps {
-  orgSlug: string;
   signedIn: boolean;
   content: HeroSectionContent;
   startLink: JSX.Element;
@@ -23,14 +22,11 @@ export interface HeroSectionProps {
 
 export const HeroSection = ({
   content,
-  orgSlug,
   signedIn,
   startLink,
   signupLink,
 }: HeroSectionProps) => {
   const getCTA = () => {
-    const base = `/org/${orgSlug}`;
-
     return !signedIn ? (
       <Button render={signupLink}>Sign Up</Button>
     ) : (
@@ -39,7 +35,7 @@ export const HeroSection = ({
   };
 
   return (
-    <Box paddingX="small">
+    <Box paddingX="small" paddingY="medium">
       <Grid placeItems="center" gap="medium">
         <img
           src={content.image.src}

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,7 +20,7 @@
     "@visx/hierarchy": "^3.3.0",
     "@visx/legend": "^3.3.0",
     "@visx/scale": "^3.3.0",
-    "@visx/shape": "^3.3.0",
+    "@visx/shape": "^3.5.0",
     "@visx/text": "^3.3.0",
     "@visx/tooltip": "^3.3.0",
     "@visx/visx": "^3.3.0",

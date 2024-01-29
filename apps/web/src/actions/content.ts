@@ -9,7 +9,6 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import { revalidatePath } from "next/cache";
 
-// TODO: This should be a type from the db package
 export const saveContent = async (slug: string, data: NewContentLocale[]) => {
   const db = orgDb(slug);
   const contentTable = mkContentTable(slug);

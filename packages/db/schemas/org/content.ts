@@ -1,5 +1,6 @@
-import { json, pgEnum, primaryKey, text } from "drizzle-orm/pg-core";
+import { json, primaryKey, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
+import { localeEnum } from "../data-types/locale";
 
 export type Content = typeof _contentTable.$inferSelect;
 export type NewContent = typeof _contentTable.$inferInsert;
@@ -52,8 +53,6 @@ export type SectionContentFAQ = {
   title: string;
   questions: FAQQuestion[];
 };
-
-export const localeEnum = pgEnum("locale", ["en", "de"]);
 
 export const mkContentTable = (slug: string) => {
   return mkOrgPgSchema(slug).table("content", {

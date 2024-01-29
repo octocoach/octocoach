@@ -1,4 +1,6 @@
+import { Breadcrumbs } from "@components/breadcrumbs";
 import { authOrRedirect } from "@helpers/auth";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, desc, eq, sql } from "@octocoach/db/operators";
 import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-levels";
@@ -13,10 +15,8 @@ import {
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Card, Markdown, Stack, Text } from "@octocoach/ui";
-import { Task, type TaskSkill } from "./task";
-import { Breadcrumbs } from "@components/breadcrumbs";
-import { getBaseUrl } from "@helpers/navigation";
 import { Skill } from "./skill";
+import { Task, type TaskSkill } from "./task";
 
 export default async function Page({
   params,
@@ -57,7 +57,7 @@ export default async function Page({
             'level', ${usersSkillLevelsTable.skillLevel}))`,
     })
     .from(taskTable)
-    .leftJoin(
+    .innerJoin(
       usersTaskInterestTable,
       and(
         eq(usersTaskInterestTable.taskId, taskTable.id),
@@ -88,15 +88,15 @@ export default async function Page({
     .from(taskTable)
     .innerJoin(skillsTasksTable, eq(skillsTasksTable.taskId, taskTable.id))
     .innerJoin(skillTable, eq(skillsTasksTable.skillId, skillTable.id))
-    .leftJoin(
+    .innerJoin(
       skillSubcategoryTable,
       eq(skillSubcategoryTable.id, skillTable.subcategoryId)
     )
-    .leftJoin(
+    .innerJoin(
       skillCategoryTable,
       eq(skillSubcategoryTable.categoryId, skillCategoryTable.id)
     )
-    .leftJoin(
+    .innerJoin(
       usersSkillLevelsTable,
       and(
         eq(usersSkillLevelsTable.userId, session.user.id),

@@ -30,8 +30,8 @@ export default async function Page({
         <HeroSection
           content={content.hero}
           signedIn={!!session?.user}
-          startLink={<Link href={`${baseUrl}/start`} />}
-          signupLink={<Link href={`${baseUrl}/signup`} />}
+          startLink={<Link href={`${baseUrl}start`} />}
+          signupLink={<Link href={`${baseUrl}signup`} />}
         />
       </PixelBackground>
       <PixelBackground pixelSize={30}>

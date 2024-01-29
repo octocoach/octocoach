@@ -1,6 +1,12 @@
 CREATE SCHEMA "org_{slug}";
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "enrollment_status" AS ENUM('pending', 'declined', 'active', 'paused', 'completed', 'dropped-out');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "locale" AS ENUM('en', 'de');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -36,40 +42,59 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."content" (
 	"id" text PRIMARY KEY NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "org_{slug}"."enrollment" (
+	"measure" integer NOT NULL,
+	"coachee" text NOT NULL,
+	"coach" text,
+	"status" "enrollment_status" DEFAULT 'pending' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"start_date" date,
+	"end_date" date,
+	"comments" text,
+	CONSTRAINT enrollment_measure_coachee_pk PRIMARY KEY("measure","coachee")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_info" (
 	"id" serial NOT NULL,
 	"locale" "locale" NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
 	"requirements" text NOT NULL,
-	"image" json,
-	CONSTRAINT measure_info_id_locale_pk PRIMARY KEY("id","locale")
+	"image_alt" text NOT NULL,
+	"slug" text NOT NULL,
+	CONSTRAINT measure_info_id_locale_pk PRIMARY KEY("id","locale"),
+	CONSTRAINT "measure_info_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_module" (
 	"measure" integer NOT NULL,
 	"module" integer NOT NULL,
-	CONSTRAINT measure_module_measure_module_pk PRIMARY KEY("measure","module")
+	"order" integer NOT NULL,
+	CONSTRAINT measure_module_measure_module_pk PRIMARY KEY("measure","module"),
+	CONSTRAINT "measure_module_order_unique" UNIQUE("order")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"owner" text NOT NULL
+	"owner" text NOT NULL,
+	"image_src" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."module_info" (
 	"id" serial NOT NULL,
 	"locale" "locale" NOT NULL,
-	"measure_module" integer NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
-	"units" integer NOT NULL,
+	"image_alt" text NOT NULL,
 	CONSTRAINT module_info_id_locale_pk PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."module" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"owner" text NOT NULL
+	"owner" text NOT NULL,
+	"units" integer NOT NULL,
+	"image_src" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."session" (
@@ -138,6 +163,24 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."enrollment" ADD CONSTRAINT "enrollment_measure_measure_id_fk" FOREIGN KEY ("measure") REFERENCES "org_{slug}"."measure"("id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."enrollment" ADD CONSTRAINT "enrollment_coachee_user_id_fk" FOREIGN KEY ("coachee") REFERENCES "org_{slug}"."user"("id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."enrollment" ADD CONSTRAINT "enrollment_coach_coach_user_id_fk" FOREIGN KEY ("coach") REFERENCES "org_{slug}"."coach"("user_id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "org_{slug}"."measure_info" ADD CONSTRAINT "measure_info_id_measure_id_fk" FOREIGN KEY ("id") REFERENCES "org_{slug}"."measure"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -162,7 +205,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "org_{slug}"."module_info" ADD CONSTRAINT "module_info_measure_module_module_id_fk" FOREIGN KEY ("measure_module") REFERENCES "org_{slug}"."module"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "org_{slug}"."module_info" ADD CONSTRAINT "module_info_id_module_id_fk" FOREIGN KEY ("id") REFERENCES "org_{slug}"."module"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

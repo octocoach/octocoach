@@ -104,6 +104,14 @@ type RootTranslation = {
 		 */
 		de: string
 	}
+	enrollment: {
+		status: {
+			/**
+			 * Y​o​u​r​ ​e​n​r​o​l​l​m​e​n​t​ ​i​s​ ​p​e​n​d​i​n​g​.​ ​W​e​ ​w​i​l​l​ ​b​e​ ​i​n​ ​t​o​u​c​h​ ​s​h​o​r​t​l​y​.
+			 */
+			pending: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -196,6 +204,14 @@ export type TranslationFunctions = {
 		 * German
 		 */
 		de: () => LocalizedString
+	}
+	enrollment: {
+		status: {
+			/**
+			 * Your enrollment is pending. We will be in touch shortly.
+			 */
+			pending: () => LocalizedString
+		}
 	}
 }
 

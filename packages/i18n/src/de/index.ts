@@ -39,6 +39,12 @@ const de = {
     en: "Englisch",
     de: "Deutsch",
   },
+  enrollment: {
+    status: {
+      pending:
+        "Deine Anmeldung wird bearbeitet. Wir werden uns in Kürze bei dir melden.",
+    },
+  },
 } satisfies Translation;
 
 export default de;

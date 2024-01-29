@@ -39,6 +39,11 @@ const en = {
     en: "English",
     de: "German",
   },
+  enrollment: {
+    status: {
+      pending: "Your enrollment is pending. We will be in touch shortly.",
+    },
+  },
 } satisfies BaseTranslation;
 
 export default en;

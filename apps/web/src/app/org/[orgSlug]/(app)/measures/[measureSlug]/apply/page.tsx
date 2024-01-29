@@ -5,9 +5,11 @@ import { orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Box, PixelBackground, Stack, Text } from "@octocoach/ui";
+import Message from "@octocoach/i18n/src/react-message";
+import { Box, Grid, Stack, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import { unstable_cache } from "next/cache";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createEnrollment } from "./actions";
 
@@ -59,15 +61,24 @@ export default async function Page({
   });
 
   return (
-    <PixelBackground>
-      <Box>
+    <Box paddingX="medium" paddingY="large">
+      <Grid placeItems="center" gap="medium">
+        <Image
+          src={measure.imageSrc}
+          alt={measure.imageAlt}
+          width={200}
+          height={200}
+        />
+
         <Stack>
           <Text size="xl" variation="casual">
-            {measure.title}
+            Welcome to {measure.title}
           </Text>
-          <Text>Your enrollment is {enrollment.status}</Text>
+          {enrollment.status === "pending" && (
+            <Message id="enrollment.status.pending" />
+          )}
         </Stack>
-      </Box>
-    </PixelBackground>
+      </Grid>
+    </Box>
   );
 }

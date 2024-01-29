@@ -24,9 +24,7 @@ export const createEnrollment = async (
     )
     .then((rows) => rows[0] ?? null);
 
-  if (enrollment) {
-    return enrollment;
-  }
+  if (enrollment) return enrollment;
 
   enrollment = await db
     .insert(enrollmentTable)

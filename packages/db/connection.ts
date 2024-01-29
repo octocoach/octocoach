@@ -9,7 +9,7 @@ const connectionString = process.env.POSTGRES_URL;
 
 let client: VercelPool;
 
-if (!process.env.VERCEL_ENV) {
+if (!process.env.VERCEL_ENV && !process.env.MIGRATING_PROD) {
   // We are running locally
 
   if (!(typeof (globalThis as any).EdgeRuntime === "string")) {

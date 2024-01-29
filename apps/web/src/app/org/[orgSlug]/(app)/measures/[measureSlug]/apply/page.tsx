@@ -6,9 +6,12 @@ import { eq } from "@octocoach/db/operators";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Box, PixelBackground, Stack, Text } from "@octocoach/ui";
+import { nanoid } from "nanoid";
 import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { createEnrollment } from "./actions";
+
+const cacheId = nanoid();
 
 export default async function Page({
   params,
@@ -46,10 +49,8 @@ export default async function Page({
     }: {
       orgSlug: string;
       measureId: Measure["id"];
-    }) => {
-      return createEnrollment(orgSlug, measureId);
-    },
-    [`enrollment-${params.measureSlug}-${user.id}`]
+    }) => createEnrollment(orgSlug, measureId),
+    [`enrollment-${cacheId}`]
   );
 
   const enrollment = await getEnrollment({

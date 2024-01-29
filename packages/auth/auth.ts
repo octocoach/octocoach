@@ -2,6 +2,7 @@ import { db, orgDb } from "@octocoach/db/connection";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import { isCoach as isCoachFn } from ".";
 import { authDrizzleAdapter } from "./adapters";
 import { decrypt } from "./helpers/crypto";
 
@@ -48,9 +49,10 @@ export const mkAuth = async (orgSlug?: string, isSignInPage?: boolean) => {
     ],
     callbacks: {
       async session({ session, user }) {
+        const isCoach = !!orgSlug && (await isCoachFn(user.id, orgSlug));
         return {
           ...session,
-          user: { ...session.user, id: user.id },
+          user: { ...session.user, id: user.id, isCoach },
         };
       },
     },

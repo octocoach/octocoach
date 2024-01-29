@@ -22,8 +22,12 @@ export default async function Page({
   return (
     <Stack>
       <Text>{user.name}</Text>
-      <Link href={`${baseUrl}coachees/${params.userId}/skills`}>Skills</Link>
-      <Link href={`${baseUrl}coachees/${params.userId}/tasks`}>Tasks</Link>
+      <Link href={`${baseUrl}admin/coachees/${params.userId}/skills`}>
+        Skills
+      </Link>
+      <Link href={`${baseUrl}admin/coachees/${params.userId}/tasks`}>
+        Tasks
+      </Link>
     </Stack>
   );
 }

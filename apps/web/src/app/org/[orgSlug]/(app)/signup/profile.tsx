@@ -16,6 +16,7 @@ import {
 } from "@octocoach/ui";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
 import { ProfileForm, saveProfile } from "./actions";
 
 export const Profile = ({
@@ -39,14 +40,21 @@ export const Profile = ({
     },
   });
 
-  const saveProfileWithUserId = saveProfile.bind("boundValues", {
-    orgSlug,
-    userId: session!.user.id,
-    origin,
-  });
+  const [isPending, startTransition] = useTransition();
+  const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = async () => {
-    saveProfileWithUserId(store.getState().values);
+    startTransition(() => {
+      setSubmitting(true);
+      saveProfile(
+        {
+          orgSlug,
+          userId: session!.user.id,
+          origin,
+        },
+        store.getState().values
+      ).then(() => setSubmitting(false));
+    });
   };
 
   const $ = store.names;
@@ -61,11 +69,13 @@ export const Profile = ({
       !firstName ||
       !lastName ||
       !values.termsAccepted ||
-      store.getState().submitting
+      store.getState().submitting ||
+      submitting ||
+      isPending
     );
   };
 
-  const buttonText = store.getState().submitting ? "Signing Up" : "Sign Up";
+  const buttonText = submitting || isPending ? "Signing Up" : "Sign Up";
 
   const basePath = useBasePath();
 

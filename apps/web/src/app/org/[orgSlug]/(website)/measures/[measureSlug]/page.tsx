@@ -9,12 +9,12 @@ import {
   Text,
 } from "@octocoach/ui";
 
-import Image from "next/image";
+import { FillImage } from "@components/fill-image";
+import { getBaseUrl } from "@helpers/navigation";
+import Message from "@octocoach/i18n/src/react-message";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMeasureWithInfoAndModules } from "../../helpers";
-import { getBaseUrl } from "@helpers/navigation";
-import Message from "@octocoach/i18n/src/react-message";
 
 const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
   <Box paddingY="medium">
@@ -49,14 +49,11 @@ export default async function Page({
     <Box marginY="medium">
       <Stack>
         <Grid gap="large" columns="auto" justifyItems="center">
-          <Box>
-            <Image
-              src={measure.imageSrc}
-              alt={measure.imageAlt}
-              width={200}
-              height={200}
-            />
-          </Box>
+          <FillImage
+            src={measure.imageSrc}
+            alt={measure.imageAlt}
+            minHeight={200}
+          />
           <Box>
             <Text size="xl" variation="casual">
               {measure.title}
@@ -72,11 +69,10 @@ export default async function Page({
           {measure.modules.map((mod) => (
             <Card key={mod.id}>
               <Grid gap="large" columns="auto" justifyItems="center">
-                <Image
+                <FillImage
                   src={mod.imageSrc}
                   alt={mod.imageAlt}
-                  height={150}
-                  width={150}
+                  minHeight={150}
                 />
                 <Stack fullWidth>
                   <Text size="l" weight="heavy">

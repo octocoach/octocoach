@@ -4,10 +4,23 @@ import { sprinkles } from "../sprinkles.css";
 export const grid = recipe({
   base: {
     display: "grid",
-    gridAutoFlow: "row",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
   },
   variants: {
+    columns: {
+      equal: {
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gridAutoFlow: "row",
+      },
+      auto: {
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, auto))",
+        gridAutoFlow: "row",
+      },
+    },
+    fullWidth: {
+      true: {
+        width: "100%",
+      },
+    },
     gap: {
       none: {
         gap: 0,
@@ -28,11 +41,21 @@ export const grid = recipe({
         placeItems: "end",
       },
     },
-    fullWidth: {
-      true: {
-        width: "100%",
+    justifyItems: {
+      center: {
+        justifyItems: "center",
+      },
+      start: {
+        justifyItems: "start",
+      },
+      end: {
+        justifyItems: "end",
       },
     },
+  },
+  defaultVariants: {
+    columns: "equal",
+    gap: "medium",
   },
 });
 

@@ -39,7 +39,13 @@ const de = {
     en: "Englisch",
     de: "Deutsch",
   },
+  measures: {
+    readMore: "Mehr erfahren",
+  },
   enrollment: {
+    applyNow: "Jetzt bewerben!",
+    modules: "Bausteine",
+    requirements: "Anforderungen",
     status: {
       pending:
         "Deine Anmeldung wird bearbeitet. Wir werden uns in Kürze bei dir melden.",

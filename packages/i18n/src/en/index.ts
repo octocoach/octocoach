@@ -39,7 +39,13 @@ const en = {
     en: "English",
     de: "German",
   },
+  measures: {
+    readMore: "Read more",
+  },
   enrollment: {
+    applyNow: "Apply now",
+    modules: "Modules",
+    requirements: "Requirements",
     status: {
       pending: "Your enrollment is pending. We will be in touch shortly.",
     },

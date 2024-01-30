@@ -104,7 +104,25 @@ type RootTranslation = {
 		 */
 		de: string
 	}
+	measures: {
+		/**
+		 * R​e​a​d​ ​m​o​r​e
+		 */
+		readMore: string
+	}
 	enrollment: {
+		/**
+		 * A​p​p​l​y​ ​n​o​w
+		 */
+		applyNow: string
+		/**
+		 * M​o​d​u​l​e​s
+		 */
+		modules: string
+		/**
+		 * R​e​q​u​i​r​e​m​e​n​t​s
+		 */
+		requirements: string
 		status: {
 			/**
 			 * Y​o​u​r​ ​e​n​r​o​l​l​m​e​n​t​ ​i​s​ ​p​e​n​d​i​n​g​.​ ​W​e​ ​w​i​l​l​ ​b​e​ ​i​n​ ​t​o​u​c​h​ ​s​h​o​r​t​l​y​.
@@ -205,7 +223,25 @@ export type TranslationFunctions = {
 		 */
 		de: () => LocalizedString
 	}
+	measures: {
+		/**
+		 * Read more
+		 */
+		readMore: () => LocalizedString
+	}
 	enrollment: {
+		/**
+		 * Apply now
+		 */
+		applyNow: () => LocalizedString
+		/**
+		 * Modules
+		 */
+		modules: () => LocalizedString
+		/**
+		 * Requirements
+		 */
+		requirements: () => LocalizedString
 		status: {
 			/**
 			 * Your enrollment is pending. We will be in touch shortly.

@@ -1,5 +1,6 @@
 import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
-import { Box, ButtonLink, Stack, Text } from "@octocoach/ui";
+import Message from "@octocoach/i18n/src/react-message";
+import { Box, ButtonLink, Markdown, Stack, Text } from "@octocoach/ui";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,12 +15,9 @@ export const Measures = ({
 
   return (
     <Box paddingY="medium">
-      <Text size="l" weight="light" textAlign="center">
-        Training Measures
-      </Text>
       <Stack direction="horizontal" align="center" justify="center" wrap>
         {measures.map((measure) => (
-          <Stack justify="center" align="center" key={measure.id}>
+          <Stack align="center" key={measure.id}>
             <Image
               src={measure.imageSrc}
               alt={measure.imageAlt}
@@ -29,12 +27,17 @@ export const Measures = ({
             <Text size="xl" variation="casual">
               {measure.title}
             </Text>
-            <Text>{measure.description}</Text>
+            <Markdown>{measure.description}</Markdown>
             <ButtonLink
               href={`${baseUrl}measures/${measure.slug}`}
-              text="Read More"
               Element={Link}
-            />
+              color="brand"
+              size="small"
+            >
+              <Text>
+                <Message id="measures.readMore" />
+              </Text>
+            </ButtonLink>
           </Stack>
         ))}
       </Stack>

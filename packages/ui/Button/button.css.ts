@@ -39,6 +39,10 @@ export const button = recipe({
         background: vars.color.typography.body,
         color: vars.color.background.mantle.normal,
       },
+      brand: {
+        background: vars.color.brand[50],
+        color: vars.color.typography.body,
+      },
     },
     size: {
       small: {

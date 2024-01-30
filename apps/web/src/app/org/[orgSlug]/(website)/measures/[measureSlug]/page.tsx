@@ -74,12 +74,12 @@ export default async function Page({
                   alt={mod.imageAlt}
                   minHeight={150}
                 />
-                <Stack fullWidth>
+                <Box>
                   <Text size="l" weight="heavy">
                     {mod.title}
                   </Text>
-                  <Text>{mod.description}</Text>
-                </Stack>
+                  <Markdown>{mod.description}</Markdown>
+                </Box>
               </Grid>
             </Card>
           ))}

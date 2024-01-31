@@ -42,19 +42,19 @@ export const button = recipe({
       },
       body: {
         background: vars.color.typography.body,
-        color: vars.color.background.mantle.normal,
+        color: vars.color.background.crust.normal,
       },
       brand: {
         background: vars.color.brand.normal,
-        color: vars.color.typography.body,
+        color: vars.color.background.crust.normal,
       },
       accent: {
         background: vars.color.accent.normal,
-        color: vars.color.typography.body,
+        color: vars.color.background.crust.normal,
       },
       error: {
         background: vars.color.typography.error,
-        color: vars.color.background.mantle.normal,
+        color: vars.color.background.crust.normal,
       },
     },
     outline: {
@@ -86,7 +86,7 @@ export const button = recipe({
   },
   defaultVariants: {
     fill: "base",
-    outline: "brand",
+    outline: "none",
     size: "medium",
   },
 });

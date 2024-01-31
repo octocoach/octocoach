@@ -32,11 +32,8 @@ export const Measures = ({
               href={`${baseUrl}measures/${measure.slug}`}
               Element={Link}
               fill="brand"
-              size="small"
             >
-              <Text>
-                <Message id="measures.readMore" />
-              </Text>
+              <Message id="measures.readMore" />
             </ButtonLink>
           </Stack>
         ))}

@@ -18,9 +18,7 @@ export const ButtonLink = ({
 }: Props) => {
   return (
     <Element href={href}>
-      <div className={button(props)}>
-        {text ? <Text>{text}</Text> : children}
-      </div>
+      <div className={button(props)}>{text || children}</div>
     </Element>
   );
 };

@@ -51,11 +51,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           {...props}
           store={select}
           onBlur={onBlur}
-          className={clsx(
-            button({ color: "primary" }),
-            selectButton,
-            props.className
-          )}
+          className={clsx(button(), selectButton, props.className)}
         >
           {displayValue || selectValue || "Select an item"}
           <Ariakit.SelectArrow />

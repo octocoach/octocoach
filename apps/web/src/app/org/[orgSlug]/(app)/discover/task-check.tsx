@@ -45,7 +45,7 @@ export const TaskCheck = ({
           </Button>
         </Stack>
         <Button
-          color="secondary"
+          fill="body"
           onClick={() => onAnswer("dontknow")}
           disabled={isPending}
         >

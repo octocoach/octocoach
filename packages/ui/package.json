@@ -38,8 +38,8 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
-    "@ariakit/core": "^0.3.4",
-    "@ariakit/react": "^0.3.4",
+    "@ariakit/core": "^0.4.1",
+    "@ariakit/react": "^0.4.1",
     "@carbon/icons-react": "^11.28.0",
     "@catppuccin/palette": "^0.1.8",
     "@lottiefiles/react-lottie-player": "^3.5.3",
@@ -52,14 +52,15 @@
     "clsx": "^2.0.0",
     "colord": "^2.9.3",
     "just-debounce-it": "^3.2.0",
-    "react-aria": "^3.25.0",
     "react-markdown": "^8.0.7",
     "rehype": "^13.0.1",
     "remark-gfm": "^4.0.0"
   },
   "peerDependencies": {
     "@catppuccin/palette": "^0.1.8",
-    "@vanilla-extract/css": "^1.11.0"
+    "@vanilla-extract/css": "^1.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "eslintConfig": {
     "extends": [

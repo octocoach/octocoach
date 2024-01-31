@@ -215,7 +215,7 @@ export function AddMeasure({
         ))}
       </Stack>
       <Stack direction="horizontal">
-        <Button onClick={onCancel} color="secondary">
+        <Button onClick={onCancel} fill="body">
           Cancel
         </Button>
         <Button onClick={onSubmit} disabled={isPending}>

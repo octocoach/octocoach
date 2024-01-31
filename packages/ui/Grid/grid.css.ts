@@ -12,7 +12,7 @@ export const grid = recipe({
         gridAutoFlow: "row",
       },
       auto: {
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, auto))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, auto))",
         gridAutoFlow: "row",
       },
     },

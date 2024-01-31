@@ -20,7 +20,7 @@ export const Delete = ({
   };
 
   return (
-    <Button onClick={onDelete} disabled={isPending}>
+    <Button onClick={onDelete} disabled={isPending} fill="error">
       Delete
     </Button>
   );

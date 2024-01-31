@@ -3,11 +3,13 @@ import Image from "next/image";
 export const FillImage = ({
   src,
   alt,
-  minHeight,
+  minHeight = 0,
+  minWidth = 0,
 }: {
   src: string;
   alt: string;
-  minHeight: number;
+  minHeight?: number;
+  minWidth?: number;
 }) => (
   <div
     style={{
@@ -15,6 +17,7 @@ export const FillImage = ({
       width: "100%",
       height: "100%",
       minHeight,
+      minWidth,
     }}
   >
     <Image

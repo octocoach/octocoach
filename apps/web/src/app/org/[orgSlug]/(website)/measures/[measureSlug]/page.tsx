@@ -22,7 +22,9 @@ const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
       <ButtonLink
         Element={Link}
         href={`${baseUrl}measures/${slug}/apply`}
-        color="brand"
+        fill="brand"
+        glow
+        outline="none"
         size="large"
       >
         <Message id="enrollment.applyNow" />
@@ -72,7 +74,7 @@ export default async function Page({
                 <FillImage
                   src={mod.imageSrc}
                   alt={mod.imageAlt}
-                  minHeight={150}
+                  minHeight={200}
                 />
                 <Box>
                   <Text size="l" weight="heavy">

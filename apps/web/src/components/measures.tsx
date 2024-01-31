@@ -31,7 +31,7 @@ export const Measures = ({
             <ButtonLink
               href={`${baseUrl}measures/${measure.slug}`}
               Element={Link}
-              color="brand"
+              fill="brand"
               size="small"
             >
               <Text>

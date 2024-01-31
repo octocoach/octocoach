@@ -13,9 +13,6 @@ export const button = recipe({
     width: "fit-content",
 
     ":hover": {
-      boxShadow: `
-      -10px 0px 20px ${vars.color.brand[80]},
-      10px 0px 20px ${vars.color.accent[80]};`,
       fontVariationSettings: '"CASL" 1',
       fontWeight: 700,
     },
@@ -26,22 +23,50 @@ export const button = recipe({
   },
 
   variants: {
-    color: {
-      primary: {
-        background: vars.color.background.base.normal,
-        border: `2px solid ${vars.color.brand[50]}`,
+    glow: {
+      true: {
         boxShadow: `
         -10px 0px 20px ${vars.color.brand[20]},
         10px 0px 20px ${vars.color.accent[20]};`,
+        ":hover": {
+          boxShadow: `
+          -10px 0px 20px ${vars.color.brand[80]},
+          10px 0px 20px ${vars.color.accent[80]};`,
+        },
+      },
+    },
+    fill: {
+      base: {
+        background: vars.color.background.base.normal,
         color: vars.color.typography.body,
       },
-      secondary: {
+      body: {
         background: vars.color.typography.body,
         color: vars.color.background.mantle.normal,
       },
       brand: {
-        background: vars.color.brand[50],
+        background: vars.color.brand.normal,
         color: vars.color.typography.body,
+      },
+      accent: {
+        background: vars.color.accent.normal,
+        color: vars.color.typography.body,
+      },
+      error: {
+        background: vars.color.typography.error,
+        color: vars.color.background.mantle.normal,
+      },
+    },
+    outline: {
+      none: {
+        border: "none",
+        outline: "none",
+      },
+      brand: {
+        border: `2px solid ${vars.color.brand[50]}`,
+      },
+      accent: {
+        border: `2px solid ${vars.color.accent[50]}`,
       },
     },
     size: {
@@ -60,7 +85,8 @@ export const button = recipe({
     },
   },
   defaultVariants: {
-    color: "primary",
+    fill: "base",
+    outline: "brand",
     size: "medium",
   },
 });

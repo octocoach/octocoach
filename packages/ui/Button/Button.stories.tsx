@@ -7,7 +7,7 @@ const meta: Meta<typeof Button> = {
   tags: ["autodocs"],
   argTypes: {
     children: { name: "Label", type: "string" },
-    color: { control: "select", options: ["primary", "secondary"] },
+    color: { control: "select", options: ["brand", "accent"] },
   },
   parameters: {
     handles: ["click"],
@@ -18,5 +18,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: { children: "Primary", color: "primary" },
+  args: { children: "Primary", color: "brand" },
 };

@@ -200,7 +200,7 @@ export function AddModule({
         </Form>
 
         <Stack direction="horizontal">
-          <Button onClick={onCancel} color="secondary">
+          <Button onClick={onCancel} color="contrast">
             Cancel
           </Button>
           <Button onClick={onSubmit} disabled={isPending}>

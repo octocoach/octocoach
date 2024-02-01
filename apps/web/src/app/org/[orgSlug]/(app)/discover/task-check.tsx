@@ -37,19 +37,31 @@ export const TaskCheck = ({
       </div>
       <Stack align="center">
         <Stack direction="horizontal">
-          <Button onClick={() => onAnswer("no")} disabled={isPending}>
-            No
+          <Button
+            onClick={() => onAnswer("no")}
+            disabled={isPending}
+            glow
+            color="error"
+            size="large"
+          >
+            👎 No
           </Button>
-          <Button onClick={() => onAnswer("yes")} disabled={isPending}>
-            Yes
+          <Button
+            onClick={() => onAnswer("yes")}
+            disabled={isPending}
+            glow
+            color="success"
+            size="large"
+          >
+            👍 Yes
           </Button>
         </Stack>
         <Button
-          color="secondary"
+          color="contrast"
           onClick={() => onAnswer("dontknow")}
           disabled={isPending}
         >
-          I do not know
+          🤷 Maybe
         </Button>
       </Stack>
     </Stack>

@@ -12,7 +12,7 @@ export default function Footer({
   const date = new Date();
 
   return (
-    <Box backgroundColor="crust">
+    <Box backgroundColor="crust" paddingY="medium" paddingX="small">
       <Stack justify="center" spacing="loose">
         <Stack direction="horizontal" align="center" justify="center" wrap>
           <Link href={`${baseUrl}mission`}>Mission</Link>

@@ -1,19 +1,24 @@
-import { ElementType } from "react";
+import { ElementType, ReactNode } from "react";
 import { Text } from "../Text/Text";
 import { ButtonVariants, button } from "./button.css";
 
 type Props = {
   Element: ElementType;
-  text: string;
   href: string;
+  text?: string;
+  children?: ReactNode;
 } & ButtonVariants;
 
-export const ButtonLink = ({ Element, text, href, color }: Props) => {
+export const ButtonLink = ({
+  Element,
+  text,
+  href,
+  children,
+  ...props
+}: Props) => {
   return (
     <Element href={href}>
-      <div className={button({ color })}>
-        <Text>{text}</Text>
-      </div>
+      <div className={button(props)}>{text || children}</div>
     </Element>
   );
 };

@@ -48,7 +48,11 @@ export const ModulesCompoent = ({
               <Text>{mod.description}</Text>
             </Box>
             <Box>
-              <Button size="small" onClick={() => onRemove(mod)}>
+              <Button
+                size="small"
+                onClick={() => onRemove(mod)}
+                color="warning"
+              >
                 Remove
               </Button>
             </Box>

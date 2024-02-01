@@ -1,11 +1,35 @@
 import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
-import { Box, ButtonLink, Card, Markdown, Stack, Text } from "@octocoach/ui";
+import {
+  Box,
+  ButtonLink,
+  Card,
+  Grid,
+  Markdown,
+  Stack,
+  Text,
+} from "@octocoach/ui";
 
-import Image from "next/image";
+import { FillImage } from "@components/fill-image";
+import { getBaseUrl } from "@helpers/navigation";
+import Message from "@octocoach/i18n/src/react-message";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMeasureWithInfoAndModules } from "../../helpers";
-import { getBaseUrl } from "@helpers/navigation";
+
+const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
+  <Box paddingY="medium">
+    <Stack fullWidth align="center">
+      <ButtonLink
+        Element={Link}
+        href={`${baseUrl}measures/${slug}/apply`}
+        glow
+        size="large"
+      >
+        <Message id="enrollment.applyNow" />
+      </ButtonLink>
+    </Stack>
+  </Box>
+);
 
 export default async function Page({
   params,
@@ -24,56 +48,49 @@ export default async function Page({
   return (
     <Box marginY="medium">
       <Stack>
-        <Stack direction="horizontal" justify="between" wrap>
-          <Stack spacing="loose">
-            <Box>
-              <Text size="xl" variation="casual">
-                {measure.title}
-              </Text>
-              <Text>{measure.description}</Text>
-            </Box>
-            <ButtonLink
-              Element={Link}
-              text="Apply now"
-              href={`${baseUrl}measures/${measure.slug}/apply`}
-            />
-          </Stack>
-          <Image
+        <Grid gap="large" columns="auto" justifyItems="center">
+          <FillImage
             src={measure.imageSrc}
             alt={measure.imageAlt}
-            width={200}
-            height={200}
+            minHeight={200}
           />
-        </Stack>
+          <Box>
+            <Text size="xl" variation="casual">
+              {measure.title}
+            </Text>
+            <Markdown>{measure.description}</Markdown>
+          </Box>
+        </Grid>
+        <ApplyButton baseUrl={baseUrl} slug={measure.slug} />
         <Text size="l" weight="light" element="h2">
-          Modules
+          <Message id="enrollment.modules" />
         </Text>
         <Stack>
           {measure.modules.map((mod) => (
             <Card key={mod.id}>
-              <Stack direction="horizontal">
-                <Image
+              <Grid gap="large" columns="auto" justifyItems="center">
+                <FillImage
                   src={mod.imageSrc}
                   alt={mod.imageAlt}
-                  height={150}
-                  width={150}
+                  minHeight={200}
                 />
-                <Stack>
+                <Box>
                   <Text size="l" weight="heavy">
                     {mod.title}
                   </Text>
-                  <Text>{mod.description}</Text>
-                </Stack>
-              </Stack>
+                  <Markdown>{mod.description}</Markdown>
+                </Box>
+              </Grid>
             </Card>
           ))}
         </Stack>
         <Text size="l" weight="light" element="h2">
-          Requirements
+          <Message id="enrollment.requirements" />
         </Text>
         <Card>
           <Markdown>{measure.requirements}</Markdown>
         </Card>
+        <ApplyButton baseUrl={baseUrl} slug={measure.slug} />
       </Stack>
     </Box>
   );

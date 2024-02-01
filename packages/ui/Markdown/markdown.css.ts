@@ -34,8 +34,8 @@ globalStyle(`${markdown} li`, {
   margin: "0.5rem 0",
 });
 
-globalStyle(`${markdown} p`, {
-  margin: "1rem 0",
+globalStyle(`${markdown} p:not(:last-of-type)`, {
+  marginBottom: "1rem",
 });
 
 globalStyle(`${markdown} a`, {

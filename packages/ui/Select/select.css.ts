@@ -13,7 +13,7 @@ export const select = style({
 
 export const selectButton = style({
   display: "flex",
-  minWidth: "150px",
+  minWidth: "100px",
   alignItems: "center",
   justifyContent: "space-between",
   flexGrow: 0,
@@ -45,6 +45,10 @@ export const selectItem = style([
     cursor: "pointer",
     ":hover": {
       backgroundColor: vars.color.brand[50],
+    },
+
+    ":focus": {
+      backgroundColor: vars.color.brand.normal,
     },
   },
 ]);

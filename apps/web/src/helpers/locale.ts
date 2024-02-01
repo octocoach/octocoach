@@ -1,5 +1,5 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { headers, cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const getLocale = (): Locales => {
   const localeHeader = headers().get("x-locale");

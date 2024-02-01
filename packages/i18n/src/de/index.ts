@@ -36,7 +36,7 @@ const de = {
     },
   },
   languages: {
-    en: "Englisch",
+    en: "English",
     de: "Deutsch",
   },
   measures: {

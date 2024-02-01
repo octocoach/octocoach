@@ -37,7 +37,7 @@ const en = {
   },
   languages: {
     en: "English",
-    de: "German",
+    de: "Deutsch",
   },
   measures: {
     readMore: "Read more",

@@ -21,6 +21,7 @@ import {
 import { userTable } from "@octocoach/db/schemas/public/schema";
 import { notFound } from "next/navigation";
 import { Measure, MeasureInfo } from "@octocoach/db/schemas/org/measure";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 const getValue = ({
   id,
@@ -205,9 +206,13 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
 
 export const getMeasureWithInfoAndModules = async (
   orgSlug: string,
-  measureSlug: MeasureInfo["slug"]
+  measureSlug: MeasureInfo["slug"],
+  locale?: Locales
 ) => {
-  const locale = getLocale();
+  if (!locale) locale = getLocale();
+
+  if (!locale) throw new Error("No locale provided");
+
   const db = orgDb(orgSlug);
   const {
     measureTable,

@@ -3,6 +3,7 @@ import * as Ariakit from "@ariakit/react";
 import clsx from "clsx";
 import { button } from "../Button/button.css";
 import { selectButton, selectItem, selectPopover } from "./select.css";
+import { Smell } from "@carbon/icons-react";
 
 export interface SelectProps extends Ariakit.SelectProps {
   value?: string;
@@ -51,7 +52,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           {...props}
           store={select}
           onBlur={onBlur}
-          className={clsx(button(), selectButton, props.className)}
+          className={clsx(
+            button({ color: "subtle" }),
+            selectButton,
+            props.className
+          )}
         >
           {displayValue || selectValue || "Select an item"}
           <Ariakit.SelectArrow />

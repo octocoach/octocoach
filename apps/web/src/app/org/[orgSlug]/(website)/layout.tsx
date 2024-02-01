@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import Footer from "./footer";
 import { getOrganizationWithAddressAndOwnerName } from "./helpers";
+import LanguageSwitcher from "@components/language-switcher";
+import { getLocale } from "@helpers/locale";
 
 export default async function Layout({
   children,
@@ -21,10 +23,13 @@ export default async function Layout({
   }
 
   const baseUrl = getBaseUrl();
+  const locale = getLocale();
 
   return (
     <Container width="contained">
-      <Nav organization={organization} href={baseUrl} />
+      <Nav organization={organization} href={baseUrl}>
+        <LanguageSwitcher baseUrl={baseUrl} locale={locale} />
+      </Nav>
       {children}
       <Footer organization={organization} baseUrl={baseUrl} />
     </Container>

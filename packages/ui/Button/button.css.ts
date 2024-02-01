@@ -67,6 +67,12 @@ export const button = recipe({
         color: vars.color.background.crust.normal,
         borderColor: "transparent",
       },
+      subtle: {
+        backgroundColor: "transparent",
+        color: vars.color.typography.body,
+        borderColor: "transparent",
+        textDecoration: "underline",
+      },
     },
     size: {
       small: {

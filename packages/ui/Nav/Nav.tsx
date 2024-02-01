@@ -1,3 +1,4 @@
+import React, { ReactNode } from "react";
 import { Text } from "../Text/Text";
 import { logo, logoWrapper, nav } from "./nav.css";
 import type { Organization } from "@octocoach/db/schemas/common/organization";
@@ -5,9 +6,11 @@ import type { Organization } from "@octocoach/db/schemas/common/organization";
 export const Nav = ({
   organization,
   href,
+  children,
 }: {
   organization: Organization;
   href: string;
+  children: ReactNode;
 }) => {
   return (
     <nav className={nav}>
@@ -25,6 +28,7 @@ export const Nav = ({
           </Text>
         </div>
       </a>
+      {children}
     </nav>
   );
 };

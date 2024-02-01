@@ -68,7 +68,7 @@ export const button = recipe({
         borderColor: "transparent",
       },
       subtle: {
-        backgroundColor: vars.color.background.crust.normal,
+        backgroundColor: "transparent",
         color: vars.color.typography.body,
         borderColor: "transparent",
         textDecoration: "underline",

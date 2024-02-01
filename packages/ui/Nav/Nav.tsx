@@ -10,7 +10,7 @@ export const Nav = ({
 }: {
   organization: Organization;
   href: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) => {
   return (
     <nav className={nav}>

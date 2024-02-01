@@ -9,10 +9,10 @@ type Props = ButtonProps & ButtonVariants;
 export const Button: React.FC<Props> = React.forwardRef<
   HTMLButtonElement,
   Props
->(({ children, fill, outline, size, ...props }, ref) => {
+>(({ children, color, glow, size, ...props }, ref) => {
   return (
     <Ariakit.Button
-      className={button({ fill, outline, size })}
+      className={button({ color, glow, size })}
       ref={ref}
       {...props}
     >

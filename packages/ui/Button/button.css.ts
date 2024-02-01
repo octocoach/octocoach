@@ -3,15 +3,13 @@ import { vars } from "../theme.css";
 
 export const button = recipe({
   base: {
-    borderRadius: 6,
-    color: "white",
+    borderStyle: "solid",
     cursor: "pointer",
     fontFamily: vars.fonts.base,
     fontVariationSettings: '"CASL" 0',
     fontWeight: 400,
     transition: "all 1s",
     width: "fit-content",
-
     ":hover": {
       fontVariationSettings: '"CASL" 1',
       fontWeight: 700,
@@ -33,60 +31,66 @@ export const button = recipe({
           -10px 0px 20px ${vars.color.brand[80]},
           10px 0px 20px ${vars.color.accent[80]};`,
         },
+        false: {
+          boxShadow: "none",
+        },
       },
     },
-    fill: {
-      base: {
-        background: vars.color.background.base.normal,
-        color: vars.color.typography.body,
-      },
-      body: {
-        background: vars.color.typography.body,
-        color: vars.color.background.crust.normal,
-      },
+    color: {
       brand: {
-        background: vars.color.brand.normal,
-        color: vars.color.background.crust.normal,
+        backgroundColor: vars.color.background.base.normal,
+        color: vars.color.typography.heading,
+        borderColor: vars.color.brand.normal,
       },
       accent: {
-        background: vars.color.accent.normal,
-        color: vars.color.background.crust.normal,
+        backgroundColor: vars.color.background.base.normal,
+        color: vars.color.typography.heading,
+        borderColor: vars.color.accent.normal,
       },
       error: {
-        background: vars.color.typography.error,
+        backgroundColor: vars.color.background.base.normal,
+        color: vars.color.typography.error,
+        borderColor: vars.color.typography.error,
+      },
+      warning: {
+        backgroundColor: vars.color.background.base.normal,
+        color: vars.color.typography.warning,
+        borderColor: vars.color.typography.warning,
+      },
+      success: {
+        backgroundColor: vars.color.background.base.normal,
+        color: vars.color.typography.success,
+        borderColor: vars.color.typography.success,
+      },
+      contrast: {
+        backgroundColor: vars.color.typography.body,
         color: vars.color.background.crust.normal,
-      },
-    },
-    outline: {
-      none: {
-        border: "none",
-        outline: "none",
-      },
-      brand: {
-        border: `2px solid ${vars.color.brand[50]}`,
-      },
-      accent: {
-        border: `2px solid ${vars.color.accent[50]}`,
+        borderColor: "transparent",
       },
     },
     size: {
       small: {
         fontSize: "0.75rem",
         padding: "8px 16px",
+        borderWidth: 1,
+        borderRadius: 4,
       },
       medium: {
         fontSize: "1rem",
         padding: "12px 24px",
+        borderWidth: 2,
+        borderRadius: 6,
       },
       large: {
         fontSize: "1.25rem",
         padding: "16px 32px",
+        borderWidth: 4,
+        borderRadius: 8,
       },
     },
   },
   defaultVariants: {
-    fill: "base",
-    outline: "none",
+    color: "brand",
     size: "medium",
   },
 });

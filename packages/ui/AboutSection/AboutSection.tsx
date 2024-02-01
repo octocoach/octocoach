@@ -16,7 +16,7 @@ export interface AboutSectionProps {
 
 export const AboutSection = ({ content }: AboutSectionProps) => {
   return (
-    <Box paddingX="none">
+    <Box paddingY="medium">
       <Text element="h2" size="l" weight="bold">
         {content.title}
       </Text>

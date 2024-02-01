@@ -87,7 +87,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
   const [openQA, setOpenQA] = useState<number | null>(null);
 
   return (
-    <Box paddingX="none">
+    <Box paddingY="medium">
       <Text element="h2" size="l" weight="bold">
         FAQs
       </Text>

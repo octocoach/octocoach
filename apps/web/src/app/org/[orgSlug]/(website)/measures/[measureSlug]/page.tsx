@@ -22,9 +22,7 @@ const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
       <ButtonLink
         Element={Link}
         href={`${baseUrl}measures/${slug}/apply`}
-        fill="brand"
         glow
-        outline="none"
         size="large"
       >
         <Message id="enrollment.applyNow" />

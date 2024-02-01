@@ -17,7 +17,7 @@ export interface CoachSectionProps {
 
 export const CoachSection = ({ content }: CoachSectionProps) => {
   return (
-    <Box paddingX="none">
+    <Box paddingY="medium">
       <Stack align="center">
         <img
           src={content.image.src}

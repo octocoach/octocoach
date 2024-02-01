@@ -5,7 +5,6 @@ import {
   CoachSection,
   FAQSection,
   HeroSection,
-  PixelBackground,
 } from "@octocoach/ui";
 import { getContent, getMeasuresWithInfo } from "./helpers";
 
@@ -21,21 +20,11 @@ export default async function Page({
 
   return (
     <>
-      <PixelBackground>
-        <HeroSection content={content.hero} />
-      </PixelBackground>
-      <PixelBackground pixelSize={30}>
-        <Measures measures={measures} baseUrl={baseUrl} />
-      </PixelBackground>
-      <PixelBackground pixelSize={40}>
-        <AboutSection content={content.about} />
-      </PixelBackground>
-      <PixelBackground pixelSize={80}>
-        <CoachSection content={content.coach} />
-      </PixelBackground>
-      <PixelBackground pixelSize={120}>
-        <FAQSection content={content.faq} />
-      </PixelBackground>
+      <HeroSection content={content.hero} />
+      <Measures measures={measures} baseUrl={baseUrl} />
+      <AboutSection content={content.about} />
+      <CoachSection content={content.coach} />
+      <FAQSection content={content.faq} />
     </>
   );
 }

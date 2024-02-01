@@ -23,7 +23,7 @@ const SkillDescription = ({ description }: { description: string }) => {
           .map((sentence) => `${sentence}. `)}
       </Text>
       <Button
-        fill="body"
+        color="contrast"
         size="small"
         onClick={() => setShowMore((showMore) => !showMore)}
       >

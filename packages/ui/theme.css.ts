@@ -46,7 +46,7 @@ export const vars = createThemeContract({
   },
 });
 
-const flavors: Flavor[] = ["latte", "frappe", "macchiato", "mocha"];
+export const flavors: Flavor[] = ["latte", "frappe", "macchiato", "mocha"];
 
 export const themeClass = flavors.reduce(
   (acc, cur) => ({ ...acc, [cur]: createThemeVariant(cur) }),

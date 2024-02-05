@@ -6,6 +6,7 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import type { Locales } from "@octocoach/i18n/src/i18n-types";
 import { colord } from "colord";
+import { Flavor } from "./theme/creator";
 
 export const createAlpha = (color: string, alpha: number) =>
   colord(color).alpha(alpha).toHslString();
@@ -79,4 +80,15 @@ export const getContent = <T = SectionContent>(
   }
 
   return found.value as T;
+};
+
+export const prefersDarkQuery = "(prefers-color-scheme: dark)";
+
+export const isDarkMode = () => {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia(prefersDarkQuery).matches;
+};
+
+export const getSystemTheme = (): Flavor => {
+  return isDarkMode() ? "mocha" : "latte";
 };

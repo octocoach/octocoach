@@ -1,8 +1,16 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
+import { getSystemTheme, prefersDarkQuery } from "./helpers";
 import { flavors, themeClass } from "./theme.css";
 import { Flavor } from "./theme/creator";
+
+export const setFlavor = (flavor: Flavor) => {
+  for (const f of flavors) {
+    document.documentElement.classList.remove(themeClass[f]);
+  }
+  document.documentElement.classList.add(themeClass[flavor]);
+};
 
 export const ThemeProvider = ({
   children,
@@ -16,16 +24,7 @@ export const ThemeProvider = ({
       return;
     }
 
-    const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const isDark = mql.matches;
-    flavor = isDark ? "mocha" : "latte";
-
-    const setFlavor = (flavor: Flavor) => {
-      for (const f of flavors) {
-        document.documentElement.classList.remove(themeClass[f]);
-      }
-      document.documentElement.classList.add(themeClass[flavor]);
-    };
+    flavor = getSystemTheme();
 
     setFlavor(flavor);
 
@@ -33,7 +32,7 @@ export const ThemeProvider = ({
       setFlavor(ev.matches ? "mocha" : "latte");
     };
 
-    mql.addEventListener("change", callback);
+    window.matchMedia(prefersDarkQuery).addEventListener("change", callback);
   }, [flavor]);
 
   return <>{children}</>;

@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
-import { Text } from "../Text/Text";
-import { logo, logoWrapper, nav } from "./nav.css";
 import type { Organization } from "@octocoach/db/schemas/common/organization";
+import { ReactNode } from "react";
+import { Text } from "../Text/Text";
+import { logo, logoWrapper, nav, topBar } from "./nav.css";
 
 export const Nav = ({
   organization,
@@ -13,7 +13,7 @@ export const Nav = ({
   children?: ReactNode;
 }) => {
   return (
-    <nav className={nav}>
+    <header className={topBar}>
       <a href={href}>
         <div className={logoWrapper}>
           {organization.logo ? (
@@ -28,7 +28,7 @@ export const Nav = ({
           </Text>
         </div>
       </a>
-      {children}
-    </nav>
+      <nav className={nav}>{children}</nav>
+    </header>
   );
 };

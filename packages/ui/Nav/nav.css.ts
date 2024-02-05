@@ -9,7 +9,9 @@ export const topBar = style([
     justifyContent: "space-between",
     backgroundColor: vars.color.background.base[80],
     position: "sticky",
+    zIndex: 1,
     top: 0,
+    backdropFilter: "blur(8px)",
   },
   sprinkles({ padding: 1, paddingX: 2 }),
 ]);

@@ -24,7 +24,7 @@ export const FillImage = ({
       src={src}
       alt={alt}
       fill
-      style={{ objectFit: "cover", imageRendering: "pixelated" }}
+      style={{ objectFit: "cover", imageRendering: "pixelated", zIndex: 0 }}
     />
   </div>
 );

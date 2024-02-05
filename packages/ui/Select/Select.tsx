@@ -53,7 +53,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           store={select}
           onBlur={onBlur}
           className={clsx(
-            button({ color: "subtle" }),
+            button({ color: "subtle", size: "none" }),
             selectButton,
             props.className
           )}

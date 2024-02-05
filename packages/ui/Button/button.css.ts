@@ -75,6 +75,12 @@ export const button = recipe({
       },
     },
     size: {
+      none: {
+        fontSize: "1rem",
+        padding: "0",
+        borderWidth: 0,
+      },
+
       small: {
         fontSize: "0.75rem",
         padding: "8px 16px",

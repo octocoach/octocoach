@@ -3,7 +3,6 @@ import { SessionProvider } from "@octocoach/auth/react";
 import { db } from "@octocoach/db/connection";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
-import ThemeContainer from "./theme-container";
 
 export default async function Layout({
   children,
@@ -28,11 +27,7 @@ export default async function Layout({
 
   const session = await auth();
 
-  return (
-    <SessionProvider session={session}>
-      <ThemeContainer organization={organization}>{children}</ThemeContainer>
-    </SessionProvider>
-  );
+  return <SessionProvider session={session}>{children}</SessionProvider>;
 }
 
 export const runtime = "edge";

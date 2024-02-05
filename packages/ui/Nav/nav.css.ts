@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 import { sprinkles } from "../sprinkles.css";
 import { vars } from "../theme.css";
 
-export const nav = style([
+export const topBar = style([
   {
     display: "flex",
     alignItems: "center",
@@ -26,3 +26,13 @@ export const logoWrapper = style([
 export const logo = style({
   height: "3rem",
 });
+
+export const nav = style([
+  {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexWrap: "wrap",
+  },
+  sprinkles({ gap: 3 }),
+]);

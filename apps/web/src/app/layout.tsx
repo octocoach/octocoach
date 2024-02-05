@@ -3,8 +3,10 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import TrpcProvider from "@octocoach/trpc/src/next/provider";
+import { ThemeProvider } from "@octocoach/ui/ThemeProvider";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
+import { Flavor } from "@octocoach/ui/theme/creator";
 import clsx from "clsx";
 import { Recursive } from "next/font/google";
 import { cookies } from "next/headers";
@@ -27,6 +29,7 @@ export default async function RootLayout({
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];
+  const flavor = cookieStore.get("theme")?.value as Flavor | undefined;
 
   return (
     <html
@@ -34,14 +37,16 @@ export default async function RootLayout({
       className={clsx(
         recursive.variable,
         recursive.className,
-        themeClass.mocha,
-        bg
+        bg,
+        flavor ? themeClass[flavor] : themeClass.latte
       )}
     >
       <body>
-        <I18nProvider dictionary={dictionary} locale={locale}>
-          <TrpcProvider>{children}</TrpcProvider>
-        </I18nProvider>
+        <ThemeProvider flavor={flavor}>
+          <I18nProvider dictionary={dictionary} locale={locale}>
+            <TrpcProvider>{children}</TrpcProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

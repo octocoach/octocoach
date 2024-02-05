@@ -13,7 +13,6 @@ export const select = style({
 
 export const selectButton = style({
   display: "flex",
-  minWidth: "100px",
   alignItems: "center",
   justifyContent: "space-between",
   flexGrow: 0,

@@ -10,7 +10,6 @@ export const topBar = style([
     backgroundColor: vars.color.background.base[80],
     position: "sticky",
     top: 0,
-    flexWrap: "wrap",
   },
   sprinkles({ padding: 1, paddingX: 2 }),
 ]);
@@ -28,9 +27,12 @@ export const logo = style({
   height: "3rem",
 });
 
-export const nav = style({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  gap: sprinkles({ gap: 2 }),
-});
+export const nav = style([
+  {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexWrap: "wrap",
+  },
+  sprinkles({ gap: 3 }),
+]);

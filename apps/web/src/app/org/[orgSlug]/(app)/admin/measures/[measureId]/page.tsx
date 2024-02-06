@@ -10,17 +10,19 @@ import {
   mkModuleInfoTable,
   mkModuleTable,
 } from "@octocoach/db/schemas/org/module";
-import { Stack, Text } from "@octocoach/ui";
+import { ButtonLink, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { deleteMeasure } from "../actions";
 import { AddModuleToMeasure } from "./add-module";
 import { Delete } from "./delete";
 import { ModulesCompoent } from "./modules";
+import { getBaseUrl } from "@helpers/navigation";
+import Link from "next/link";
 
 export default async function Page({
   params,
 }: {
-  params: { measureSlug: string; orgSlug: string };
+  params: { measureId: number; orgSlug: string };
 }) {
   const db = orgDb(params.orgSlug);
 
@@ -46,7 +48,7 @@ export default async function Page({
         eq(measureInfoTable.locale, locale)
       )
     )
-    .where(eq(measureInfoTable.slug, params.measureSlug))
+    .where(eq(measureTable.id, params.measureId))
     .then((rows) => rows[0] ?? null);
 
   if (!measure) notFound();
@@ -94,6 +96,7 @@ export default async function Page({
 
   const deleteActionWithSlug = deleteMeasure.bind("orgSlug", params.orgSlug);
 
+  const baseUrl = getBaseUrl();
   return (
     <Stack>
       <Text size="l">{measure.title}</Text>
@@ -108,7 +111,15 @@ export default async function Page({
         measureId={measure.id}
         orgSlug={params.orgSlug}
       />
-      <Delete deleteAction={deleteActionWithSlug} id={measure.id} />
+      <Stack direction="horizontal" align="right">
+        <ButtonLink
+          href={`${baseUrl}admin/measures/${measure.id}/edit`}
+          Element={Link}
+        >
+          Edit
+        </ButtonLink>
+        <Delete deleteAction={deleteActionWithSlug} id={measure.id} />
+      </Stack>
     </Stack>
   );
 }

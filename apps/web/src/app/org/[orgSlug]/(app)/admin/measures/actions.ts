@@ -1,8 +1,9 @@
 "use server";
 
 import { authOrRedirect } from "@helpers/auth";
+import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { eq } from "@octocoach/db/operators";
+import { and, eq } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import {
   Measure,
@@ -14,9 +15,9 @@ import {
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { getEntries } from "@octocoach/tshelpers";
 import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
-import { getEntries } from "@octocoach/tshelpers";
 
 export type SaveMeasureData = {
   measure: Omit<NewMeasure, "owner">;
@@ -78,12 +79,27 @@ export const saveMeasure = async (
     const id = await trx
       .insert(measureTable)
       .values(measureResult.data)
+      .onConflictDoUpdate({
+        target: measureTable.id,
+        set: measureResult.data,
+        where: eq(measureTable.id, measureResult.data.id!),
+      })
       .returning()
       .then((rows) => rows[0]?.id);
 
-    await trx
-      .insert(measureInfoTable)
-      .values(measureInfoToInsert.map((info) => ({ ...info, id })));
+    for (const info of measureInfoToInsert) {
+      await trx
+        .insert(measureInfoTable)
+        .values({ ...info, id })
+        .onConflictDoUpdate({
+          target: [measureInfoTable.id, measureInfoTable.locale],
+          set: info,
+          where: and(
+            eq(measureInfoTable.id, id),
+            eq(measureInfoTable.locale, info.locale)
+          ),
+        });
+    }
   });
 
   return { success: true };
@@ -117,4 +133,8 @@ export const deleteMeasure = async (
   await db.delete(measureTable).where(eq(measureTable.id, id));
 
   redirect(`/org/${orgSlug}/admin/measures`);
+};
+
+export const cancel = async (id: Measure["id"]) => {
+  orgRedirect(`/admin/measures/${id}`);
 };

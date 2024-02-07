@@ -1,9 +1,9 @@
 "use server";
 
 import { authOrRedirect } from "@helpers/auth";
-import { getBaseUrl } from "@helpers/navigation";
+import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { eq } from "@octocoach/db/operators";
+import { and, eq } from "@octocoach/db/operators";
 import {
   Module,
   NewModule,
@@ -75,15 +75,30 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
     const id = await trx
       .insert(moduleTable)
       .values(moduleResult.data)
+      .onConflictDoUpdate({
+        target: moduleTable.id,
+        set: moduleResult.data,
+        where: eq(moduleTable.id, moduleResult.data.id!),
+      })
       .returning()
       .then((rows) => rows[0]?.id);
 
-    await trx.insert(moduleInfoTable).values(
-      moduleInfoToInsert.map((info) => ({
-        ...info,
-        id,
-      }))
-    );
+    for (const info of moduleInfoToInsert) {
+      await trx
+        .insert(moduleInfoTable)
+        .values({
+          ...info,
+          id,
+        })
+        .onConflictDoUpdate({
+          target: [moduleInfoTable.id, moduleInfoTable.locale],
+          set: info,
+          where: and(
+            eq(moduleInfoTable.id, id),
+            eq(moduleInfoTable.locale, info.locale)
+          ),
+        });
+    }
   });
 
   return { success: true };
@@ -118,4 +133,8 @@ export const deleteModule = async (orgSlug: string, id: Module["id"]) => {
   });
 
   redirect(`${baseUrl}/modules`);
+};
+
+export const redirectToModule = (moduleId: Module["id"]) => {
+  orgRedirect(`admin/modules/${moduleId}`);
 };

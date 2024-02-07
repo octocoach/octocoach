@@ -5,11 +5,13 @@ import {
   mkModuleInfoTable,
   mkModuleTable,
 } from "@octocoach/db/schemas/org/module";
-import { Stack, Text } from "@octocoach/ui";
+import { ButtonLink, Stack, Text } from "@octocoach/ui";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { deleteModule } from "../actions";
 import { Delete } from "./delete";
+import Link from "next/link";
+import { getBaseUrl } from "@helpers/navigation";
 
 export default async function Page({
   params,
@@ -46,6 +48,8 @@ export default async function Page({
 
   const deleteActionWithSlug = deleteModule.bind("orgSlug", params.orgSlug);
 
+  const baseUrl = getBaseUrl();
+
   return (
     <Stack>
       <Text size="xl">{mod.title}</Text>
@@ -59,7 +63,15 @@ export default async function Page({
         }}
       />
       <Text>{mod.description}</Text>
-      <Delete deleteAction={deleteActionWithSlug} id={mod.id} />
+      <Stack fullWidth direction="horizontal" justify="right">
+        <ButtonLink
+          Element={Link}
+          href={`${baseUrl}admin/modules/${mod.id}/edit`}
+        >
+          Edit
+        </ButtonLink>
+        <Delete deleteAction={deleteActionWithSlug} id={mod.id} />
+      </Stack>
     </Stack>
   );
 }

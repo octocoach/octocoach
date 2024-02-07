@@ -135,6 +135,6 @@ export const deleteMeasure = async (
   redirect(`/org/${orgSlug}/admin/measures`);
 };
 
-export const cancel = async (id: Measure["id"]) => {
+export const redirectToMeasure = async (id: Measure["id"]) => {
   orgRedirect(`/admin/measures/${id}`);
 };

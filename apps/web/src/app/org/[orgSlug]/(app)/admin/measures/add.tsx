@@ -39,7 +39,7 @@ export function AddMeasure({
     return <Button onClick={() => setShow(true)}>Add a Measure</Button>;
   }
 
-  const onCancel = () => {
+  const onDone = () => {
     setShow(false);
   };
 
@@ -49,7 +49,7 @@ export function AddMeasure({
       saveMeasure={saveMeasure}
       measure={blankMeasure}
       measureInfo={defaultValuesMeasureInfo}
-      cancel={onCancel}
+      onDone={onDone}
     />
   );
 }

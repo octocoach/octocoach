@@ -100,13 +100,13 @@ export function EditMeasure({
   measure,
   measureInfo,
   saveMeasure,
-  cancel,
+  onDone,
   orgSlug,
 }: {
   measure: SaveMeasureData["measure"];
   measureInfo: SaveMeasureData["measureInfo"];
   saveMeasure: (data: SaveMeasureData) => SaveMeasureRetype;
-  cancel: () => void;
+  onDone: () => void;
   orgSlug: string;
 }) {
   const stores = {
@@ -142,6 +142,7 @@ export function EditMeasure({
         if (result.success === true) {
           stores.measure.reset();
           stores.measureInfo.reset();
+          onDone();
           router.refresh();
         } else if (result.errors) {
           if (result.errors.measure?.issues?.length) {
@@ -168,7 +169,7 @@ export function EditMeasure({
 
   const onCancel = () => {
     startTransition(() => {
-      cancel();
+      onDone();
     });
   };
 

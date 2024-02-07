@@ -46,8 +46,8 @@ export default async function Page({
         Measures
       </Text>
       <Stack>
-        {measures.map(({ measure_info: { id, slug, title, description } }) => (
-          <Link href={`${baseUrl}/admin/measures/${slug}`} key={id}>
+        {measures.map(({ measure_info: { id, title, description } }) => (
+          <Link href={`${baseUrl}/admin/measures/${id}`} key={id}>
             <Card>
               <Text size="l" variation="casual">
                 {title}

@@ -3,14 +3,18 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import TrpcProvider from "@octocoach/trpc/src/next/provider";
-import { ThemeProvider } from "@octocoach/ui/ThemeProvider";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { Flavor } from "@octocoach/ui/theme/creator";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import { Recursive } from "next/font/google";
 import { cookies } from "next/headers";
 import React from "react";
+
+const SetSystemTheme = dynamic(() => import("@octocoach/ui/SetSystemTheme"), {
+  ssr: false,
+});
 
 const recursive = Recursive({
   subsets: ["latin"],
@@ -42,11 +46,10 @@ export default async function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider flavor={flavor}>
-          <I18nProvider dictionary={dictionary} locale={locale}>
-            <TrpcProvider>{children}</TrpcProvider>
-          </I18nProvider>
-        </ThemeProvider>
+        {!flavor && <SetSystemTheme />}
+        <I18nProvider dictionary={dictionary} locale={locale}>
+          <TrpcProvider>{children}</TrpcProvider>
+        </I18nProvider>
       </body>
     </html>
   );

@@ -31,6 +31,7 @@ export const selectPopover = style([
       -10px 0px 20px ${vars.color.brand[20]},
       10px 0px 20px ${vars.color.accent[20]};`,
     overflow: "auto",
+    zIndex: 2,
   },
   sprinkles({
     paddingX: 2,
@@ -39,15 +40,28 @@ export const selectPopover = style([
   }),
 ]);
 
+const activeItem = {
+  fontWeight: 700,
+  fontVariationSettings: '"CASL" 1',
+  backgroundColor: vars.color.surface[0],
+};
+
 export const selectItem = style([
   {
+    transition: "all 0.3s",
     cursor: "pointer",
-    ":hover": {
-      backgroundColor: vars.color.brand[50],
-    },
+    borderRadius: 6,
+    ":hover": activeItem,
 
-    ":focus": {
-      backgroundColor: vars.color.brand.normal,
+    ":focus": activeItem,
+
+    ":active": activeItem,
+    selectors: {
+      "&[data-active-item]": activeItem,
     },
   },
+  sprinkles({
+    paddingX: 1,
+    paddingY: 2,
+  }),
 ]);

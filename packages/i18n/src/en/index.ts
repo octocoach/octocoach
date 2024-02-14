@@ -50,6 +50,10 @@ const en = {
       pending: "Your enrollment is pending. We will be in touch shortly.",
     },
   },
+  theme: "Theme",
+  systemTheme: "system",
+  language: "Language",
+  changingLanguage: "Changing language...",
 } satisfies BaseTranslation;
 
 export default en;

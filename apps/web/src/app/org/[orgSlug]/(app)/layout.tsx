@@ -4,8 +4,6 @@ import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db } from "@octocoach/db/connection";
 import { Container, Nav } from "@octocoach/ui";
-import { Flavor } from "@octocoach/ui/theme/creator";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -24,13 +22,12 @@ export default async function AppLayout({
 
   const baseUrl = getBaseUrl();
   const locale = getLocale();
-  const flavor = cookies().get("theme")?.value as Flavor | undefined;
 
   return (
     <Container width="contained">
       <Nav organization={organization} href={baseUrl}>
         <LanguageSwitcher baseUrl={baseUrl} locale={locale} />
-        <ThemeSwitcher flavor={flavor} />
+        <ThemeSwitcher />
       </Nav>
       {children}
     </Container>

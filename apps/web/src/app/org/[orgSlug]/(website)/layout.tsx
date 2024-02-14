@@ -3,8 +3,6 @@ import ThemeSwitcher from "@components/theme-switcher";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { Container, Nav } from "@octocoach/ui";
-import { Flavor } from "@octocoach/ui/theme/creator";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import Footer from "./footer";
@@ -28,13 +26,11 @@ export default async function Layout({
   const baseUrl = getBaseUrl();
   const locale = getLocale();
 
-  const flavor = cookies().get("theme")?.value as Flavor | undefined;
-
   return (
     <Container width="contained">
       <Nav organization={organization} href={baseUrl}>
         <LanguageSwitcher baseUrl={baseUrl} locale={locale} />
-        <ThemeSwitcher flavor={flavor} />
+        <ThemeSwitcher />
       </Nav>
       {children}
       <Footer organization={organization} baseUrl={baseUrl} />

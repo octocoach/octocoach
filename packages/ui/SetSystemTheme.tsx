@@ -1,9 +1,11 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { getSystemTheme, prefersDarkQuery } from "./helpers";
 import { flavors, themeClass } from "./theme.css";
 import { Flavor } from "./theme/creator";
+
+export { getSystemTheme };
 
 export const setFlavor = (flavor: Flavor) => {
   for (const f of flavors) {
@@ -12,19 +14,13 @@ export const setFlavor = (flavor: Flavor) => {
   document.documentElement.classList.add(themeClass[flavor]);
 };
 
-export const ThemeProvider = ({
-  children,
-  flavor,
-}: {
-  children: ReactNode;
-  flavor?: Flavor;
-}) => {
+const SetSystemTheme = () => {
   useEffect(() => {
-    if (!document || !window || flavor) {
+    if (!document || !window) {
       return;
     }
 
-    flavor = getSystemTheme();
+    const flavor = getSystemTheme();
 
     setFlavor(flavor);
 
@@ -33,7 +29,9 @@ export const ThemeProvider = ({
     };
 
     window.matchMedia(prefersDarkQuery).addEventListener("change", callback);
-  }, [flavor]);
+  }, []);
 
-  return <>{children}</>;
+  return null;
 };
+
+export default SetSystemTheme;

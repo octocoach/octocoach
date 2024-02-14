@@ -51,6 +51,10 @@ const de = {
         "Deine Anmeldung wird bearbeitet. Wir werden uns in Kürze bei dir melden.",
     },
   },
+  theme: "Thema",
+  systemTheme: "system",
+  language: "Sprache",
+  changingLanguage: "Sprache wechseln...",
 } satisfies Translation;
 
 export default de;

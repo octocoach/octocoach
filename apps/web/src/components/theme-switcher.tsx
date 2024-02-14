@@ -1,28 +1,38 @@
 "use client";
 
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Select, SelectItem } from "@octocoach/ui";
-import { setFlavor } from "@octocoach/ui/ThemeProvider";
-import { getSystemTheme } from "@octocoach/ui/helpers";
+import { getSystemTheme, setFlavor } from "@octocoach/ui/SetSystemTheme";
+import { BrightnessContrast } from "@octocoach/ui/icons";
+
 import { flavors } from "@octocoach/ui/theme.css";
-import { Flavor } from "@octocoach/ui/theme/creator";
-import { startTransition, useState } from "react";
-import { setTheme } from "src/actions/theme";
+import { startTransition } from "react";
+import { removeTheme, setTheme } from "src/actions/theme";
 
-const ThemeSwitcher = ({ flavor }: { flavor?: Flavor }) => {
-  if (!flavor) {
-    flavor = getSystemTheme();
-  }
-
-  const [displayFlavor, setDisplayFlavor] = useState(flavor);
-
+const ThemeSwitcher = () => {
+  const { LL } = useI18nContext();
   return (
-    <Select defaultValue={flavor} displayValue={displayFlavor}>
+    <Select
+      displayValue={<BrightnessContrast size="24" />}
+      aria-description={LL.theme()}
+    >
+      <SelectItem
+        key="system"
+        value={LL.systemTheme()}
+        setValueOnClick={() => {
+          const f = getSystemTheme();
+          setFlavor(f);
+          startTransition(() => {
+            removeTheme();
+          });
+          return true;
+        }}
+      />
       {flavors.map((f) => (
         <SelectItem
           key={f}
           value={f}
           setValueOnClick={() => {
-            setDisplayFlavor(f);
             setFlavor(f);
             startTransition(() => {
               setTheme(f);

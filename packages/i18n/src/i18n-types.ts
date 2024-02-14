@@ -100,7 +100,7 @@ type RootTranslation = {
 		 */
 		en: string
 		/**
-		 * G​e​r​m​a​n
+		 * D​e​u​t​s​c​h
 		 */
 		de: string
 	}
@@ -130,6 +130,22 @@ type RootTranslation = {
 			pending: string
 		}
 	}
+	/**
+	 * T​h​e​m​e
+	 */
+	theme: string
+	/**
+	 * s​y​s​t​e​m
+	 */
+	systemTheme: string
+	/**
+	 * L​a​n​g​u​a​g​e
+	 */
+	language: string
+	/**
+	 * C​h​a​n​g​i​n​g​ ​l​a​n​g​u​a​g​e​.​.​.
+	 */
+	changingLanguage: string
 }
 
 export type TranslationFunctions = {
@@ -219,7 +235,7 @@ export type TranslationFunctions = {
 		 */
 		en: () => LocalizedString
 		/**
-		 * German
+		 * Deutsch
 		 */
 		de: () => LocalizedString
 	}
@@ -249,6 +265,22 @@ export type TranslationFunctions = {
 			pending: () => LocalizedString
 		}
 	}
+	/**
+	 * Theme
+	 */
+	theme: () => LocalizedString
+	/**
+	 * system
+	 */
+	systemTheme: () => LocalizedString
+	/**
+	 * Language
+	 */
+	language: () => LocalizedString
+	/**
+	 * Changing language...
+	 */
+	changingLanguage: () => LocalizedString
 }
 
 export type Formatters = {}

@@ -7,3 +7,8 @@ export const setTheme = async (theme: Flavor) => {
   cookies().set("theme", theme);
   return theme;
 };
+
+export const removeTheme = async () => {
+  cookies().delete("theme");
+  return;
+};

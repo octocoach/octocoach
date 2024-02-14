@@ -7,7 +7,7 @@ import { Smell } from "@carbon/icons-react";
 
 export interface SelectProps extends Ariakit.SelectProps {
   value?: string;
-  displayValue?: string;
+  displayValue?: React.ReactNode;
   setValue?: (value: string) => void;
   defaultValue?: string;
   onBlur?: React.FocusEventHandler<HTMLElement>;

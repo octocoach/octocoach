@@ -46,6 +46,7 @@ export const mkEnrollmentTable = (slug: string) => {
       startDate: date("start_date", { mode: "date" }),
       endDate: date("end_date", { mode: "date" }),
       comments: text("comments"),
+      roomName: text("room_name"),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.measure, table.coachee] }),

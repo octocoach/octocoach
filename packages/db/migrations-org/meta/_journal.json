@@ -36,6 +36,20 @@
       "when": 1706189497517,
       "tag": "0004_empty_secret_warriors",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1708331446431,
+      "tag": "0005_nifty_vector",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1708339326142,
+      "tag": "0006_free_matthew_murdock",
+      "breakpoints": true
     }
   ]
 }

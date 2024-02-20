@@ -27,7 +27,7 @@ export const mkMeetingTable = (slug: string) => {
         onUpdate: "cascade",
       }),
     type: meetingTypeEnum("type").notNull(),
-    startTime: timestamp("start_time", { mode: "date" }).notNull(),
-    endTime: timestamp("end_time", { mode: "date" }).notNull(),
+    startTime: timestamp("start_time", { mode: "string" }).notNull(),
+    endTime: timestamp("end_time", { mode: "string" }).notNull(),
   });
 };

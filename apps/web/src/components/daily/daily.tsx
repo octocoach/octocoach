@@ -6,11 +6,19 @@ import { DailyProvider } from "@daily-co/daily-react";
 import { Room } from "@octocoach/daily/types";
 import { useEffect, useState } from "react";
 
-export const Daily = ({ room, token }: { room: Room; token: string }) => {
+export const Daily = ({
+  roomName,
+  token,
+}: {
+  roomName: Room["name"];
+  token: string;
+}) => {
+  const mkUrl = (roomName: string) => `https://octocoach.daily.co/${roomName}`;
+
   const [callObject, setCallObject] = useState<DailyCall>();
 
   useEffect(() => {
-    if (!window || !room || !token) return;
+    if (!window || !roomName || !token) return;
 
     const callObject =
       DailyIFrame.getCallInstance() || DailyIFrame.createCallObject();
@@ -18,13 +26,13 @@ export const Daily = ({ room, token }: { room: Room; token: string }) => {
     setCallObject(callObject);
 
     callObject.preAuth({
-      url: room.url,
+      url: mkUrl(roomName),
       token,
     });
-  }, [room, token]);
+  }, [roomName, token]);
 
   const onJoinCall = () => {
-    callObject?.join({ url: room.url, token });
+    callObject?.join({ url: mkUrl(roomName), token });
   };
 
   if (!callObject) return null;

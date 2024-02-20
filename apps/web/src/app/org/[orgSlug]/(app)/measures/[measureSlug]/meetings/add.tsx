@@ -22,6 +22,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { CreateMeetingParams } from "./actions";
+import Scheduler from "@components/scheduler";
 
 export const AddMeeting = ({
   measureInfo,
@@ -76,6 +77,7 @@ export const AddMeeting = ({
 
   return (
     <Form store={store} onSubmit={onSubmit}>
+      <Scheduler />
       <Stack>
         <Text>Timezone: {timezone}</Text>
         <FormField name={$.startTime} label="Start">

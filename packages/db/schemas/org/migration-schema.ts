@@ -21,7 +21,6 @@ export const {
   measureRelations,
   measureTable,
   meetingTable,
-  meetingTokenTable,
   meetingTypeEnum,
   moduleInfoRelations,
   moduleInfoTable,

@@ -41,7 +41,6 @@ import {
   mkMeasureModuleTable,
 } from "./measure-module";
 import { mkMeetingTable } from "./meeting";
-import { mkMeetingTokenTable } from "./meeting-token";
 import {
   mkModuleInfoRelations,
   mkModuleInfoTable,
@@ -133,6 +132,5 @@ export const mkOrgSchema = (slug: string) => ({
   enrollmentStatusEnum,
 
   meetingTable: mkMeetingTable(slug),
-  meetingTokenTable: mkMeetingTokenTable(slug),
   meetingTypeEnum,
 });

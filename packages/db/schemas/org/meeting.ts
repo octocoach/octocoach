@@ -28,11 +28,9 @@ export const mkMeetingTable = (slug: string) => {
       }),
     type: meetingTypeEnum("type").notNull(),
     startTime: timestamp("start_time", {
-      mode: "string",
       withTimezone: true,
     }).notNull(),
     endTime: timestamp("end_time", {
-      mode: "string",
       withTimezone: true,
     }).notNull(),
   });

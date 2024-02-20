@@ -16,12 +16,11 @@ import {
   addMinutes,
   addWeeks,
   format,
-  formatISO,
   minutesToSeconds,
   roundToNearestMinutes,
 } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { CreateMeetingParams } from "./actions";
 
 export const AddMeeting = ({
@@ -57,47 +56,40 @@ export const AddMeeting = ({
     setTimezone(getLocalTimezone());
   }, []);
 
-  const onSubmit = async () => {
-    const { startTime } = store.getState().values;
-    const endTime = format(addMinutes(startTime, 45), limitFormat);
+  const [isPending, startTransition] = useTransition();
 
-    createMeeting({
-      measure: measureInfo.id,
-      type: "consultation",
-      startTime,
-      endTime,
-    }).then(() => {
-      router.refresh();
+  const onSubmit = async () => {
+    startTransition(() => {
+      const startTime = new Date(store.getState().values.startTime);
+      const endTime = addMinutes(startTime, 45);
+
+      createMeeting({
+        measure: measureInfo.id,
+        type: "consultation",
+        startTime,
+        endTime,
+      }).then(() => {
+        router.refresh();
+      });
     });
   };
 
-  const { startTime } = store.useState().values;
-
   return (
-    <>
-      <pre></pre>
-      <Form store={store} onSubmit={onSubmit}>
-        <Stack>
-          <Text>Timezone: {timezone}</Text>
-          <FormField name={$.startTime} label="Start">
-            <FormDateTimeInput
-              name={$.startTime}
-              min={min}
-              max={max}
-              step={minutesToSeconds(15)}
-            />
-          </FormField>
-          <Button type="submit">Submit</Button>
-        </Stack>
-      </Form>
-      <pre>
-        {startTime &&
-          Intl.DateTimeFormat("de-DE", {
-            timeZone: "UTC",
-            dateStyle: "short",
-            timeStyle: "short",
-          }).format(new Date(startTime))}
-      </pre>
-    </>
+    <Form store={store} onSubmit={onSubmit}>
+      <Stack>
+        <Text>Timezone: {timezone}</Text>
+        <FormField name={$.startTime} label="Start">
+          <FormDateTimeInput
+            name={$.startTime}
+            min={min}
+            max={max}
+            step={minutesToSeconds(15)}
+          />
+        </FormField>
+        <Button type="submit" disabled={isPending}>
+          Submit
+        </Button>
+      </Stack>
+    </Form>
   );
 };

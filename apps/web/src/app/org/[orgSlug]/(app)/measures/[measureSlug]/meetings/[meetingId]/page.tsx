@@ -7,11 +7,12 @@ import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
-import { formatDistance, formatRelative, isFuture } from "date-fns";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-import { Time } from "./client";
+import { formatDistanceToNow } from "date-fns";
+import dynamic from "next/dynamic";
+
+const LocalTime = dynamic(() => import("@components/local-time"), {
+  ssr: false,
+});
 
 export default async function Page({
   params: { orgSlug, meetingId },
@@ -44,23 +45,11 @@ export default async function Page({
     is_owner: !!user.isCoach,
   });
 
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.tz.setDefault("Europe/Berlin");
-
   return (
     <Stack>
       <DailyComponent roomName={meeting.enrollment.roomName} token={token} />
-      <Text>
-        Server: {`${Intl.DateTimeFormat().resolvedOptions().timeZone}`}
-      </Text>
-      <Time />
-      <Text>{formatRelative(meeting.meeting.startTime, new Date())}</Text>
-      <Text>
-        {isFuture(meeting.meeting.startTime) ? "Staring in " : "Started "}
-        {formatDistance(meeting.meeting.startTime, new Date())}
-      </Text>
-      <pre>{JSON.stringify(meeting.meeting, null, 2)}</pre>
+      <LocalTime timestamp={meeting.meeting.startTime} showTimezone />
+      <Text>{formatDistanceToNow(meeting.meeting.startTime)}</Text>
     </Stack>
   );
 }

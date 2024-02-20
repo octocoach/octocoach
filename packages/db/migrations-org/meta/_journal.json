@@ -43,6 +43,13 @@
       "when": 1708331446431,
       "tag": "0005_nifty_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1708433534242,
+      "tag": "0006_lowly_ben_urich",
+      "breakpoints": true
     }
   ]
 }

@@ -1,15 +1,20 @@
+import Scheduler from "@components/scheduler";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
+import { and, asc, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { Box, Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
-import { AddMeeting } from "./add";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createMeeting } from "./actions";
-import { Box } from "@octocoach/ui";
-import Link from "next/link";
-import { getBaseUrl } from "@helpers/navigation";
+
+const LocalTime = dynamic(() => import("@components/local-time"), {
+  ssr: false,
+});
 
 export default async function Page({
   params: { orgSlug, measureSlug },
@@ -41,28 +46,40 @@ export default async function Page({
     .where(
       and(
         eq(meetingTable.coachee, user.id),
-        eq(meetingTable.measure, measureInfo.id)
+        eq(meetingTable.measure, measureInfo.id),
+        gte(meetingTable.endTime, new Date())
       )
-    );
+    )
+    .orderBy(asc(meetingTable.startTime));
 
   const createMeetingWithSlug = createMeeting.bind(null, orgSlug);
 
   const baseUrl = getBaseUrl();
 
   return (
-    <Stack>
-      {meetings.map((meeting) => (
-        <Box key={meeting.id}>
-          <Link
-            href={`${baseUrl}measures/${measureInfo.slug}/meetings/${meeting.id}`}
-          >
-            {measureInfo.title}
-          </Link>
-        </Box>
-      ))}
-      <AddMeeting
-        measureInfo={measureInfo}
+    <Stack spacing="loose">
+      <Text size="xl" variation="casual">
+        Scheduled Meetings
+      </Text>
+      <Stack spacing="tight">
+        {meetings.map((meeting) => (
+          <Box key={meeting.id}>
+            <Link
+              href={`${baseUrl}measures/${measureInfo.slug}/meetings/${meeting.id}`}
+            >
+              <LocalTime
+                timestamp={meeting.startTime}
+                formatStr="yyyy.MM.dd HH:mm"
+              />{" "}
+              - <LocalTime timestamp={meeting.endTime} formatStr="HH:mm" /> (
+              {measureInfo.title})
+            </Link>
+          </Box>
+        ))}
+      </Stack>
+      <Scheduler
         createMeeting={createMeetingWithSlug}
+        measureInfo={measureInfo}
       />
     </Stack>
   );

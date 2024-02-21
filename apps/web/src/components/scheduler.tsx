@@ -1,12 +1,13 @@
 "use client";
 
 import { CreateMeetingParams } from "@app/org/[orgSlug]/(app)/measures/[measureSlug]/meetings/actions";
-import { MeasureInfo } from "@octocoach/db/schemas/org/measure";
-import { Box, Button, Stack, Text, vars } from "@octocoach/ui";
+import { Measure } from "@octocoach/db/schemas/org/measure";
+import { Button, Stack, Text, vars } from "@octocoach/ui";
 import { NextFilled, PreviousFilled } from "@octocoach/ui/icons";
 import {
-  addHours,
+  Interval,
   addMinutes,
+  areIntervalsOverlapping,
   eachDayOfInterval,
   endOfDay,
   endOfWeek,
@@ -15,10 +16,97 @@ import {
   isSameDay,
   isWeekend,
   lastDayOfMonth,
+  setHours,
   startOfWeek,
 } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
+
+type Time = {
+  hh: number;
+  mm: number;
+};
+
+type Slot = {
+  startTime: Time;
+  endTime: Time;
+};
+
+type Availability = Record<number, Slot[]>;
+
+const workDay = {
+  startTime: {
+    hh: 9,
+    mm: 0,
+  },
+  endTime: {
+    hh: 17,
+    mm: 0,
+  },
+};
+
+const morning = {
+  startTime: {
+    hh: 9,
+    mm: 0,
+  },
+  endTime: {
+    hh: 11,
+    mm: 30,
+  },
+};
+
+const afternoon = {
+  startTime: {
+    hh: 13,
+    mm: 0,
+  },
+  endTime: {
+    hh: 17,
+    mm: 0,
+  },
+};
+
+const availability: Availability = {
+  0: [],
+  1: [morning],
+  2: [workDay],
+  3: [morning, afternoon],
+  4: [afternoon],
+  5: [workDay],
+  6: [],
+};
+
+const isAvailable = (date: Date): boolean => {
+  const day = date.getDay();
+  const slots = availability[day];
+
+  return slots.some((slot) => {
+    const availabilitySlot: Interval = {
+      start: new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        slot.startTime.hh,
+        slot.startTime.mm
+      ),
+      end: new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        slot.endTime.hh,
+        slot.endTime.mm
+      ),
+    };
+
+    const currentSlot: Interval = {
+      start: date,
+      end: addMinutes(date, 30),
+    };
+
+    return areIntervalsOverlapping(availabilitySlot, currentSlot);
+  });
+};
 
 function getWeekDays(date = new Date()) {
   const start = startOfWeek(date, { weekStartsOn: 1 });
@@ -35,10 +123,10 @@ const weekdays = getWeekDays();
 
 export default function Scheduler({
   createMeeting,
-  measureInfo,
+  measureId,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
-  measureInfo: MeasureInfo;
+  measureId: Measure["id"];
 }) {
   const now = new Date();
 
@@ -74,19 +162,27 @@ export default function Scheduler({
   }, [year, month]);
 
   useEffect(() => {
+    const availableSlots = availability[selectedDate.getDay()];
+
+    const startHour = Math.min(
+      ...availableSlots.map((slot) => slot.startTime.hh)
+    );
+
+    const endHour = Math.max(...availableSlots.map((slot) => slot.endTime.hh));
+
     let date = new Date(
       selectedDate.getFullYear(),
       selectedDate.getMonth(),
       selectedDate.getDate(),
-      9,
+      startHour,
       0
     );
 
-    const end = addHours(date, 8);
+    const end = setHours(date, endHour);
 
     const slots: Date[] = [];
 
-    while (date < end) {
+    while (date <= end) {
       slots.push(date);
       date = addMinutes(date, 30);
     }
@@ -116,7 +212,7 @@ export default function Scheduler({
 
     startTransition(() => {
       createMeeting({
-        measure: measureInfo.id,
+        measure: measureId,
         type: "consultation",
         startTime,
         endTime,
@@ -126,7 +222,7 @@ export default function Scheduler({
 
   return (
     <Stack direction="horizontal" fullWidth>
-      <Stack fullWidth>
+      <Stack>
         <Stack
           direction="horizontal"
           align="center"
@@ -204,7 +300,7 @@ export default function Scheduler({
               key={format(timeslot, "HH:mm")}
               color="accent"
               size="small"
-              disabled={isPending || isPast(timeslot)}
+              disabled={isPending || isPast(timeslot) || !isAvailable(timeslot)}
               onClick={() => onCreateMeeting(timeslot)}
             >
               {format(timeslot, "HH:mm")}

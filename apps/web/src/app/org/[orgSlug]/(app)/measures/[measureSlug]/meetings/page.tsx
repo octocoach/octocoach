@@ -25,11 +25,26 @@ export default async function Page({
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
 
-  const { meetingTable, measureInfoTable } = mkOrgSchema(orgSlug);
+  const {
+    meetingTable,
+    measureInfoTable,
+    coachTable,
+    userTable,
+    measureTable,
+  } = mkOrgSchema(orgSlug);
 
   const measureInfo = await db
-    .select()
-    .from(measureInfoTable)
+    .select({
+      id: measureTable.id,
+      title: measureInfoTable.title,
+      slug: measureInfoTable.slug,
+      coachName: userTable.name,
+      coachImage: userTable.image,
+    })
+    .from(measureTable)
+    .innerJoin(measureInfoTable, eq(measureTable.id, measureInfoTable.id))
+    .innerJoin(coachTable, eq(coachTable.userId, measureTable.owner))
+    .innerJoin(userTable, eq(userTable.id, coachTable.userId))
     .where(
       and(
         eq(measureInfoTable.slug, measureSlug),
@@ -77,9 +92,21 @@ export default async function Page({
           </Box>
         ))}
       </Stack>
+      <Box>
+        {measureInfo.coachImage && (
+          <img
+            src={measureInfo.coachImage}
+            alt="Coach"
+            width={200}
+            height={200}
+            style={{ imageRendering: "pixelated" }}
+          />
+        )}
+        <Text>{measureInfo.coachName}</Text>
+      </Box>
       <Scheduler
         createMeeting={createMeetingWithSlug}
-        measureInfo={measureInfo}
+        measureId={measureInfo.id}
       />
     </Stack>
   );

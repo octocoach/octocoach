@@ -27,6 +27,7 @@
     "langchain": "^0.0.180",
     "minimist": "^1.2.8",
     "nanoid": "^4.0.2",
+    "nanoid-dictionary": "^4.3.0",
     "octokit": "^3.1.0",
     "postgres": "^3.3.5",
     "superjson": "^1.13.1",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@octocoach/i18n": "workspace:^",
     "@types/minimist": "^1.2.2",
+    "@types/nanoid-dictionary": "^4.2.3",
     "@types/node": "^20.3.2",
     "@types/ws": "^8.5.10",
     "dotenv": "^16.0.3",

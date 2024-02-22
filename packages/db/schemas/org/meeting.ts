@@ -1,28 +1,26 @@
-import { integer, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, text, timestamp } from "drizzle-orm/pg-core";
+import { customAlphabet } from "nanoid";
+import { lowercase } from "nanoid-dictionary";
 import { mkOrgPgSchema } from "../common/pg-schema";
-import { mkMeasureTable } from "./measure";
-import { mkUserTable } from "./user";
 import { meetingTypeEnum } from "../data-types/meeting";
+import { mkMeasureTable } from "./measure";
 
 export type Meeting = ReturnType<typeof mkMeetingTable>["$inferSelect"];
 export type NewMeeting = ReturnType<typeof mkMeetingTable>["$inferInsert"];
 
+const nanoid = customAlphabet(lowercase, 12);
+
 export const mkMeetingTable = (slug: string) => {
   const { table } = mkOrgPgSchema(slug);
   const measureTable = mkMeasureTable(slug);
-  const userTable = mkUserTable(slug);
 
   return table("meeting", {
-    id: serial("id").primaryKey(),
+    id: text("id")
+      .primaryKey()
+      .$default(() => nanoid()),
     measure: integer("measure")
       .notNull()
       .references(() => measureTable.id, {
-        onDelete: "restrict",
-        onUpdate: "cascade",
-      }),
-    coachee: text("coachee")
-      .notNull()
-      .references(() => userTable.id, {
         onDelete: "restrict",
         onUpdate: "cascade",
       }),

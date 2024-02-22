@@ -21,35 +21,45 @@ export default async function Page({
 }) {
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
-  const { meetingTable, enrollmentTable } = mkOrgSchema(orgSlug);
+  const { meetingTable, meetingParticipantTable, enrollmentTable } =
+    mkOrgSchema(orgSlug);
 
   const meeting = await db
-    .select()
+    .select({
+      roomName: enrollmentTable.roomName,
+      startTime: meetingTable.startTime,
+      endTime: meetingTable.endTime,
+      role: meetingParticipantTable.role,
+    })
     .from(meetingTable)
     .innerJoin(
-      enrollmentTable,
+      meetingParticipantTable,
       and(
-        eq(meetingTable.measure, enrollmentTable.measure),
-        eq(meetingTable.coachee, enrollmentTable.coachee)
+        eq(meetingParticipantTable.meeting, meetingTable.id),
+        eq(meetingParticipantTable.user, user.id)
       )
+    )
+    .innerJoin(
+      enrollmentTable,
+      and(eq(meetingTable.measure, enrollmentTable.measure))
     )
     .where(eq(meetingTable.id, meetingId))
     .then((rows) => rows[0] ?? null);
 
-  if (!meeting.enrollment.roomName) return <Text>No room created</Text>;
+  if (!meeting.roomName) return <Text>No room created</Text>;
 
   const daily = new Daily();
 
   const token = await daily.createMeetingToken({
-    room_name: meeting.enrollment.roomName,
-    is_owner: !!user.isCoach,
+    room_name: meeting.roomName,
+    is_owner: meeting.role === "coach",
   });
 
   return (
     <Stack>
-      <DailyComponent roomName={meeting.enrollment.roomName} token={token} />
-      <LocalTime timestamp={meeting.meeting.startTime} showTimezone />
-      <Text>{formatDistanceToNow(meeting.meeting.startTime)}</Text>
+      <DailyComponent roomName={meeting.roomName} token={token} />
+      <LocalTime timestamp={meeting.startTime} showTimezone />
+      <Text>{formatDistanceToNow(meeting.startTime)}</Text>
     </Stack>
   );
 }

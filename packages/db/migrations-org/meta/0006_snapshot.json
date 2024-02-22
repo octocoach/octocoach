@@ -1,5 +1,5 @@
 {
-  "id": "30c2861a-fb6f-4be4-b21b-53d8e445380e",
+  "id": "248cba1d-2096-44aa-b052-6c6209d01686",
   "prevId": "50ec6134-c856-4c34-ad85-5051020c36e8",
   "version": "5",
   "dialect": "pg",
@@ -524,25 +524,118 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "meeting_participant": {
+      "name": "meeting_participant",
+      "schema": "org_{slug}",
+      "columns": {
+        "meeting": {
+          "name": "meeting",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "meeting_role",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'coachee'"
+        },
+        "accepted": {
+          "name": "accepted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "attendance": {
+          "name": "attendance",
+          "type": "meeting_attendance",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "attendance_info": {
+          "name": "attendance_info",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created": {
+          "name": "created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated": {
+          "name": "updated",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meeting_participant_meeting_meeting_id_fk": {
+          "name": "meeting_participant_meeting_meeting_id_fk",
+          "tableFrom": "meeting_participant",
+          "schemaTo": "org_{slug}",
+          "tableTo": "meeting",
+          "columnsFrom": [
+            "meeting"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "meeting_participant_user_user_id_fk": {
+          "name": "meeting_participant_user_user_id_fk",
+          "tableFrom": "meeting_participant",
+          "schemaTo": "org_{slug}",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "meeting_participant_meeting_user_pk": {
+          "name": "meeting_participant_meeting_user_pk",
+          "columns": [
+            "meeting",
+            "user"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "meeting": {
       "name": "meeting",
       "schema": "org_{slug}",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
         "measure": {
           "name": "measure",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "coachee": {
-          "name": "coachee",
-          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -574,20 +667,6 @@
           "tableTo": "measure",
           "columnsFrom": [
             "measure"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        },
-        "meeting_coachee_user_id_fk": {
-          "name": "meeting_coachee_user_id_fk",
-          "tableFrom": "meeting",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
-          "columnsFrom": [
-            "coachee"
           ],
           "columnsTo": [
             "id"
@@ -1056,6 +1135,21 @@
       "values": {
         "en": "en",
         "de": "de"
+      }
+    },
+    "meeting_attendance": {
+      "name": "meeting_attendance",
+      "values": {
+        "present": "present",
+        "absent_unexcused": "absent_unexcused",
+        "absent_excused": "absent_excused"
+      }
+    },
+    "meeting_role": {
+      "name": "meeting_role",
+      "values": {
+        "coach": "coach",
+        "coachee": "coachee"
       }
     },
     "meeting_type": {

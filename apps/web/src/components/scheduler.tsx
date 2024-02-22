@@ -34,7 +34,7 @@ type Slot = {
 
 type Availability = Record<number, Slot[]>;
 
-const workDay = {
+const workDay: Slot = {
   startTime: {
     hh: 9,
     mm: 0,
@@ -45,7 +45,7 @@ const workDay = {
   },
 };
 
-const morning = {
+const morning: Slot = {
   startTime: {
     hh: 9,
     mm: 0,
@@ -56,7 +56,7 @@ const morning = {
   },
 };
 
-const afternoon = {
+const afternoon: Slot = {
   startTime: {
     hh: 13,
     mm: 0,
@@ -124,9 +124,11 @@ const weekdays = getWeekDays();
 export default function Scheduler({
   createMeeting,
   measureId,
+  coachId,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
+  coachId: string;
 }) {
   const now = new Date();
 
@@ -212,10 +214,13 @@ export default function Scheduler({
 
     startTransition(() => {
       createMeeting({
-        measure: measureId,
-        type: "consultation",
-        startTime,
-        endTime,
+        meeting: {
+          measure: measureId,
+          type: "consultation",
+          startTime,
+          endTime,
+        },
+        coachId,
       }).then(() => router.refresh());
     });
   };

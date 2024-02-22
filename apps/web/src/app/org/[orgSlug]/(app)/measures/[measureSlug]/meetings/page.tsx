@@ -27,6 +27,7 @@ export default async function Page({
 
   const {
     meetingTable,
+    meetingParticipantTable,
     measureInfoTable,
     coachTable,
     userTable,
@@ -38,6 +39,7 @@ export default async function Page({
       id: measureTable.id,
       title: measureInfoTable.title,
       slug: measureInfoTable.slug,
+      coachId: coachTable.userId,
       coachName: userTable.name,
       coachImage: userTable.image,
     })
@@ -56,11 +58,20 @@ export default async function Page({
   if (!measureInfo) notFound();
 
   const meetings = await db
-    .select()
+    .select({
+      id: meetingTable.id,
+      startTime: meetingTable.startTime,
+      endTime: meetingTable.endTime,
+      role: meetingParticipantTable.role,
+    })
     .from(meetingTable)
+    .leftJoin(
+      meetingParticipantTable,
+      eq(meetingParticipantTable.meeting, meetingTable.id)
+    )
     .where(
       and(
-        eq(meetingTable.coachee, user.id),
+        eq(meetingParticipantTable.user, user.id),
         eq(meetingTable.measure, measureInfo.id),
         gte(meetingTable.endTime, new Date())
       )
@@ -87,7 +98,7 @@ export default async function Page({
                 formatStr="yyyy.MM.dd HH:mm"
               />{" "}
               - <LocalTime timestamp={meeting.endTime} formatStr="HH:mm" /> (
-              {measureInfo.title})
+              {measureInfo.title}) - {meeting.role}
             </Link>
           </Box>
         ))}
@@ -107,6 +118,7 @@ export default async function Page({
       <Scheduler
         createMeeting={createMeetingWithSlug}
         measureId={measureInfo.id}
+        coachId={measureInfo.coachId}
       />
     </Stack>
   );

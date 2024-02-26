@@ -18,6 +18,7 @@ import {
   lastDayOfMonth,
   setHours,
   startOfWeek,
+  subHours,
 } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -33,6 +34,8 @@ type Slot = {
 };
 
 type Availability = Record<number, Slot[]>;
+
+const hoursBuffer = 12;
 
 const workDay: Slot = {
   startTime: {
@@ -69,43 +72,12 @@ const afternoon: Slot = {
 
 const availability: Availability = {
   0: [],
-  1: [morning],
+  1: [workDay],
   2: [workDay],
   3: [morning, afternoon],
   4: [afternoon],
   5: [workDay],
   6: [],
-};
-
-const isAvailable = (date: Date): boolean => {
-  const day = date.getDay();
-  const slots = availability[day];
-
-  return slots.some((slot) => {
-    const availabilitySlot: Interval = {
-      start: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        slot.startTime.hh,
-        slot.startTime.mm
-      ),
-      end: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        slot.endTime.hh,
-        slot.endTime.mm
-      ),
-    };
-
-    const currentSlot: Interval = {
-      start: date,
-      end: addMinutes(date, 30),
-    };
-
-    return areIntervalsOverlapping(availabilitySlot, currentSlot);
-  });
 };
 
 function getWeekDays(date = new Date()) {
@@ -125,10 +97,12 @@ export default function Scheduler({
   createMeeting,
   measureId,
   coachId,
+  coachMeetings,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
   coachId: string;
+  coachMeetings: Interval[];
 }) {
   const now = new Date();
 
@@ -140,6 +114,43 @@ export default function Scheduler({
   const [paddingArray, setPaddingArray] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  function isAvailable(date: Date): boolean {
+    const day = date.getDay();
+    const slots = availability[day];
+
+    const slotAvailable = slots.some((slot) => {
+      const currentSlot: Interval = {
+        start: date,
+        end: addMinutes(date, 30),
+      };
+      const availabilitySlot: Interval = {
+        start: new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          slot.startTime.hh,
+          slot.startTime.mm
+        ),
+        end: new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          slot.endTime.hh,
+          slot.endTime.mm
+        ),
+      };
+
+      return areIntervalsOverlapping(availabilitySlot, currentSlot);
+    });
+
+    const hasMeeting = coachMeetings.some((coachMeeting) => {
+      const currentSlot = { start: date, end: addMinutes(date, 45) };
+      return areIntervalsOverlapping(coachMeeting, currentSlot);
+    });
+
+    return slotAvailable && !hasMeeting;
+  }
 
   function getMonthName(monthIndex: number) {
     const date = new Date();
@@ -226,7 +237,7 @@ export default function Scheduler({
   };
 
   return (
-    <Stack direction="horizontal" fullWidth>
+    <Stack direction="horizontal">
       <Stack>
         <Stack
           direction="horizontal"
@@ -251,38 +262,36 @@ export default function Scheduler({
             </Button>
           </Stack>
         </Stack>
-        <Stack>
-          <div
-            style={{
-              display: "grid",
-              placeItems: "center",
-              gridTemplateColumns: "repeat(7, 1fr)",
-              gap: 6,
-            }}
-          >
-            {weekdays.map((weekday) => (
-              <Text key={weekday} textAlign="center" weight="light">
-                {weekday.toUpperCase()}
-              </Text>
-            ))}
-            {paddingArray.map((key) => (
-              <div key={key} />
-            ))}
-            {days.map((day) => (
-              <Button
-                key={day.getDate()}
-                size="small"
-                onClick={() => {
-                  setSelectedDate(day);
-                }}
-                disabled={isPast(endOfDay(day)) || isWeekend(day)}
-                glow={isSameDay(day, selectedDate)}
-              >
-                {format(day, "d")}
-              </Button>
-            ))}
-          </div>
-        </Stack>
+        <div
+          style={{
+            display: "grid",
+            placeItems: "center",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: 6,
+          }}
+        >
+          {weekdays.map((weekday) => (
+            <Text key={weekday} textAlign="center" weight="light">
+              {weekday.toUpperCase()}
+            </Text>
+          ))}
+          {paddingArray.map((key) => (
+            <div key={key} />
+          ))}
+          {days.map((day) => (
+            <Button
+              key={day.getDate()}
+              size="small"
+              onClick={() => {
+                setSelectedDate(day);
+              }}
+              disabled={isPast(endOfDay(day)) || isWeekend(day)}
+              glow={isSameDay(day, selectedDate)}
+            >
+              {format(day, "d")}
+            </Button>
+          ))}
+        </div>
       </Stack>
       <Stack>
         <Text size="l" weight="light" variation="casual">
@@ -305,7 +314,11 @@ export default function Scheduler({
               key={format(timeslot, "HH:mm")}
               color="accent"
               size="small"
-              disabled={isPending || isPast(timeslot) || !isAvailable(timeslot)}
+              disabled={
+                isPending ||
+                isPast(subHours(timeslot, hoursBuffer)) ||
+                !isAvailable(timeslot)
+              }
               onClick={() => onCreateMeeting(timeslot)}
             >
               {format(timeslot, "HH:mm")}

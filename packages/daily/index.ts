@@ -1,5 +1,4 @@
 import { MeetingToken, MeetingTokenOptions, Room, RoomOptions } from "./types";
-import { DailyRoomInfo } from "@daily-co/daily-js";
 
 export class Daily {
   private apiKey: string;

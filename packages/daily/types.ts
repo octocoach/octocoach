@@ -17,8 +17,10 @@ export interface Room {
 // Meeting Tokens
 
 export interface MeetingTokenOptions {
-  room_name: string;
-  is_owner: boolean;
+  roomName: string;
+  isOwner: boolean;
+  userName: string;
+  userId: string;
 }
 
 export interface MeetingToken {

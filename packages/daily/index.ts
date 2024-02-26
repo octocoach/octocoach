@@ -35,9 +35,14 @@ export class Daily {
     return room;
   }
 
-  async createMeetingToken(properties: MeetingTokenOptions) {
+  async createMeetingToken(options: MeetingTokenOptions) {
     const res = await this.request("POST", "meeting-tokens", {
-      properties,
+      properties: {
+        room_name: options.roomName,
+        is_owner: options.isOwner,
+        user_name: options.userName,
+        user_id: options.userId,
+      },
     });
 
     if (!res.ok) {

@@ -21,8 +21,12 @@ export default async function Page({
 }) {
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
-  const { meetingTable, meetingParticipantTable, enrollmentTable } =
-    mkOrgSchema(orgSlug);
+  const {
+    meetingTable,
+    meetingParticipantTable,
+    enrollmentTable,
+    userProfileTable,
+  } = mkOrgSchema(orgSlug);
 
   const meeting = await db
     .select({
@@ -48,11 +52,23 @@ export default async function Page({
 
   if (!meeting.roomName) return <Text>No room created</Text>;
 
+  const userProfile = await db
+    .select()
+    .from(userProfileTable)
+    .where(eq(userProfileTable.userId, user.id))
+    .then((rows) => rows[0] ?? null);
+
+  if (!userProfile) throw new Error("No user profile");
+
+  const userName = `${userProfile.firstName} ${userProfile.lastName}`;
+
   const daily = new Daily();
 
   const token = await daily.createMeetingToken({
-    room_name: meeting.roomName,
-    is_owner: meeting.role === "coach",
+    roomName: meeting.roomName,
+    isOwner: meeting.role === "coach",
+    userId: user.id,
+    userName,
   });
 
   return (

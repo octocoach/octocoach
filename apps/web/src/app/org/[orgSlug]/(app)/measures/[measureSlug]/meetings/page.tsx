@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createMeeting } from "./actions";
+import { startOfDay } from "date-fns";
 
 const LocalTime = dynamic(() => import("@components/local-time"), {
   ssr: false,
@@ -56,6 +57,26 @@ export default async function Page({
     .then((rows) => rows[0] ?? null);
 
   if (!measureInfo) notFound();
+
+  const now = new Date();
+
+  const coachMeetings = await db
+    .select({
+      start: meetingTable.startTime,
+      end: meetingTable.endTime,
+    })
+    .from(meetingTable)
+    .innerJoin(
+      meetingParticipantTable,
+      eq(meetingParticipantTable.meeting, meetingTable.id)
+    )
+    .where(
+      and(
+        eq(meetingParticipantTable.user, measureInfo.coachId),
+        gte(meetingTable.startTime, startOfDay(now))
+      )
+    )
+    .orderBy(asc(meetingTable.startTime));
 
   const meetings = await db
     .select({
@@ -119,6 +140,7 @@ export default async function Page({
         createMeeting={createMeetingWithSlug}
         measureId={measureInfo.id}
         coachId={measureInfo.coachId}
+        coachMeetings={coachMeetings}
       />
     </Stack>
   );

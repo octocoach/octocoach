@@ -32,17 +32,3 @@ export const createRoom = async (
 
   return room;
 };
-
-export const createMeetingToken = async (
-  roomName: string,
-  isOwner: boolean
-) => {
-  const daily = new Daily();
-
-  const token = await daily.createMeetingToken({
-    room_name: roomName,
-    is_owner: isOwner,
-  });
-
-  return token;
-};

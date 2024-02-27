@@ -1,15 +1,9 @@
-import {
-  date,
-  integer,
-  primaryKey,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { date, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
+import { enrollmentStatusEnum } from "../data-types/enrollment";
 import { mkCoachTable } from "./coach";
 import { mkMeasureTable } from "./measure";
 import { mkUserTable } from "./user";
-import { enrollmentStatusEnum } from "../data-types/enrollment";
 
 export type Enrollment = ReturnType<typeof mkEnrollmentTable>["$inferSelect"];
 export type NewEnrollment = ReturnType<
@@ -24,7 +18,7 @@ export const mkEnrollmentTable = (slug: string) => {
   return mkOrgPgSchema(slug).table(
     "enrollment",
     {
-      measure: integer("measure")
+      measure: text("measure")
         .notNull()
         .references(() => measureTable.id, {
           onDelete: "restrict",

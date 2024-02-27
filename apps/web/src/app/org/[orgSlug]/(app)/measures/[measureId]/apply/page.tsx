@@ -1,6 +1,6 @@
 import { getMeasureWithInfoAndModules } from "@app/org/[orgSlug]/(website)/helpers";
 import { authOrRedirect } from "@helpers/auth";
-import { getBaseUrl, orgRedirect } from "@helpers/navigation";
+import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { eq } from "@octocoach/db/operators";
 import { Measure } from "@octocoach/db/schemas/org/measure";
@@ -16,9 +16,9 @@ import { createEnrollment } from "./actions";
 const cacheId = nanoid();
 
 export default async function Page({
-  params: { orgSlug, measureSlug },
+  params: { orgSlug, measureId },
 }: {
-  params: { orgSlug: string; measureSlug: string };
+  params: { orgSlug: string; measureId: string };
 }) {
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
@@ -33,11 +33,11 @@ export default async function Page({
 
   if (!profile) {
     const search = new URLSearchParams();
-    search.set("origin", `/measures/${measureSlug}/apply`);
+    search.set("origin", `/measures/${measureId}/apply`);
     orgRedirect(`signup?${search}`);
   }
 
-  const measure = await getMeasureWithInfoAndModules(orgSlug, measureSlug);
+  const measure = await getMeasureWithInfoAndModules(orgSlug, measureId);
 
   if (!measure) notFound();
 
@@ -57,7 +57,7 @@ export default async function Page({
     measureId: measure.id,
   });
 
-  if (enrollment.roomName) orgRedirect(`measures/${measureSlug}/meetings`);
+  if (enrollment.roomName) orgRedirect(`measures/${measureId}/meetings`);
 
   return (
     <Box paddingX="medium" paddingY="large">

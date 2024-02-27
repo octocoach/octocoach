@@ -18,15 +18,16 @@ export function AddMeasure({
   orgSlug: string;
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
+    id: "",
     imageSrc: "",
   };
 
   const blankMeasureInfo: MeasureInfoLocale = {
+    id: "",
     title: "",
     description: "",
     requirements: "",
     imageAlt: "",
-    slug: "",
   };
 
   const defaultValuesMeasureInfo = fromEntries(

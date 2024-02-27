@@ -22,7 +22,7 @@ import Link from "next/link";
 export default async function Page({
   params,
 }: {
-  params: { measureId: number; orgSlug: string };
+  params: { measureId: string; orgSlug: string };
 }) {
   const db = orgDb(params.orgSlug);
 

@@ -16,12 +16,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMeasureWithInfoAndModules } from "../../helpers";
 
-const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
+const ApplyButton = ({ baseUrl, id }: { baseUrl: string; id: string }) => (
   <Box paddingY="medium">
     <Stack fullWidth align="center">
       <ButtonLink
         Element={Link}
-        href={`${baseUrl}measures/${slug}/apply`}
+        href={`${baseUrl}measures/${id}/apply`}
         glow
         size="large"
       >
@@ -34,11 +34,11 @@ const ApplyButton = ({ baseUrl, slug }: { baseUrl: string; slug: string }) => (
 export default async function Page({
   params,
 }: {
-  params: { orgSlug: string; measureSlug: MeasureWithInfo["slug"] };
+  params: { orgSlug: string; measureId: MeasureWithInfo["id"] };
 }) {
   const measure = await getMeasureWithInfoAndModules(
     params.orgSlug,
-    params.measureSlug
+    params.measureId
   );
 
   if (!measure) notFound();
@@ -61,7 +61,7 @@ export default async function Page({
             <Markdown>{measure.description}</Markdown>
           </Box>
         </Grid>
-        <ApplyButton baseUrl={baseUrl} slug={measure.slug} />
+        <ApplyButton baseUrl={baseUrl} id={measure.id} />
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.modules" />
         </Text>
@@ -90,7 +90,7 @@ export default async function Page({
         <Card>
           <Markdown>{measure.requirements}</Markdown>
         </Card>
-        <ApplyButton baseUrl={baseUrl} slug={measure.slug} />
+        <ApplyButton baseUrl={baseUrl} id={measure.id} />
       </Stack>
     </Box>
   );

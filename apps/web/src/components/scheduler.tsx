@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateMeetingParams } from "@app/org/[orgSlug]/(app)/measures/[measureSlug]/meetings/actions";
+import { CreateMeetingParams } from "@app/org/[orgSlug]/(app)/measures/[measureId]/meetings/actions";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { Button, Stack, Text, vars } from "@octocoach/ui";
 import { NextFilled, PreviousFilled } from "@octocoach/ui/icons";

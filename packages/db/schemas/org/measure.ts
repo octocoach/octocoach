@@ -23,7 +23,7 @@ export type MeasureWithInfoAndModules = MeasureWithInfo & {
 export const mkMeasureTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
   return mkOrgPgSchema(slug).table("measure", {
-    id: serial("id").primaryKey(),
+    id: text("id").primaryKey(),
     owner: text("owner")
       .notNull()
       .references(() => coachTable.userId, {
@@ -36,6 +36,8 @@ export const mkMeasureTable = (slug: string) => {
 
 export const insertMeasureSchema = (slug: string) =>
   createInsertSchema(mkMeasureTable(slug), {
+    id: (s) =>
+      s.id.transform((v) => v.trim()).pipe(s.id.min(3).regex(/^[a-z0-9-]+$/)),
     imageSrc: (s) =>
       s.imageSrc.transform((v) => v.trim()).pipe(s.imageSrc.min(1)),
   });
@@ -61,7 +63,7 @@ export const mkMeasureInfoTable = (slug: string) => {
   return mkOrgPgSchema(slug).table(
     "measure_info",
     {
-      id: serial("id")
+      id: text("id")
         .notNull()
         .references(() => measureTable.id, {
           onDelete: "cascade",
@@ -72,7 +74,6 @@ export const mkMeasureInfoTable = (slug: string) => {
       description: text("description").notNull(),
       requirements: text("requirements").notNull(),
       imageAlt: text("image_alt").notNull(),
-      slug: text("slug").notNull().unique(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),
@@ -101,8 +102,4 @@ export const insertMeasureInfoSchema = (slug: string) =>
       s.requirements.transform((v) => v.trim()).pipe(s.requirements.min(1)),
     imageAlt: (s) =>
       s.imageAlt.transform((v) => v.trim()).pipe(s.imageAlt.min(1)),
-    slug: (s) =>
-      s.slug
-        .transform((v) => v.trim())
-        .pipe(s.slug.min(1).regex(/^[a-z0-9-]+$/)),
   });

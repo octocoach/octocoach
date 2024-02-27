@@ -34,7 +34,7 @@ export const Measures = ({
                 <Markdown>{measure.description}</Markdown>
                 <Stack fullWidth align="right">
                   <ButtonLink
-                    href={`${baseUrl}measures/${measure.slug}`}
+                    href={`${baseUrl}measures/${measure.id}`}
                     Element={Link}
                     glow
                     color="contrast"

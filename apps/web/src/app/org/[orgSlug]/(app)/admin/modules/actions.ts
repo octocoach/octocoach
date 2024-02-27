@@ -20,7 +20,7 @@ import { SafeParseSuccess, ZodError } from "zod";
 
 export type SaveModuleData = {
   module: Omit<NewModule, "owner">;
-  moduleInfo: Record<Locales, Omit<NewModuleInfo, "locale">>;
+  moduleInfo: Record<Locales, Omit<NewModuleInfo, "locale" | "id">>;
 };
 
 export type SaveModuleRetype = ReturnType<typeof saveModule>;
@@ -52,8 +52,9 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
 
   for (const [locale, moduleInfo] of getEntries(data.moduleInfo)) {
     const result = moduleInfoSchema.safeParse({
-      locale: locale as Locales,
       ...moduleInfo,
+      locale: locale as Locales,
+      id: data.module.id,
     });
 
     if (result.success === false) {

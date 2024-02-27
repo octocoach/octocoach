@@ -3,7 +3,7 @@ import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { and, asc, eq, gte } from "@octocoach/db/operators";
+import { and, asc, eq, gte, or } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Box, Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
@@ -18,9 +18,9 @@ const LocalTime = dynamic(() => import("@components/local-time"), {
 });
 
 export default async function Page({
-  params: { orgSlug, measureSlug },
+  params: { orgSlug, measureId },
 }: {
-  params: { orgSlug: string; measureSlug: string };
+  params: { orgSlug: string; measureId: string };
 }) {
   const locale = getLocale();
   const { user } = await authOrRedirect(orgSlug);
@@ -33,30 +33,43 @@ export default async function Page({
     coachTable,
     userTable,
     measureTable,
+    enrollmentTable,
   } = mkOrgSchema(orgSlug);
 
   const measureInfo = await db
     .select({
       id: measureTable.id,
+      owner: measureTable.owner,
       title: measureInfoTable.title,
-      slug: measureInfoTable.slug,
       coachId: coachTable.userId,
       coachName: userTable.name,
       coachImage: userTable.image,
+      roomName: enrollmentTable.roomName,
     })
     .from(measureTable)
     .innerJoin(measureInfoTable, eq(measureTable.id, measureInfoTable.id))
     .innerJoin(coachTable, eq(coachTable.userId, measureTable.owner))
     .innerJoin(userTable, eq(userTable.id, coachTable.userId))
-    .where(
+    .leftJoin(
+      enrollmentTable,
       and(
-        eq(measureInfoTable.slug, measureSlug),
-        eq(measureInfoTable.locale, locale)
+        eq(enrollmentTable.measure, measureTable.id),
+        or(
+          eq(enrollmentTable.coachee, user.id),
+          eq(enrollmentTable.coach, user.id)
+        )
       )
+    )
+    .where(
+      and(eq(measureTable.id, measureId), eq(measureInfoTable.locale, locale))
     )
     .then((rows) => rows[0] ?? null);
 
   if (!measureInfo) notFound();
+
+  if (!measureInfo.roomName) {
+    return <Text>The enrollment is still pending approval</Text>;
+  }
 
   const now = new Date();
 
@@ -112,7 +125,7 @@ export default async function Page({
         {meetings.map((meeting) => (
           <Box key={meeting.id}>
             <Link
-              href={`${baseUrl}measures/${measureInfo.slug}/meetings/${meeting.id}`}
+              href={`${baseUrl}measures/${measureInfo.id}/meetings/${meeting.id}`}
             >
               <LocalTime
                 timestamp={meeting.startTime}

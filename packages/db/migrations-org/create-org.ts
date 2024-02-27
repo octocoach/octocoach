@@ -1,6 +1,6 @@
 export const meta = {
-  version: 4,
-  when: 1706189497517,
+  version: 7,
+  when: 1709029992762,
 };
 
 export const rawSql = `
@@ -14,6 +14,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "locale" AS ENUM('en', 'de');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "meeting_attendance" AS ENUM('present', 'absent_unexcused', 'absent_excused');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "meeting_role" AS ENUM('coach', 'coachee');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "meeting_type" AS ENUM('consultation', 'coaching');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -49,7 +67,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."content" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."enrollment" (
-	"measure" integer NOT NULL,
+	"measure" text NOT NULL,
 	"coachee" text NOT NULL,
 	"coach" text,
 	"status" "enrollment_status" DEFAULT 'pending' NOT NULL,
@@ -58,37 +76,56 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."enrollment" (
 	"start_date" date,
 	"end_date" date,
 	"comments" text,
+	"room_name" text,
 	CONSTRAINT enrollment_measure_coachee_pk PRIMARY KEY("measure","coachee")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_info" (
-	"id" serial NOT NULL,
+	"id" text NOT NULL,
 	"locale" "locale" NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
 	"requirements" text NOT NULL,
 	"image_alt" text NOT NULL,
-	"slug" text NOT NULL,
-	CONSTRAINT measure_info_id_locale_pk PRIMARY KEY("id","locale"),
-	CONSTRAINT "measure_info_slug_unique" UNIQUE("slug")
+	CONSTRAINT measure_info_id_locale_pk PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_module" (
-	"measure" integer NOT NULL,
-	"module" integer NOT NULL,
+	"measure" text NOT NULL,
+	"module" text NOT NULL,
 	"order" integer NOT NULL,
 	CONSTRAINT measure_module_measure_module_pk PRIMARY KEY("measure","module"),
 	CONSTRAINT "measure_module_order_unique" UNIQUE("order")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"owner" text NOT NULL,
 	"image_src" text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "org_{slug}"."meeting_participant" (
+	"meeting" text NOT NULL,
+	"user" text NOT NULL,
+	"role" "meeting_role" DEFAULT 'coachee' NOT NULL,
+	"accepted" boolean DEFAULT false NOT NULL,
+	"attendance" "meeting_attendance",
+	"attendance_info" text,
+	"created" timestamp DEFAULT now(),
+	"updated" timestamp DEFAULT now(),
+	CONSTRAINT meeting_participant_meeting_user_pk PRIMARY KEY("meeting","user")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "org_{slug}"."meeting" (
+	"id" text PRIMARY KEY NOT NULL,
+	"measure" text NOT NULL,
+	"type" "meeting_type" NOT NULL,
+	"start_time" timestamp with time zone NOT NULL,
+	"end_time" timestamp with time zone NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."module_info" (
-	"id" serial NOT NULL,
+	"id" text NOT NULL,
 	"locale" "locale" NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
@@ -97,7 +134,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."module_info" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."module" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"owner" text NOT NULL,
 	"units" integer NOT NULL,
 	"image_src" text NOT NULL
@@ -206,6 +243,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "org_{slug}"."measure" ADD CONSTRAINT "measure_owner_coach_user_id_fk" FOREIGN KEY ("owner") REFERENCES "org_{slug}"."coach"("user_id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."meeting_participant" ADD CONSTRAINT "meeting_participant_meeting_meeting_id_fk" FOREIGN KEY ("meeting") REFERENCES "org_{slug}"."meeting"("id") ON DELETE restrict ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."meeting_participant" ADD CONSTRAINT "meeting_participant_user_user_id_fk" FOREIGN KEY ("user") REFERENCES "org_{slug}"."user"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "org_{slug}"."meeting" ADD CONSTRAINT "meeting_measure_measure_id_fk" FOREIGN KEY ("measure") REFERENCES "org_{slug}"."measure"("id") ON DELETE restrict ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

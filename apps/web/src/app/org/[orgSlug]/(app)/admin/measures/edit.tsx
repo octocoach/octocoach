@@ -39,11 +39,6 @@ const EditMeasureLocale = ({
   const store = useFormStore<MeasureInfoLocale>({
     defaultValues: value,
     setValues: (values) => {
-      values.slug = values.slug
-        .toLowerCase()
-        .replace(/[^A-Za-z0-9-\s]+/g, "")
-        .replace(/\s+|-+\s+/g, "-");
-
       onSetValues(locale, values);
     },
   });
@@ -73,9 +68,6 @@ const EditMeasureLocale = ({
             </FormField>
             <FormField name={$.title} label="Title">
               <FormInput name={$.title} />
-            </FormField>
-            <FormField name={$.slug} label="Slug">
-              <FormInput name={$.slug} />
             </FormField>
             <FormField name={$.description} label="Description">
               <FormInput
@@ -112,6 +104,15 @@ export function EditMeasure({
   const stores = {
     measure: useFormStore<SaveMeasureData["measure"]>({
       defaultValues: measure,
+      setValues: (values) => {
+        stores.measure.setValue(
+          stores.measure.names.id,
+          values.id
+            .toLowerCase()
+            .replace(/[^A-Za-z0-9-\s]+/g, "")
+            .replace(/\s+|-+\s+/g, "-")
+        );
+      },
     }),
     measureInfo: useFormStore<SaveMeasureData["measureInfo"]>({
       defaultValues: measureInfo,
@@ -176,6 +177,11 @@ export function EditMeasure({
   return (
     <Stack>
       <Stack spacing="tight">
+        <Form store={stores.measure}>
+          <FormField name={$.id} label="Slug">
+            <FormInput name={$.id} />
+          </FormField>
+        </Form>
         <Upload
           onUploaded={(src) => stores.measure.setValue($.imageSrc, src)}
           orgSlug={orgSlug}

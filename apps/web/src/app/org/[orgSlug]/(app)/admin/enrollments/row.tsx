@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 type Enrollment = {
-  measure: number;
+  measure: string;
   coachee: string;
   firstName: string | null;
   lastName: string | null;

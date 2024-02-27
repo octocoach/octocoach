@@ -1,4 +1,4 @@
-import { integer, text, timestamp } from "drizzle-orm/pg-core";
+import { text, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
 import { mkOrgPgSchema } from "../common/pg-schema";
@@ -18,7 +18,7 @@ export const mkMeetingTable = (slug: string) => {
     id: text("id")
       .primaryKey()
       .$default(() => nanoid()),
-    measure: integer("measure")
+    measure: text("measure")
       .notNull()
       .references(() => measureTable.id, {
         onDelete: "restrict",

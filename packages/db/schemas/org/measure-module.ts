@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, primaryKey } from "drizzle-orm/pg-core";
+import { integer, primaryKey, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkMeasureTable } from "./measure";
 import { mkModuleTable } from "./module";
@@ -18,13 +18,13 @@ export const mkMeasureModuleTable = (slug: string) => {
   return mkOrgPgSchema(slug).table(
     "measure_module",
     {
-      measure: integer("measure")
+      measure: text("measure")
         .notNull()
         .references(() => measureTable.id, {
           onDelete: "restrict",
           onUpdate: "cascade",
         }),
-      module: integer("module")
+      module: text("module")
         .notNull()
         .references(() => moduleTable.id, {
           onDelete: "restrict",

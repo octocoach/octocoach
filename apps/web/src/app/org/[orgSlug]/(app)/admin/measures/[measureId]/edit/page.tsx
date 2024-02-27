@@ -7,7 +7,7 @@ import { EditMeasure } from "../../edit";
 export default async function Page({
   params,
 }: {
-  params: { orgSlug: string; measureId: number };
+  params: { orgSlug: string; measureId: string };
 }) {
   const db = orgDb(params.orgSlug);
 

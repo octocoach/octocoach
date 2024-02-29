@@ -22,7 +22,12 @@ export const FormSelect = forwardRef<HTMLButtonElement, FormSelectProps>(
         ref={ref}
         value={value}
         displayValue={displayValue}
-        setValue={(value) => form.setValue(name, value)}
+        setValue={(value) => {
+          if (props.setValue) {
+            props.setValue(value);
+          }
+          form.setValue(name, value);
+        }}
         render={props.render}
       />
     );

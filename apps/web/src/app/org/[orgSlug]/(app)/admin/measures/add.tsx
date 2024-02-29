@@ -23,11 +23,11 @@ export function AddMeasure({
   };
 
   const blankMeasureInfo: MeasureInfoLocale = {
-    id: "",
     title: "",
     description: "",
     requirements: "",
     imageAlt: "",
+    screeningQuestions: [],
   };
 
   const defaultValuesMeasureInfo = fromEntries(

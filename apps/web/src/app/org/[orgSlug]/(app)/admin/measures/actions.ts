@@ -21,7 +21,7 @@ import { SafeParseSuccess, ZodError } from "zod";
 
 export type SaveMeasureData = {
   measure: Omit<NewMeasure, "owner">;
-  measureInfo: Record<Locales, Omit<NewMeasureInfo, "locale">>;
+  measureInfo: Record<Locales, Omit<NewMeasureInfo, "locale" | "id">>;
 };
 
 export type SaveMeasureRetype = ReturnType<typeof saveMeasure>;
@@ -56,8 +56,9 @@ export const saveMeasure = async (
 
   for (const [locale, measureInfo] of getEntries(data.measureInfo)) {
     const result = measureInfoSchema.safeParse({
-      locale: locale as Locales,
       ...measureInfo,
+      locale: locale as Locales,
+      id: data.measure.id,
     });
 
     if (result.success === false) {

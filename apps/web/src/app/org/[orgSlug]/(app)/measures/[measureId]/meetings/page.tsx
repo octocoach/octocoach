@@ -7,11 +7,11 @@ import { and, asc, eq, gte, or } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Box, Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
+import { startOfDay } from "date-fns";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { createMeeting } from "./actions";
-import { startOfDay } from "date-fns";
+import { createMeeting } from "../../actions";
 
 const LocalTime = dynamic(() => import("@components/local-time"), {
   ssr: false,
@@ -154,6 +154,7 @@ export default async function Page({
         measureId={measureInfo.id}
         coachId={measureInfo.coachId}
         coachMeetings={coachMeetings}
+        meetingType="coaching"
       />
     </Stack>
   );

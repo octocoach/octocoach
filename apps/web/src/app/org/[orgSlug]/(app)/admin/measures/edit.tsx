@@ -154,7 +154,7 @@ export function EditMeasure({
 
   const addNewQuestion = () => {
     const blankQuestion: ScreeningQuestion = {
-      type: "text",
+      type: "short",
       question: "",
     };
     store.pushValue($.mappedMeasureInfo.screeningQuestions, {
@@ -169,8 +169,6 @@ export function EditMeasure({
         store.getState().values.mappedMeasureInfo.screeningQuestions[idx][
           locale
         ].options || ([] as string[]);
-
-      console.log(locale, options);
 
       store.setValue(
         `mappedMeasureInfo.screeningQuestions.${idx}.${locale}.options`,

@@ -1,7 +1,8 @@
 "use client";
 
-import { CreateMeetingParams } from "@app/org/[orgSlug]/(app)/measures/[measureId]/meetings/actions";
+import { CreateMeetingParams } from "@app/org/[orgSlug]/(app)/measures/actions";
 import { Measure } from "@octocoach/db/schemas/org/measure";
+import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { Button, Stack, Text, vars } from "@octocoach/ui";
 import { NextFilled, PreviousFilled } from "@octocoach/ui/icons";
 import {
@@ -98,11 +99,13 @@ export default function Scheduler({
   measureId,
   coachId,
   coachMeetings,
+  meetingType,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
   coachId: string;
   coachMeetings: Interval[];
+  meetingType: Meeting["type"];
 }) {
   const now = new Date();
 
@@ -227,7 +230,7 @@ export default function Scheduler({
       createMeeting({
         meeting: {
           measure: measureId,
-          type: "consultation",
+          type: meetingType,
           startTime,
           endTime,
         },

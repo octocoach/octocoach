@@ -1,36 +1,28 @@
+"use server";
+
 import { authOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
-import { mkEnrollmentTable } from "@octocoach/db/schemas/org/enrollment";
-import { Measure } from "@octocoach/db/schemas/org/measure";
+import {
+  NewEnrollment,
+  mkEnrollmentTable,
+} from "@octocoach/db/schemas/org/enrollment";
+import { revalidatePath } from "next/cache";
+
+export type CreateEnrollmentParams = Pick<
+  NewEnrollment,
+  "measure" | "screeningAnswers"
+>;
 
 export const createEnrollment = async (
   orgSlug: string,
-  measureId: Measure["id"]
+  enrollment: CreateEnrollmentParams
 ) => {
   const db = orgDb(orgSlug);
 
-  const enrollmentTable = mkEnrollmentTable(orgSlug);
   const { user } = await authOrRedirect(orgSlug);
+  const enrollmentTable = mkEnrollmentTable(orgSlug);
 
-  let enrollment = await db
-    .select()
-    .from(enrollmentTable)
-    .where(
-      and(
-        eq(enrollmentTable.measure, measureId),
-        eq(enrollmentTable.coachee, user.id)
-      )
-    )
-    .then((rows) => rows[0] ?? null);
+  await db.insert(enrollmentTable).values({ ...enrollment, coachee: user.id });
 
-  if (enrollment) return enrollment;
-
-  enrollment = await db
-    .insert(enrollmentTable)
-    .values({ measure: measureId, coachee: user.id })
-    .returning()
-    .then((rows) => rows[0]);
-
-  return enrollment;
+  revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
 };

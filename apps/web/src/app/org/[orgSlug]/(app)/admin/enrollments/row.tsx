@@ -1,7 +1,8 @@
 "use client";
 
 import { Room } from "@octocoach/daily/types";
-import { Box, Button, Card, Stack, Text } from "@octocoach/ui";
+import { ScreeningAnswers } from "@octocoach/db/schemas/org/enrollment";
+import { Box, Button, Card, Markdown, Stack, Tag, Text } from "@octocoach/ui";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
@@ -20,6 +21,7 @@ type Enrollment = {
     | "dropped-out";
   startDate: Date | null;
   roomName: string | null;
+  screeningAnswers?: ScreeningAnswers | null;
 };
 
 export const EnrollmentRow = ({
@@ -57,6 +59,20 @@ export const EnrollmentRow = ({
             </Button>
           )}
         </Box>
+        <Stack>
+          {enrollment.screeningAnswers?.questions.map(
+            ({ question, answer }, i) => (
+              <Box key={i}>
+                <Text weight="light">{question}</Text>
+                {Array.isArray(answer) ? (
+                  answer.map((a, i) => <Tag key={i}>{a}</Tag>)
+                ) : (
+                  <Markdown>{answer}</Markdown>
+                )}
+              </Box>
+            )
+          )}
+        </Stack>
       </Stack>
     </Card>
   );

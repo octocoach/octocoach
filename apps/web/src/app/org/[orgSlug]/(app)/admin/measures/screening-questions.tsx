@@ -32,18 +32,20 @@ const QuestionLocale = ({
       <FormField name={`${path}.question`} label={LL.languages[locale]()}>
         <FormInput name={`${path}.question`} />
       </FormField>
-      {questionLocale.type !== "text" && questionLocale.options && (
-        <Stack>
-          <Text variation="casual" weight="light">
-            Options
-          </Text>
-          <Stack spacing="tight">
-            {questionLocale.options.map((_, idx) => (
-              <FormInput name={`${path}.options.${idx}`} key={idx} />
-            ))}
+      {(questionLocale.type === "select" ||
+        questionLocale.type === "multi-select") &&
+        questionLocale.options && (
+          <Stack>
+            <Text variation="casual" weight="light">
+              Options
+            </Text>
+            <Stack spacing="tight">
+              {questionLocale.options.map((_, idx) => (
+                <FormInput name={`${path}.options.${idx}`} key={idx} />
+              ))}
+            </Stack>
           </Stack>
-        </Stack>
-      )}
+        )}
     </Box>
   );
 };
@@ -73,7 +75,8 @@ const Question = ({
           }
           displayValue="Question Type"
         >
-          <SelectItem value="text" />
+          <SelectItem value="short" />
+          <SelectItem value="long" />
           <SelectItem value="select" />
           <SelectItem value="multi-select" />
         </Select>
@@ -88,7 +91,7 @@ const Question = ({
             />
           ))}
         </Stack>
-        {questionType !== "text" && (
+        {(questionType === "select" || questionType === "multi-select") && (
           <Button onClick={() => onAddOption(index)}>Add Option</Button>
         )}
       </Stack>

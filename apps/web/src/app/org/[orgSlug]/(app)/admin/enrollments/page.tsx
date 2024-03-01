@@ -26,6 +26,7 @@ export default async function Page({
     .select({
       measure: enrollmentTable.measure,
       coachee: enrollmentTable.coachee,
+      screeningAnswers: enrollmentTable.screeningAnswers,
       firstName: userProfileTable.firstName,
       lastName: userProfileTable.lastName,
       title: measureInfoTable.title,

@@ -61,7 +61,7 @@ export const mkMeasureRelations = (slug: string) => {
 
 export const screeningQuestionSchema = z.object({
   question: z.string().min(1),
-  type: z.enum(["text", "select", "multi-select"]),
+  type: z.enum(["short", "long", "select", "multi-select"]),
   options: z.array(z.string()).optional(),
 });
 

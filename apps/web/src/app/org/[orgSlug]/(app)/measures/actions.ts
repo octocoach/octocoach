@@ -16,6 +16,9 @@ export const createMeeting = async (
 ) => {
   const { user } = await authOrRedirect(orgSlug);
 
+  console.log("coachId", coachId);
+  console.log("userId", user.id);
+
   const db = orgDb(orgSlug);
   const { meetingTable, meetingParticipantTable } = mkOrgSchema(orgSlug);
 

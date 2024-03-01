@@ -230,7 +230,6 @@ export const getMeasureWithInfoAndModules = async (
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
-      screeningQuestions: measureInfoTable.screeningQuestions,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(
@@ -273,7 +272,6 @@ export const getMeasureWithInfoAndModules = async (
       table.imageAlt,
       table.owner,
       table.requirements,
-      table.screeningQuestions,
     ])
     .then((rows) => rows[0] ?? null);
 

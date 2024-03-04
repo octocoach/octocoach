@@ -8,11 +8,10 @@ import {
 } from "date-fns";
 import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
-import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
 import { availability, hoursBuffer } from "./constants";
 import { isAvailable } from "./helpers";
-import { timeslotsContainer } from "./timeslots.css";
+import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
 
 export const Timeslots = ({
   selectedDate,
@@ -56,11 +55,11 @@ export const Timeslots = ({
   }, [selectedDate]);
 
   return (
-    <Stack>
+    <div className={timeslotsContainer}>
       <Text size="l" weight="light" variation="casual">
         {format(selectedDate, "EEE d")}
       </Text>
-      <div className={timeslotsContainer}>
+      <div className={timeslotsContent}>
         {timeslots.map((timeslot) => (
           <Button
             key={format(timeslot, "HH:mm")}
@@ -77,6 +76,6 @@ export const Timeslots = ({
           </Button>
         ))}
       </div>
-    </Stack>
+    </div>
   );
 };

@@ -54,6 +54,13 @@ const en = {
   systemTheme: "system",
   language: "Language",
   changingLanguage: "Changing language...",
+  meetings: {
+    type: {
+      consultation: "consultation",
+      coaching: "coaching",
+    },
+    newMeeting: "Book a {type:string} with {name:string}",
+  },
 } satisfies BaseTranslation;
 
 export default en;

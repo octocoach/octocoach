@@ -4,7 +4,6 @@ import { orgDb } from "@octocoach/db/connection";
 import { getLocale } from "@helpers/locale";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Markdown } from "@octocoach/ui";
 import { Box } from "@octocoach/ui/Box/Box";
 import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
@@ -52,10 +51,7 @@ export default async function Layout({
             alt={measure.imageAlt}
             minHeight={200}
           />
-          <Stack>
-            <Text size="xl">{measure.title}</Text>
-            <Markdown>{measure.description}</Markdown>
-          </Stack>
+          <Text size="xl">{measure.title}</Text>
         </Grid>
         {children}
       </Stack>

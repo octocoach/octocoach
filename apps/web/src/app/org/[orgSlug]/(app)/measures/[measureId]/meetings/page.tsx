@@ -4,8 +4,7 @@ import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, or } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Box, Text } from "@octocoach/ui";
-import Scheduler from "@octocoach/ui/Scheduler/Scheduler";
+import { Box, Scheduler, Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { startOfDay } from "date-fns";
 import dynamic from "next/dynamic";
@@ -152,7 +151,11 @@ export default async function Page({
       <Scheduler
         createMeeting={createMeetingWithSlug}
         measureId={measureInfo.id}
-        coachId={measureInfo.coachId}
+        coach={{
+          id: measureInfo.coachId,
+          name: measureInfo.coachName ?? "unknown",
+          image: measureInfo.coachImage ?? "",
+        }}
         coachMeetings={coachMeetings}
         meetingType="coaching"
       />

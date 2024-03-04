@@ -5,13 +5,12 @@ import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Box, Card, Stack, Text } from "@octocoach/ui";
+import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
 import { startOfDay } from "date-fns";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
-import Scheduler from "@octocoach/ui/Scheduler/Scheduler";
 
 export default async function Page({
   params: { orgSlug, measureId },
@@ -153,17 +152,17 @@ export default async function Page({
         .orderBy(asc(meetingTable.startTime));
 
       return (
-        <Stack>
-          <Scheduler
-            createMeeting={createMeetingWithSlug}
-            measureId={measureId}
-            coachId={measure.coachId}
-            coachName={measure.coachName}
-            coachImage={measure.coachImage}
-            coachMeetings={coachMeetings}
-            meetingType="consultation"
-          />
-        </Stack>
+        <Scheduler
+          createMeeting={createMeetingWithSlug}
+          measureId={measureId}
+          coach={{
+            id: measure.coachId,
+            name: measure.coachName ?? "unknown",
+            image: measure.coachImage ?? "",
+          }}
+          coachMeetings={coachMeetings}
+          meetingType="consultation"
+        />
       );
     } else {
       return (

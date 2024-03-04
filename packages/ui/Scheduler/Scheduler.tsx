@@ -7,26 +7,24 @@ import { useState, useTransition } from "react";
 import { Stack } from "../Stack/Stack";
 import { Calendar } from "./Calendar";
 import { CalendarNavigation } from "./CalendarNavigation";
+import { Person } from "./Person";
 import { Timeslots } from "./Timeslots";
+import { schedulerContainer, schedulerContent } from "./scheduler.css";
 import { CreateMeetingParams } from "./types";
 
-export default function Scheduler({
+export const Scheduler = ({
   createMeeting,
   measureId,
-  coachId,
-  coachName,
-  coachImage,
+  coach,
   coachMeetings,
   meetingType,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
-  coachId: string;
-  coachName?: string | null;
-  coachImage?: string | null;
+  coach: { id: string; name: string; image: string };
   coachMeetings: Interval[];
   meetingType: Meeting["type"];
-}) {
+}) => {
   const now = new Date();
 
   const [selectedDate, setSelectedDate] = useState(now);
@@ -45,33 +43,36 @@ export default function Scheduler({
           startTime,
           endTime,
         },
-        coachId,
+        coachId: coach.id,
       });
     });
   };
 
   return (
-    <Stack direction="horizontal">
-      <Stack>
-        <CalendarNavigation
-          month={month}
-          year={year}
-          setMonth={setMonth}
-          setYear={setYear}
-        />
-        <Calendar
+    <div className={schedulerContainer}>
+      <Person name={coach.name} image={coach.image} meetingType={meetingType} />
+      <div className={schedulerContent}>
+        <Stack>
+          <CalendarNavigation
+            month={month}
+            year={year}
+            setMonth={setMonth}
+            setYear={setYear}
+          />
+          <Calendar
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            year={year}
+            month={month}
+          />
+        </Stack>
+        <Timeslots
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          year={year}
-          month={month}
+          onCreateMeeting={onCreateMeeting}
+          busyIntervals={coachMeetings}
+          creatingMeeting={isPending}
         />
-      </Stack>
-      <Timeslots
-        selectedDate={selectedDate}
-        onCreateMeeting={onCreateMeeting}
-        busyIntervals={coachMeetings}
-        creatingMeeting={isPending}
-      />
-    </Stack>
+      </div>
+    </div>
   );
-}
+};

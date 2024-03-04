@@ -55,6 +55,13 @@ const de = {
   systemTheme: "system",
   language: "Sprache",
   changingLanguage: "Sprache wechseln...",
+  meetings: {
+    type: {
+      consultation: "Beratung",
+      coaching: "Coaching",
+    },
+    newMeeting: "Buche ein {type} mit {name}",
+  },
 } satisfies Translation;
 
 export default de;

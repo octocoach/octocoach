@@ -1,4 +1,3 @@
-import Scheduler from "@components/scheduler";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
@@ -6,6 +5,7 @@ import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, or } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Box, Text } from "@octocoach/ui";
+import Scheduler from "@octocoach/ui/Scheduler/Scheduler";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { startOfDay } from "date-fns";
 import dynamic from "next/dynamic";

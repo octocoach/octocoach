@@ -32,6 +32,7 @@ export * from "./MethodSection/MethodSection";
 export * from "./Nav/Nav";
 export * from "./PixelBackground/PixelBackground";
 export * from "./Progress/Progress";
+export * from "./Scheduler/Scheduler";
 export * from "./Select/Select";
 export * from "./Stack/Stack";
 export * from "./Tag/Tag";

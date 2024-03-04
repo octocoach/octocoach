@@ -2,22 +2,15 @@
 
 import { authOrRedirect } from "@helpers/auth";
 import { orgDb } from "@octocoach/db/connection";
-import { NewMeeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-
-export type CreateMeetingParams = {
-  meeting: NewMeeting;
-  coachId: string;
-};
+import { CreateMeetingParams } from "@octocoach/ui/Scheduler/types";
+import { revalidatePath } from "next/cache";
 
 export const createMeeting = async (
   orgSlug: string,
   { meeting, coachId }: CreateMeetingParams
 ) => {
   const { user } = await authOrRedirect(orgSlug);
-
-  console.log("coachId", coachId);
-  console.log("userId", user.id);
 
   const db = orgDb(orgSlug);
   const { meetingTable, meetingParticipantTable } = mkOrgSchema(orgSlug);
@@ -42,4 +35,6 @@ export const createMeeting = async (
       role: "coach",
     });
   });
+
+  revalidatePath("/");
 };

@@ -1,5 +1,4 @@
 import LocalTime from "@components/local-time";
-import Scheduler from "@components/scheduler";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { orgRedirect } from "@helpers/navigation";
@@ -12,6 +11,7 @@ import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
+import Scheduler from "@octocoach/ui/Scheduler/Scheduler";
 
 export default async function Page({
   params: { orgSlug, measureId },
@@ -49,7 +49,9 @@ export default async function Page({
       id: measureTable.id,
       title: measureInfoTable.title,
       screeningQuestions: measureInfoTable.screeningQuestions,
-      owner: measureTable.owner,
+      coachId: measureTable.owner,
+      coachName: userTable.name,
+      coachImage: userTable.image,
     })
     .from(measureTable)
     .innerJoin(
@@ -59,6 +61,7 @@ export default async function Page({
         eq(measureInfoTable.locale, locale)
       )
     )
+    .innerJoin(userTable, eq(userTable.id, measureTable.owner))
     .where(eq(measureTable.id, measureId))
     .then((rows) => rows[0] ?? null);
 
@@ -105,7 +108,7 @@ export default async function Page({
           meetingParticipantTable,
           eq(meetingTable.id, meetingParticipantTable.meeting)
         )
-        .innerJoin(userTable, eq(userTable.id, measure.owner))
+        .innerJoin(userTable, eq(userTable.id, measure.coachId))
         .where(
           and(
             gte(meetingTable.startTime, now),
@@ -143,20 +146,24 @@ export default async function Page({
         )
         .where(
           and(
-            eq(meetingParticipantTable.user, measure.owner),
+            eq(meetingParticipantTable.user, measure.coachId),
             gte(meetingTable.startTime, startOfDay(now))
           )
         )
         .orderBy(asc(meetingTable.startTime));
 
       return (
-        <Scheduler
-          createMeeting={createMeetingWithSlug}
-          measureId={measureId}
-          coachId={measure.owner}
-          coachMeetings={coachMeetings}
-          meetingType="consultation"
-        />
+        <Stack>
+          <Scheduler
+            createMeeting={createMeetingWithSlug}
+            measureId={measureId}
+            coachId={measure.coachId}
+            coachName={measure.coachName}
+            coachImage={measure.coachImage}
+            coachMeetings={coachMeetings}
+            meetingType="consultation"
+          />
+        </Stack>
       );
     } else {
       return (

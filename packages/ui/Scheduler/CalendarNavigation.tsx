@@ -4,17 +4,20 @@ import { Text } from "../Text/Text";
 import { getMonthName } from "./helpers";
 import { Button } from "../Button/Button";
 import { Dispatch, SetStateAction } from "react";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const CalendarNavigation = ({
   month,
   year,
   setMonth,
   setYear,
+  locale,
 }: {
   year: number;
   month: number;
   setMonth: Dispatch<SetStateAction<number>>;
   setYear: Dispatch<SetStateAction<number>>;
+  locale: Locales;
 }) => {
   const nextMonth = () => {
     if (month === 11) {
@@ -38,7 +41,7 @@ export const CalendarNavigation = ({
     <Stack direction="horizontal" align="center" justify="between" fullWidth>
       <Stack direction="horizontal" fullWidth>
         <Text size="l" weight="heavy" variation="casual">
-          {getMonthName(month)}
+          {getMonthName(month, locale)}
         </Text>
         <Text size="l" weight="light">
           {year}

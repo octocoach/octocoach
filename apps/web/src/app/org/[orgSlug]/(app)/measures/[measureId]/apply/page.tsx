@@ -158,6 +158,7 @@ export default async function Page({
 
       return (
         <Scheduler
+          locale={locale}
           createMeeting={createMeetingWithSlug}
           measureId={measureId}
           coach={{

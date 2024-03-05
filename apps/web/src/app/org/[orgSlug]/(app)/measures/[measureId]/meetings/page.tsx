@@ -149,6 +149,7 @@ export default async function Page({
         <Text>{measureInfo.coachName}</Text>
       </Box>
       <Scheduler
+        locale={locale}
         createMeeting={createMeetingWithSlug}
         measureId={measureInfo.id}
         coach={{

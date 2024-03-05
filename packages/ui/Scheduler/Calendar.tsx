@@ -11,17 +11,20 @@ import {
   lastDayOfMonth,
 } from "date-fns";
 import { calendarContainer } from "./calendar.css";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const Calendar = ({
   year,
   month,
   selectedDate,
   setSelectedDate,
+  locale,
 }: {
   year: number;
   month: number;
   selectedDate: Date;
   setSelectedDate: Dispatch<SetStateAction<Date>>;
+  locale: Locales;
 }) => {
   const [paddingArray, setPaddingArray] = useState<string[]>([]);
   const [days, setDays] = useState<Date[]>([]);
@@ -42,7 +45,7 @@ export const Calendar = ({
 
   return (
     <div className={calendarContainer}>
-      <WeekdaysHeading />
+      <WeekdaysHeading locale={locale} />
       {paddingArray.map((key) => (
         <div key={key} />
       ))}

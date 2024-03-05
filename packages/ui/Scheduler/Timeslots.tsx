@@ -10,19 +10,22 @@ import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import { Text } from "../Text/Text";
 import { availability, hoursBuffer } from "./constants";
-import { isAvailable } from "./helpers";
+import { getLocale, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const Timeslots = ({
   selectedDate,
   onCreateMeeting,
   busyIntervals,
   creatingMeeting,
+  locale,
 }: {
   selectedDate: Date;
   onCreateMeeting: (date: Date) => void;
   busyIntervals: Interval[];
   creatingMeeting: boolean;
+  locale: Locales;
 }) => {
   const [timeslots, setTimeslots] = useState<Date[]>([]);
 
@@ -57,7 +60,7 @@ export const Timeslots = ({
   return (
     <div className={timeslotsContainer}>
       <Text size="l" weight="light" variation="casual">
-        {format(selectedDate, "EEE d")}
+        {format(selectedDate, "EEE d", { locale: getLocale(locale) })}
       </Text>
       <div className={timeslotsContent}>
         {timeslots.map((timeslot) => (

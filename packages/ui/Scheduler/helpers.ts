@@ -5,6 +5,8 @@ import {
   format,
 } from "date-fns";
 import { availability } from "./constants";
+import { enUS, de } from "date-fns/locale";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const isAvailable = (date: Date, busy: Interval[]): boolean => {
   const day = date.getDay();
@@ -43,8 +45,17 @@ export const isAvailable = (date: Date, busy: Interval[]): boolean => {
   return slotAvailable && !hasMeeting;
 };
 
-export const getMonthName = (monthIndex: number) => {
+export const getMonthName = (monthIndex: number, locale: Locales) => {
   const date = new Date();
   date.setMonth(monthIndex);
-  return format(date, "MMMM");
+  return format(date, "MMMM", { locale: getLocale(locale) });
+};
+
+export const getLocale = (locale: Locales) => {
+  switch (locale) {
+    case "de":
+      return de;
+    default:
+      return enUS;
+  }
 };

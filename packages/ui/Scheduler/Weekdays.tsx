@@ -1,8 +1,10 @@
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
 import { useEffect, useState } from "react";
 import { Text } from "../Text/Text";
+import { getLocale } from "./helpers";
 
-export const WeekdaysHeading = () => {
+export const WeekdaysHeading = ({ locale }: { locale: Locales }) => {
   const [weekdays, setWeekdays] = useState<string[]>([]);
 
   useEffect(() => {
@@ -11,7 +13,9 @@ export const WeekdaysHeading = () => {
     const end = endOfWeek(now, { weekStartsOn: 1 });
 
     setWeekdays(
-      eachDayOfInterval({ start, end }).map((day) => format(day, "EEE"))
+      eachDayOfInterval({ start, end }).map((day) =>
+        format(day, "EEE", { locale: getLocale(locale) })
+      )
     );
   }, []);
 

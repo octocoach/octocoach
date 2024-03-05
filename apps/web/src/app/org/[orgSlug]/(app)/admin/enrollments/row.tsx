@@ -59,20 +59,22 @@ export const EnrollmentRow = ({
             </Button>
           )}
         </Box>
-        <Stack>
-          {enrollment.screeningAnswers?.questions.map(
-            ({ question, answer }, i) => (
-              <Box key={i}>
-                <Text weight="light">{question}</Text>
-                {Array.isArray(answer) ? (
-                  answer.map((a, i) => <Tag key={i}>{a}</Tag>)
-                ) : (
-                  <Markdown>{answer}</Markdown>
-                )}
-              </Box>
-            )
-          )}
-        </Stack>
+        <Card surface="mantle">
+          <Stack>
+            {enrollment.screeningAnswers?.questions.map(
+              ({ question, answer }, i) => (
+                <Box key={i}>
+                  <Text weight="light">{question}</Text>
+                  {Array.isArray(answer) ? (
+                    answer.map((a, i) => <Tag key={i}>{a}</Tag>)
+                  ) : (
+                    <Markdown>{answer}</Markdown>
+                  )}
+                </Box>
+              )
+            )}
+          </Stack>
+        </Card>
       </Stack>
     </Card>
   );

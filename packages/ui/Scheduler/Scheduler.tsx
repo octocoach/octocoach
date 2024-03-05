@@ -11,6 +11,7 @@ import { Person } from "./Person";
 import { Timeslots } from "./Timeslots";
 import { schedulerContainer, schedulerContent } from "./scheduler.css";
 import { CreateMeetingParams } from "./types";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const Scheduler = ({
   createMeeting,
@@ -18,12 +19,14 @@ export const Scheduler = ({
   coach,
   coachMeetings,
   meetingType,
+  locale,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
   coach: { id: string; name: string; image: string };
   coachMeetings: Interval[];
   meetingType: Meeting["type"];
+  locale: Locales;
 }) => {
   const now = new Date();
 
@@ -58,12 +61,14 @@ export const Scheduler = ({
             year={year}
             setMonth={setMonth}
             setYear={setYear}
+            locale={locale}
           />
           <Calendar
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             year={year}
             month={month}
+            locale={locale}
           />
         </Stack>
         <Timeslots
@@ -71,6 +76,7 @@ export const Scheduler = ({
           onCreateMeeting={onCreateMeeting}
           busyIntervals={coachMeetings}
           creatingMeeting={isPending}
+          locale={locale}
         />
       </div>
     </div>

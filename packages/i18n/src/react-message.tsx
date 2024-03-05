@@ -20,7 +20,13 @@ const hasKey = (
 
 export type AllTranslationKeys = NestedKeyOf<Translations>;
 
-export default function Message({ id }: { id: AllTranslationKeys }) {
+export default function Message({
+  id,
+  params,
+}: {
+  id: AllTranslationKeys;
+  params?: Record<string, unknown>;
+}) {
   const { LL } = useI18nContext();
 
   const keys = id.split(".");
@@ -29,7 +35,7 @@ export default function Message({ id }: { id: AllTranslationKeys }) {
     if (!hasKey(acc, curr)) throw Error(`Can't find the key ${curr}`);
 
     return acc[curr];
-  }, LL) as unknown as () => LocalizedString;
+  }, LL) as unknown as (params?: Record<string, unknown>) => LocalizedString;
 
-  return <>{translationFunction()}</>;
+  return <>{translationFunction(params)}</>;
 }

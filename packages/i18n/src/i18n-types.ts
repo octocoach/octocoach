@@ -163,6 +163,24 @@ type RootTranslation = {
 		 * @param {string} type
 		 */
 		newMeeting: RequiredParams<'name' | 'type'>
+		/**
+		 * Y​o​u​r​ ​m​e​e​t​i​n​g​ ​w​i​t​h​ ​{​n​a​m​e​}​ ​i​s​ ​s​c​h​e​d​u​l​e​d​ ​f​o​r​:
+		 * @param {string} name
+		 */
+		booked: RequiredParams<'name'>
+	}
+	measure: {
+		application: {
+			/**
+			 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​y​o​u​r​ ​a​p​p​l​i​c​a​t​i​o​n​!
+			 */
+			thankYou: string
+			/**
+			 * W​e​ ​w​i​l​l​ ​b​e​ ​i​n​ ​t​o​u​c​h​ ​v​i​a​ ​{​e​m​a​i​l​}​ ​s​h​o​r​t​l​y​.
+			 * @param {string} email
+			 */
+			weWillBeInTouch: RequiredParams<'email'>
+		}
 	}
 }
 
@@ -314,6 +332,22 @@ export type TranslationFunctions = {
 		 * Book a {type} with {name}
 		 */
 		newMeeting: (arg: { name: string, type: string }) => LocalizedString
+		/**
+		 * Your meeting with {name} is scheduled for:
+		 */
+		booked: (arg: { name: string }) => LocalizedString
+	}
+	measure: {
+		application: {
+			/**
+			 * Thank you for your application!
+			 */
+			thankYou: () => LocalizedString
+			/**
+			 * We will be in touch via {email} shortly.
+			 */
+			weWillBeInTouch: (arg: { email: string }) => LocalizedString
+		}
 	}
 }
 

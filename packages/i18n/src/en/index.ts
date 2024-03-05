@@ -60,6 +60,14 @@ const en = {
       coaching: "coaching",
     },
     newMeeting: "Book a {type:string} with {name:string}",
+    booked:
+      "Your meeting with {name:string} is scheduled for:",
+  },
+  measure: {
+    application: {
+      thankYou: "Thank you for your application!",
+      weWillBeInTouch: "We will be in touch via {email:string} shortly.",
+    },
   },
 } satisfies BaseTranslation;
 

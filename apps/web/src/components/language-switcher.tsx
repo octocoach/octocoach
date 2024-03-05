@@ -31,7 +31,9 @@ const LanguageSwitcher = ({
           value={LL.languages[locale]()}
           setValueOnClick={() => {
             startTransition(() => {
-              saveLocale(locale).then(() => window.location.assign(baseUrl));
+              saveLocale(locale).then(() => {
+                window.location.reload();
+              });
             });
 
             return true;

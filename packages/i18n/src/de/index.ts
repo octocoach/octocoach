@@ -61,6 +61,13 @@ const de = {
       coaching: "Coaching",
     },
     newMeeting: "Buche ein {type} mit {name}",
+    booked: "Dein Termin mit {name} ist geplant für:",
+  },
+  measure: {
+    application: {
+      thankYou: "Vielen Dank für deine Bewerbung!",
+      weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
+    },
   },
 } satisfies Translation;
 

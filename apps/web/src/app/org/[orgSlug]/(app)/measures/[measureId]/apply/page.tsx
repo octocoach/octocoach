@@ -6,11 +6,12 @@ import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
-import { startOfDay } from "date-fns";
+import { format, startOfDay } from "date-fns";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
+import Message from "@octocoach/i18n/src/react-message";
 
 export default async function Page({
   params: { orgSlug, measureId },
@@ -121,8 +122,10 @@ export default async function Page({
         return (
           <Card>
             <Text textAlign="center" size="l" variation="casual">
-              Your consultation meeting with {existingMeeting.coach} is
-              scheduled for
+              <Message
+                id="meetings.booked"
+                params={{ name: existingMeeting.coach }}
+              />
             </Text>
             <Text size="xl" textAlign="center" weight="light">
               <LocalTime timestamp={existingMeeting.startTime} />
@@ -175,12 +178,13 @@ export default async function Page({
                 weight="bold"
                 textAlign="center"
               >
-                Thank you for application!
+                <Message id={"measure.application.thankYou"} />
               </Text>
-              <Text textAlign="center">We will be in touch shortly...</Text>
-              <Text size="s" textAlign="center">
-                If {user.email} is not your active address, please contact us at{" "}
-                <a href="mailto:hello@q15.co">hello@q15.co</a>
+              <Text textAlign="center">
+                <Message
+                  id="measure.application.weWillBeInTouch"
+                  params={{ email: user.email }}
+                />
               </Text>
             </Stack>
           </Card>

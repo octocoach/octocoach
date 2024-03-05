@@ -146,6 +146,18 @@ type RootTranslation = {
 	 * C​h​a​n​g​i​n​g​ ​l​a​n​g​u​a​g​e​.​.​.
 	 */
 	changingLanguage: string
+	/**
+	 * S​e​l​e​c​t​ ​a​n​ ​i​t​e​m​.​.​.
+	 */
+	select: string
+	/**
+	 * S​u​b​m​i​t
+	 */
+	submit: string
+	/**
+	 * C​a​n​c​e​l
+	 */
+	cancel: string
 	meetings: {
 		type: {
 			/**
@@ -171,6 +183,14 @@ type RootTranslation = {
 	}
 	measure: {
 		application: {
+			/**
+			 * A​p​p​l​i​c​a​t​i​o​n​ ​f​o​r
+			 */
+			application: string
+			/**
+			 * P​l​e​a​s​e​ ​a​n​s​w​e​r​ ​s​o​m​e​ ​q​u​e​s​t​i​o​n​s​ ​t​o​ ​h​e​l​p​ ​u​s​ ​a​s​s​e​s​s​ ​y​o​u​r​ ​e​l​i​g​i​b​i​l​i​t​y​ ​f​o​r​ ​t​h​i​s​ ​t​r​a​i​n​i​n​g​ ​p​r​o​g​r​a​m​.​.​.
+			 */
+			screeningQuestions: string
 			/**
 			 * T​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​y​o​u​r​ ​a​p​p​l​i​c​a​t​i​o​n​!
 			 */
@@ -317,6 +337,18 @@ export type TranslationFunctions = {
 	 * Changing language...
 	 */
 	changingLanguage: () => LocalizedString
+	/**
+	 * Select an item...
+	 */
+	select: () => LocalizedString
+	/**
+	 * Submit
+	 */
+	submit: () => LocalizedString
+	/**
+	 * Cancel
+	 */
+	cancel: () => LocalizedString
 	meetings: {
 		type: {
 			/**
@@ -339,6 +371,14 @@ export type TranslationFunctions = {
 	}
 	measure: {
 		application: {
+			/**
+			 * Application for
+			 */
+			application: () => LocalizedString
+			/**
+			 * Please answer some questions to help us assess your eligibility for this training program...
+			 */
+			screeningQuestions: () => LocalizedString
 			/**
 			 * Thank you for your application!
 			 */

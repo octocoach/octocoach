@@ -24,6 +24,8 @@ export const selectPopover = style([
   {
     display: "flex",
     maxHeight: "min(var(--popover-available-height, 300px), 300px)",
+    minWidth: "max(var(--popover-anchor-width, 100px), 100px)",
+    maxWidth: "var(--popover-available-width, 100%)",
     flexDirection: "column",
     backgroundColor: vars.color.background.base.normal,
     borderRadius: 6,

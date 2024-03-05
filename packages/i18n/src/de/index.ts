@@ -55,6 +55,9 @@ const de = {
   systemTheme: "system",
   language: "Sprache",
   changingLanguage: "Sprache wechseln...",
+  select: "Wähle ein Element...",
+  submit: "Absenden",
+  cancel: "Abbrechen",
   meetings: {
     type: {
       consultation: "Beratung",
@@ -65,6 +68,9 @@ const de = {
   },
   measure: {
     application: {
+      application: "Bewerbung für",
+      screeningQuestions:
+        "Bitte beantworte einige Fragen, damit wir beurteilen können, ob du für diese Bildungsmaßnahme in Frage kommst...",
       thankYou: "Vielen Dank für deine Bewerbung!",
       weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
     },

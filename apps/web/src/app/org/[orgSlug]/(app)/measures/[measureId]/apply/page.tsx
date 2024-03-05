@@ -1,17 +1,17 @@
 import LocalTime from "@components/local-time";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
-import { orgRedirect } from "@helpers/navigation";
+import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import Message from "@octocoach/i18n/src/react-message";
 import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
-import { format, startOfDay } from "date-fns";
+import { startOfDay } from "date-fns";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
-import Message from "@octocoach/i18n/src/react-message";
 
 export default async function Page({
   params: { orgSlug, measureId },
@@ -21,6 +21,7 @@ export default async function Page({
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
   const locale = getLocale();
+  const baseUrl = getBaseUrl();
 
   const {
     userProfileTable,
@@ -87,6 +88,7 @@ export default async function Page({
           measure={measure}
           locale={locale}
           createEnrollment={createEnrollmentWithSlug}
+          measureUrl={`${baseUrl}measures/${measureId}`}
         />
       </Box>
     );

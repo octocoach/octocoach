@@ -54,17 +54,22 @@ const en = {
   systemTheme: "system",
   language: "Language",
   changingLanguage: "Changing language...",
+  select: "Select an item...",
+  submit: "Submit",
+  cancel: "Cancel",
   meetings: {
     type: {
       consultation: "consultation",
       coaching: "coaching",
     },
     newMeeting: "Book a {type:string} with {name:string}",
-    booked:
-      "Your meeting with {name:string} is scheduled for:",
+    booked: "Your meeting with {name:string} is scheduled for:",
   },
   measure: {
     application: {
+      application: "Application for",
+      screeningQuestions:
+        "Please answer some questions to help us assess your eligibility for this training program...",
       thankYou: "Thank you for your application!",
       weWillBeInTouch: "We will be in touch via {email:string} shortly.",
     },

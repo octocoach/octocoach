@@ -9,6 +9,7 @@ import {
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Button,
+  ButtonLink,
   Card,
   Checkbox,
   Form,
@@ -23,15 +24,19 @@ import {
 } from "@octocoach/ui";
 import { CreateEnrollmentParams } from "./actions";
 import { useTransition } from "react";
+import Message from "@octocoach/i18n/src/react-message";
+import Link from "next/link";
 
 export const EnrollmentApplication = ({
   measure,
   locale,
   createEnrollment,
+  measureUrl,
 }: {
   measure: Pick<Measure, "id"> & Pick<MeasureInfo, "screeningQuestions">;
   locale: Locales;
   createEnrollment: (enrollment: CreateEnrollmentParams) => Promise<void>;
+  measureUrl: string;
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -81,7 +86,7 @@ export const EnrollmentApplication = ({
     if (type === "select")
       return (
         <FormField name={name} label={question} key={idx}>
-          <FormSelect name={name}>
+          <FormSelect name={name} buttonStyle="border">
             {options?.map((option, i) => (
               <SelectItem value={option} key={i} />
             ))}
@@ -103,8 +108,7 @@ export const EnrollmentApplication = ({
     <Card>
       <Stack spacing="loose">
         <Text variation="casual" size="l">
-          Almost done, please answer some questions to help us assess your
-          suitability for this training measure
+          <Message id="measure.application.screeningQuestions" />
         </Text>
         <Form store={store}>
           <Stack>
@@ -112,9 +116,12 @@ export const EnrollmentApplication = ({
               {measure.screeningQuestions?.map((q, idx) => getQuestion(idx, q))}
             </Stack>
             <Stack direction="horizontal" justify="right">
-              <Button color="contrast">Cancel</Button>
+              <ButtonLink Element={Link} href={measureUrl}>
+                <Message id="cancel" />
+              </ButtonLink>
+
               <Button onClick={onSubmit} disabled={isPending}>
-                Submit
+                <Message id="submit" />
               </Button>
             </Stack>
           </Stack>

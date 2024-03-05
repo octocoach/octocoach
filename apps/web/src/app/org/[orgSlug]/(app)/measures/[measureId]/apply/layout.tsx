@@ -1,9 +1,9 @@
 import { FillImage } from "@components/fill-image";
-import { orgDb } from "@octocoach/db/connection";
-
 import { getLocale } from "@helpers/locale";
+import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import Message from "@octocoach/i18n/src/react-message";
 import { Box } from "@octocoach/ui/Box/Box";
 import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
@@ -38,6 +38,7 @@ export default async function Layout({
         eq(measureInfoTable.locale, locale)
       )
     )
+    .where(eq(measureTable.id, measureId))
     .then((rows) => rows[0] ?? null);
 
   if (!measure) notFound();
@@ -49,9 +50,14 @@ export default async function Layout({
           <FillImage
             src={measure.imageSrc}
             alt={measure.imageAlt}
-            minHeight={200}
+            minHeight={150}
           />
-          <Text size="xl">{measure.title}</Text>
+          <Box>
+            <Text size="l" weight="light" variation="casual">
+              <Message id="measure.application.application" />
+            </Text>
+            <Text size="xl">{measure.title}</Text>
+          </Box>
         </Grid>
         {children}
       </Stack>

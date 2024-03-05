@@ -29,6 +29,7 @@ export const FormSelect = forwardRef<HTMLButtonElement, FormSelectProps>(
           form.setValue(name, value);
         }}
         render={props.render}
+        buttonStyle={props.buttonStyle}
       />
     );
     const field = <Ariakit.FormField name={name} render={select} />;

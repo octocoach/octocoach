@@ -1,9 +1,11 @@
-import * as React from "react";
+"use client";
+
 import * as Ariakit from "@ariakit/react";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import clsx from "clsx";
+import * as React from "react";
 import { button } from "../Button/button.css";
 import { selectButton, selectItem, selectPopover } from "./select.css";
-import { Smell } from "@carbon/icons-react";
 
 export interface SelectProps extends Ariakit.SelectProps {
   value?: string;
@@ -12,6 +14,7 @@ export interface SelectProps extends Ariakit.SelectProps {
   defaultValue?: string;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   sameWidth?: boolean;
+  buttonStyle?: "underline" | "border";
 }
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
@@ -23,6 +26,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       defaultValue,
       displayValue,
       sameWidth,
+      buttonStyle = "underline",
       ...props
     },
     ref
@@ -45,6 +49,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       props.onBlur?.(event);
     };
 
+    const { LL } = useI18nContext();
+
+    const color = buttonStyle === "underline" ? "subtle" : "brand";
+    const size = buttonStyle === "underline" ? "none" : "medium";
+
     return (
       <>
         <Ariakit.Select
@@ -53,12 +62,12 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           store={select}
           onBlur={onBlur}
           className={clsx(
-            button({ color: "subtle", size: "none" }),
+            button({ color, size }),
             selectButton,
             props.className
           )}
         >
-          {displayValue || selectValue || "Select an item"}
+          {displayValue || selectValue || LL.select()}
           <Ariakit.SelectArrow />
         </Ariakit.Select>
         <Ariakit.SelectPopover

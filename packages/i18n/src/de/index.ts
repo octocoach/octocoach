@@ -57,6 +57,8 @@ const de = {
   changingLanguage: "Sprache wechseln...",
   select: "Wähle ein Element...",
   submit: "Absenden",
+  confirm: "Bestätigen",
+  back: "Zurück",
   cancel: "Abbrechen",
   meetings: {
     type: {

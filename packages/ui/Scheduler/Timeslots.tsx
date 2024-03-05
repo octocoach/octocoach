@@ -6,23 +6,25 @@ import {
   setHours,
   subHours,
 } from "date-fns";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import { Text } from "../Text/Text";
 import { availability, hoursBuffer } from "./constants";
 import { getLocale, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { CircleFilled, Misuse } from "@carbon/icons-react";
+import { vars } from "../theme.css";
 
 export const Timeslots = ({
   selectedDate,
-  onCreateMeeting,
+  setSelectedTimeslot,
   busyIntervals,
   creatingMeeting,
   locale,
 }: {
   selectedDate: Date;
-  onCreateMeeting: (date: Date) => void;
+  setSelectedTimeslot: Dispatch<SetStateAction<Date | undefined>>;
   busyIntervals: Interval[];
   creatingMeeting: boolean;
   locale: Locales;
@@ -63,21 +65,29 @@ export const Timeslots = ({
         {format(selectedDate, "EEE d", { locale: getLocale(locale) })}
       </Text>
       <div className={timeslotsContent}>
-        {timeslots.map((timeslot) => (
-          <Button
-            key={format(timeslot, "HH:mm")}
-            color="accent"
-            size="small"
-            disabled={
-              isPast(subHours(timeslot, hoursBuffer)) ||
-              !isAvailable(timeslot, busyIntervals) ||
-              creatingMeeting
-            }
-            onClick={() => onCreateMeeting(timeslot)}
-          >
-            {format(timeslot, "HH:mm")}
-          </Button>
-        ))}
+        {timeslots.map((timeslot) => {
+          const available = isAvailable(timeslot, busyIntervals);
+          return (
+            <Button
+              key={format(timeslot, "HH:mm")}
+              color="accent"
+              size="small"
+              disabled={
+                isPast(subHours(timeslot, hoursBuffer)) ||
+                !available ||
+                creatingMeeting
+              }
+              onClick={() => setSelectedTimeslot(timeslot)}
+            >
+              {available ? (
+                <CircleFilled color={vars.color.typography.success} />
+              ) : (
+                <Misuse color={vars.color.typography.error} />
+              )}
+              {format(timeslot, "HH:mm")}
+            </Button>
+          );
+        })}
       </div>
     </div>
   );

@@ -56,6 +56,8 @@ const en = {
   changingLanguage: "Changing language...",
   select: "Select an item...",
   submit: "Submit",
+  confirm: "Confirm",
+  back: "Back",
   cancel: "Cancel",
   meetings: {
     type: {

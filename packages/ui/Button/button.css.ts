@@ -3,6 +3,8 @@ import { vars } from "../theme.css";
 
 export const button = recipe({
   base: {
+    display: "inline-flex",
+    gap: 8,
     borderStyle: "solid",
     cursor: "pointer",
     fontFamily: vars.fonts.base,

@@ -8,6 +8,7 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
 import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
 import { startOfDay } from "date-fns";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
@@ -104,6 +105,7 @@ export default async function Page({
         .select({
           startTime: meetingTable.startTime,
           coach: userTable.name,
+          coachImage: userTable.image,
         })
         .from(meetingTable)
         .innerJoin(
@@ -123,15 +125,29 @@ export default async function Page({
       if (existingMeeting) {
         return (
           <Card>
-            <Text textAlign="center" size="l" variation="casual">
-              <Message
-                id="meetings.booked"
-                params={{ name: existingMeeting.coach }}
-              />
-            </Text>
-            <Text size="xl" textAlign="center" weight="light">
-              <LocalTime timestamp={existingMeeting.startTime} />
-            </Text>
+            <Stack align="center">
+              {existingMeeting.coachImage && (
+                <Image
+                  src={existingMeeting.coachImage}
+                  alt={existingMeeting.coach || "coach"}
+                  width={200}
+                  height={200}
+                  style={{ imageRendering: "pixelated" }}
+                />
+              )}
+              <Text textAlign="center" size="l" variation="casual">
+                <Message
+                  id="meetings.booked"
+                  params={{ name: existingMeeting.coach }}
+                />
+              </Text>
+              <Text size="xl" textAlign="center" weight="light">
+                <LocalTime
+                  timestamp={existingMeeting.startTime}
+                  formatStr={`PPPP '${locale === "de" ? "um" : "at"}' HH:mm`}
+                />
+              </Text>
+            </Stack>
           </Card>
         );
       }

@@ -51,6 +51,7 @@ export default async function Layout({
             src={measure.imageSrc}
             alt={measure.imageAlt}
             minHeight={150}
+            roundedCorners
           />
           <Box>
             <Text size="l" weight="light" variation="casual">

@@ -155,6 +155,14 @@ type RootTranslation = {
 	 */
 	submit: string
 	/**
+	 * C​o​n​f​i​r​m
+	 */
+	confirm: string
+	/**
+	 * B​a​c​k
+	 */
+	back: string
+	/**
 	 * C​a​n​c​e​l
 	 */
 	cancel: string
@@ -345,6 +353,14 @@ export type TranslationFunctions = {
 	 * Submit
 	 */
 	submit: () => LocalizedString
+	/**
+	 * Confirm
+	 */
+	confirm: () => LocalizedString
+	/**
+	 * Back
+	 */
+	back: () => LocalizedString
 	/**
 	 * Cancel
 	 */

@@ -53,6 +53,7 @@ export default async function Page({
             src={measure.imageSrc}
             alt={measure.imageAlt}
             minHeight={200}
+            roundedCorners
           />
           <Box>
             <Text size="xl" variation="casual">
@@ -73,6 +74,7 @@ export default async function Page({
                   src={mod.imageSrc}
                   alt={mod.imageAlt}
                   minHeight={200}
+                  roundedCorners
                 />
                 <Box>
                   <Text size="l" weight="heavy">

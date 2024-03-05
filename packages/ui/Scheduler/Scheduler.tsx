@@ -2,7 +2,7 @@
 
 import type { Measure } from "@octocoach/db/schemas/org/measure";
 import type { Meeting } from "@octocoach/db/schemas/org/meeting";
-import { Interval, addMinutes } from "date-fns";
+import { Interval, addMinutes, format } from "date-fns";
 import { useState, useTransition } from "react";
 import { Stack } from "../Stack/Stack";
 import { Calendar } from "./Calendar";
@@ -12,6 +12,11 @@ import { Timeslots } from "./Timeslots";
 import { schedulerContainer, schedulerContent } from "./scheduler.css";
 import { CreateMeetingParams } from "./types";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { Text } from "../Text/Text";
+import { getLocale } from "./helpers";
+import { Button } from "../Button/Button";
+import Message from "@octocoach/i18n/src/react-message";
+import { Card } from "../Card/Card";
 
 export const Scheduler = ({
   createMeeting,
@@ -33,6 +38,7 @@ export const Scheduler = ({
   const [selectedDate, setSelectedDate] = useState(now);
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
+  const [selectedTimeslot, setSelectedTimeslot] = useState<Date>();
   const [isPending, startTransition] = useTransition();
 
   const onCreateMeeting = (startTime: Date) => {
@@ -54,31 +60,58 @@ export const Scheduler = ({
   return (
     <div className={schedulerContainer}>
       <Person name={coach.name} image={coach.image} meetingType={meetingType} />
-      <div className={schedulerContent}>
-        <Stack>
-          <CalendarNavigation
-            month={month}
-            year={year}
-            setMonth={setMonth}
-            setYear={setYear}
-            locale={locale}
-          />
-          <Calendar
+      {!selectedTimeslot ? (
+        <div className={schedulerContent}>
+          <Stack>
+            <CalendarNavigation
+              month={month}
+              year={year}
+              setMonth={setMonth}
+              setYear={setYear}
+              locale={locale}
+            />
+            <Calendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              year={year}
+              month={month}
+              locale={locale}
+            />
+          </Stack>
+          <Timeslots
             selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            year={year}
-            month={month}
+            setSelectedTimeslot={setSelectedTimeslot}
+            busyIntervals={coachMeetings}
+            creatingMeeting={isPending}
             locale={locale}
           />
-        </Stack>
-        <Timeslots
-          selectedDate={selectedDate}
-          onCreateMeeting={onCreateMeeting}
-          busyIntervals={coachMeetings}
-          creatingMeeting={isPending}
-          locale={locale}
-        />
-      </div>
+        </div>
+      ) : (
+        <Card>
+          <Stack spacing="loose">
+            <Text size="l" weight="bold" textAlign="center">
+              {format(selectedTimeslot, "PPPPpppp", {
+                locale: getLocale(locale),
+              })}
+            </Text>
+            <Stack direction="horizontal" justify="center">
+              <Button
+                color="subtle"
+                onClick={() => setSelectedTimeslot(undefined)}
+                disabled={isPending}
+              >
+                <Message id="back" />
+              </Button>
+              <Button
+                onClick={() => onCreateMeeting(selectedTimeslot)}
+                disabled={isPending}
+              >
+                <Message id="confirm" />
+              </Button>
+            </Stack>
+          </Stack>
+        </Card>
+      )}
     </div>
   );
 };

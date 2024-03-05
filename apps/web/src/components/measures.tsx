@@ -26,6 +26,7 @@ export const Measures = ({
                 src={measure.imageSrc}
                 alt={measure.imageAlt}
                 minHeight={200}
+                roundedCorners
               />
               <Stack>
                 <Text size="xl" variation="casual">

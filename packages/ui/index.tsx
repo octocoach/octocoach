@@ -27,6 +27,7 @@ export * from "./Form/FormSelect";
 export * from "./Form/HiddenInput";
 export * from "./Grid/Grid";
 export * from "./HeroSection/Hero";
+export * from "./LocalTime/LocalTime";
 export * from "./Markdown/Markdown";
 export * from "./MethodSection/MethodSection";
 export * from "./Nav/Nav";

@@ -1,4 +1,3 @@
-import LocalTime from "@components/local-time";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
@@ -8,11 +7,16 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
 import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
 import { startOfDay } from "date-fns";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
+
+const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
+  ssr: false,
+});
 
 export default async function Page({
   params: { orgSlug, measureId },
@@ -145,6 +149,7 @@ export default async function Page({
                 <LocalTime
                   timestamp={existingMeeting.startTime}
                   formatStr={`PPPP '${locale === "de" ? "um" : "at"}' HH:mm`}
+                  locale={locale}
                 />
               </Text>
             </Stack>

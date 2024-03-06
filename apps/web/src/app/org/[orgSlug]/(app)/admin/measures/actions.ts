@@ -32,6 +32,10 @@ export const saveMeasure = async (
 ) => {
   const { user } = await authOrRedirect(orgSlug);
 
+  if (!user.isCoach) {
+    throw new Error("User is not a coach");
+  }
+
   const db = orgDb(orgSlug);
   const measureTable = mkMeasureTable(orgSlug);
   const measureInfoTable = mkMeasureInfoTable(orgSlug);

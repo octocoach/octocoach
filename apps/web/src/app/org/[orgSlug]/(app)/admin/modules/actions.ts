@@ -28,6 +28,10 @@ export type SaveModuleRetype = ReturnType<typeof saveModule>;
 export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
   const { user } = await authOrRedirect(orgSlug);
 
+  if (!user.isCoach) {
+    throw new Error("User is not a coach");
+  }
+
   const db = orgDb(orgSlug);
   const moduleTable = mkModuleTable(orgSlug);
   const moduleInfoTable = mkModuleInfoTable(orgSlug);

@@ -1,6 +1,8 @@
 "use client";
 
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { formatDate } from "date-fns";
+import { getLocale } from "../Scheduler/helpers";
 
 /**
  * Renders the local time based on the provided timestamp.
@@ -11,21 +13,25 @@ import { formatDate } from "date-fns";
  *
  * Import using dynimic to avoid running on the server
  * @example
- * const LocalTime = dynamic(() => import("@components/local-time"), {ssr: false});
+ * const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {ssr: false});
  *
  */
 export default function LocalTime({
   timestamp,
   formatStr = "yyyy.MM.dd HH:mm",
   showTimezone = false,
+  locale,
 }: {
   timestamp: string | Date;
   formatStr?: string;
   showTimezone?: boolean;
+  locale: Locales;
 }) {
   if (typeof window === "undefined") return null;
 
-  const formattedDate = formatDate(timestamp, formatStr);
+  const formattedDate = formatDate(timestamp, formatStr, {
+    locale: getLocale(locale),
+  });
 
   if (!showTimezone) return formattedDate;
 

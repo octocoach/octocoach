@@ -12,7 +12,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 
-const LocalTime = dynamic(() => import("@components/local-time"), {
+const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,
 });
 
@@ -129,9 +129,15 @@ export default async function Page({
               <LocalTime
                 timestamp={meeting.startTime}
                 formatStr="yyyy.MM.dd HH:mm"
+                locale={locale}
               />{" "}
-              - <LocalTime timestamp={meeting.endTime} formatStr="HH:mm" /> (
-              {measureInfo.title}) - {meeting.role}
+              -{" "}
+              <LocalTime
+                timestamp={meeting.endTime}
+                formatStr="HH:mm"
+                locale={locale}
+              />{" "}
+              ({measureInfo.title}) - {meeting.role}
             </Link>
           </Box>
         ))}

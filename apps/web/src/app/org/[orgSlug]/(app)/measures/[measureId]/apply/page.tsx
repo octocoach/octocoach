@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
+import { JoinButton } from "./join-button";
 
 const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,
@@ -107,6 +108,7 @@ export default async function Page({
 
       const existingMeeting = await db
         .select({
+          id: meetingTable.id,
           startTime: meetingTable.startTime,
           coach: userTable.name,
           coachImage: userTable.image,
@@ -152,6 +154,13 @@ export default async function Page({
                   locale={locale}
                 />
               </Text>
+              <JoinButton
+                baseUrl={baseUrl}
+                measureId={measureId}
+                meetingId={existingMeeting.id}
+                startTime={existingMeeting.startTime}
+                locale={locale}
+              />
             </Stack>
           </Card>
         );

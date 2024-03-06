@@ -188,6 +188,15 @@ type RootTranslation = {
 		 * @param {string} name
 		 */
 		booked: RequiredParams<'name'>
+		/**
+		 * J​o​i​n
+		 */
+		join: string
+		/**
+		 * Y​o​u​ ​w​i​l​l​ ​b​e​ ​a​b​l​e​ ​t​o​ ​j​o​i​n​ ​i​n​ ​{​t​i​m​e​}
+		 * @param {string} time
+		 */
+		joinIn: RequiredParams<'time'>
 	}
 	measure: {
 		application: {
@@ -384,6 +393,14 @@ export type TranslationFunctions = {
 		 * Your meeting with {name} is scheduled for:
 		 */
 		booked: (arg: { name: string }) => LocalizedString
+		/**
+		 * Join
+		 */
+		join: () => LocalizedString
+		/**
+		 * You will be able to join in {time}
+		 */
+		joinIn: (arg: { time: string }) => LocalizedString
 	}
 	measure: {
 		application: {

@@ -67,6 +67,8 @@ const de = {
     },
     newMeeting: "Buche ein {type} mit {name}",
     booked: "Dein Termin mit {name} ist geplant für:",
+    join: "Beitreten",
+    joinIn: "Du kannst in {time} beitreten",
   },
   measure: {
     application: {

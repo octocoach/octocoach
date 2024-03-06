@@ -1,20 +1,20 @@
+import { CircleFilled, Misuse } from "@carbon/icons-react";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Interval,
   addMinutes,
   format,
-  isPast,
+  isFuture,
   setHours,
   subHours,
 } from "date-fns";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import { Text } from "../Text/Text";
+import { vars } from "../theme.css";
 import { availability, hoursBuffer } from "./constants";
 import { getLocale, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { CircleFilled, Misuse } from "@carbon/icons-react";
-import { vars } from "../theme.css";
 
 export const Timeslots = ({
   selectedDate,
@@ -52,7 +52,7 @@ export const Timeslots = ({
 
     const slots: Date[] = [];
 
-    while (date <= end) {
+    while (date < end) {
       slots.push(date);
       date = addMinutes(date, 30);
     }
@@ -66,17 +66,16 @@ export const Timeslots = ({
       </Text>
       <div className={timeslotsContent}>
         {timeslots.map((timeslot) => {
-          const available = isAvailable(timeslot, busyIntervals);
+          const available =
+            isAvailable(timeslot, busyIntervals) &&
+            isFuture(subHours(timeslot, hoursBuffer));
+
           return (
             <Button
               key={format(timeslot, "HH:mm")}
               color="accent"
               size="small"
-              disabled={
-                isPast(subHours(timeslot, hoursBuffer)) ||
-                !available ||
-                creatingMeeting
-              }
+              disabled={!available || creatingMeeting}
               onClick={() => setSelectedTimeslot(timeslot)}
             >
               {available ? (

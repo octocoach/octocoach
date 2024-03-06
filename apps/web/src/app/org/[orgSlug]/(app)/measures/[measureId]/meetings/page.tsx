@@ -142,18 +142,6 @@ export default async function Page({
           </Box>
         ))}
       </Stack>
-      <Box>
-        {measureInfo.coachImage && (
-          <img
-            src={measureInfo.coachImage}
-            alt="Coach"
-            width={200}
-            height={200}
-            style={{ imageRendering: "pixelated" }}
-          />
-        )}
-        <Text>{measureInfo.coachName}</Text>
-      </Box>
       <Scheduler
         locale={locale}
         createMeeting={createMeetingWithSlug}

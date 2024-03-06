@@ -66,6 +66,8 @@ const en = {
     },
     newMeeting: "Book a {type:string} with {name:string}",
     booked: "Your meeting with {name:string} is scheduled for:",
+    join: "Join",
+    joinIn: "You will be able to join in {time:string}",
   },
   measure: {
     application: {

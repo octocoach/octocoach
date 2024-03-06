@@ -38,7 +38,7 @@ export const createRoom = async (
 
   await db
     .update(enrollmentTable)
-    .set({ roomName: room.name })
+    .set({ roomName: room.name, coach: user.id })
     .where(
       and(
         eq(enrollmentTable.measure, enrollment.measure),

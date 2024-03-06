@@ -9,7 +9,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   experimental: {
     // This is a workaround to prevent build from using > 8GB RAM
-    cpus: 2,
+    cpus: 1,
     workerThreads: false,
   },
   images: {

@@ -9,7 +9,11 @@ import {
 import { Button, Select, SelectItem, Stack } from "@octocoach/ui";
 import { useEffect } from "react";
 
-export const HairCheck = ({ onJoinCall }: { onJoinCall: () => void }) => {
+export const HairCheck = ({
+  onJoinCall,
+}: {
+  onJoinCall: () => Promise<void>;
+}) => {
   const localSessionId = useLocalSessionId();
   const callObject = useDaily();
   const { microphones, setMicrophone, cameras, setCamera } = useDevices();

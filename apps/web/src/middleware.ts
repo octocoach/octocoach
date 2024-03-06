@@ -36,6 +36,7 @@ export default async function middleware(request: NextRequest) {
   let isVanityUrl = false;
 
   if (
+    host === "192.168.178.22:3000" ||
     host === "localhost:3000" ||
     host === process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
     host?.endsWith("vercel.app")

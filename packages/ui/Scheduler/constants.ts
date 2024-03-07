@@ -1,4 +1,4 @@
-import type { Availability, Slot } from "./types";
+import { Slot, Availability } from "@octocoach/db/schemas/org/coach";
 
 export const hoursBuffer = 12;
 

@@ -1,9 +1,21 @@
 import { relations } from "drizzle-orm";
-import { text } from "drizzle-orm/pg-core";
+import { integer, json, text } from "drizzle-orm/pg-core";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkUserTable } from "./user";
 import { mkMeasureTable } from "./measure";
 import { mkModuleTable } from "./module";
+
+export type Time = {
+  hh: number;
+  mm: number;
+};
+
+export type Slot = {
+  startTime: Time;
+  endTime: Time;
+};
+
+export type Availability = Record<number, Slot[]>;
 
 export const mkCoachTable = (slug: string) => {
   const userTable = mkUserTable(slug);
@@ -15,6 +27,8 @@ export const mkCoachTable = (slug: string) => {
         onDelete: "restrict",
         onUpdate: "cascade",
       }),
+    hoursBuffer: integer("hours_buffer").notNull().default(12),
+    availability: json("availability").$type<Availability>(),
   });
 };
 

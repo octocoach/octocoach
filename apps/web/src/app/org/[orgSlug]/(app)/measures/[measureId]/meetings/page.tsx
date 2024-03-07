@@ -4,13 +4,12 @@ import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, or } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Box, Scheduler, Text } from "@octocoach/ui";
+import Message from "@octocoach/i18n/src/react-message";
+import { Box, ButtonLink, Text } from "@octocoach/ui";
 import { Stack } from "@octocoach/ui/Stack/Stack";
-import { startOfDay } from "date-fns";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { createMeeting } from "../../actions";
 
 const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,
@@ -29,26 +28,17 @@ export default async function Page({
     meetingTable,
     meetingParticipantTable,
     measureInfoTable,
-    coachTable,
-    userTable,
     measureTable,
     enrollmentTable,
   } = mkOrgSchema(orgSlug);
 
-  const measureInfo = await db
+  const measure = await db
     .select({
       id: measureTable.id,
       owner: measureTable.owner,
-      title: measureInfoTable.title,
-      coachId: coachTable.userId,
-      coachName: userTable.name,
-      coachImage: userTable.image,
       roomName: enrollmentTable.roomName,
     })
     .from(measureTable)
-    .innerJoin(measureInfoTable, eq(measureTable.id, measureInfoTable.id))
-    .innerJoin(coachTable, eq(coachTable.userId, measureTable.owner))
-    .innerJoin(userTable, eq(userTable.id, coachTable.userId))
     .leftJoin(
       enrollmentTable,
       and(
@@ -59,36 +49,16 @@ export default async function Page({
         )
       )
     )
-    .where(
-      and(eq(measureTable.id, measureId), eq(measureInfoTable.locale, locale))
-    )
+    .where(eq(measureTable.id, measureId))
     .then((rows) => rows[0] ?? null);
 
-  if (!measureInfo) notFound();
+  if (!measure) notFound();
 
-  if (!measureInfo.roomName) {
+  if (!measure.roomName) {
     return <Text>The enrollment is still pending approval</Text>;
   }
 
   const now = new Date();
-
-  const coachMeetings = await db
-    .select({
-      start: meetingTable.startTime,
-      end: meetingTable.endTime,
-    })
-    .from(meetingTable)
-    .innerJoin(
-      meetingParticipantTable,
-      eq(meetingParticipantTable.meeting, meetingTable.id)
-    )
-    .where(
-      and(
-        eq(meetingParticipantTable.user, measureInfo.coachId),
-        gte(meetingTable.startTime, startOfDay(now))
-      )
-    )
-    .orderBy(asc(meetingTable.startTime));
 
   const meetings = await db
     .select({
@@ -105,55 +75,37 @@ export default async function Page({
     .where(
       and(
         eq(meetingParticipantTable.user, user.id),
-        eq(meetingTable.measure, measureInfo.id),
-        gte(meetingTable.endTime, new Date())
+        eq(meetingTable.measure, measure.id),
+        gte(meetingTable.endTime, now)
       )
     )
     .orderBy(asc(meetingTable.startTime));
 
-  const createMeetingWithSlug = createMeeting.bind(null, orgSlug);
-
   const baseUrl = getBaseUrl();
 
   return (
-    <Stack spacing="loose">
-      <Text size="xl" variation="casual">
-        Scheduled Meetings
-      </Text>
-      <Stack spacing="tight">
-        {meetings.map((meeting) => (
-          <Box key={meeting.id}>
-            <Link
-              href={`${baseUrl}measures/${measureInfo.id}/meetings/${meeting.id}`}
+    <Box paddingY="medium">
+      <Stack spacing="loose">
+        <Text size="l">
+          <Message id="meetings.upcomingMeetings" />
+        </Text>
+        <Stack spacing="tight">
+          {meetings.map((meeting) => (
+            <ButtonLink
+              key={meeting.id}
+              Element={Link}
+              href={`${baseUrl}measures/${measure.id}/meetings/${meeting.id}`}
+              color="subtle"
             >
               <LocalTime
                 timestamp={meeting.startTime}
-                formatStr="yyyy.MM.dd HH:mm"
+                formatStr="PPPPpppp"
                 locale={locale}
-              />{" "}
-              -{" "}
-              <LocalTime
-                timestamp={meeting.endTime}
-                formatStr="HH:mm"
-                locale={locale}
-              />{" "}
-              ({measureInfo.title}) - {meeting.role}
-            </Link>
-          </Box>
-        ))}
+              />
+            </ButtonLink>
+          ))}
+        </Stack>
       </Stack>
-      <Scheduler
-        locale={locale}
-        createMeeting={createMeetingWithSlug}
-        measureId={measureInfo.id}
-        coach={{
-          id: measureInfo.coachId,
-          name: measureInfo.coachName ?? "unknown",
-          image: measureInfo.coachImage ?? "",
-        }}
-        coachMeetings={coachMeetings}
-        meetingType="coaching"
-      />
-    </Stack>
+    </Box>
   );
 }

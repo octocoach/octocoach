@@ -71,6 +71,13 @@
       "when": 1709217002007,
       "tag": "0009_brave_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1709826569250,
+      "tag": "0010_breezy_wild_pack",
+      "breakpoints": true
     }
   ]
 }

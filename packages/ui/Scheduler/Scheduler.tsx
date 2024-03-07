@@ -28,7 +28,12 @@ export const Scheduler = ({
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
-  coach: { id: string; name: string; image: string };
+  coach: {
+    id: string;
+    name?: string | null;
+    image?: string | null;
+    hoursBuffer: number;
+  };
   coachMeetings: Interval[];
   meetingType: Meeting["type"];
   locale: Locales;
@@ -53,7 +58,7 @@ export const Scheduler = ({
           endTime,
         },
         coachId: coach.id,
-      });
+      }).then(() => setSelectedTimeslot(undefined));
     });
   };
 
@@ -84,6 +89,7 @@ export const Scheduler = ({
             busyIntervals={coachMeetings}
             creatingMeeting={isPending}
             locale={locale}
+            hoursBuffer={coach.hoursBuffer}
           />
         </div>
       ) : (

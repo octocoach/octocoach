@@ -2,11 +2,12 @@
 
 import { HairCheck } from "@components/daily/hair-check";
 import DailyIFrame, { DailyCall } from "@daily-co/daily-js";
-import { DailyProvider } from "@daily-co/daily-react";
+import { DailyAudio, DailyProvider } from "@daily-co/daily-react";
 import { Room } from "@octocoach/daily/types";
 import { useEffect, useState } from "react";
 import { Call } from "./call";
 import { CallState } from "./types";
+import { Tray } from "./tray";
 
 export const Daily = ({
   roomName,
@@ -28,20 +29,22 @@ export const Daily = ({
 
     setCallObject(callObject);
 
-    callObject.preAuth({
-      url: mkUrl(roomName),
-      token,
-    });
-  }, [roomName, token]);
+    if (callState === "idle") {
+      callObject.preAuth({
+        url: mkUrl(roomName),
+        token,
+      });
+    }
+  }, [roomName, token, callState]);
 
-  const onJoinCall = async () => {
+  const joinCall = async () => {
     if (!callObject) return;
     setCallState("joining");
     await callObject.join({ url: mkUrl(roomName), token });
     setCallState("joined");
   };
 
-  const onLeaveCall = async () => {
+  const leaveCall = async () => {
     if (!callObject) return;
     setCallState("leaving");
     await callObject.leave();
@@ -53,9 +56,15 @@ export const Daily = ({
   const renderCall = () => {
     switch (callState) {
       case "idle":
-        return <HairCheck onJoinCall={onJoinCall} />;
+        return <HairCheck joinCall={joinCall} />;
       case "joined":
-        return <Call onLeaveCall={onLeaveCall} />;
+        return (
+          <>
+            <Call />
+            <Tray leaveCall={leaveCall} />
+            <DailyAudio />
+          </>
+        );
     }
   };
 

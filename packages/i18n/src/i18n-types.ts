@@ -178,11 +178,9 @@ type RootTranslation = {
 			coaching: string
 		}
 		/**
-		 * B​o​o​k​ ​a​ ​{​t​y​p​e​}​ ​w​i​t​h​ ​{​n​a​m​e​}
-		 * @param {string} name
-		 * @param {string} type
+		 * S​c​h​e​d​u​l​e​ ​a​ ​m​e​e​t​i​n​g​ ​w​i​t​h
 		 */
-		newMeeting: RequiredParams<'name' | 'type'>
+		newMeeting: string
 		/**
 		 * Y​o​u​r​ ​m​e​e​t​i​n​g​ ​w​i​t​h​ ​{​n​a​m​e​}​ ​i​s​ ​s​c​h​e​d​u​l​e​d​ ​f​o​r​:
 		 * @param {string} name
@@ -197,6 +195,38 @@ type RootTranslation = {
 		 * @param {string} time
 		 */
 		joinIn: RequiredParams<'time'>
+		/**
+		 * L​e​a​v​e​ ​c​a​l​l
+		 */
+		leave: string
+		/**
+		 * T​u​r​n​ ​o​n​ ​c​a​m​e​r​a
+		 */
+		cameraOn: string
+		/**
+		 * T​u​r​n​ ​o​f​f​ ​c​a​m​e​r​a
+		 */
+		cameraOff: string
+		/**
+		 * T​u​r​n​ ​o​n​ ​m​i​c​r​o​p​h​o​n​e
+		 */
+		microphoneOn: string
+		/**
+		 * T​u​r​n​ ​o​f​f​ ​m​i​c​r​o​p​h​o​n​e
+		 */
+		microphoneOff: string
+		/**
+		 * P​r​e​s​e​n​t​ ​n​o​w
+		 */
+		presentNow: string
+		/**
+		 * S​t​o​p​ ​p​r​e​s​e​n​t​i​n​g
+		 */
+		stopPresenting: string
+		/**
+		 * U​p​c​o​m​i​n​g​ ​m​e​e​t​i​n​g​s
+		 */
+		upcomingMeetings: string
 	}
 	measure: {
 		application: {
@@ -386,9 +416,9 @@ export type TranslationFunctions = {
 			coaching: () => LocalizedString
 		}
 		/**
-		 * Book a {type} with {name}
+		 * Schedule a meeting with
 		 */
-		newMeeting: (arg: { name: string, type: string }) => LocalizedString
+		newMeeting: () => LocalizedString
 		/**
 		 * Your meeting with {name} is scheduled for:
 		 */
@@ -401,6 +431,38 @@ export type TranslationFunctions = {
 		 * You will be able to join in {time}
 		 */
 		joinIn: (arg: { time: string }) => LocalizedString
+		/**
+		 * Leave call
+		 */
+		leave: () => LocalizedString
+		/**
+		 * Turn on camera
+		 */
+		cameraOn: () => LocalizedString
+		/**
+		 * Turn off camera
+		 */
+		cameraOff: () => LocalizedString
+		/**
+		 * Turn on microphone
+		 */
+		microphoneOn: () => LocalizedString
+		/**
+		 * Turn off microphone
+		 */
+		microphoneOff: () => LocalizedString
+		/**
+		 * Present now
+		 */
+		presentNow: () => LocalizedString
+		/**
+		 * Stop presenting
+		 */
+		stopPresenting: () => LocalizedString
+		/**
+		 * Upcoming meetings
+		 */
+		upcomingMeetings: () => LocalizedString
 	}
 	measure: {
 		application: {

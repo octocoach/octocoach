@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import { Text } from "../Text/Text";
 import { vars } from "../theme.css";
-import { availability, hoursBuffer } from "./constants";
+import { availability } from "./constants";
 import { getLocale, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
 
@@ -22,12 +22,14 @@ export const Timeslots = ({
   busyIntervals,
   creatingMeeting,
   locale,
+  hoursBuffer,
 }: {
   selectedDate: Date;
   setSelectedTimeslot: Dispatch<SetStateAction<Date | undefined>>;
   busyIntervals: Interval[];
   creatingMeeting: boolean;
   locale: Locales;
+  hoursBuffer: number;
 }) => {
   const [timeslots, setTimeslots] = useState<Date[]>([]);
 

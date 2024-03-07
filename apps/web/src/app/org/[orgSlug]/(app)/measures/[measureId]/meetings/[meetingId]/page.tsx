@@ -1,26 +1,17 @@
 import { Daily as DailyComponent } from "@components/daily/daily";
 import { authOrRedirect } from "@helpers/auth";
-import { getLocale } from "@helpers/locale";
 import { Daily } from "@octocoach/daily";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
-import { Stack } from "@octocoach/ui/Stack/Stack";
-import { formatDistanceToNow } from "date-fns";
-import dynamic from "next/dynamic";
-
-const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
-  ssr: false,
-});
 
 export default async function Page({
   params: { orgSlug, meetingId },
 }: {
   params: { orgSlug: string; meetingId: Meeting["id"] };
 }) {
-  const locale = getLocale();
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
   const {
@@ -73,11 +64,5 @@ export default async function Page({
     userName,
   });
 
-  return (
-    <Stack>
-      <DailyComponent roomName={meeting.roomName} token={token} />
-      <LocalTime timestamp={meeting.startTime} locale={locale} showTimezone />
-      <Text>{formatDistanceToNow(meeting.startTime)}</Text>
-    </Stack>
-  );
+  return <DailyComponent roomName={meeting.roomName} token={token} />;
 }

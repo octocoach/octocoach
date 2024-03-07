@@ -1,26 +1,30 @@
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
+"use client";
+
+import { Meeting } from "@octocoach/db/schemas/org/meeting";
+import Message from "@octocoach/i18n/src/react-message";
 import { Text } from "../Text/Text";
 import { person, personImage } from "./person.css";
-import { Meeting } from "@octocoach/db/schemas/org/meeting";
 
 export const Person = ({
   name,
   image,
   meetingType,
 }: {
-  name: string;
-  image: string;
+  name?: string | null;
+  image?: string | null;
   meetingType: Meeting["type"];
 }) => {
-  const { LL } = useI18nContext();
-
-  const type = LL.meetings.type[meetingType]();
-
+  if (!name) return null;
   return (
     <div className={person}>
-      <img src={image} alt={name} className={personImage} />
-      <Text size="l" variation="casual">
-        {LL.meetings.newMeeting({ name, type })}
+      {image && (
+        <img src={image} alt={name || "coach"} className={personImage} />
+      )}
+      <Text>
+        <Message id="meetings.newMeeting" />
+      </Text>
+      <Text size="l" variation="casual" weight="bold">
+        {name || "a Coach"}
       </Text>
     </div>
   );

@@ -37,6 +37,7 @@ export default async function Page({
     meetingTable,
     meetingParticipantTable,
     userTable,
+    coachTable,
   } = mkOrgSchema(orgSlug);
 
   const profile = await db
@@ -56,9 +57,7 @@ export default async function Page({
       id: measureTable.id,
       title: measureInfoTable.title,
       screeningQuestions: measureInfoTable.screeningQuestions,
-      coachId: measureTable.owner,
-      coachName: userTable.name,
-      coachImage: userTable.image,
+      owner: measureTable.owner,
     })
     .from(measureTable)
     .innerJoin(
@@ -68,11 +67,25 @@ export default async function Page({
         eq(measureInfoTable.locale, locale)
       )
     )
-    .innerJoin(userTable, eq(userTable.id, measureTable.owner))
     .where(eq(measureTable.id, measureId))
     .then((rows) => rows[0] ?? null);
 
   if (!measure) notFound();
+
+  const coach = await db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      image: userTable.image,
+      hoursBuffer: coachTable.hoursBuffer,
+      availability: coachTable.availability,
+    })
+    .from(userTable)
+    .innerJoin(coachTable, eq(coachTable.userId, userTable.id))
+    .where(eq(userTable.id, measure.owner))
+    .then((rows) => rows[0] ?? null);
+
+  if (!coach) throw new Error("Coach not found");
 
   const enrollment = await db
     .select()
@@ -118,7 +131,7 @@ export default async function Page({
           meetingParticipantTable,
           eq(meetingTable.id, meetingParticipantTable.meeting)
         )
-        .innerJoin(userTable, eq(userTable.id, measure.coachId))
+        .innerJoin(userTable, eq(userTable.id, measure.owner))
         .where(
           and(
             gte(meetingTable.startTime, now),
@@ -180,7 +193,7 @@ export default async function Page({
         )
         .where(
           and(
-            eq(meetingParticipantTable.user, measure.coachId),
+            eq(meetingParticipantTable.user, measure.owner),
             gte(meetingTable.startTime, startOfDay(now))
           )
         )
@@ -191,11 +204,7 @@ export default async function Page({
           locale={locale}
           createMeeting={createMeetingWithSlug}
           measureId={measureId}
-          coach={{
-            id: measure.coachId,
-            name: measure.coachName ?? "unknown",
-            image: measure.coachImage ?? "",
-          }}
+          coach={coach}
           coachMeetings={coachMeetings}
           meetingType="consultation"
         />

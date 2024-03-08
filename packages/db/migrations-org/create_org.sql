@@ -46,7 +46,9 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."account" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."coach" (
-	"user_id" text PRIMARY KEY NOT NULL
+	"user_id" text PRIMARY KEY NOT NULL,
+	"hours_buffer" integer DEFAULT 12 NOT NULL,
+	"availability" json
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."content_locale" (
@@ -71,6 +73,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."enrollment" (
 	"end_date" date,
 	"comments" text,
 	"room_name" text,
+	"screening_answers" json,
 	CONSTRAINT enrollment_measure_coachee_pk PRIMARY KEY("measure","coachee")
 );
 --> statement-breakpoint
@@ -81,6 +84,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_info" (
 	"description" text NOT NULL,
 	"requirements" text NOT NULL,
 	"image_alt" text NOT NULL,
+	"screening_questions" json,
 	CONSTRAINT measure_info_id_locale_pk PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint

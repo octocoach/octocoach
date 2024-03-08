@@ -20,7 +20,7 @@ export const mkModuleTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
 
   return mkOrgPgSchema(slug).table("module", {
-    id: serial("id").primaryKey(),
+    id: text("id").primaryKey(),
     owner: text("owner")
       .notNull()
       .references(() => coachTable.userId, {
@@ -34,6 +34,8 @@ export const mkModuleTable = (slug: string) => {
 
 export const insertModuleSchema = (slug: string) =>
   createInsertSchema(mkModuleTable(slug), {
+    id: (s) =>
+      s.id.transform((v) => v.trim()).pipe(s.id.min(3).regex(/^[a-z0-9-]+$/)),
     units: (s) => s.units.positive(),
   });
 
@@ -57,7 +59,7 @@ export const mkModuleInfoTable = (slug: string) => {
   return mkOrgPgSchema(slug).table(
     "module_info",
     {
-      id: serial("id")
+      id: text("id")
         .notNull()
         .references(() => moduleTable.id, {
           onDelete: "cascade",

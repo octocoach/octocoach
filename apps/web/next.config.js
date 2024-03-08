@@ -7,6 +7,11 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // This is a workaround to prevent build from using > 8GB RAM
+    cpus: 1,
+    workerThreads: false,
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "logo.clearbit.com" },
@@ -16,6 +21,7 @@ const nextConfig = {
       },
       { protocol: "https", hostname: "img.clerk.com" },
       { protocol: "https", hostname: "**.blob.vercel-storage.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
     ],
   },
   reactStrictMode: true,

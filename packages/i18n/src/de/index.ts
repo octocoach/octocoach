@@ -55,6 +55,38 @@ const de = {
   systemTheme: "system",
   language: "Sprache",
   changingLanguage: "Sprache wechseln...",
+  select: "Wähle ein Element...",
+  submit: "Absenden",
+  confirm: "Bestätigen",
+  back: "Zurück",
+  cancel: "Abbrechen",
+  meetings: {
+    type: {
+      consultation: "Beratung",
+      coaching: "Coaching",
+    },
+    newMeeting: "Vereinbare einen Termin mit",
+    booked: "Dein Termin mit {name} ist geplant für:",
+    join: "Beitreten",
+    joinIn: "Du kannst in {time} beitreten",
+    leave: "Anruf beenden",
+    cameraOn: "Kamera einschalten",
+    cameraOff: "Kamera ausschalten",
+    microphoneOn: "Mikrofon einschalten",
+    microphoneOff: "Mikrofon ausschalten",
+    presentNow: "Jetzt präsentieren",
+    stopPresenting: "Präsentation beenden",
+    upcomingMeetings: "Bevorstehende Termine",
+  },
+  measure: {
+    application: {
+      application: "Bewerbung für",
+      screeningQuestions:
+        "Bitte beantworte einige Fragen, damit wir beurteilen können, ob du für diese Bildungsmaßnahme in Frage kommst...",
+      thankYou: "Vielen Dank für deine Bewerbung!",
+      weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
+    },
+  },
 } satisfies Translation;
 
 export default de;

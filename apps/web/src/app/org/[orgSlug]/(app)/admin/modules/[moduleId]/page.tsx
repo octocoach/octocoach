@@ -16,7 +16,7 @@ import { getBaseUrl } from "@helpers/navigation";
 export default async function Page({
   params,
 }: {
-  params: { orgSlug: string; moduleId: number };
+  params: { orgSlug: string; moduleId: string };
 }) {
   const db = orgDb(params.orgSlug);
 

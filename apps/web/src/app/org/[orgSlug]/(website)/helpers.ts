@@ -1,6 +1,6 @@
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq, not, sql } from "@octocoach/db/operators";
+import { and, eq, sql } from "@octocoach/db/operators";
 import {
   SectionContent,
   SectionContentSimple,
@@ -8,9 +8,11 @@ import {
   mkContentLocaleTable,
   mkContentTable,
 } from "@octocoach/db/schemas/org/content";
-import { addressTable } from "@octocoach/db/schemas/common/address";
+import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { userTable } from "@octocoach/db/schemas/public/schema";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   AboutSectionContent,
   CoachSectionContent,
@@ -18,10 +20,7 @@ import {
   HeroSectionContent,
   MethodSectionContent,
 } from "@octocoach/ui";
-import { userTable } from "@octocoach/db/schemas/public/schema";
 import { notFound } from "next/navigation";
-import { Measure, MeasureInfo } from "@octocoach/db/schemas/org/measure";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 const getValue = ({
   id,
@@ -123,8 +122,8 @@ export const getMeasuresWithInfo = async (slug: string) => {
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
-      slug: measureInfoTable.slug,
       requirements: measureInfoTable.requirements,
+      screeningQuestions: measureInfoTable.screeningQuestions,
     })
     .from(measureTable)
     .innerJoin(
@@ -156,8 +155,8 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
-      slug: measureInfoTable.slug,
       requirements: measureInfoTable.requirements,
+      screeningQuestions: measureInfoTable.screeningQuestions,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(
@@ -198,15 +197,15 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       table.imageSrc,
       table.imageAlt,
       table.owner,
-      table.slug,
       table.requirements,
+      table.screeningQuestions,
     ])
     .orderBy(measureInfoTable.title);
 };
 
 export const getMeasureWithInfoAndModules = async (
   orgSlug: string,
-  measureSlug: MeasureInfo["slug"],
+  measureId: Measure["id"],
   locale?: Locales
 ) => {
   if (!locale) locale = getLocale();
@@ -230,7 +229,6 @@ export const getMeasureWithInfoAndModules = async (
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
-      slug: measureInfoTable.slug,
       requirements: measureInfoTable.requirements,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
@@ -265,7 +263,7 @@ export const getMeasureWithInfoAndModules = async (
         eq(moduleInfoTable.locale, locale)
       )
     )
-    .where(eq(measureInfoTable.slug, measureSlug))
+    .where(eq(measureTable.id, measureId))
     .groupBy((table) => [
       table.id,
       table.title,
@@ -273,7 +271,6 @@ export const getMeasureWithInfoAndModules = async (
       table.imageSrc,
       table.imageAlt,
       table.owner,
-      table.slug,
       table.requirements,
     ])
     .then((rows) => rows[0] ?? null);

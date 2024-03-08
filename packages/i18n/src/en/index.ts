@@ -54,6 +54,38 @@ const en = {
   systemTheme: "system",
   language: "Language",
   changingLanguage: "Changing language...",
+  select: "Select an item...",
+  submit: "Submit",
+  confirm: "Confirm",
+  back: "Back",
+  cancel: "Cancel",
+  meetings: {
+    type: {
+      consultation: "consultation",
+      coaching: "coaching",
+    },
+    newMeeting: "Schedule a meeting with",
+    booked: "Your meeting with {name:string} is scheduled for:",
+    join: "Join",
+    joinIn: "You will be able to join in {time:string}",
+    leave: "Leave call",
+    cameraOn: "Turn on camera",
+    cameraOff: "Turn off camera",
+    microphoneOn: "Turn on microphone",
+    microphoneOff: "Turn off microphone",
+    presentNow: "Present now",
+    stopPresenting: "Stop presenting",
+    upcomingMeetings: "Upcoming meetings",
+  },
+  measure: {
+    application: {
+      application: "Application for",
+      screeningQuestions:
+        "Please answer some questions to help us assess your eligibility for this training program...",
+      thankYou: "Thank you for your application!",
+      weWillBeInTouch: "We will be in touch via {email:string} shortly.",
+    },
+  },
 } satisfies BaseTranslation;
 
 export default en;

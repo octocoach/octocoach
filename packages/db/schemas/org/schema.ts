@@ -25,6 +25,11 @@ import {
 import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
 import { enrollmentStatusEnum } from "../data-types/enrollment";
 import { localeEnum } from "../data-types/locale";
+import {
+  meetingAttendanceEnum,
+  meetingRoleEnum,
+  meetingTypeEnum,
+} from "../data-types/meeting";
 import { mkOrgAccountTable } from "./account";
 import { mkCoachTable, mkCoachTableRelations } from "./coach";
 import { mkContentLocaleTable, mkContentTable } from "./content";
@@ -39,6 +44,8 @@ import {
   mkMeasureModuleRelations,
   mkMeasureModuleTable,
 } from "./measure-module";
+import { mkMeetingTable } from "./meeting";
+import { mkMeetingParticipantTable } from "./meeting-participant";
 import {
   mkModuleInfoRelations,
   mkModuleInfoTable,
@@ -128,4 +135,11 @@ export const mkOrgSchema = (slug: string) => ({
   measureModuleRelations: mkMeasureModuleRelations(slug),
   enrollmentTable: mkEnrollmentTable(slug),
   enrollmentStatusEnum,
+
+  // meeting
+  meetingAttendanceEnum,
+  meetingTypeEnum,
+  meetingRoleEnum,
+  meetingTable: mkMeetingTable(slug),
+  meetingParticipantTable: mkMeetingParticipantTable(slug),
 });

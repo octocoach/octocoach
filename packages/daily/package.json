@@ -1,0 +1,11 @@
+{
+  "name": "@octocoach/daily",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@types/node": "^20.11.18",
+    "tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@daily-co/daily-js": "^0.58.0"
+  }
+}

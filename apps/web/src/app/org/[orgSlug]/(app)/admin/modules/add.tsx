@@ -15,6 +15,7 @@ export function AddModule({
   saveModule: (data: SaveModuleData) => SaveModuleRetype;
 }) {
   const blankModule: SaveModuleData["module"] = {
+    id: "",
     units: 1,
     imageSrc: "",
   };

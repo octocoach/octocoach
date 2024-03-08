@@ -102,6 +102,15 @@ export function EditModule({
 
   const store = useFormStore<SaveModuleData>({
     defaultValues,
+    setValues: (values) => {
+      store.setValue(
+        store.names.module.id,
+        values.module.id
+          .toLowerCase()
+          .replace(/[^A-Za-z0-9-\s]+/g, "")
+          .replace(/\s+|-+\s+/g, "-")
+      );
+    },
   });
 
   const $ = store.names;
@@ -166,6 +175,15 @@ export function EditModule({
   return (
     <Card>
       <Stack>
+        <Form store={store}>
+          <FormField name={$.module.id} label="Slug">
+            <FormInput name={$.module.id} />
+          </FormField>
+          <FormField name={$.module.units} label="Units">
+            <FormInput name={$.module.units} type="number" />
+          </FormField>
+        </Form>
+
         <Upload
           onUploaded={(src) => store.setValue($.module.imageSrc, src)}
           orgSlug={orgSlug}
@@ -184,11 +202,6 @@ export function EditModule({
             />
           ))}
         </Stack>
-        <Form store={store}>
-          <FormField name={$.module.units} label="Units">
-            <FormInput name={$.module.units} type="number" />
-          </FormField>
-        </Form>
 
         <Stack direction="horizontal">
           <Button onClick={onCancel} color="contrast">

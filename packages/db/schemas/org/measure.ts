@@ -1,11 +1,12 @@
 import { relations } from "drizzle-orm";
-import { primaryKey, serial, text } from "drizzle-orm/pg-core";
+import { json, primaryKey, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { mkMeasureModuleTable } from "./measure-module";
 import { ModuleWithInfo } from "./module";
+import { z } from "zod";
 
 export type Measure = ReturnType<typeof mkMeasureTable>["$inferSelect"];
 export type NewMeasure = ReturnType<typeof mkMeasureTable>["$inferInsert"];
@@ -23,7 +24,7 @@ export type MeasureWithInfoAndModules = MeasureWithInfo & {
 export const mkMeasureTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
   return mkOrgPgSchema(slug).table("measure", {
-    id: serial("id").primaryKey(),
+    id: text("id").primaryKey(),
     owner: text("owner")
       .notNull()
       .references(() => coachTable.userId, {
@@ -36,6 +37,8 @@ export const mkMeasureTable = (slug: string) => {
 
 export const insertMeasureSchema = (slug: string) =>
   createInsertSchema(mkMeasureTable(slug), {
+    id: (s) =>
+      s.id.transform((v) => v.trim()).pipe(s.id.min(3).regex(/^[a-z0-9-]+$/)),
     imageSrc: (s) =>
       s.imageSrc.transform((v) => v.trim()).pipe(s.imageSrc.min(1)),
   });
@@ -56,12 +59,20 @@ export const mkMeasureRelations = (slug: string) => {
   }));
 };
 
+export const screeningQuestionSchema = z.object({
+  question: z.string().min(1),
+  type: z.enum(["short", "long", "select", "multi-select"]),
+  options: z.array(z.string()).optional(),
+});
+
+export type ScreeningQuestion = z.infer<typeof screeningQuestionSchema>;
+
 export const mkMeasureInfoTable = (slug: string) => {
   const measureTable = mkMeasureTable(slug);
   return mkOrgPgSchema(slug).table(
     "measure_info",
     {
-      id: serial("id")
+      id: text("id")
         .notNull()
         .references(() => measureTable.id, {
           onDelete: "cascade",
@@ -72,7 +83,9 @@ export const mkMeasureInfoTable = (slug: string) => {
       description: text("description").notNull(),
       requirements: text("requirements").notNull(),
       imageAlt: text("image_alt").notNull(),
-      slug: text("slug").notNull().unique(),
+      screeningQuestions: json("screening_questions").$type<
+        ScreeningQuestion[]
+      >(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),
@@ -101,8 +114,5 @@ export const insertMeasureInfoSchema = (slug: string) =>
       s.requirements.transform((v) => v.trim()).pipe(s.requirements.min(1)),
     imageAlt: (s) =>
       s.imageAlt.transform((v) => v.trim()).pipe(s.imageAlt.min(1)),
-    slug: (s) =>
-      s.slug
-        .transform((v) => v.trim())
-        .pipe(s.slug.min(1).regex(/^[a-z0-9-]+$/)),
+    screeningQuestions: () => screeningQuestionSchema.array().optional(),
   });

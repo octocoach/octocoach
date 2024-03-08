@@ -36,6 +36,48 @@
       "when": 1706189497517,
       "tag": "0004_empty_secret_warriors",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1708331446431,
+      "tag": "0005_nifty_vector",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1708598233366,
+      "tag": "0006_panoramic_scrambler",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1709029992762,
+      "tag": "0007_dusty_sharon_ventura",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1709045928440,
+      "tag": "0008_absent_tana_nile",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1709217002007,
+      "tag": "0009_brave_klaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1709826569250,
+      "tag": "0010_breezy_wild_pack",
+      "breakpoints": true
     }
   ]
 }

@@ -18,6 +18,7 @@ export function AddMeasure({
   orgSlug: string;
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
+    id: "",
     imageSrc: "",
   };
 
@@ -26,7 +27,7 @@ export function AddMeasure({
     description: "",
     requirements: "",
     imageAlt: "",
-    slug: "",
+    screeningQuestions: [],
   };
 
   const defaultValuesMeasureInfo = fromEntries(

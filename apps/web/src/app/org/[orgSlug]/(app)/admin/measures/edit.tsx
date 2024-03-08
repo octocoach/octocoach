@@ -1,9 +1,9 @@
 "use client";
 
 import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
-import { NewMeasureInfo } from "@octocoach/db/schemas/org/measure";
+import { ScreeningQuestion } from "@octocoach/db/schemas/org/measure";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import Message from "@octocoach/i18n/src/react-message";
 import { getEntries } from "@octocoach/tshelpers";
 import {
   Box,
@@ -19,80 +19,46 @@ import {
 import Upload from "@octocoach/ui/Form/Upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import { ZodError } from "zod";
+import { useTransition } from "react";
 import { SaveMeasureData, SaveMeasureRetype } from "./actions";
+import { mapMeasureInfo, unmapMeasureInfo } from "./helpers";
+import { ScreeningQuestions } from "./screening-questions";
 
-type MeasureInfoLocale = SaveMeasureData["measureInfo"][Locales];
-
-const EditMeasureLocale = ({
-  locale,
-  value,
-  onSetValues,
-  errors,
+const LocaleField = ({
+  fieldName,
+  type = "input",
 }: {
-  locale: Locales;
-  value: MeasureInfoLocale;
-  onSetValues: (locale: Locales, values: MeasureInfoLocale) => void;
-  errors?: ZodError<MeasureInfoLocale>;
+  fieldName: keyof SaveMeasureData["measureInfo"][Locales];
+  type?: "input" | "textarea";
 }) => {
-  const store = useFormStore<MeasureInfoLocale>({
-    defaultValues: value,
-    setValues: (values) => {
-      values.slug = values.slug
-        .toLowerCase()
-        .replace(/[^A-Za-z0-9-\s]+/g, "")
-        .replace(/\s+|-+\s+/g, "-");
-
-      onSetValues(locale, values);
-    },
-  });
-
-  useEffect(() => {
-    if (errors?.issues?.length) {
-      for (const issue of errors.issues) {
-        const path = issue.path.join(".");
-        store.setFieldTouched(path, true);
-        store.setError(path, issue.message);
-      }
-    }
-  }, [errors]);
-
-  const $ = store.names;
-
+  const { LL } = useI18nContext();
   return (
-    <Box paddingX="none" grow>
-      <Card>
-        <Form store={store}>
-          <Stack>
-            <Text size="l" variation="heading">
-              <Message id={`languages.${locale}`} />
-            </Text>
-            <FormField name={$.imageAlt} label="Alt Text">
-              <FormInput name={$.imageAlt} />
-            </FormField>
-            <FormField name={$.title} label="Title">
-              <FormInput name={$.title} />
-            </FormField>
-            <FormField name={$.slug} label="Slug">
-              <FormInput name={$.slug} />
-            </FormField>
-            <FormField name={$.description} label="Description">
-              <FormInput
-                name={$.description}
-                render={<textarea style={{ height: "10rem" }} />}
-              />
-            </FormField>
-            <FormField name={$.requirements} label="Requirements">
-              <FormInput
-                name={$.requirements}
-                render={<textarea style={{ height: "10rem" }} />}
-              />
-            </FormField>
-          </Stack>
-        </Form>
-      </Card>
-    </Box>
+    <Card>
+      <Stack>
+        <Text>{fieldName}</Text>
+        <Stack direction="horizontal">
+          {dbLocales.map((locale) => {
+            return (
+              <Box grow key={locale}>
+                <FormField
+                  name={`mappedMeasureInfo.${fieldName}.${locale}`}
+                  label={LL.languages[locale]()}
+                >
+                  <FormInput
+                    name={`mappedMeasureInfo.${fieldName}.${locale}`}
+                    render={
+                      type === "textarea" ? (
+                        <textarea style={{ height: "10rem" }} />
+                      ) : undefined
+                    }
+                  />
+                </FormField>
+              </Box>
+            );
+          })}
+        </Stack>
+      </Stack>
+    </Card>
   );
 };
 
@@ -109,54 +75,66 @@ export function EditMeasure({
   onDone: () => void;
   orgSlug: string;
 }) {
-  const stores = {
-    measure: useFormStore<SaveMeasureData["measure"]>({
-      defaultValues: measure,
-    }),
-    measureInfo: useFormStore<SaveMeasureData["measureInfo"]>({
-      defaultValues: measureInfo,
-    }),
+  const mappedMeasureInfo = mapMeasureInfo(measureInfo);
+
+  const defaultValues = {
+    measure,
+    mappedMeasureInfo,
   };
+
+  const store = useFormStore({
+    defaultValues,
+    setValues: (values) => {
+      store.setValue(
+        store.names.measure.id,
+        values.measure.id
+          .toLowerCase()
+          .replace(/[^A-Za-z0-9-\s]+/g, "")
+          .replace(/\s+|-+\s+/g, "-")
+      );
+    },
+  });
 
   const [isPending, startTransition] = useTransition();
 
-  const onSetLocaleValues = (locale: Locales, values: MeasureInfoLocale) => {
-    stores.measureInfo.setValues((oldValues) => ({
-      ...oldValues,
-      [locale]: values,
-    }));
-  };
-
   const router = useRouter();
 
-  const [measureInfoErrors, setMeasureInfoErrors] = useState<
-    Partial<Record<Locales, ZodError<NewMeasureInfo>>>
-  >({});
-
   const onSubmit = () => {
-    const measure = stores.measure.getState().values;
-    const measureInfo = stores.measureInfo.getState().values;
+    console.log(store.getState().values);
+
+    const measure = store.getState().values.measure;
+    const measureInfo = unmapMeasureInfo(
+      store.getState().values.mappedMeasureInfo
+    );
 
     startTransition(() => {
       saveMeasure({ measure, measureInfo }).then((result) => {
         if (result.success === true) {
-          stores.measure.reset();
-          stores.measureInfo.reset();
+          store.reset();
           onDone();
           router.refresh();
         } else if (result.errors) {
           if (result.errors.measure?.issues?.length) {
             for (const issue of result.errors.measure.issues) {
-              const path = issue.path.join(".");
-              stores.measure.setFieldTouched(path, true);
-              stores.measure.setError(path, issue.message);
+              const path = `measure.${issue.path.join(".")}`;
+              store.setFieldTouched(path, true);
+              store.setError(path, issue.message);
             }
           }
           if (result.errors.measureInfo) {
             for (const [locale, errors] of getEntries(
               result.errors.measureInfo
             )) {
-              setMeasureInfoErrors((cur) => ({ ...cur, [locale]: errors }));
+              if (errors?.issues.length) {
+                for (const issue of errors.issues) {
+                  const path = `mappedMeasureInfo.${issue.path.join(
+                    "."
+                  )}.${locale}`;
+
+                  store.setFieldTouched(path, true);
+                  store.setError(path, issue.message);
+                }
+              }
             }
           }
         }
@@ -164,8 +142,9 @@ export function EditMeasure({
     });
   };
 
-  const $ = stores.measure.names;
-  const imageSrc = stores.measure.useValue($.imageSrc);
+  const $ = store.names;
+  $.mappedMeasureInfo.title.en;
+  const imageSrc = store.useValue($.measure.imageSrc);
 
   const onCancel = () => {
     startTransition(() => {
@@ -173,11 +152,39 @@ export function EditMeasure({
     });
   };
 
+  const addNewQuestion = () => {
+    const blankQuestion: ScreeningQuestion = {
+      type: "short",
+      question: "",
+    };
+    store.pushValue($.mappedMeasureInfo.screeningQuestions, {
+      en: blankQuestion,
+      de: blankQuestion,
+    });
+  };
+
+  const addQuestionOption = (idx: number) => {
+    for (const locale of dbLocales) {
+      const options =
+        store.getState().values.mappedMeasureInfo.screeningQuestions[idx][
+          locale
+        ].options || ([] as string[]);
+
+      store.setValue(
+        `mappedMeasureInfo.screeningQuestions.${idx}.${locale}.options`,
+        [...options, ""]
+      );
+    }
+  };
+
   return (
-    <Stack>
-      <Stack spacing="tight">
+    <Form store={store}>
+      <Stack>
+        <FormField name={$.measure.id} label="Slug">
+          <FormInput name={$.measure.id} />
+        </FormField>
         <Upload
-          onUploaded={(src) => stores.measure.setValue($.imageSrc, src)}
+          onUploaded={(src) => store.setValue($.measure.imageSrc, src)}
           orgSlug={orgSlug}
         />
         {imageSrc && (
@@ -189,26 +196,35 @@ export function EditMeasure({
             alt="Uploaded Image"
           />
         )}
+        <LocaleField fieldName="title" />
+        <LocaleField fieldName="description" type="textarea" />
+        <LocaleField fieldName="requirements" type="textarea" />
+        <LocaleField fieldName="imageAlt" />
+
+        <ScreeningQuestions
+          addNewQuestion={addNewQuestion}
+          onAddOption={addQuestionOption}
+          screeningQuestions={
+            store.useState().values.mappedMeasureInfo.screeningQuestions
+          }
+          onSetQuestionType={(idx, type) => {
+            dbLocales.forEach((locale) => {
+              store.setValue(
+                `mappedMeasureInfo.screeningQuestions.${idx}.${locale}.type`,
+                type
+              );
+            });
+          }}
+        />
+        <Stack direction="horizontal">
+          <Button onClick={onCancel} color="contrast">
+            Cancel
+          </Button>
+          <Button onClick={onSubmit} disabled={isPending}>
+            Save
+          </Button>
+        </Stack>
       </Stack>
-      <Stack direction="horizontal">
-        {dbLocales.map((locale) => (
-          <EditMeasureLocale
-            key={locale}
-            locale={locale}
-            value={measureInfo[locale]}
-            onSetValues={onSetLocaleValues}
-            errors={measureInfoErrors[locale]}
-          />
-        ))}
-      </Stack>
-      <Stack direction="horizontal">
-        <Button onClick={onCancel} color="contrast">
-          Cancel
-        </Button>
-        <Button onClick={onSubmit} disabled={isPending}>
-          Save
-        </Button>
-      </Stack>
-    </Stack>
+    </Form>
   );
 }

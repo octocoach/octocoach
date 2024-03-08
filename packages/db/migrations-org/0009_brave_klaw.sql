@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."enrollment" ADD COLUMN "screening_answers" json;

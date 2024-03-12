@@ -2,7 +2,6 @@ import { I18nProvider } from "@octocoach/i18n";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
-import TrpcProvider from "@octocoach/trpc/src/next/provider";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { Flavor } from "@octocoach/ui/theme/creator";
@@ -48,7 +47,7 @@ export default async function RootLayout({
       <body>
         {!flavor && <SetSystemTheme />}
         <I18nProvider dictionary={dictionary} locale={locale}>
-          <TrpcProvider>{children}</TrpcProvider>
+          {children}
         </I18nProvider>
       </body>
     </html>

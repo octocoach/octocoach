@@ -1,48 +1,30 @@
+import { Availability } from "@octocoach/db/schemas/org/coach";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Interval,
+  addDays,
   addMinutes,
   areIntervalsOverlapping,
   format,
+  isFuture,
+  isSameDay,
 } from "date-fns";
-import { availability } from "./constants";
-import { enUS, de } from "date-fns/locale";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { convertToTimeZone, convertToLocalTime } from "date-fns-timezone";
+import { de, enUS } from "date-fns/locale";
 
-export const isAvailable = (date: Date, busy: Interval[]): boolean => {
-  const day = date.getDay();
-  const slots = availability[day];
-
-  const slotAvailable = slots.some((slot) => {
-    const currentSlot: Interval = {
+export const isAvailable = (
+  date: Date,
+  duration: number,
+  busy: Interval[]
+): boolean => {
+  const hasMeeting = busy.some((coachMeeting) =>
+    areIntervalsOverlapping(coachMeeting, {
       start: date,
-      end: addMinutes(date, 30),
-    };
-    const availabilitySlot: Interval = {
-      start: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        slot.startTime.hh,
-        slot.startTime.mm
-      ),
-      end: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        slot.endTime.hh,
-        slot.endTime.mm
-      ),
-    };
+      end: addMinutes(date, duration),
+    })
+  );
 
-    return areIntervalsOverlapping(availabilitySlot, currentSlot);
-  });
-
-  const hasMeeting = busy.some((coachMeeting) => {
-    const currentSlot = { start: date, end: addMinutes(date, 45) };
-    return areIntervalsOverlapping(coachMeeting, currentSlot);
-  });
-
-  return slotAvailable && !hasMeeting;
+  return !hasMeeting;
 };
 
 export const getMonthName = (monthIndex: number, locale: Locales) => {
@@ -58,4 +40,87 @@ export const getLocale = (locale: Locales) => {
     default:
       return enUS;
   }
+};
+
+export const getSlots = ({
+  availability,
+  coachTimezone,
+  date,
+  duration,
+}: {
+  availability: Availability;
+  coachTimezone: string;
+  date: Date;
+  duration: number;
+}): Date[] => {
+  const coachDate = convertToTimeZone(date, { timeZone: coachTimezone });
+
+  const today = coachDate;
+  const tomorrow = addDays(coachDate, 1);
+
+  const todaySlots = availability[today.getDay()].map(
+    ({ startTime, endTime }) => ({
+      start: convertToLocalTime(
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          startTime.hh,
+          startTime.mm
+        ),
+        { timeZone: coachTimezone }
+      ),
+      end: convertToLocalTime(
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          endTime.hh,
+          endTime.mm
+        ),
+        { timeZone: coachTimezone }
+      ),
+    })
+  );
+
+  const tomorrowSlots = availability[tomorrow.getDay()].map(
+    ({ startTime, endTime }) => ({
+      start: convertToLocalTime(
+        new Date(
+          tomorrow.getFullYear(),
+          tomorrow.getMonth(),
+          tomorrow.getDate(),
+          startTime.hh,
+          startTime.mm
+        ),
+        { timeZone: coachTimezone }
+      ),
+      end: convertToLocalTime(
+        new Date(
+          tomorrow.getFullYear(),
+          tomorrow.getMonth(),
+          tomorrow.getDate(),
+          endTime.hh,
+          endTime.mm
+        ),
+        { timeZone: coachTimezone }
+      ),
+    })
+  );
+
+  const slots = [...todaySlots, ...tomorrowSlots]
+    .flatMap(({ start, end }) => {
+      const out: Date[] = [];
+      let date = start;
+      while (addMinutes(date, duration) < end) {
+        out.push(date);
+        date = addMinutes(date, duration);
+      }
+      return out;
+    })
+    .filter((d) => {
+      return isSameDay(date, d) && isFuture(d);
+    });
+
+  return slots;
 };

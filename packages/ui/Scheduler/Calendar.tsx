@@ -56,7 +56,7 @@ export const Calendar = ({
           onClick={() => {
             setSelectedDate(day);
           }}
-          disabled={isPast(endOfDay(day)) || isWeekend(day)}
+          disabled={isPast(endOfDay(day))}
           glow={isSameDay(day, selectedDate)}
         >
           {format(day, "d")}

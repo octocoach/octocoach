@@ -2,6 +2,8 @@ import { Slot, Availability } from "@octocoach/db/schemas/org/coach";
 
 export const hoursBuffer = 12;
 
+export const duration = 30;
+
 export const morning: Slot = {
   startTime: {
     hh: 9,
@@ -35,3 +37,5 @@ export const availability: Availability = {
   5: [morning],
   6: [],
 };
+
+export const coachTimezone = "Europe/Berlin";

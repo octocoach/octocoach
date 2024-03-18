@@ -6,6 +6,7 @@ import { UserProfile } from "@octocoach/db/schemas/types";
 import {
   Button,
   Card,
+  City,
   Form,
   FormCheckbox,
   FormField,
@@ -18,6 +19,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ProfileForm, saveProfile } from "./actions";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 
 export const Profile = ({
   orgSlug,
@@ -26,6 +28,7 @@ export const Profile = ({
   orgSlug: string;
   profile?: UserProfile;
 }) => {
+  const { LL } = useI18nContext();
   const { data: session } = useSession();
 
   const search = useSearchParams();
@@ -35,6 +38,7 @@ export const Profile = ({
     defaultValues: {
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
+      city: profile?.city || "",
       termsAccepted: profile?.termsAccepted || false,
       emailCommunicationAccepted: profile?.emailCommunicationAccepted || false,
     },
@@ -68,14 +72,13 @@ export const Profile = ({
     return (
       !firstName ||
       !lastName ||
+      !values.city ||
       !values.termsAccepted ||
       store.getState().submitting ||
       submitting ||
       isPending
     );
   };
-
-  const buttonText = submitting || isPending ? "Signing Up" : "Sign Up";
 
   const basePath = useBasePath();
 
@@ -84,37 +87,38 @@ export const Profile = ({
       <Form store={store} onSubmit={onSubmit}>
         <Stack spacing="loose">
           <Text variation="casual" weight="light">
-            We need some information to get your account set up...
+            {LL.profile.subtitle()}
           </Text>
           <Stack spacing="tight">
-            <FormField name={$.firstName} label="First name" grow>
+            <FormField name={$.firstName} label={LL.profile.firstName()} grow>
               <FormInput name={$.firstName} />
             </FormField>
-            <FormField name={$.lastName} label="Last name" grow>
+            <FormField name={$.lastName} label={LL.profile.lastName()} grow>
               <FormInput name={$.lastName} />
             </FormField>
           </Stack>
+          <City setValue={(city) => store.setValue($.city, city)} />
           <Stack spacing="tight">
             <FormCheckbox
               name={$.termsAccepted}
-              label="I accept the privacy policy and terms of use"
+              label={LL.profile.termsAccepted()}
             />
             <FormCheckbox
               name={$.emailCommunicationAccepted}
-              label="You may send me marketing related emails"
+              label={LL.profile.emailCommunicationAccepted()}
             />
           </Stack>
           <Stack direction="horizontal" justify="right">
             <Button type="submit" disabled={signUpDisbled()}>
-              {buttonText}
+              {LL.profile.signUp()}
             </Button>
           </Stack>
           <Stack direction="horizontal" justify="center">
             <Link href={`${basePath}/privacy`} target="_blank">
-              <Text size="s">Privacy Policy</Text>
+              <Text size="s">{LL.privacyPolicy()}</Text>
             </Link>
             <Link href={`${basePath}/terms`} target="_blank">
-              <Text size="s">Terms of Use</Text>
+              <Text size="s">{LL.termsOfUse()}</Text>
             </Link>
           </Stack>
         </Stack>

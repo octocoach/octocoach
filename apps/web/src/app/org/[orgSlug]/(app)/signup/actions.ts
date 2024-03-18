@@ -9,7 +9,11 @@ import { NewUserProfile } from "@octocoach/db/schemas/types";
 export type ProfileForm = Required<
   Pick<
     NewUserProfile,
-    "firstName" | "lastName" | "termsAccepted" | "emailCommunicationAccepted"
+    | "firstName"
+    | "lastName"
+    | "city"
+    | "termsAccepted"
+    | "emailCommunicationAccepted"
   >
 >;
 

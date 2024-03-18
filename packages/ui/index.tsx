@@ -9,6 +9,7 @@ export * from "./Button/Button";
 export * from "./Button/ButtonLink";
 export * from "./Card/Card";
 export * from "./Center/Center";
+export * from "./City/City";
 export * from "./Checkbox/Checkbox";
 export * from "./CoachSection/CoachSection";
 export * from "./Container/Container";

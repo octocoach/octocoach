@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."user_profile" ADD COLUMN "city" text;

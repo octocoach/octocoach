@@ -249,6 +249,62 @@ type RootTranslation = {
 			weWillBeInTouch: RequiredParams<'email'>
 		}
 	}
+	address: {
+		/**
+		 * A​d​d​r​e​s​s​ ​l​i​n​e​ ​1
+		 */
+		line1: string
+		/**
+		 * A​d​d​r​e​s​s​ ​l​i​n​e​ ​2
+		 */
+		line2: string
+		/**
+		 * P​o​s​t​c​o​d​e
+		 */
+		postcode: string
+		/**
+		 * C​i​t​y
+		 */
+		city: string
+		/**
+		 * S​t​a​t​e
+		 */
+		state: string
+	}
+	profile: {
+		/**
+		 * W​e​ ​n​e​e​d​ ​s​o​m​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​t​o​ ​g​e​t​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​s​e​t​ ​u​p​.​.​.
+		 */
+		subtitle: string
+		/**
+		 * F​i​r​s​t​ ​n​a​m​e
+		 */
+		firstName: string
+		/**
+		 * L​a​s​t​ ​n​a​m​e
+		 */
+		lastName: string
+		/**
+		 * I​ ​a​c​c​e​p​t​ ​t​h​e​ ​p​r​i​v​a​c​y​ ​p​o​l​i​c​y​ ​a​n​d​ ​t​e​r​m​s​ ​o​f​ ​u​s​e
+		 */
+		termsAccepted: string
+		/**
+		 * Y​o​u​ ​m​a​y​ ​s​e​n​d​ ​m​e​ ​m​a​r​k​e​t​i​n​g​ ​r​e​l​a​t​e​d​ ​e​m​a​i​l​s
+		 */
+		emailCommunicationAccepted: string
+		/**
+		 * S​i​g​n​ ​U​p
+		 */
+		signUp: string
+	}
+	/**
+	 * P​r​i​v​a​c​y​ ​P​o​l​i​c​y
+	 */
+	privacyPolicy: string
+	/**
+	 * T​e​r​m​s​ ​o​f​ ​U​s​e
+	 */
+	termsOfUse: string
 }
 
 export type TranslationFunctions = {
@@ -484,6 +540,62 @@ export type TranslationFunctions = {
 			weWillBeInTouch: (arg: { email: string }) => LocalizedString
 		}
 	}
+	address: {
+		/**
+		 * Address line 1
+		 */
+		line1: () => LocalizedString
+		/**
+		 * Address line 2
+		 */
+		line2: () => LocalizedString
+		/**
+		 * Postcode
+		 */
+		postcode: () => LocalizedString
+		/**
+		 * City
+		 */
+		city: () => LocalizedString
+		/**
+		 * State
+		 */
+		state: () => LocalizedString
+	}
+	profile: {
+		/**
+		 * We need some information to get your account set up...
+		 */
+		subtitle: () => LocalizedString
+		/**
+		 * First name
+		 */
+		firstName: () => LocalizedString
+		/**
+		 * Last name
+		 */
+		lastName: () => LocalizedString
+		/**
+		 * I accept the privacy policy and terms of use
+		 */
+		termsAccepted: () => LocalizedString
+		/**
+		 * You may send me marketing related emails
+		 */
+		emailCommunicationAccepted: () => LocalizedString
+		/**
+		 * Sign Up
+		 */
+		signUp: () => LocalizedString
+	}
+	/**
+	 * Privacy Policy
+	 */
+	privacyPolicy: () => LocalizedString
+	/**
+	 * Terms of Use
+	 */
+	termsOfUse: () => LocalizedString
 }
 
 export type Formatters = {}

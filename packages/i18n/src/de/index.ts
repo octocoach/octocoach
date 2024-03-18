@@ -87,6 +87,26 @@ const de = {
       weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
     },
   },
+  address: {
+    line1: "Adresse Zeile 1",
+    line2: "Adresse Zeile 2",
+    postcode: "Postleitzahl",
+    city: "Stadt",
+    state: "Bundesland",
+  },
+  profile: {
+    subtitle:
+      "Wir brauchen einige Informationen, um dein Konto einzurichten...",
+    firstName: "Vorname",
+    lastName: "Name",
+    termsAccepted:
+      "Ich akzeptiere die Datenschutzrichtlinie und die Allgemeine Geschäftsbedingungen",
+    emailCommunicationAccepted:
+      "Ihr dürft mir marketingbezogene E-Mails schicken",
+    signUp: "Registrieren",
+  },
+  privacyPolicy: "Datenschutzrichtlinie",
+  termsOfUse: "Allgemeine Geschäftsbedingungen",
 } satisfies Translation;
 
 export default de;

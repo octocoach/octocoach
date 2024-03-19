@@ -3,6 +3,7 @@
 import { useBasePath } from "@hooks/base-path";
 import { useSession } from "@octocoach/auth/react";
 import { UserProfile } from "@octocoach/db/schemas/types";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import {
   Button,
   Card,
@@ -19,7 +20,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ProfileForm, saveProfile } from "./actions";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 
 export const Profile = ({
   orgSlug,
@@ -87,30 +87,42 @@ export const Profile = ({
       <Form store={store} onSubmit={onSubmit}>
         <Stack spacing="loose">
           <Text variation="casual" weight="light">
-            {LL.profile.subtitle()}
+            {LL.signup.profile.subTitle()}
           </Text>
           <Stack spacing="tight">
-            <FormField name={$.firstName} label={LL.profile.firstName()} grow>
+            <FormField
+              name={$.firstName}
+              label={LL.signup.profile.firstName()}
+              grow
+            >
               <FormInput name={$.firstName} />
             </FormField>
-            <FormField name={$.lastName} label={LL.profile.lastName()} grow>
+            <FormField
+              name={$.lastName}
+              label={LL.signup.profile.lastName()}
+              grow
+            >
               <FormInput name={$.lastName} />
             </FormField>
           </Stack>
-          <City setValue={(city) => store.setValue($.city, city)} />
+          <City
+            setValue={(city) => store.setValue($.city, city)}
+            label={LL.signup.profile.city()}
+            value={profile?.city || ""}
+          />
           <Stack spacing="tight">
             <FormCheckbox
               name={$.termsAccepted}
-              label={LL.profile.termsAccepted()}
+              label={LL.signup.profile.termsAccepted()}
             />
             <FormCheckbox
               name={$.emailCommunicationAccepted}
-              label={LL.profile.emailCommunicationAccepted()}
+              label={LL.signup.profile.emailCommunicationAccepted()}
             />
           </Stack>
           <Stack direction="horizontal" justify="right">
             <Button type="submit" disabled={signUpDisbled()}>
-              {LL.profile.signUp()}
+              {LL.signup.profile.signUp()}
             </Button>
           </Stack>
           <Stack direction="horizontal" justify="center">

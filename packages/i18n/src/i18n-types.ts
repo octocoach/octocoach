@@ -2,16 +2,19 @@
 /* eslint-disable */
 import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n'
 
-export type BaseTranslation = BaseTranslationType
+export type BaseTranslation = BaseTranslationType & DisallowNamespaces
 export type BaseLocale = 'en'
 
 export type Locales =
 	| 'de'
 	| 'en'
 
-export type Translation = RootTranslation
+export type Translation = RootTranslation & DisallowNamespaces
 
-export type Translations = RootTranslation
+export type Translations = RootTranslation &
+{
+	signup: NamespaceSignupTranslation
+}
 
 type RootTranslation = {
 	/**
@@ -271,11 +274,31 @@ type RootTranslation = {
 		 */
 		state: string
 	}
+	/**
+	 * P​r​i​v​a​c​y​ ​P​o​l​i​c​y
+	 */
+	privacyPolicy: string
+	/**
+	 * T​e​r​m​s​ ​o​f​ ​U​s​e
+	 */
+	termsOfUse: string
+}
+
+export type NamespaceSignupTranslation = {
+	/**
+	 * W​e​l​c​o​m​e​ ​t​o​ ​{​n​a​m​e​}
+	 * @param {string} name
+	 */
+	title: RequiredParams<'name'>
+	/**
+	 * G​l​a​d​ ​y​o​u​ ​a​r​e​ ​h​e​r​e​!
+	 */
+	subTitle: string
 	profile: {
 		/**
 		 * W​e​ ​n​e​e​d​ ​s​o​m​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​t​o​ ​g​e​t​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​s​e​t​ ​u​p​.​.​.
 		 */
-		subtitle: string
+		subTitle: string
 		/**
 		 * F​i​r​s​t​ ​n​a​m​e
 		 */
@@ -284,6 +307,10 @@ type RootTranslation = {
 		 * L​a​s​t​ ​n​a​m​e
 		 */
 		lastName: string
+		/**
+		 * Y​o​u​r​ ​n​e​a​r​e​s​t​ ​c​i​t​y
+		 */
+		city: string
 		/**
 		 * I​ ​a​c​c​e​p​t​ ​t​h​e​ ​p​r​i​v​a​c​y​ ​p​o​l​i​c​y​ ​a​n​d​ ​t​e​r​m​s​ ​o​f​ ​u​s​e
 		 */
@@ -297,14 +324,17 @@ type RootTranslation = {
 		 */
 		signUp: string
 	}
+}
+
+export type Namespaces =
+	| 'signup'
+
+type DisallowNamespaces = {
 	/**
-	 * P​r​i​v​a​c​y​ ​P​o​l​i​c​y
+	 * reserved for 'signup'-namespace\
+	 * you need to use the `./signup/index.ts` file instead
 	 */
-	privacyPolicy: string
-	/**
-	 * T​e​r​m​s​ ​o​f​ ​U​s​e
-	 */
-	termsOfUse: string
+	signup?: "[typesafe-i18n] reserved for 'signup'-namespace. You need to use the `./signup/index.ts` file instead."
 }
 
 export type TranslationFunctions = {
@@ -562,32 +592,6 @@ export type TranslationFunctions = {
 		 */
 		state: () => LocalizedString
 	}
-	profile: {
-		/**
-		 * We need some information to get your account set up...
-		 */
-		subtitle: () => LocalizedString
-		/**
-		 * First name
-		 */
-		firstName: () => LocalizedString
-		/**
-		 * Last name
-		 */
-		lastName: () => LocalizedString
-		/**
-		 * I accept the privacy policy and terms of use
-		 */
-		termsAccepted: () => LocalizedString
-		/**
-		 * You may send me marketing related emails
-		 */
-		emailCommunicationAccepted: () => LocalizedString
-		/**
-		 * Sign Up
-		 */
-		signUp: () => LocalizedString
-	}
 	/**
 	 * Privacy Policy
 	 */
@@ -596,6 +600,46 @@ export type TranslationFunctions = {
 	 * Terms of Use
 	 */
 	termsOfUse: () => LocalizedString
+	signup: {
+		/**
+		 * Welcome to {name}
+		 */
+		title: (arg: { name: string }) => LocalizedString
+		/**
+		 * Glad you are here!
+		 */
+		subTitle: () => LocalizedString
+		profile: {
+			/**
+			 * We need some information to get your account set up...
+			 */
+			subTitle: () => LocalizedString
+			/**
+			 * First name
+			 */
+			firstName: () => LocalizedString
+			/**
+			 * Last name
+			 */
+			lastName: () => LocalizedString
+			/**
+			 * Your nearest city
+			 */
+			city: () => LocalizedString
+			/**
+			 * I accept the privacy policy and terms of use
+			 */
+			termsAccepted: () => LocalizedString
+			/**
+			 * You may send me marketing related emails
+			 */
+			emailCommunicationAccepted: () => LocalizedString
+			/**
+			 * Sign Up
+			 */
+			signUp: () => LocalizedString
+		}
+	}
 }
 
 export type Formatters = {}

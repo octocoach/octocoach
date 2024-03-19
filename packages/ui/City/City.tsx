@@ -1,16 +1,22 @@
 "use client";
 import * as Ariakit from "@ariakit/react";
-import { Text } from "../Text/Text";
-import { formInput, formInputWrapper } from "../Form/formInput.css";
-import { useState } from "react";
 import debounce from "just-debounce-it";
-import { autocomplete } from "./helpers";
+import { useState } from "react";
+import { formInput, formInputWrapper } from "../Form/formInput.css";
+import { Text } from "../Text/Text";
 import { comboboxItem, comboboxPopover } from "./city.css";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
+import { autocomplete } from "./helpers";
 
-export const City = ({ setValue }: { setValue: (value: string) => void }) => {
-  const { LL } = useI18nContext();
-  const store = Ariakit.useComboboxStore();
+export const City = ({
+  label,
+  setValue,
+  value,
+}: {
+  label: string;
+  setValue: (value: string) => void;
+  value: string;
+}) => {
+  const store = Ariakit.useComboboxStore({ defaultValue: value });
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const onSetValue = debounce(async (city: string) => {
@@ -26,7 +32,7 @@ export const City = ({ setValue }: { setValue: (value: string) => void }) => {
   return (
     <Ariakit.ComboboxProvider store={store} setValue={onSetValue}>
       <label>
-        <Text>{LL.address.city()}</Text>
+        <Text>{label}</Text>
         <div className={formInputWrapper}>
           <Ariakit.Combobox className={formInput} />
           <Ariakit.ComboboxPopover className={comboboxPopover}>

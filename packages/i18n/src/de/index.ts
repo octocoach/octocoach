@@ -94,17 +94,7 @@ const de = {
     city: "Stadt",
     state: "Bundesland",
   },
-  profile: {
-    subtitle:
-      "Wir brauchen einige Informationen, um dein Konto einzurichten...",
-    firstName: "Vorname",
-    lastName: "Name",
-    termsAccepted:
-      "Ich akzeptiere die Datenschutzrichtlinie und die Allgemeine Geschäftsbedingungen",
-    emailCommunicationAccepted:
-      "Ihr dürft mir marketingbezogene E-Mails schicken",
-    signUp: "Registrieren",
-  },
+
   privacyPolicy: "Datenschutzrichtlinie",
   termsOfUse: "Allgemeine Geschäftsbedingungen",
 } satisfies Translation;

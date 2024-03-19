@@ -8,9 +8,18 @@ import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 import de from './de'
 import en from './en'
 
+import de_signup from './de/signup'
+import en_signup from './en/signup'
+
 const localeTranslations = {
-	de,
-	en,
+	de: {
+		...de,
+		signup: de_signup
+	},
+	en: {
+		...en,
+		signup: en_signup
+	},
 }
 
 export const loadLocale = (locale: Locales): void => {

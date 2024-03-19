@@ -1,9 +1,10 @@
 import { authOrRedirect } from "@helpers/auth";
 import { getUserAccounts } from "@octocoach/auth/adapters";
 import { orgDb } from "@octocoach/db/connection";
+import Message from "@octocoach/i18n/src/react-message";
 import { Box, Grid, Text } from "@octocoach/ui";
-import { Profile } from "./profile";
 import { notFound } from "next/navigation";
+import { Profile } from "./profile";
 
 export default async function Page({
   params,
@@ -38,9 +39,14 @@ export default async function Page({
       <Grid gap="extraLarge">
         <Box paddingX="none">
           <Text size="xl" weight="extraBold">
-            Welcome to {organization.displayName}
+            <Message
+              id="signup.title"
+              params={{ name: organization.displayName }}
+            />
           </Text>
-          <Text weight="light">Glad you are here!</Text>
+          <Text weight="light">
+            <Message id="signup.subTitle" />
+          </Text>
         </Box>
         <Profile orgSlug={params.orgSlug} profile={profile} />
       </Grid>

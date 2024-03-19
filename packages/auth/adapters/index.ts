@@ -1,4 +1,5 @@
 import { orgDb } from "@octocoach/db/connection";
+import { fromEntries, getEntries } from "@octocoach/tshelpers";
 
 export type { Adapter, AdapterAccount } from "@auth/core/adapters";
 export { authDrizzleAdapter } from "./drizzle";
@@ -14,14 +15,12 @@ export const getUserAccounts = async (userId: string, orgSlug?: string) => {
     where: (account, { eq }) => eq(account.userId, userId),
   });
 
-  return Object.fromEntries(
-    Object.entries(oauthProviders).map(
-      ([provider, { displayName, required }]) => {
-        const dbAccount = dbAccounts.find(
-          (account) => account.provider === provider
-        );
-        return [provider, { displayName, required, dbAccount }];
-      }
-    )
+  return fromEntries(
+    getEntries(oauthProviders).map(([provider, { displayName, required }]) => {
+      const dbAccount = dbAccounts.find(
+        (account) => account.provider === provider
+      );
+      return [provider, { displayName, required, dbAccount }];
+    })
   );
 };

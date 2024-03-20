@@ -100,8 +100,9 @@ export const config = {
      * Match all request paths except for the ones starting with:
      * - _next/static (static files)
      * - _next/image (image optimization files)
+     * - _vercel/insights (vercel analytics)
      * - favicon.ico (favicon file)
      */
-    `/((?!_next/static|_next/image|favicon.ico).*)`,
+    `/((?!_next/static|_next/image|_vercel/insights|favicon.ico).*)`,
   ],
 };

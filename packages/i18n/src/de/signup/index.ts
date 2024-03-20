@@ -14,6 +14,7 @@ const de_signup = {
     emailCommunicationAccepted:
       "Ihr dürft mir marketingbezogene E-Mails schicken",
     signUp: "Registrieren",
+    emptySuggestionsText: "Fang an zu tippen...",
   },
 } satisfies NamespaceSignupTranslation;
 

@@ -8,13 +8,13 @@ import { comboboxItem, comboboxPopover } from "./city.css";
 import { autocomplete } from "./helpers";
 
 export const City = ({
-  label,
   setValue,
   value,
+  emptySuggestionsText,
 }: {
-  label: string;
   setValue: (value: string) => void;
   value: string;
+  emptySuggestionsText: string;
 }) => {
   const store = Ariakit.useComboboxStore({ defaultValue: value });
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -31,25 +31,22 @@ export const City = ({
 
   return (
     <Ariakit.ComboboxProvider store={store} setValue={onSetValue}>
-      <label>
-        <Text>{label}</Text>
-        <div className={formInputWrapper}>
-          <Ariakit.Combobox className={formInput} />
-          <Ariakit.ComboboxPopover className={comboboxPopover}>
-            {suggestions.length ? (
-              suggestions.map((value, key) => (
-                <Ariakit.ComboboxItem
-                  key={key}
-                  value={value}
-                  className={comboboxItem}
-                />
-              ))
-            ) : (
-              <Text>Start typing...</Text>
-            )}
-          </Ariakit.ComboboxPopover>
-        </div>
-      </label>
+      <div className={formInputWrapper}>
+        <Ariakit.Combobox className={formInput} />
+        <Ariakit.ComboboxPopover className={comboboxPopover}>
+          {suggestions.length ? (
+            suggestions.map((value, key) => (
+              <Ariakit.ComboboxItem
+                key={key}
+                value={value}
+                className={comboboxItem}
+              />
+            ))
+          ) : (
+            <Text>{emptySuggestionsText}</Text>
+          )}
+        </Ariakit.ComboboxPopover>
+      </div>
     </Ariakit.ComboboxProvider>
   );
 };

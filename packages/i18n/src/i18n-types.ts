@@ -323,6 +323,10 @@ export type NamespaceSignupTranslation = {
 		 * S​i​g​n​ ​U​p
 		 */
 		signUp: string
+		/**
+		 * S​t​a​r​t​ ​t​y​p​i​n​g​.​.​.
+		 */
+		emptySuggestionsText: string
 	}
 }
 
@@ -638,6 +642,10 @@ export type TranslationFunctions = {
 			 * Sign Up
 			 */
 			signUp: () => LocalizedString
+			/**
+			 * Start typing...
+			 */
+			emptySuggestionsText: () => LocalizedString
 		}
 	}
 }

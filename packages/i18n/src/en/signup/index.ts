@@ -1,4 +1,4 @@
-import { BaseTranslation } from "typesafe-i18n";
+import { BaseTranslation } from "../../i18n-types";
 
 const en_signup: BaseTranslation = {
   title: "Welcome to {name:string}",
@@ -12,6 +12,7 @@ const en_signup: BaseTranslation = {
     termsAccepted: "I accept the privacy policy and terms of use",
     emailCommunicationAccepted: "You may send me marketing related emails",
     signUp: "Sign Up",
+    emptySuggestionsText: "Start typing...",
   },
 };
 

@@ -49,6 +49,7 @@ export const Profile = ({
 
   const onSubmit = async () => {
     startTransition(() => {
+      const { values } = store.getState();
       setSubmitting(true);
       saveProfile(
         {
@@ -56,7 +57,7 @@ export const Profile = ({
           userId: session!.user.id,
           origin,
         },
-        store.getState().values
+        values
       ).then(() => setSubmitting(false));
     });
   };
@@ -105,11 +106,13 @@ export const Profile = ({
               <FormInput name={$.lastName} />
             </FormField>
           </Stack>
-          <City
-            setValue={(city) => store.setValue($.city, city)}
-            label={LL.signup.profile.city()}
-            value={profile?.city || ""}
-          />
+          <FormField label={LL.signup.profile.city()} name={$.city}>
+            <City
+              setValue={(city) => store.setValue($.city, city)}
+              value={profile?.city || ""}
+              emptySuggestionsText={LL.signup.profile.emptySuggestionsText()}
+            />
+          </FormField>
           <Stack spacing="tight">
             <FormCheckbox
               name={$.termsAccepted}

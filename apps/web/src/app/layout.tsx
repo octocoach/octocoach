@@ -5,6 +5,7 @@ import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { Flavor } from "@octocoach/ui/theme/creator";
+import { Analytics } from "@vercel/analytics/react";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { Recursive } from "next/font/google";
@@ -49,6 +50,7 @@ export default async function RootLayout({
         <I18nProvider dictionary={dictionary} locale={locale}>
           {children}
         </I18nProvider>
+        <Analytics />
       </body>
     </html>
   );

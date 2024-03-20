@@ -86,6 +86,16 @@ const en = {
       weWillBeInTouch: "We will be in touch via {email:string} shortly.",
     },
   },
+  address: {
+    line1: "Address line 1",
+    line2: "Address line 2",
+    postcode: "Postcode",
+    city: "City",
+    state: "State",
+  },
+
+  privacyPolicy: "Privacy Policy",
+  termsOfUse: "Terms of Use",
 } satisfies BaseTranslation;
 
 export default en;

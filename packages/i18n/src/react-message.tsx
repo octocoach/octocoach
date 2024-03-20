@@ -32,7 +32,11 @@ export default function Message({
   const keys = id.split(".");
 
   const translationFunction = keys.reduce((acc, curr) => {
-    if (!hasKey(acc, curr)) throw Error(`Can't find the key ${curr}`);
+    if (!hasKey(acc, curr))
+      throw Error(
+        `Can't find the key ${curr}.
+        If the translation is in a namespace, make sure to use the <I18nNamespace/> component`
+      );
 
     return acc[curr];
   }, LL) as unknown as (params?: Record<string, unknown>) => LocalizedString;

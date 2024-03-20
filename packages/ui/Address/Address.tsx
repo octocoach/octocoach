@@ -9,6 +9,7 @@ import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
 import { comboboxItem, comboboxPopover } from "./address.css";
 import { Feature, autocomplete } from "./helpers";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 
 const Combobox = ({
   label,
@@ -46,6 +47,7 @@ const Combobox = ({
 };
 
 export const Address = ({ store }: { store: Ariakit.FormStore }) => {
+  const { LL } = useI18nContext();
   const [addressLine1Suggestions, setAddressLine1Suggestions] = useState<
     Feature[]
   >([]);
@@ -136,24 +138,24 @@ export const Address = ({ store }: { store: Ariakit.FormStore }) => {
     <Stack>
       <Text size="l">Address</Text>
       <Combobox
-        label="Address line 1"
+        label={LL.address.line1()}
         store={addressLine1ComboboxStore}
         setValue={onAddressLine1Changed}
         suggestions={addressLine1Suggestions}
       />
-      <FormField name={"addressLine2"} label="Address line 2">
+      <FormField name={"addressLine2"} label={LL.address.line2()}>
         <FormInput name={"addressLine2"} />
       </FormField>
       <Stack direction="horizontal">
         <Combobox
-          label="Postcode"
+          label={LL.address.postcode()}
           store={postcodeComboboxStore}
           setValue={onPostcodeChanged}
           suggestions={postcodeSuggestions}
           flexGrow={0}
         />
         <Combobox
-          label="City"
+          label={LL.address.city()}
           store={cityComboboxStore}
           setValue={onCityChanged}
           suggestions={citySuggestions}
@@ -161,7 +163,7 @@ export const Address = ({ store }: { store: Ariakit.FormStore }) => {
         />
       </Stack>
       <Combobox
-        label="State"
+        label={LL.address.state()}
         store={stateComboboxStore}
         setValue={onStateChanged}
         suggestions={stateSuggestions}

@@ -3,9 +3,11 @@
 import { useBasePath } from "@hooks/base-path";
 import { useSession } from "@octocoach/auth/react";
 import { UserProfile } from "@octocoach/db/schemas/types";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import {
   Button,
   Card,
+  City,
   Form,
   FormCheckbox,
   FormField,
@@ -26,6 +28,7 @@ export const Profile = ({
   orgSlug: string;
   profile?: UserProfile;
 }) => {
+  const { LL } = useI18nContext();
   const { data: session } = useSession();
 
   const search = useSearchParams();
@@ -35,6 +38,7 @@ export const Profile = ({
     defaultValues: {
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
+      city: profile?.city || "",
       termsAccepted: profile?.termsAccepted || false,
       emailCommunicationAccepted: profile?.emailCommunicationAccepted || false,
     },
@@ -45,6 +49,7 @@ export const Profile = ({
 
   const onSubmit = async () => {
     startTransition(() => {
+      const { values } = store.getState();
       setSubmitting(true);
       saveProfile(
         {
@@ -52,7 +57,7 @@ export const Profile = ({
           userId: session!.user.id,
           origin,
         },
-        store.getState().values
+        values
       ).then(() => setSubmitting(false));
     });
   };
@@ -68,14 +73,13 @@ export const Profile = ({
     return (
       !firstName ||
       !lastName ||
+      !values.city ||
       !values.termsAccepted ||
       store.getState().submitting ||
       submitting ||
       isPending
     );
   };
-
-  const buttonText = submitting || isPending ? "Signing Up" : "Sign Up";
 
   const basePath = useBasePath();
 
@@ -84,37 +88,52 @@ export const Profile = ({
       <Form store={store} onSubmit={onSubmit}>
         <Stack spacing="loose">
           <Text variation="casual" weight="light">
-            We need some information to get your account set up...
+            {LL.signup.profile.subTitle()}
           </Text>
           <Stack spacing="tight">
-            <FormField name={$.firstName} label="First name" grow>
+            <FormField
+              name={$.firstName}
+              label={LL.signup.profile.firstName()}
+              grow
+            >
               <FormInput name={$.firstName} />
             </FormField>
-            <FormField name={$.lastName} label="Last name" grow>
+            <FormField
+              name={$.lastName}
+              label={LL.signup.profile.lastName()}
+              grow
+            >
               <FormInput name={$.lastName} />
             </FormField>
           </Stack>
+          <FormField label={LL.signup.profile.city()} name={$.city}>
+            <City
+              setValue={(city) => store.setValue($.city, city)}
+              value={profile?.city || ""}
+              emptySuggestionsText={LL.signup.profile.emptySuggestionsText()}
+            />
+          </FormField>
           <Stack spacing="tight">
             <FormCheckbox
               name={$.termsAccepted}
-              label="I accept the privacy policy and terms of use"
+              label={LL.signup.profile.termsAccepted()}
             />
             <FormCheckbox
               name={$.emailCommunicationAccepted}
-              label="You may send me marketing related emails"
+              label={LL.signup.profile.emailCommunicationAccepted()}
             />
           </Stack>
           <Stack direction="horizontal" justify="right">
             <Button type="submit" disabled={signUpDisbled()}>
-              {buttonText}
+              {LL.signup.profile.signUp()}
             </Button>
           </Stack>
           <Stack direction="horizontal" justify="center">
             <Link href={`${basePath}/privacy`} target="_blank">
-              <Text size="s">Privacy Policy</Text>
+              <Text size="s">{LL.privacyPolicy()}</Text>
             </Link>
             <Link href={`${basePath}/terms`} target="_blank">
-              <Text size="s">Terms of Use</Text>
+              <Text size="s">{LL.termsOfUse()}</Text>
             </Link>
           </Stack>
         </Stack>

@@ -11,6 +11,7 @@ export const mkUserProfileTable = (slug: string) => {
       .references(() => userTable.id),
     firstName: text("first_name"),
     lastName: text("last_name"),
+    city: text("city"),
     summary: text("summary"),
     summaryHash: text("summary_hash"),
     termsAccepted: boolean("terms_accepted"),

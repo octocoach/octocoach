@@ -87,6 +87,16 @@ const de = {
       weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
     },
   },
+  address: {
+    line1: "Adresse Zeile 1",
+    line2: "Adresse Zeile 2",
+    postcode: "Postleitzahl",
+    city: "Stadt",
+    state: "Bundesland",
+  },
+
+  privacyPolicy: "Datenschutzrichtlinie",
+  termsOfUse: "Allgemeine Geschäftsbedingungen",
 } satisfies Translation;
 
 export default de;

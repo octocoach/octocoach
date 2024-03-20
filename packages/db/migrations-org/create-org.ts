@@ -1,6 +1,6 @@
 export const meta = {
-  version: 10,
-  when: 1709826569250,
+  version: 11,
+  when: 1710755611034,
 };
 
 export const rawSql = `
@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."user_profile" (
 	"user_id" text PRIMARY KEY NOT NULL,
 	"first_name" text,
 	"last_name" text,
+	"city" text,
 	"summary" text,
 	"summary_hash" text,
 	"terms_accepted" boolean,

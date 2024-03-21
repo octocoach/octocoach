@@ -63,6 +63,16 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
+  if (isVanityUrl) {
+    const pattern = /\/org\/[\w-]+\/icon\?([a-fA-F0-9]+)/;
+    const match = pathname.match(pattern);
+
+    if (match) {
+      const id = match[1];
+      return NextResponse.rewrite(new URL(`/icon?${id}`));
+    }
+  }
+
   if (orgSlug) {
     requestHeaders.set(xHeaders.org, orgSlug);
   }
@@ -78,7 +88,7 @@ export default async function middleware(request: NextRequest) {
   };
 
   const response =
-    isVanityUrl && !pathname.startsWith("/api") && !pathname.startsWith("icon")
+    isVanityUrl && !pathname.startsWith("/api")
       ? NextResponse.rewrite(
           new URL(`/org/${orgSlug}${pathname}`, request.url),
           responseInit

@@ -78,7 +78,7 @@ export default async function middleware(request: NextRequest) {
   };
 
   const response =
-    isVanityUrl && !pathname.startsWith("/api")
+    isVanityUrl && !pathname.startsWith("/api") && !pathname.startsWith("icon")
       ? NextResponse.rewrite(
           new URL(`/org/${orgSlug}${pathname}`, request.url),
           responseInit

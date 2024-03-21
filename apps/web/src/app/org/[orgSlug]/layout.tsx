@@ -1,8 +1,32 @@
 import { mkAuth } from "@octocoach/auth";
 import { SessionProvider } from "@octocoach/auth/react";
 import { db } from "@octocoach/db/connection";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+
+export async function generateMetadata({
+  params: { orgSlug },
+}: {
+  params: { orgSlug: string };
+}): Promise<Metadata> {
+  const organization = await db.query.organizationTable.findFirst({
+    where: (table, { eq }) => eq(table.slug, orgSlug),
+  });
+
+  if (!organization) {
+    return {
+      title: "OctoCoach",
+    };
+  }
+
+  return {
+    title: {
+      default: organization.displayName,
+      template: `%s | ${organization.displayName}`,
+    },
+  };
+}
 
 export default async function Layout({
   children,

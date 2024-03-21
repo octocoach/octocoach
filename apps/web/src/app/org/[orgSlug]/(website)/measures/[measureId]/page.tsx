@@ -10,11 +10,64 @@ import {
 } from "@octocoach/ui";
 
 import { FillImage } from "@components/fill-image";
+import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
+import { db, orgDb } from "@octocoach/db/connection";
+import { and, eq } from "@octocoach/db/operators";
+import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMeasureWithInfoAndModules } from "../../helpers";
+
+type PageParams = {
+  params: { orgSlug: string; measureId: MeasureWithInfo["id"] };
+};
+
+export async function generateMetadata({
+  params: { orgSlug, measureId },
+}: PageParams): Promise<Metadata> {
+  const locale = getLocale();
+
+  const organization = await db.query.organizationTable.findFirst({
+    where: (table, { eq }) => eq(table.slug, orgSlug),
+  });
+
+  const { measureTable, measureInfoTable } = mkOrgSchema(orgSlug);
+
+  const measure = await orgDb(orgSlug)
+    .select({
+      title: measureInfoTable.title,
+      description: measureInfoTable.description,
+    })
+    .from(measureTable)
+    .innerJoin(
+      measureInfoTable,
+      and(
+        eq(measureInfoTable.id, measureTable.id),
+        eq(measureInfoTable.locale, locale)
+      )
+    )
+    .where(eq(measureTable.id, measureId))
+    .then((rows) => rows[0] ?? null);
+
+  if (!measure) return {};
+
+  return {
+    title: measure.title,
+    description: measure.description,
+    openGraph: {
+      title: measure.title,
+      description: measure.description,
+      type: "website",
+      siteName: organization?.displayName,
+      url: organization?.domain
+        ? `https://${organization.domain}/measures/${measureId}`
+        : `https://octo.coach/org/${orgSlug}/measures/${measureId}/`,
+    },
+  };
+}
 
 const ApplyButton = ({ baseUrl, id }: { baseUrl: string; id: string }) => (
   <Box paddingY="medium">
@@ -31,11 +84,7 @@ const ApplyButton = ({ baseUrl, id }: { baseUrl: string; id: string }) => (
   </Box>
 );
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string; measureId: MeasureWithInfo["id"] };
-}) {
+export default async function Page({ params }: PageParams) {
   const measure = await getMeasureWithInfoAndModules(
     params.orgSlug,
     params.measureId

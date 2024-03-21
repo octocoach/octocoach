@@ -58,6 +58,7 @@ export async function generateMetadata({
     title: measure.title,
     description: measure.description,
     openGraph: {
+      locale,
       title: measure.title,
       description: measure.description,
       type: "website",

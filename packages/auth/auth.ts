@@ -2,6 +2,7 @@ import { db, orgDb } from "@octocoach/db/connection";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 import { isCoach as isCoachFn } from ".";
 import { authDrizzleAdapter } from "./adapters";
 import { decrypt } from "./helpers/crypto";
@@ -31,6 +32,43 @@ const getGithubCredentials = async (
   };
 };
 
+const mkProviders = async ({
+  organization,
+  linkAccounts,
+}: {
+  organization?: Organization;
+  linkAccounts: boolean;
+}) => {
+  const { clientId, clientSecret } = await getGithubCredentials(organization);
+
+  const providers = [
+    GitHub({ clientId, clientSecret, allowDangerousEmailAccountLinking: true }),
+  ];
+
+  if (!linkAccounts) return providers;
+
+  return [
+    ...providers,
+    Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+          scope: [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/calendar.events.readonly",
+          ].join(" "),
+        },
+      },
+    }),
+  ];
+};
+
 export const mkAuth = async (orgSlug?: string, isSignInPage?: boolean) => {
   const adapterDb = orgSlug ? orgDb(orgSlug) : db;
 
@@ -40,13 +78,14 @@ export const mkAuth = async (orgSlug?: string, isSignInPage?: boolean) => {
       })
     : undefined;
 
+  const providers = await mkProviders({
+    organization,
+    linkAccounts: !isSignInPage,
+  });
+
   return NextAuth({
     adapter: authDrizzleAdapter(adapterDb, orgSlug),
-    providers: [
-      GitHub({
-        ...(await getGithubCredentials(organization)),
-      }),
-    ],
+    providers,
     callbacks: {
       async session({ session, user }) {
         const isCoach = !!orgSlug && (await isCoachFn(user.id, orgSlug));

@@ -64,12 +64,15 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (isVanityUrl) {
-    const pattern = /\/org\/[\w-]+\/icon\?([a-fA-F0-9]+)/;
+    const pattern = /\/org\/[\w-]+\/icon\?[a-fA-F0-9]+/;
     const match = pathname.match(pattern);
 
+    console.log("Checking for Icon");
+    console.log("pathname", pathname);
+    console.log("match", match);
+
     if (match) {
-      const id = match[1];
-      return NextResponse.rewrite(new URL(`/icon?${id}`, request.url));
+      return NextResponse.next();
     }
   }
 

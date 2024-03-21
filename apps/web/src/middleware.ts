@@ -67,10 +67,6 @@ export default async function middleware(request: NextRequest) {
     const pattern = /\/org\/[\w-]+\/icon/;
     const match = pathname.match(pattern);
 
-    console.log("Checking for Icon");
-    console.log("pathname", pathname);
-    console.log("match", match);
-
     if (match) {
       return NextResponse.next();
     }

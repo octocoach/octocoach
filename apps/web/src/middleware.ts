@@ -64,7 +64,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (isVanityUrl) {
-    const pattern = /\/org\/[\w-]+\/icon\?[a-fA-F0-9]+/;
+    const pattern = /\/org\/[\w-]+\/icon/;
     const match = pathname.match(pattern);
 
     console.log("Checking for Icon");

@@ -69,7 +69,7 @@ export default async function middleware(request: NextRequest) {
 
     if (match) {
       const id = match[1];
-      return NextResponse.rewrite(new URL(`/icon?${id}`));
+      return NextResponse.rewrite(new URL(`/icon?${id}`, request.url));
     }
   }
 

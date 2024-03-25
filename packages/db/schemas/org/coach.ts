@@ -17,6 +17,13 @@ export type Slot = {
 
 export type Availability = Record<number, Slot[]>;
 
+export type CalendarProvider = "google";
+
+export type ExternalCalendars = Record<
+  CalendarProvider,
+  Record<string, string[]>
+>;
+
 export const mkCoachTable = (slug: string) => {
   const userTable = mkUserTable(slug);
   return mkOrgPgSchema(slug).table("coach", {
@@ -29,6 +36,7 @@ export const mkCoachTable = (slug: string) => {
       }),
     hoursBuffer: integer("hours_buffer").notNull().default(12),
     availability: json("availability").$type<Availability>(),
+    externalCalendars: json("external_calendars").$type<ExternalCalendars>(),
   });
 };
 

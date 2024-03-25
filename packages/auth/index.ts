@@ -10,12 +10,17 @@ interface OAuthProvider {
   required: boolean;
 }
 
-type AvailableOAuthProviders = "github" | "linkedin" | "discord";
+export type AvailableOAuthProviders =
+  | "github"
+  | "linkedin"
+  | "discord"
+  | "google";
 
 export const oauthProviders: Record<AvailableOAuthProviders, OAuthProvider> = {
   github: { displayName: "Github", required: true },
   linkedin: { displayName: "LinkedIn", required: true },
   discord: { displayName: "Discord", required: true },
+  google: { displayName: "Google", required: false },
 };
 
 export const isCoach = async (userId: string, orgSlug: string) => {

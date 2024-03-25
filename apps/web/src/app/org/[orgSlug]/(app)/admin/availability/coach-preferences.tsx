@@ -1,14 +1,20 @@
 "use client";
 
 import {
+  Availability,
+  ExternalCalendars,
+} from "@octocoach/db/schemas/org/coach";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+import {
   Button,
   Checkbox,
   Form,
   FormCheckboxGroup,
   Stack,
+  Text,
   useFormStore,
 } from "@octocoach/ui";
-import { availability } from "@octocoach/ui/Scheduler/constants";
+import { Save } from "@octocoach/ui/icons";
 import { useEffect, useState, useTransition } from "react";
 import {
   GoogleCalendar,
@@ -17,15 +23,22 @@ import {
   getGoogleCalendars,
   saveCoachPreferences,
 } from "./actions";
+import { EditAvailability } from "./availability";
 
-export const GetEvents = ({
+export const CoachPreferences = ({
   orgSlug,
   userId,
   userEmail,
+  availability,
+  externalCalendars,
+  locale,
 }: {
   orgSlug: string;
   userId: string;
   userEmail: string;
+  availability: Availability;
+  externalCalendars: ExternalCalendars;
+  locale: Locales;
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -37,11 +50,7 @@ export const GetEvents = ({
     defaultValues: {
       hoursBuffer: 12,
       availability,
-      externalCalendars: {
-        google: {
-          [userEmail]: [],
-        },
-      },
+      externalCalendars,
     },
   });
 
@@ -51,7 +60,7 @@ export const GetEvents = ({
     getGoogleCalendars({ userId, orgSlug }).then((calendars) => {
       setCalendars({ google: { [userEmail]: calendars } });
     });
-  }, [orgSlug, userId]);
+  }, [orgSlug, userId, userEmail]);
 
   const onGetEvents = () => {
     startTransition(() => {
@@ -71,25 +80,40 @@ export const GetEvents = ({
   return (
     <Form store={store}>
       <Stack>
-        <FormCheckboxGroup
-          setValue={(value) =>
-            store.setValue($.externalCalendars, {
-              google: { [userEmail]: value },
-            })
+        <EditAvailability
+          availability={store.useState().values.availability}
+          setAvailability={(availability) =>
+            store.setValue($.availability, availability)
           }
-          getValue={() => store.getValue($.externalCalendars).google[userEmail]}
-        >
-          {calendars.google[userEmail].map((calendar) => (
-            <Checkbox
-              label={calendar.summary}
-              value={calendar.id}
-              key={calendar.id}
-            />
-          ))}
-        </FormCheckboxGroup>
+          locale={locale}
+        />
+        <div>
+          <Text size="xl">
+            Select which calendars to check for existing events
+          </Text>
+          <FormCheckboxGroup
+            setValue={(value) =>
+              store.setValue($.externalCalendars, {
+                google: { [userEmail]: value },
+              })
+            }
+            getValue={() =>
+              store.getValue($.externalCalendars).google[userEmail]
+            }
+          >
+            {calendars.google[userEmail].map((calendar) => (
+              <Checkbox
+                label={calendar.summary}
+                value={calendar.id}
+                key={calendar.id}
+              />
+            ))}
+          </FormCheckboxGroup>
+        </div>
 
         <Button onClick={onSaveCoachPreferences} disabled={isPending}>
-          Save
+          <Save size="20" />
+          <Text>Save</Text>
         </Button>
 
         <Button onClick={onGetEvents} disabled={isPending}>

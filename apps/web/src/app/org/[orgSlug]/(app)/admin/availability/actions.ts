@@ -9,6 +9,7 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Coach } from "@octocoach/db/schemas/types";
 import { getEntries } from "@octocoach/tshelpers";
 import { addDays } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 export interface GoogleCalendar {
   id: string;
@@ -77,8 +78,6 @@ export const getFreeBusy = async ({
     ([_, ids]) => ids
   );
 
-  console.log(`Calendar Ids`, calendarIds);
-
   const headers = { Authorization: `Bearer ${accessToken}` };
 
   const date = new Date();
@@ -125,10 +124,7 @@ export const saveCoachPreferences = async (
 
   const { coachTable } = mkOrgSchema(orgSlug);
 
-  return await db
-    .update(coachTable)
-    .set(values)
-    .where(eq(coachTable.userId, user.id))
-    .returning()
-    .then((rows) => rows[0]);
+  await db.update(coachTable).set(values).where(eq(coachTable.userId, user.id));
+
+  revalidatePath("/org/[orgSlug]/(app)/admin/availability", "page");
 };

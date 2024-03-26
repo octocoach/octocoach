@@ -5,6 +5,7 @@ import { Organization } from "@octocoach/db/schemas/common/organization";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { getEntries } from "@octocoach/tshelpers";
 import { Interval } from "date-fns";
+import { ofetch } from "ofetch";
 
 export interface FreeBusyEntry {
   start: string;
@@ -50,32 +51,27 @@ export const getFreeBusy = async ({
     ([_, ids]) => ids
   );
 
-  const headers = { Authorization: `Bearer ${accessToken}` };
+  const { calendars } = await ofetch<FreeBusyResponse>(
+    "https://www.googleapis.com/calendar/v3/freeBusy",
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: {
+        timeMin: start.toISOString(),
+        timeMax: end.toISOString(),
+        items: calendarIds.map((id) => ({ id })),
+      },
+      retry: 3,
+      retryDelay: 500,
+    }
+  );
 
-  const requestBody = {
-    timeMin: start.toISOString(),
-    timeMax: end.toISOString(),
-    items: calendarIds.map((id) => ({ id })),
-  };
+  const busyEntries = getEntries(calendars).flatMap(([_, { busy }]) =>
+    busy.map(({ start, end }) => ({
+      start: new Date(start),
+      end: new Date(end),
+    }))
+  );
 
-  const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
-    method: "POST",
-    headers,
-    body: JSON.stringify(requestBody),
-  });
-
-  if (res.ok) {
-    const result: FreeBusyResponse = await res.json();
-
-    const busyEntries = getEntries(result.calendars).flatMap(([_, { busy }]) =>
-      busy.map(({ start, end }) => ({
-        start: new Date(start),
-        end: new Date(end),
-      }))
-    );
-
-    return busyEntries;
-  } else {
-    throw new Error(res.statusText);
-  }
+  return busyEntries;
 };

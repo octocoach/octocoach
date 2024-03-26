@@ -10,6 +10,8 @@ import {
   Checkbox,
   Form,
   FormCheckboxGroup,
+  FormField,
+  FormInput,
   Stack,
   Text,
   useFormStore,
@@ -30,6 +32,7 @@ export const CoachPreferences = ({
   userEmail,
   availability,
   externalCalendars,
+  hoursBuffer,
   locale,
 }: {
   orgSlug: string;
@@ -37,6 +40,7 @@ export const CoachPreferences = ({
   userEmail: string;
   availability: Availability;
   externalCalendars: ExternalCalendars;
+  hoursBuffer: number;
   locale: Locales;
 }) => {
   const [isPending, startTransition] = useTransition();
@@ -47,7 +51,7 @@ export const CoachPreferences = ({
 
   const store = useFormStore<SaveCoachPreferencesValues>({
     defaultValues: {
-      hoursBuffer: 12,
+      hoursBuffer,
       availability,
       externalCalendars,
     },
@@ -73,6 +77,15 @@ export const CoachPreferences = ({
   return (
     <Form store={store}>
       <Stack>
+        <FormField name={$.hoursBuffer} label="Hours Buffer">
+          <FormInput
+            name={$.hoursBuffer}
+            type="number"
+            min={0}
+            max={24}
+            step={1}
+          />
+        </FormField>
         <EditAvailability
           availability={store.useState().values.availability}
           setAvailability={(availability) =>

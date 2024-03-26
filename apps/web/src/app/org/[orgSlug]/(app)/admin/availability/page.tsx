@@ -40,6 +40,7 @@ export default async function Page({
   const externalCalendars = coach.externalCalendars ?? {
     google: { [user.email]: [] },
   };
+  const hoursBuffer = coach.hoursBuffer ?? 12;
 
   return (
     <Stack>
@@ -51,6 +52,7 @@ export default async function Page({
         orgSlug={orgSlug}
         availability={availability}
         externalCalendars={externalCalendars}
+        hoursBuffer={hoursBuffer}
         locale={locale}
       />
     </Stack>

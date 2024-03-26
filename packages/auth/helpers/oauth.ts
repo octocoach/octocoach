@@ -3,6 +3,7 @@ import { Organization } from "@octocoach/db/schemas/common/organization";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { and, eq } from "drizzle-orm";
 import { User } from "next-auth";
+import { ofetch } from "ofetch";
 import { AvailableOAuthProviders } from "..";
 
 export interface RefreshTokenParams {
@@ -47,45 +48,37 @@ export const refreshGoogleToken = async ({
   if (!refreshToken)
     throw new Error(`User ${userId} is missing a refresh token`);
 
-  try {
-    const now = Math.ceil(Date.now() / 1000);
-    const res = await fetch("https://oauth2.googleapis.com/token", {
+  const now = Math.ceil(Date.now() / 1000);
+  const { expires_in, ...result } = await ofetch<GoogleRefreshTokenResponse>(
+    "https://oauth2.googleapis.com/token",
+    {
       method: "POST",
-      body: JSON.stringify({
+      body: {
         client_id: clientId,
         client_secret: clientSecret,
         refresh_token: refreshToken,
         grant_type: "refresh_token",
-      }),
-    });
+      },
+      retry: 3,
+      retryDelay: 500,
+    }
+  );
 
-    if (!res.ok) throw new Error(res.statusText);
+  const expires_at = now + expires_in;
 
-    const result: GoogleRefreshTokenResponse = await res.json();
+  const account = await db
+    .update(accountTable)
+    .set({
+      ...result,
+      expires_at,
+    })
+    .where(
+      and(eq(accountTable.userId, userId), eq(accountTable.provider, "google"))
+    )
+    .returning()
+    .then((rows) => rows[0]);
 
-    const expires_at = now + result.expires_in;
-
-    const account = await db
-      .update(accountTable)
-      .set({
-        access_token: result.access_token,
-        id_token: result.id_token,
-        scope: result.scope,
-        expires_at,
-      })
-      .where(
-        and(
-          eq(accountTable.userId, userId),
-          eq(accountTable.provider, "google")
-        )
-      )
-      .returning()
-      .then((rows) => rows[0]);
-
-    return account;
-  } catch (err) {
-    throw new Error(`Error trying to refresh Google Token for user ${userId}`);
-  }
+  return account;
 };
 
 export const getAccessToken = async ({

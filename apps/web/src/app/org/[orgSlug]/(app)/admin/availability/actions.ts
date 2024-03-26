@@ -8,6 +8,7 @@ import { Organization } from "@octocoach/db/schemas/common/organization";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Coach } from "@octocoach/db/schemas/types";
 import { revalidatePath } from "next/cache";
+import { ofetch } from "ofetch";
 
 export interface GoogleCalendar {
   id: string;
@@ -15,25 +16,26 @@ export interface GoogleCalendar {
   primary?: boolean;
 }
 
+interface GoogleCalendarListResponse {
+  items: GoogleCalendar[];
+}
+
 export const getGoogleCalendars = async (params: {
   userId: string;
   orgSlug: Organization["slug"];
 }) => {
   const accessToken = await getAccessToken({ ...params, provider: "google" });
-  const headers = { Authorization: `Bearer ${accessToken}` };
 
-  const calendarListRes = await fetch(
+  const { items } = await ofetch<GoogleCalendarListResponse>(
     "https://www.googleapis.com/calendar/v3/users/me/calendarList",
-    { headers }
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      retry: 3,
+      retryDelay: 500,
+    }
   );
 
-  if (!calendarListRes.ok) {
-    throw new Error(calendarListRes.statusText);
-  }
-
-  const calendarList = await calendarListRes.json();
-
-  return (calendarList?.items || []) as GoogleCalendar[];
+  return items;
 };
 
 export type SaveCoachPreferencesValues = Omit<Coach, "userId">;

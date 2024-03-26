@@ -1,10 +1,13 @@
 "use server";
 
 import { authOrRedirect } from "@helpers/auth";
+import { getFreeBusy } from "@helpers/calendars/google";
 import { orgDb } from "@octocoach/db/connection";
-import { eq } from "@octocoach/db/operators";
+import { and, asc, eq, gte, lt } from "@octocoach/db/operators";
+import { Organization } from "@octocoach/db/schemas/common/organization";
 import { NewEnrollment } from "@octocoach/db/schemas/org/enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { Interval, addHours, endOfDay, startOfDay } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
@@ -58,4 +61,47 @@ export const createEnrollment = async (
   }
 
   revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
+};
+
+export const getBusyIntervals = async (
+  {
+    orgSlug,
+    coachId,
+  }: {
+    orgSlug: Organization["slug"];
+    coachId: string;
+  },
+  date: Date
+): Promise<Interval[]> => {
+  const db = orgDb(orgSlug);
+
+  const { meetingTable, meetingParticipantTable } = mkOrgSchema(orgSlug);
+
+  const coachMeetings = await db
+    .select({
+      start: meetingTable.startTime,
+      end: meetingTable.endTime,
+    })
+    .from(meetingTable)
+    .innerJoin(
+      meetingParticipantTable,
+      eq(meetingParticipantTable.meeting, meetingTable.id)
+    )
+    .where(
+      and(
+        eq(meetingParticipantTable.user, coachId),
+        gte(meetingTable.startTime, startOfDay(date)),
+        lt(meetingTable.startTime, endOfDay(date))
+      )
+    )
+    .orderBy(asc(meetingTable.startTime));
+
+  const googleBusy = await getFreeBusy({
+    userId: coachId,
+    orgSlug,
+    start: date,
+    end: addHours(date, 24),
+  });
+
+  return [...coachMeetings, ...googleBusy];
 };

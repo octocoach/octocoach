@@ -19,7 +19,6 @@ import { useEffect, useState, useTransition } from "react";
 import {
   GoogleCalendar,
   SaveCoachPreferencesValues,
-  getFreeBusy,
   getGoogleCalendars,
   saveCoachPreferences,
 } from "./actions";
@@ -61,12 +60,6 @@ export const CoachPreferences = ({
       setCalendars({ google: { [userEmail]: calendars } });
     });
   }, [orgSlug, userId, userEmail]);
-
-  const onGetEvents = () => {
-    startTransition(() => {
-      getFreeBusy({ userId, orgSlug }).then(() => console.log("ok"));
-    });
-  };
 
   const onSaveCoachPreferences = () => {
     startTransition(() => {
@@ -114,10 +107,6 @@ export const CoachPreferences = ({
         <Button onClick={onSaveCoachPreferences} disabled={isPending}>
           <Save size="20" />
           <Text>Save</Text>
-        </Button>
-
-        <Button onClick={onGetEvents} disabled={isPending}>
-          Get Events
         </Button>
       </Stack>
     </Form>

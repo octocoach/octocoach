@@ -14,8 +14,8 @@ export const Center = ({
     <div
       className={center}
       style={{
-        width: w ? w : "auto",
-        height: h ? h : "auto",
+        width: w ? w : "100%",
+        height: h ? h : "100%",
       }}
     >
       {children}

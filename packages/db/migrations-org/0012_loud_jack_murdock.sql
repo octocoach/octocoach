@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."coach" ADD COLUMN "external_calendars" json;

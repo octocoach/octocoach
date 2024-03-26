@@ -2,16 +2,15 @@ import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { and, asc, eq, gte } from "@octocoach/db/operators";
+import { and, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
 import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
-import { startOfDay } from "date-fns";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
-import { createEnrollment } from "./actions";
+import { createEnrollment, getBusyIntervals } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
 import { JoinButton } from "./join-button";
 
@@ -181,23 +180,10 @@ export default async function Page({
 
       const createMeetingWithSlug = createMeeting.bind(null, orgSlug);
 
-      const coachMeetings = await db
-        .select({
-          start: meetingTable.startTime,
-          end: meetingTable.endTime,
-        })
-        .from(meetingTable)
-        .innerJoin(
-          meetingParticipantTable,
-          eq(meetingParticipantTable.meeting, meetingTable.id)
-        )
-        .where(
-          and(
-            eq(meetingParticipantTable.user, measure.owner),
-            gte(meetingTable.startTime, startOfDay(now))
-          )
-        )
-        .orderBy(asc(meetingTable.startTime));
+      const boundGetBusyIntervals = getBusyIntervals.bind(null, {
+        orgSlug,
+        coachId: measure.owner,
+      });
 
       return (
         <Scheduler
@@ -205,8 +191,8 @@ export default async function Page({
           createMeeting={createMeetingWithSlug}
           measureId={measureId}
           coach={coach}
-          coachMeetings={coachMeetings}
           meetingType="consultation"
+          getBusyIntervals={boundGetBusyIntervals}
         />
       );
     } else {

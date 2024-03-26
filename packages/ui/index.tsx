@@ -36,6 +36,7 @@ export * from "./PixelBackground/PixelBackground";
 export * from "./Progress/Progress";
 export * from "./Scheduler/Scheduler";
 export * from "./Select/Select";
+export * from "./Spinner/Spinner";
 export * from "./Stack/Stack";
 export * from "./Tag/Tag";
 export * from "./Tagline/Tagline";

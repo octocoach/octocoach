@@ -22,9 +22,9 @@ export const Scheduler = ({
   createMeeting,
   measureId,
   coach,
-  coachMeetings,
   meetingType,
   locale,
+  getBusyIntervals,
 }: {
   createMeeting: (params: CreateMeetingParams) => Promise<void>;
   measureId: Measure["id"];
@@ -34,9 +34,9 @@ export const Scheduler = ({
     image?: string | null;
     hoursBuffer: number;
   };
-  coachMeetings: Interval[];
   meetingType: Meeting["type"];
   locale: Locales;
+  getBusyIntervals: (date: Date) => Promise<Interval[]>;
 }) => {
   const now = new Date();
 
@@ -86,10 +86,10 @@ export const Scheduler = ({
           <Timeslots
             selectedDate={selectedDate}
             setSelectedTimeslot={setSelectedTimeslot}
-            busyIntervals={coachMeetings}
             creatingMeeting={isPending}
             locale={locale}
             hoursBuffer={coach.hoursBuffer}
+            getBusyIntervals={getBusyIntervals}
           />
         </div>
       ) : (

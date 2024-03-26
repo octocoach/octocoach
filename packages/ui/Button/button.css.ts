@@ -4,6 +4,7 @@ import { vars } from "../theme.css";
 export const button = recipe({
   base: {
     display: "inline-flex",
+    alignItems: "center",
     gap: 8,
     borderStyle: "solid",
     cursor: "pointer",

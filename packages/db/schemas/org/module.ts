@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
-import { integer, primaryKey, serial, text } from "drizzle-orm/pg-core";
+import { integer, jsonb, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
@@ -15,6 +16,8 @@ export type NewModuleInfo = ReturnType<
 >["$inferInsert"];
 
 export type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
+
+export type ModuleContent = z.infer<typeof moduleContentSchema>;
 
 export const mkModuleTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
@@ -69,6 +72,7 @@ export const mkModuleInfoTable = (slug: string) => {
       title: text("title").notNull(),
       description: text("description").notNull(),
       imageAlt: text("image_alt").notNull(),
+      content: jsonb("content").$type<ModuleContent>(),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),
@@ -85,9 +89,16 @@ export const mkModuleInfoRelations = (slug: string) => {
   }));
 };
 
+const moduleContentSchema = z.object({
+  links: z.array(
+    z.object({ type: z.enum(["internal", "external"]), url: z.string().min(1) })
+  ),
+});
+
 export const insertModuleInfoSchema = (slug: string) =>
   createInsertSchema(mkModuleInfoTable(slug), {
     title: (s) => s.title.transform((v) => v.trim()).pipe(s.title.min(1)),
     description: (s) =>
       s.description.transform((v) => v.trim()).pipe(s.description.min(1)),
+    content: moduleContentSchema,
   });

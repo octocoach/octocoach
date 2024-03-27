@@ -1,6 +1,7 @@
 "use client";
 
 import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
+import type { ModuleContent } from "@octocoach/db/schemas/org/module";
 import { NewModuleInfo } from "@octocoach/db/schemas/org/module";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
@@ -24,6 +25,32 @@ import { ZodError } from "zod";
 import { SaveModuleData, SaveModuleRetype } from "./actions";
 
 type ModuleInfoLocale = SaveModuleData["moduleInfo"][Locales];
+
+const EditModuleContent = ({
+  value,
+  setValue,
+}: {
+  value?: ModuleContent | null;
+  setValue: (params: { value: ModuleContent; locale: Locales }) => void;
+}) => {
+  const emptyContent: ModuleContent = {
+    links: [{ url: "", type: "internal" }],
+  };
+
+  if (!value) {
+    value = emptyContent;
+  }
+
+  return (
+    <>
+      {value.links.map((link) => {
+        <FormField label="Link" name="">
+          <FormInput name="" />
+        </FormField>;
+      })}
+    </>
+  );
+};
 
 const EditModuleLocale = ({
   locale,
@@ -55,6 +82,13 @@ const EditModuleLocale = ({
 
   const $ = store.names;
 
+  const { content } = store.useState().values;
+
+  const setModuleContent = (params: {
+    value: ModuleContent;
+    locale: Locales;
+  }) => {};
+
   return (
     <Box paddingX="none" grow>
       <Card surface="mantle">
@@ -75,6 +109,7 @@ const EditModuleLocale = ({
             <FormField name={$.imageAlt} label="Image Alt Text">
               <FormInput name={$.imageAlt} />
             </FormField>
+            <EditModuleContent value={content} setValue={setModuleContent} />
           </Stack>
         </Form>
       </Card>

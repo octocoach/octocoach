@@ -250,6 +250,10 @@ type RootTranslation = {
 			 * @param {string} email
 			 */
 			weWillBeInTouch: RequiredParams<'email'>
+			/**
+			 * I​n​ ​t​h​e​ ​m​e​a​n​t​i​m​e​,​ ​h​e​r​e​ ​a​r​e​ ​s​o​m​e​ ​t​h​i​n​g​s​ ​y​o​u​ ​c​a​n​ ​d​o​ ​w​h​i​l​e​ ​y​o​u​ ​w​a​i​t​ ​f​o​r​ ​o​u​r​ ​r​e​s​p​o​n​s​e​.​.​.
+			 */
+			whileWaiting: string
 		}
 	}
 	address: {
@@ -572,6 +576,10 @@ export type TranslationFunctions = {
 			 * We will be in touch via {email} shortly.
 			 */
 			weWillBeInTouch: (arg: { email: string }) => LocalizedString
+			/**
+			 * In the meantime, here are some things you can do while you wait for our response...
+			 */
+			whileWaiting: () => LocalizedString
 		}
 	}
 	address: {

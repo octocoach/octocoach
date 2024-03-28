@@ -1,3 +1,4 @@
+import { FillImage } from "@components/fill-image";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
@@ -5,9 +6,13 @@ import { orgDb } from "@octocoach/db/connection";
 import { and, eq, gte } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
-import { Box, Card, Scheduler, Stack, Text } from "@octocoach/ui";
+import { Box, ButtonLink, Scheduler, Text } from "@octocoach/ui";
+import { Card } from "@octocoach/ui/Card/Card";
+import { Grid } from "@octocoach/ui/Grid/Grid";
+import { Stack } from "@octocoach/ui/Stack/Stack";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createMeeting } from "../../actions";
 import { createEnrollment, getBusyIntervals } from "./actions";
@@ -32,6 +37,9 @@ export default async function Page({
     userProfileTable,
     measureTable,
     measureInfoTable,
+    measureModuleTable,
+    moduleTable,
+    moduleInfoTable,
     enrollmentTable,
     meetingTable,
     meetingParticipantTable,
@@ -196,24 +204,96 @@ export default async function Page({
         />
       );
     } else {
+      const moduleInfo = await db
+        .select({
+          title: moduleInfoTable.title,
+          imgSrc: moduleTable.imageSrc,
+          imgAlt: moduleInfoTable.imageAlt,
+          content: moduleInfoTable.content,
+        })
+        .from(measureTable)
+        .innerJoin(
+          measureModuleTable,
+          eq(measureModuleTable.measure, measure.id)
+        )
+        .innerJoin(moduleTable, eq(moduleTable.id, measureModuleTable.module))
+        .innerJoin(
+          moduleInfoTable,
+          and(
+            eq(moduleInfoTable.id, moduleTable.id),
+            eq(moduleInfoTable.locale, locale)
+          )
+        )
+        .where(eq(measureTable.id, measureId));
+
+      const hasLinks = moduleInfo.some(({ content }) => content?.links.length);
+
       return (
         <Box marginY="medium">
           <Card>
-            <Stack justify="center">
-              <Text
-                size="l"
-                variation="casual"
-                weight="bold"
-                textAlign="center"
-              >
-                <Message id={"measure.application.thankYou"} />
-              </Text>
-              <Text textAlign="center">
-                <Message
-                  id="measure.application.weWillBeInTouch"
-                  params={{ email: user.email }}
-                />
-              </Text>
+            <Stack spacing="loose">
+              <Stack justify="center">
+                <Text
+                  size="l"
+                  variation="casual"
+                  weight="bold"
+                  textAlign="center"
+                >
+                  <Message id={"measure.application.thankYou"} />
+                </Text>
+                <Text textAlign="center">
+                  <Message
+                    id="measure.application.weWillBeInTouch"
+                    params={{ email: user.email }}
+                  />
+                </Text>
+              </Stack>
+              {hasLinks && (
+                <Stack>
+                  <Text size="l" weight="light" variation="casual">
+                    <Message id="measure.application.whileWaiting" />
+                  </Text>
+                  <Stack>
+                    {moduleInfo?.map((info, key) =>
+                      info.content?.links.length ? (
+                        <Grid columns="auto" gap="large" key={key}>
+                          <FillImage
+                            src={info.imgSrc}
+                            alt={info.imgAlt}
+                            minHeight={100}
+                            roundedCorners
+                          />
+                          <Box>
+                            <Text weight="heavy" variation="casual">
+                              {info.title}
+                            </Text>
+                            {info.content?.links && (
+                              <Stack spacing="tight">
+                                {info.content.links.map((link, key) => (
+                                  <Card surface="mantle" key={key}>
+                                    <Stack
+                                      direction="horizontal"
+                                      wrap
+                                      align="center"
+                                    >
+                                      <ButtonLink
+                                        Element={Link}
+                                        href={`${baseUrl}${link.url}`}
+                                        text={link.title}
+                                      />
+                                      <Text>{link.description}</Text>
+                                    </Stack>
+                                  </Card>
+                                ))}
+                              </Stack>
+                            )}
+                          </Box>
+                        </Grid>
+                      ) : null
+                    )}
+                  </Stack>
+                </Stack>
+              )}
             </Stack>
           </Card>
         </Box>

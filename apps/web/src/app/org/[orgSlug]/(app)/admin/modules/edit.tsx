@@ -1,6 +1,7 @@
 "use client";
 
 import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
+import type { ModuleContent } from "@octocoach/db/schemas/org/module";
 import { NewModuleInfo } from "@octocoach/db/schemas/org/module";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
@@ -17,6 +18,7 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import Upload from "@octocoach/ui/Form/Upload";
+import { Add } from "@octocoach/ui/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -24,6 +26,73 @@ import { ZodError } from "zod";
 import { SaveModuleData, SaveModuleRetype } from "./actions";
 
 type ModuleInfoLocale = SaveModuleData["moduleInfo"][Locales];
+
+const EditModuleContent = ({
+  value,
+  setValue,
+}: {
+  value?: ModuleContent | null;
+  setValue: (content: ModuleContent) => void;
+}) => {
+  const emptyContent: ModuleContent = {
+    links: [],
+  };
+
+  useEffect(() => {
+    if (!value) {
+      setValue(emptyContent);
+    }
+  }, [value]);
+
+  const onAddLink = () => {
+    if (!value) throw new Error("Value must be set first");
+    setValue({
+      ...value,
+      links: [
+        ...value.links,
+        { type: "internal", url: "", title: "", description: "" },
+      ],
+    });
+  };
+
+  return (
+    <Stack>
+      <Text weight="bold" variation="casual">
+        Content
+      </Text>
+      {value && (
+        <>
+          <Stack>
+            {value.links.map((link, idx) => {
+              const mkName = (key: keyof ModuleContent["links"][number]) =>
+                `content.links.${idx}.${key}`;
+
+              return (
+                <Stack spacing="tight" key={idx}>
+                  <FormField name={mkName("url")} label={`URL (${link.type})`}>
+                    <FormInput name={mkName("url")} />
+                  </FormField>
+                  <FormField name={mkName("title")} label="Title">
+                    <FormInput name={mkName("title")} />
+                  </FormField>
+                  <FormField name={mkName("description")} label="Description">
+                    <FormInput
+                      name={mkName("description")}
+                      render={<textarea style={{ height: "10rem" }} />}
+                    />
+                  </FormField>
+                </Stack>
+              );
+            })}
+          </Stack>
+          <Button onClick={onAddLink}>
+            <Add size={20} />
+          </Button>
+        </>
+      )}
+    </Stack>
+  );
+};
 
 const EditModuleLocale = ({
   locale,
@@ -55,6 +124,12 @@ const EditModuleLocale = ({
 
   const $ = store.names;
 
+  const { content } = store.useState().values;
+
+  const setModuleContent = (content: ModuleContent) => {
+    store.setValues((values) => ({ ...values, content }));
+  };
+
   return (
     <Box paddingX="none" grow>
       <Card surface="mantle">
@@ -75,6 +150,7 @@ const EditModuleLocale = ({
             <FormField name={$.imageAlt} label="Image Alt Text">
               <FormInput name={$.imageAlt} />
             </FormField>
+            <EditModuleContent value={content} setValue={setModuleContent} />
           </Stack>
         </Form>
       </Card>

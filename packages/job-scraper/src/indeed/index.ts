@@ -110,6 +110,7 @@ export class IndeedScraper extends JobScraper {
         const context = await this.newBrowserContext();
 
         const viewJobPage = await context.newPage();
+        console.log("Source ID", sourceId);
         await viewJobPage.goto(`https://de.indeed.com/viewjob?jk=${sourceId}`, {
           waitUntil: "domcontentloaded",
         });
@@ -196,7 +197,11 @@ export class IndeedScraper extends JobScraper {
           await $header
             .locator('[data-testid="inlineHeader-companyLocation"]')
             .filter({ hasNotText: /Bewertungen/ })
+            .or($header.getByText("Homeoffice"))
+            .first()
         )?.innerText();
+
+        console.log("Locaion", location);
 
         const descriptionHTML = await (
           await $description?.locator("#jobDescriptionText")
@@ -241,6 +246,11 @@ export class IndeedScraper extends JobScraper {
         }
       }
     } catch (err) {
+      const path = `error_${Date.now()}.png`;
+
+      await this.page.screenshot({
+        path,
+      });
       console.error(err);
     }
   }

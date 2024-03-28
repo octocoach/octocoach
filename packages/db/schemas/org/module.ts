@@ -91,7 +91,12 @@ export const mkModuleInfoRelations = (slug: string) => {
 
 const moduleContentSchema = z.object({
   links: z.array(
-    z.object({ type: z.enum(["internal", "external"]), url: z.string().min(1) })
+    z.object({
+      type: z.enum(["internal", "external"]),
+      url: z.string().min(1),
+      title: z.string().min(1).max(200),
+      description: z.string().max(500).optional(),
+    })
   ),
 });
 

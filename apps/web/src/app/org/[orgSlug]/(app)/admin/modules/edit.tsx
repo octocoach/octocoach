@@ -18,6 +18,7 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import Upload from "@octocoach/ui/Form/Upload";
+import { Add } from "@octocoach/ui/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -31,24 +32,65 @@ const EditModuleContent = ({
   setValue,
 }: {
   value?: ModuleContent | null;
-  setValue: (params: { value: ModuleContent; locale: Locales }) => void;
+  setValue: (content: ModuleContent) => void;
 }) => {
   const emptyContent: ModuleContent = {
-    links: [{ url: "", type: "internal" }],
+    links: [],
   };
 
-  if (!value) {
-    value = emptyContent;
-  }
+  useEffect(() => {
+    if (!value) {
+      setValue(emptyContent);
+    }
+  }, [value]);
+
+  const onAddLink = () => {
+    if (!value) throw new Error("Value must be set first");
+    setValue({
+      ...value,
+      links: [
+        ...value.links,
+        { type: "internal", url: "", title: "", description: "" },
+      ],
+    });
+  };
 
   return (
-    <>
-      {value.links.map((link) => {
-        <FormField label="Link" name="">
-          <FormInput name="" />
-        </FormField>;
-      })}
-    </>
+    <Stack>
+      <Text weight="bold" variation="casual">
+        Content
+      </Text>
+      {value && (
+        <>
+          <Stack>
+            {value.links.map((link, idx) => {
+              const mkName = (key: keyof ModuleContent["links"][number]) =>
+                `content.links.${idx}.${key}`;
+
+              return (
+                <Stack spacing="tight" key={idx}>
+                  <FormField name={mkName("url")} label={`URL (${link.type})`}>
+                    <FormInput name={mkName("url")} />
+                  </FormField>
+                  <FormField name={mkName("title")} label="Title">
+                    <FormInput name={mkName("title")} />
+                  </FormField>
+                  <FormField name={mkName("description")} label="Description">
+                    <FormInput
+                      name={mkName("description")}
+                      render={<textarea style={{ height: "10rem" }} />}
+                    />
+                  </FormField>
+                </Stack>
+              );
+            })}
+          </Stack>
+          <Button onClick={onAddLink}>
+            <Add size={20} />
+          </Button>
+        </>
+      )}
+    </Stack>
   );
 };
 
@@ -84,10 +126,9 @@ const EditModuleLocale = ({
 
   const { content } = store.useState().values;
 
-  const setModuleContent = (params: {
-    value: ModuleContent;
-    locale: Locales;
-  }) => {};
+  const setModuleContent = (content: ModuleContent) => {
+    store.setValues((values) => ({ ...values, content }));
+  };
 
   return (
     <Box paddingX="none" grow>

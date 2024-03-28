@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."module_info" ADD COLUMN "content" jsonb;

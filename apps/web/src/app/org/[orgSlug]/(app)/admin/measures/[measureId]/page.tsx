@@ -62,6 +62,7 @@ export default async function Page({
       imageAlt: moduleInfoTable.imageAlt,
       units: moduleTable.units,
       owner: moduleTable.owner,
+      content: moduleInfoTable.content,
     })
     .from(measureModuleTable)
     .innerJoin(moduleTable, eq(measureModuleTable.module, moduleTable.id))
@@ -83,6 +84,7 @@ export default async function Page({
       imageAlt: moduleInfoTable.imageAlt,
       units: moduleTable.units,
       owner: moduleTable.owner,
+      content: moduleInfoTable.content,
     })
     .from(moduleTable)
     .innerJoin(moduleInfoTable, eq(moduleInfoTable.id, moduleTable.id))

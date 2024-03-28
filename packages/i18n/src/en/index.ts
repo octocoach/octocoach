@@ -84,6 +84,8 @@ const en = {
         "Please answer some questions to help us assess your eligibility for this training program...",
       thankYou: "Thank you for your application!",
       weWillBeInTouch: "We will be in touch via {email:string} shortly.",
+      whileWaiting:
+        "In the meantime, here are some things you can do while you wait for our response...",
     },
   },
   address: {

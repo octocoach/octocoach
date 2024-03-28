@@ -195,7 +195,10 @@ export const matchSkill = async ({
   const skill = await findWithStringMatch(description, db);
 
   if (skill) {
-    await db.insert(skillsTasksTable).values({ taskId, skillId: skill.id });
+    await db
+      .insert(skillsTasksTable)
+      .values({ taskId, skillId: skill.id })
+      .onConflictDoNothing();
     console.log(chalk.magenta(`Skill: ${description} -> ${skill.name}`));
     return;
   }

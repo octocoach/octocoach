@@ -19,6 +19,7 @@ import {
   FaqSectionContent,
   HeroSectionContent,
   MethodSectionContent,
+  TestimonialsSectionContent,
 } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 
@@ -43,6 +44,8 @@ const getValue = ({
       return value as MethodSectionContent;
     case "mission":
       return value as SectionContentSimple;
+    case "testimonials":
+      return value as TestimonialsSectionContent;
     default:
       throw new Error(`Unknown section id: ${id}`);
   }
@@ -54,6 +57,7 @@ type ContentMap = {
   coach: CoachSectionContent;
   faq: FaqSectionContent;
   mission: SectionContentSimple;
+  testimonials: TestimonialsSectionContent;
 };
 
 export const getContent = async (slug: string): Promise<ContentMap> => {

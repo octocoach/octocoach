@@ -215,7 +215,7 @@ export const EditSectionContentWithSubSections = ({
   content: ContentLocale[];
   saveContent: (data: NewContentLocale[]) => Promise<void>;
 }) => {
-  const defaultValues: MappedDataType = mapContent("method", content);
+  const defaultValues: MappedDataType = mapContent(id, content);
 
   const onSetTitle = (title: Record<Locales, string>) => {
     store.setValues((oldValues) => ({ ...oldValues, title }));

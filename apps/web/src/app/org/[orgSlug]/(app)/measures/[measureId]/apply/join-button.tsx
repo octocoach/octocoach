@@ -46,7 +46,7 @@ export const JoinButton = ({
     return () => {
       clearInterval(interval);
     };
-  }, [startTime]);
+  }, [startTime, locale]);
 
   if (canJoin)
     return (

@@ -11,7 +11,7 @@ import {
   coachSectionId,
   faqSectionId,
   heroSectionId,
-  methodSectionId,
+  testimonialsSectionId,
 } from "@octocoach/ui";
 import { saveContent } from "src/actions/content";
 
@@ -37,8 +37,8 @@ export const EditContent = ({
         />
         <EditSectionContentWithSubSections
           content={content}
-          name="Method"
-          id={methodSectionId}
+          name="Testimonials"
+          id={testimonialsSectionId}
           saveContent={saveContentWithSlug}
         />
         <EditSectionContentSimple

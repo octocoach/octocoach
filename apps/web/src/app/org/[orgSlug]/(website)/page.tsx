@@ -5,7 +5,9 @@ import {
   CoachSection,
   FAQSection,
   HeroSection,
+  TestimonialsSection,
 } from "@octocoach/ui";
+import Image from "next/image";
 import { getContent, getMeasuresWithInfo } from "./helpers";
 
 export default async function Page({
@@ -23,6 +25,7 @@ export default async function Page({
       <HeroSection content={content.hero} />
       <Measures measures={measures} baseUrl={baseUrl} />
       <AboutSection content={content.about} />
+      <TestimonialsSection content={content.testimonials} />
       <CoachSection content={content.coach} />
       <FAQSection content={content.faq} />
     </>

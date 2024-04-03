@@ -12,12 +12,13 @@ export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
 };
 
 export type SectionId =
-  | "hero"
   | "about"
   | "coach"
-  | "method"
   | "faq"
-  | "mission";
+  | "hero"
+  | "method"
+  | "mission"
+  | "testimonials";
 
 export type SectionContent =
   | SectionContentSimple

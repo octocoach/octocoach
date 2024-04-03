@@ -40,6 +40,7 @@ export * from "./Spinner/Spinner";
 export * from "./Stack/Stack";
 export * from "./Tag/Tag";
 export * from "./Tagline/Tagline";
+export * from "./TestimonialSection/TestimonialSection";
 export * from "./Text/Text";
 export { vars } from "./theme.css";
 export * from "./types";

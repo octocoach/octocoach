@@ -25,7 +25,7 @@ export default async function Page({
       <HeroSection content={content.hero} />
       <Measures measures={measures} baseUrl={baseUrl} />
       <AboutSection content={content.about} />
-      <TestimonialsSection content={content.testimonials} Image={Image} />
+      <TestimonialsSection content={content.testimonials} />
       <CoachSection content={content.coach} />
       <FAQSection content={content.faq} />
     </>

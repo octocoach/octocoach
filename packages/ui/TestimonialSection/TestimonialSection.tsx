@@ -1,16 +1,18 @@
 "use client";
 
+import * as Scrollytelling from "@bsmnt/scrollytelling";
 import {
   SectionContentWithSubSections,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+import { useEffect, useRef, useState } from "react";
 import { Box } from "../Box/Box";
-import { Stack } from "../Stack/Stack";
-import { Grid } from "../Grid/Grid";
-import { Text } from "../Text/Text";
 import { Card } from "../Card/Card";
 import { Center } from "../Center/Center";
-import { ElementType } from "react";
+import { Grid } from "../Grid/Grid";
+import { Stack } from "../Stack/Stack";
+import { Text } from "../Text/Text";
+import { pinClass } from "./testimonial.css";
 
 export const testimonialsSectionId: SectionId = "testimonials";
 
@@ -18,56 +20,122 @@ export type TestimonialsSectionContent = SectionContentWithSubSections;
 
 export interface TestimonialsSectionProps {
   content: TestimonialsSectionContent;
-  Image: ElementType;
+}
+interface TestimonialProps {
+  content: TestimonialsSectionContent["subSections"][number];
 }
 
-const Testimonial = ({
-  content,
-  Image,
-}: {
-  content: TestimonialsSectionContent["subSections"][number];
-  Image: ElementType;
-}) => {
-  return (
-    <Card>
-      <Grid columns="auto" gap="large">
-        <Center>
-          <Image
-            src={content.image.src}
-            alt={content.image.alt}
-            width={200}
-            height={200}
-          />
-        </Center>
-        <Stack>
-          <Text>
-            <q>{content.text}</q>
-          </Text>
+const splitText = (text: string) => {
+  const words = text.split(" ");
 
-          <Text size="l" weight="medium" variation="casual" textAlign="right">
-            - {content.title}
-          </Text>
-        </Stack>
-      </Grid>
-    </Card>
+  return words.map((word, i) => (
+    <span key={i}>
+      {word}
+      {i !== words.length - 1 ? " " : ""}
+    </span>
+  ));
+};
+
+const Testimonial = ({ content }: TestimonialProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(350);
+
+  useEffect(() => {
+    const refreshClientHeight = () => {
+      if (ref.current) {
+        setHeight(ref.current.clientHeight);
+      }
+    };
+
+    refreshClientHeight();
+
+    window.addEventListener("resize", refreshClientHeight);
+    return () => {
+      window.removeEventListener("resize", refreshClientHeight);
+    };
+  }, [ref.current]);
+
+  return (
+    <Scrollytelling.Root debug={false}>
+      <Scrollytelling.Pin
+        childHeight={height}
+        pinSpacerHeight={height * 10}
+        top={80}
+        pinSpacerClassName={pinClass}
+      >
+        <Card ref={ref}>
+          <Grid columns="auto" gap="large">
+            <Center>
+              <Scrollytelling.Animation
+                tween={{
+                  start: 0,
+                  end: 100,
+                  fromTo: [{ borderRadius: 100 }, { borderRadius: 6 }],
+                }}
+              >
+                <img
+                  src={content.image.src}
+                  alt={content.image.alt}
+                  width={200}
+                  height={200}
+                  style={{ imageRendering: "pixelated" }}
+                />
+              </Scrollytelling.Animation>
+            </Center>
+            <Stack>
+              <Text>
+                <q>
+                  <Scrollytelling.Stagger
+                    tween={{
+                      start: 0,
+                      end: 80,
+                      fromTo: [
+                        {
+                          opacity: 0.2,
+                        },
+                        { opacity: 1 },
+                      ],
+                    }}
+                  >
+                    {splitText(content.text)}
+                  </Scrollytelling.Stagger>
+                </q>
+              </Text>
+
+              <Text
+                size="l"
+                weight="medium"
+                variation="casual"
+                textAlign="right"
+              >
+                <Scrollytelling.Animation
+                  tween={{
+                    start: 80,
+                    end: 90,
+                    fromTo: [{ opacity: 0.2 }, { opacity: 1 }],
+                  }}
+                >
+                  <span>- {content.title}</span>
+                </Scrollytelling.Animation>
+              </Text>
+            </Stack>
+          </Grid>
+        </Card>
+      </Scrollytelling.Pin>
+    </Scrollytelling.Root>
   );
 };
 
-export const TestimonialsSection = ({
-  content,
-  Image,
-}: TestimonialsSectionProps) => {
+export const TestimonialsSection = ({ content }: TestimonialsSectionProps) => {
   return (
     <Box>
-      <Stack spacing="loose">
-        <Text size="l" weight="light">
-          {content.title}
-        </Text>
-        <Stack>
-          {content.subSections.map((s, key) => (
-            <Testimonial content={s} key={key} Image={Image} />
-          ))}
-        </Stack>
+      <Text size="l" weight="light">
+        {content.title}
+      </Text>
+      <Stack>
+        {content.subSections.map((s, idx) => (
+          <Testimonial content={s} key={idx} />
+        ))}
       </Stack>
     </Box>
   );

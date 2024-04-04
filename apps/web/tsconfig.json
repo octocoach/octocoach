@@ -10,6 +10,7 @@
       "@config/*": ["src/config/*"],
       "@helpers/*": ["src/helpers/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@sections/*": ["src/app/org/[orgSlug]/(website)/_sections/*"],
       // https://github.com/facebook/react/issues/24304#issuecomment-1092563688
       "react": ["./node_modules/@types/react"]
     }

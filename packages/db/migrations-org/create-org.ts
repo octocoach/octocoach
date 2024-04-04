@@ -1,6 +1,6 @@
 export const meta = {
-  version: 13,
-  when: 1711615496046,
+  version: 14,
+  when: 1712232172285,
 };
 
 export const rawSql = `
@@ -106,7 +106,8 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_module" (
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure" (
 	"id" text PRIMARY KEY NOT NULL,
 	"owner" text NOT NULL,
-	"image_src" text NOT NULL
+	"image_src" text NOT NULL,
+	"accredited" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."meeting_participant" (

@@ -1,4 +1,13 @@
+import { CertquaMeasureSeal } from "@components/certqua-seal/measure";
+import { FillImage } from "@components/fill-image";
+import { FundedByBA } from "@components/funded-by-ba";
+import { getLocale } from "@helpers/locale";
+import { getBaseUrl } from "@helpers/navigation";
+import { db, orgDb } from "@octocoach/db/connection";
+import { and, eq } from "@octocoach/db/operators";
 import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
+import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import Message from "@octocoach/i18n/src/react-message";
 import {
   Box,
   ButtonLink,
@@ -8,14 +17,6 @@ import {
   Stack,
   Text,
 } from "@octocoach/ui";
-
-import { FillImage } from "@components/fill-image";
-import { getLocale } from "@helpers/locale";
-import { getBaseUrl } from "@helpers/navigation";
-import { db, orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
-import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import Message from "@octocoach/i18n/src/react-message";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -112,6 +113,20 @@ export default async function Page({ params }: PageParams) {
             <Markdown>{measure.description}</Markdown>
           </Box>
         </Grid>
+        {measure.accredited && (
+          <Box marginY="small">
+            <Stack
+              direction="horizontal"
+              align="center"
+              justify="center"
+              wrap
+              spacing="loose"
+            >
+              <CertquaMeasureSeal />
+              <FundedByBA />
+            </Stack>
+          </Box>
+        )}
         <ApplyButton baseUrl={baseUrl} id={measure.id} />
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.modules" />

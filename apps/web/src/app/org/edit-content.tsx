@@ -7,12 +7,14 @@ import {
   EditSectionContentWithSubSections,
   Stack,
   Text,
+} from "@octocoach/ui";
+import {
   aboutSectionId,
   coachSectionId,
   faqSectionId,
   heroSectionId,
   testimonialsSectionId,
-} from "@octocoach/ui";
+} from "@sections/index";
 import { saveContent } from "src/actions/content";
 
 export const EditContent = ({

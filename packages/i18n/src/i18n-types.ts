@@ -232,6 +232,10 @@ type RootTranslation = {
 		upcomingMeetings: string
 	}
 	measure: {
+		/**
+		 * 1​0​0​%​ ​f​u​n​d​e​d​ ​b​y​ ​t​h​e
+		 */
+		fundedBy: string
 		application: {
 			/**
 			 * A​p​p​l​i​c​a​t​i​o​n​ ​f​o​r
@@ -559,6 +563,10 @@ export type TranslationFunctions = {
 		upcomingMeetings: () => LocalizedString
 	}
 	measure: {
+		/**
+		 * 100% funded by the
+		 */
+		fundedBy: () => LocalizedString
 		application: {
 			/**
 			 * Application for

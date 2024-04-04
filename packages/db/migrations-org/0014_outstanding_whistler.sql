@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."measure" ADD COLUMN "accredited" boolean DEFAULT false NOT NULL;

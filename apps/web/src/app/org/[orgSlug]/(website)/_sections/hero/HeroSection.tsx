@@ -2,11 +2,11 @@ import type {
   SectionContentWithImage,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
-import { Box } from "../Box/Box";
-import { Grid } from "../Grid/Grid";
-import { Markdown } from "../Markdown/Markdown";
-import { Stack } from "../Stack/Stack";
-import { Tagline } from "../Tagline/Tagline";
+import { Box } from "@octocoach/ui/Box/Box";
+import { Grid } from "@octocoach/ui/Grid/Grid";
+import { Markdown } from "@octocoach/ui/Markdown/Markdown";
+import { Stack } from "@octocoach/ui/Stack/Stack";
+import { Tagline } from "@octocoach/ui/Tagline/Tagline";
 
 export const heroSectionId: SectionId = "hero";
 

@@ -5,13 +5,13 @@ import {
   SectionContentWithSubSections,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+import { Box } from "@octocoach/ui/Box/Box";
+import { Card } from "@octocoach/ui/Card/Card";
+import { Center } from "@octocoach/ui/Center/Center";
+import { Grid } from "@octocoach/ui/Grid/Grid";
+import { Stack } from "@octocoach/ui/Stack/Stack";
+import { Text } from "@octocoach/ui/Text/Text";
 import { useEffect, useRef, useState } from "react";
-import { Box } from "../Box/Box";
-import { Card } from "../Card/Card";
-import { Center } from "../Center/Center";
-import { Grid } from "../Grid/Grid";
-import { Stack } from "../Stack/Stack";
-import { Text } from "../Text/Text";
 import { pinClass } from "./testimonial.css";
 
 export const testimonialsSectionId: SectionId = "testimonials";

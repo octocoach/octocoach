@@ -40,7 +40,6 @@
   "dependencies": {
     "@ariakit/core": "^0.4.1",
     "@ariakit/react": "^0.4.1",
-    "@bsmnt/scrollytelling": "^0.3.3",
     "@carbon/icons-react": "^11.28.0",
     "@catppuccin/palette": "^0.1.8",
     "@lottiefiles/react-lottie-player": "^3.5.3",
@@ -54,7 +53,6 @@
     "colord": "^2.9.3",
     "date-fns": "^3.3.1",
     "date-fns-timezone": "^0.1.4",
-    "gsap": "^3.12.5",
     "just-debounce-it": "^3.2.0",
     "react-markdown": "^8.0.7",
     "rehype": "^13.0.1",

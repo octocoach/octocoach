@@ -6,8 +6,7 @@ import {
   FAQSection,
   HeroSection,
   TestimonialsSection,
-} from "@octocoach/ui";
-import Image from "next/image";
+} from "@sections/index";
 import { getContent, getMeasuresWithInfo } from "./helpers";
 
 export default async function Page({

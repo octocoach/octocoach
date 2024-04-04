@@ -2,10 +2,10 @@ import {
   SectionContentWithImage,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
-import { Box } from "../Box/Box";
-import { Markdown } from "../Markdown/Markdown";
-import { Stack } from "../Stack/Stack";
-import { Text } from "../Text/Text";
+import { Box } from "@octocoach/ui/Box/Box";
+import { Markdown } from "@octocoach/ui/Markdown/Markdown";
+import { Stack } from "@octocoach/ui/Stack/Stack";
+import { Text } from "@octocoach/ui/Text/Text";
 
 export const coachSectionId: SectionId = "coach";
 

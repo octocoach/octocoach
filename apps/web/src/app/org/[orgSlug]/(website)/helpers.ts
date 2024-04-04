@@ -13,15 +13,14 @@ import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { userTable } from "@octocoach/db/schemas/public/schema";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { notFound } from "next/navigation";
 import {
   AboutSectionContent,
   CoachSectionContent,
   FaqSectionContent,
   HeroSectionContent,
-  MethodSectionContent,
   TestimonialsSectionContent,
-} from "@octocoach/ui";
-import { notFound } from "next/navigation";
+} from "./_sections";
 
 const getValue = ({
   id,
@@ -40,14 +39,13 @@ const getValue = ({
       return value as CoachSectionContent;
     case "faq":
       return value as CoachSectionContent;
-    case "method":
-      return value as MethodSectionContent;
     case "mission":
       return value as SectionContentSimple;
     case "testimonials":
       return value as TestimonialsSectionContent;
     default:
-      throw new Error(`Unknown section id: ${id}`);
+      console.warn(`Unknown Section ID: ${id}`);
+      return {};
   }
 };
 
@@ -122,6 +120,7 @@ export const getMeasuresWithInfo = async (slug: string) => {
     .select({
       id: measureTable.id,
       title: measureInfoTable.title,
+      accredited: measureTable.accredited,
       description: measureInfoTable.description,
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
@@ -155,6 +154,7 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
     .select({
       id: measureTable.id,
       title: measureInfoTable.title,
+      accredited: measureTable.accredited,
       description: measureInfoTable.description,
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
@@ -229,6 +229,7 @@ export const getMeasureWithInfoAndModules = async (
     .select({
       id: measureTable.id,
       title: measureInfoTable.title,
+      accredited: measureTable.accredited,
       description: measureInfoTable.description,
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,

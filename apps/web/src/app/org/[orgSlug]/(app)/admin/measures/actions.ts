@@ -20,7 +20,7 @@ import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
 
 export type SaveMeasureData = {
-  measure: Omit<NewMeasure, "owner">;
+  measure: Omit<Measure, "owner">;
   measureInfo: Record<Locales, Omit<NewMeasureInfo, "locale" | "id">>;
 };
 

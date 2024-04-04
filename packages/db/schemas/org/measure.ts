@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm";
-import { json, primaryKey, serial, text } from "drizzle-orm/pg-core";
+import { boolean, json, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { mkMeasureModuleTable } from "./measure-module";
 import { ModuleWithInfo } from "./module";
-import { z } from "zod";
 
 export type Measure = ReturnType<typeof mkMeasureTable>["$inferSelect"];
 export type NewMeasure = ReturnType<typeof mkMeasureTable>["$inferInsert"];
@@ -32,6 +32,7 @@ export const mkMeasureTable = (slug: string) => {
         onUpdate: "cascade",
       }),
     imageSrc: text("image_src").notNull(),
+    accredited: boolean("accredited").notNull().default(false),
   });
 };
 

@@ -20,6 +20,7 @@ export function AddMeasure({
   const blankMeasure: SaveMeasureData["measure"] = {
     id: "",
     imageSrc: "",
+    accredited: false,
   };
 
   const blankMeasureInfo: MeasureInfoLocale = {

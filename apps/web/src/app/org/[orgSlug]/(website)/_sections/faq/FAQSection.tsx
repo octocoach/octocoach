@@ -1,11 +1,13 @@
+"use client";
+
 import {
   FAQQuestion,
   SectionContentFAQ,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+import { Box, Card, Markdown, Stack, Text } from "@octocoach/ui";
+import { CaretDown, CaretUp } from "@octocoach/ui/icons";
 import { useRef, useState } from "react";
-import { Box, Card, Markdown, Stack, Text } from "..";
-import * as Icon from "../icons";
 
 export const faqSectionId: SectionId = "faq";
 
@@ -22,16 +24,11 @@ type FAQProps = {
   isOpen: boolean;
 };
 
-export const Faq: React.FC<FAQProps> = ({
-  qa,
-  idx,
-  onOpen,
-  isOpen,
-}: FAQProps) => {
+export const Faq = ({ qa, idx, onOpen, isOpen }: FAQProps) => {
   const getButton = () => {
     return (
       <Box paddingX="extraSmall" paddingY="small">
-        {isOpen ? <Icon.CaretUp size={16} /> : <Icon.CaretDown size={16} />}
+        {isOpen ? <CaretUp size={16} /> : <CaretDown size={16} />}
       </Box>
     );
   };
@@ -81,9 +78,7 @@ export const Faq: React.FC<FAQProps> = ({
   );
 };
 
-export const FAQSection: React.FC<FAQSectionProps> = ({
-  content,
-}: FAQSectionProps) => {
+export const FAQSection = ({ content }: FAQSectionProps) => {
   const [openQA, setOpenQA] = useState<number | null>(null);
 
   return (

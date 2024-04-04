@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { style } from "@octocoach/ui/vanilla-extract";
 
 export const pinClass = style([
   {

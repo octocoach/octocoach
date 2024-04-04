@@ -79,6 +79,7 @@ const de = {
     upcomingMeetings: "Bevorstehende Termine",
   },
   measure: {
+    fundedBy: "100% finanziert von der",
     application: {
       application: "Bewerbung für",
       screeningQuestions:

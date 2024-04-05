@@ -65,7 +65,8 @@ export const callGridClass = style([
 export const localVideoTile = style([
   {
     position: "absolute",
-    width: 200,
+    height: 200,
+
     right: 10,
     bottom: 10,
   },

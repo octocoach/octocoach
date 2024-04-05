@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyVideo, useVideoTrack } from "@daily-co/daily-react";
-import { tileClass } from "./tile.css";
+import { tileClass, tileVideoClass } from "./tile.css";
 import { Username } from "./username";
 
 export const Tile = ({
@@ -23,6 +23,7 @@ export const Tile = ({
         automirror
         sessionId={id}
         type={isScreenShare ? "screenVideo" : "video"}
+        className={tileVideoClass}
       />
       {!isScreenShare && <Username id={id} isLocal={isLocal} />}
     </div>

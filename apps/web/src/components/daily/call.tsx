@@ -28,13 +28,15 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
   const onActiveSpeakerChange = ({
     activeSpeaker,
   }: DailyEventObjectActiveSpeakerChange) => {
-    setActiveSpeakerId(activeSpeaker.peerId);
+    if (activeSpeaker.peerId !== localSessionId) {
+      setActiveSpeakerId(activeSpeaker.peerId);
+    }
   };
 
   const onParticipantJoined = ({
     participant,
   }: DailyEventObjectParticipant) => {
-    if (participant.local) {
+    if (!participant.local) {
       setActiveSpeakerId(participant.session_id);
     }
   };

@@ -45,6 +45,7 @@ export const thumbsTileClass = style([
     display: "flex",
     flexDirection: "row",
     justifyItems: "center",
+    maxHeight: 200,
   },
   sprinkles({ gap: 2 }),
 ]);

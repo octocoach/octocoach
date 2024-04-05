@@ -1,6 +1,6 @@
 import { sprinkles, style, vars } from "@octocoach/ui/vanilla-extract";
 
-type Area = "main" | "tray" | "thmubs";
+type Area = "main" | "tray" | "thumbs";
 
 const mkGridTemplateAreas = (areas: Area[][]): string => {
   if (areas.length === 0) {
@@ -21,7 +21,7 @@ export const callClass = style([
     backgroundColor: vars.color.background.crust.normal,
     position: "absolute",
     display: "grid",
-    gridTemplateAreas: mkGridTemplateAreas([["main"], ["thmubs"], ["tray"]]),
+    gridTemplateAreas: mkGridTemplateAreas([["main"], ["thumbs"], ["tray"]]),
     gridTemplateRows: "1fr 200px auto",
     placeItems: "center",
     zIndex: 2,

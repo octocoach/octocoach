@@ -357,6 +357,7 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 img,
 video {
   max-width: 100%;
+  max-height: 100%;
   height: auto;
 }
 

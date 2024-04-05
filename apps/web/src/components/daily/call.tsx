@@ -10,14 +10,20 @@ import {
   useParticipantIds,
   useScreenShare,
 } from "@daily-co/daily-react";
-import { useEffect, useState } from "react";
-import { callClass, localVideoTile, mainTileClass } from "./call.css";
+import { useEffect, useMemo, useState } from "react";
+import {
+  callClass,
+  localVideoTile,
+  mainTileClass,
+  thumbsTileClass,
+} from "./call.css";
 import { Tile } from "./tile";
 import { Tray } from "./tray";
 
 export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
   const [activeSpeakerId, setActiveSpeakerId] = useState<string | null>(null);
   const [activeScreen, setActiveScreen] = useState<ScreenShare | null>(null);
+  const [remoteScreens, setRemoteScreens] = useState<ScreenShare[]>([]);
 
   const onActiveSpeakerChange = ({
     activeSpeaker,
@@ -33,16 +39,19 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
     }
   };
 
-  const { screens, isSharingScreen } = useScreenShare();
+  const { screens } = useScreenShare();
 
   useEffect(() => {
-    const remoteScreens = screens.filter((screen) => !screen.local);
+    setRemoteScreens(screens.filter((screen) => !screen.local));
+  }, [screens]);
+
+  useEffect(() => {
     if (remoteScreens.length < 1) {
       setActiveScreen(null);
     }
 
     setActiveScreen(remoteScreens[0]);
-  }, [screens]);
+  }, [remoteScreens]);
 
   const remoteParticipantsIds = useParticipantIds({
     filter: "remote",
@@ -50,33 +59,55 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
     onParticipantJoined,
   });
   const localSessionId = useLocalSessionId();
-  const isAlone = remoteParticipantsIds.length < 1 || screens.length < 1;
+  const isAlone = remoteParticipantsIds.length < 1 || remoteScreens.length < 1;
+
+  const thumbnailTiles = useMemo(() => {
+    return [
+      ...remoteScreens
+        .filter(({ session_id }) => session_id !== activeScreen?.session_id)
+        .map(({ session_id }) => ({ id: session_id, isScreenShare: true })),
+      ...remoteParticipantsIds
+        .filter((id) => !!activeScreen || id !== activeSpeakerId)
+        .map((id) => ({ id, isScreenShare: false })),
+    ];
+  }, [
+    remoteScreens,
+    remoteParticipantsIds,
+    activeScreen?.session_id,
+    activeSpeakerId,
+  ]);
 
   return (
-    <>
-      <div className={callClass}>
-        <div className={mainTileClass}>
-          {activeScreen ? (
-            <Tile
-              id={activeScreen.session_id}
-              key={activeScreen.screenId}
-              isScreenShare
-            />
-          ) : (
-            <Tile
-              id={activeSpeakerId || localSessionId}
-              isAlone={isAlone}
-              isLocal={!activeSpeakerId}
-            />
-          )}
-          {activeSpeakerId && !isAlone && (
-            <div className={localVideoTile}>
-              <Tile id={localSessionId} isAlone={isAlone} isLocal />
-            </div>
-          )}
-        </div>
-        <Tray leaveCall={leaveCall} />
+    <div className={callClass}>
+      <div className={mainTileClass}>
+        {activeScreen ? (
+          <Tile
+            id={activeScreen.session_id}
+            key={activeScreen.screenId}
+            isScreenShare
+          />
+        ) : (
+          <Tile
+            id={activeSpeakerId || localSessionId}
+            isAlone={isAlone}
+            isLocal={!activeSpeakerId}
+          />
+        )}
+        {activeSpeakerId && !isAlone && (
+          <div className={localVideoTile}>
+            <Tile id={localSessionId} isAlone={isAlone} isLocal />
+          </div>
+        )}
       </div>
-    </>
+      {thumbnailTiles.length ? (
+        <div className={thumbsTileClass}>
+          {thumbnailTiles.map(({ id, isScreenShare }) => (
+            <Tile key={id} id={id} isScreenShare={isScreenShare} />
+          ))}
+        </div>
+      ) : null}
+
+      <Tray leaveCall={leaveCall} />
+    </div>
   );
 };

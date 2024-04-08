@@ -50,6 +50,7 @@ export const thumbsTileClass = style([
     gridArea: "thumbs",
     display: "grid",
     placeItems: "center",
+    height: "100%",
     maxHeight: "100%",
   },
   sprinkles({ gap: 2 }),

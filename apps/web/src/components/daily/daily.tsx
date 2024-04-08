@@ -7,7 +7,6 @@ import { Room } from "@octocoach/daily/types";
 import { useEffect, useState } from "react";
 import { Call } from "./call";
 import { CallState } from "./types";
-import { Tray } from "./tray";
 
 export const Daily = ({
   roomName,
@@ -60,8 +59,7 @@ export const Daily = ({
       case "joined":
         return (
           <>
-            <Call />
-            <Tray leaveCall={leaveCall} />
+            <Call leaveCall={leaveCall} />
             <DailyAudio />
           </>
         );

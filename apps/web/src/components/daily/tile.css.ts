@@ -13,5 +13,6 @@ export const tileClass = style({
 });
 
 export const tileVideoClass = style({
+  overflow: "hidden",
   height: "100%",
 });

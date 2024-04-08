@@ -21,6 +21,7 @@ export const callClass = style([
     backgroundColor: vars.color.background.base.normal,
     position: "absolute",
     display: "grid",
+    gap: 6,
     gridTemplateAreas: mkGridTemplateAreas([["main"], ["thumbs"], ["tray"]]),
     gridTemplateRows: "1fr 200px auto",
     placeItems: "center",
@@ -47,10 +48,9 @@ export const mainTileClass = style([
 export const thumbsTileClass = style([
   {
     gridArea: "thumbs",
-    display: "flex",
-    flexDirection: "row",
-    justifyItems: "center",
-    maxHeight: 200,
+    display: "grid",
+    placeItems: "center",
+    maxHeight: "100%",
   },
   sprinkles({ gap: 2 }),
 ]);

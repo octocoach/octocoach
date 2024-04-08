@@ -18,7 +18,7 @@ const mkGridTemplateAreas = (areas: Area[][]): string => {
 
 export const callClass = style([
   {
-    backgroundColor: vars.color.background.crust.normal,
+    backgroundColor: vars.color.background.base.normal,
     position: "absolute",
     display: "grid",
     gridTemplateAreas: mkGridTemplateAreas([["main"], ["thumbs"], ["tray"]]),
@@ -38,6 +38,9 @@ export const mainTileClass = style([
   {
     gridArea: "main",
     position: "relative",
+    overflow: "hidden",
+    width: "100%",
+    height: "100%",
   },
 ]);
 

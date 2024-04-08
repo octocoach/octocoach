@@ -96,7 +96,7 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
             isLocal={!activeSpeakerId}
           />
         )}
-        {activeSpeakerId && !isAlone && (
+        {activeSpeakerId && (
           <div className={localVideoTile}>
             <Tile id={localSessionId} isAlone={isAlone} isLocal />
           </div>

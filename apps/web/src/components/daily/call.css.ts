@@ -72,7 +72,7 @@ export const localVideoTile = style([
   {
     position: "absolute",
     width: "20%",
-    right: "5%",
-    bottom: "5%",
+    right: 10,
+    bottom: 10,
   },
 ]);

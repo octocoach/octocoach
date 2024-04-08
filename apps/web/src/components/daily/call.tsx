@@ -75,6 +75,7 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
   }, [
     remoteScreens,
     remoteParticipantsIds,
+    activeScreen,
     activeScreen?.session_id,
     activeSpeakerId,
   ]);

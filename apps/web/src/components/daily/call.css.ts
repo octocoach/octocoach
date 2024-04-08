@@ -28,7 +28,9 @@ export const callClass = style([
     top: 0,
     left: 0,
     height: "100vh",
+    maxHeight: "100vh",
     width: "100vw",
+    maxWidth: "100vw",
   },
 ]);
 
@@ -65,9 +67,8 @@ export const callGridClass = style([
 export const localVideoTile = style([
   {
     position: "absolute",
-    height: 200,
-
-    right: 10,
-    bottom: 10,
+    width: "20%",
+    right: "5%",
+    bottom: "5%",
   },
 ]);

@@ -15,10 +15,14 @@ export class Daily {
     }
   }
 
-  private request(method: "GET" | "POST", endpoint: string, body: any) {
+  private request(
+    method: "GET" | "POST" | "DELETE",
+    endpoint: string,
+    body?: any
+  ) {
     return fetch(`https://api.daily.co/v1/${endpoint}`, {
       method,
-      body: JSON.stringify(body),
+      body: body ? JSON.stringify(body) : null,
       headers: { Authorization: `Bearer ${this.apiKey}` },
     });
   }
@@ -33,6 +37,27 @@ export class Daily {
     const room: Room = await res.json();
 
     return room;
+  }
+
+  async listRooms() {
+    const res = await this.request("GET", "rooms");
+    if (!res.ok) {
+      console.error(res.text());
+      throw new Error("Failed to fecth rooms");
+    }
+
+    const { data }: { data: Room[] } = await res.json();
+    return data;
+  }
+
+  async deleteRoom(roomName: Room["name"]) {
+    const res = await this.request("DELETE", `rooms/${roomName}`);
+    if (!res.ok) {
+      console.error(await res.text());
+      throw new Error("Could not delete room");
+    }
+
+    console.log(`Room ${roomName} deleted`);
   }
 
   async createMeetingToken(options: MeetingTokenOptions) {

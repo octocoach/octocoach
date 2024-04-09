@@ -76,7 +76,7 @@ importers:
         version: link:../../packages/ui
       '@trpc/client':
         specifier: ^10.28.2
-        version: 10.28.2(@trpc/server@10.45.2)
+        version: 10.28.2(@trpc/server@10.28.2)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -419,9 +419,15 @@ importers:
       '@types/node':
         specifier: ^20.11.18
         version: 20.11.18
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
 
   packages/db:
     dependencies:
@@ -3830,25 +3836,11 @@ packages:
       source-map-support: 0.5.21
     dev: true
 
-  /@esbuild-kit/core-utils@3.3.0:
-    resolution: {integrity: sha512-jTtSvVpr5ygNXyPXf9IBbCrKQ0uckq6vWkcGfy1fEr9KjkKdnFn4kFAGjpqZDZim1wsTwh/Be+lhAUemEmxEYA==}
-    dependencies:
-      esbuild: 0.18.20
-      source-map-support: 0.5.21
-    dev: true
-
   /@esbuild-kit/core-utils@3.3.2:
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
     dependencies:
       esbuild: 0.18.20
       source-map-support: 0.5.21
-    dev: true
-
-  /@esbuild-kit/esm-loader@2.6.3:
-    resolution: {integrity: sha512-lUziJdacVDQrg65DwQ+OOQR9B1LQE2/pY77H+oVT0KQDLtsT2XfbHz7O+f0zUvexSWPKxMXa8h4RXT5PFAlv/g==}
-    dependencies:
-      '@esbuild-kit/core-utils': 3.3.0
-      get-tsconfig: 4.7.0
     dev: true
 
   /@esbuild-kit/esm-loader@2.6.5:
@@ -7170,12 +7162,12 @@ packages:
       - supports-color
     dev: true
 
-  /@trpc/client@10.28.2(@trpc/server@10.45.2):
+  /@trpc/client@10.28.2(@trpc/server@10.28.2):
     resolution: {integrity: sha512-J8fyV5GuIekcjR70At/93jwjVpzPPI7ij7xeBnoKyv73I8lTcYsaxh1V60pH5dx0yYn6oHEEntJHs6BvQbneOw==}
     peerDependencies:
       '@trpc/server': 10.28.2
     dependencies:
-      '@trpc/server': 10.45.2
+      '@trpc/server': 10.28.2
     dev: false
 
   /@trpc/client@10.45.2(@trpc/server@10.45.2):
@@ -7200,6 +7192,10 @@ packages:
       '@trpc/server': 10.45.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@trpc/server@10.28.2:
+    resolution: {integrity: sha512-mCdMzef1NnchYyV11Dg02vu8HDyXl0elvrs2Noi261eLRIU5TwQjiSRxbw/YrDupOKKjaG4iz2i8mHR7jhlvWQ==}
     dev: false
 
   /@trpc/server@10.38.0:
@@ -19091,8 +19087,8 @@ packages:
     hasBin: true
     dependencies:
       '@esbuild-kit/cjs-loader': 2.4.2
-      '@esbuild-kit/core-utils': 3.3.0
-      '@esbuild-kit/esm-loader': 2.6.3
+      '@esbuild-kit/core-utils': 3.3.2
+      '@esbuild-kit/esm-loader': 2.6.5
     optionalDependencies:
       fsevents: 2.3.3
     dev: true

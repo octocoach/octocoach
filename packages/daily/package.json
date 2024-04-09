@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "daily": "tsx -r dotenv/config main"
+    "daily": "tsx -r dotenv/config util"
   },
   "devDependencies": {
     "@types/node": "^20.11.18",

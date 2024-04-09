@@ -5,13 +5,11 @@ import { getOrganizationWithAddressAndOwnerName } from "../helpers";
 import { makePrivacyPolicy } from "./content";
 
 export default async function Page({
-  params,
+  params: { orgSlug },
 }: {
   params: { orgSlug: string };
 }) {
-  const organization = await getOrganizationWithAddressAndOwnerName(
-    params.orgSlug
-  );
+  const organization = await getOrganizationWithAddressAndOwnerName(orgSlug);
   const locale = getLocale();
 
   if (!organization) notFound();

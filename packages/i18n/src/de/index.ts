@@ -100,6 +100,8 @@ const de = {
 
   privacyPolicy: "Datenschutzrichtlinie",
   termsOfUse: "Allgemeine Geschäftsbedingungen",
+  mission: "Leitbild",
+  imprint: "Impressum",
 } satisfies Translation;
 
 export default de;

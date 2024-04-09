@@ -6,9 +6,13 @@ type MakePrivacyPolicy = (organization: OrganizationWithContent) => string;
 export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   en: (organization) => `## Introduction
 
-  Welcome to Q15's Privacy Policy. This policy outlines how we collect, use, and protect the personal data of our clients and website visitors. Our commitment to your privacy is paramount, and we ensure that all data handling practices comply with the General Data Protection Regulation (GDPR).
+  Welcome to ${
+    organization.displayName
+  }'s Privacy Policy. This policy outlines how we collect, use, and protect the personal data of our clients and website visitors. Our commitment to your privacy is paramount, and we ensure that all data handling practices comply with the General Data Protection Regulation (GDPR).
   
-  As the provider of career coaching services for web developers, Q15 collects personal data primarily to offer and enhance our coaching services. This includes data obtained directly from clients, as well as information received through OAuth providers like GitHub, LinkedIn, and Discord for authentication and service improvement purposes.
+  As the provider of career coaching services for web developers, ${
+    organization.displayName
+  } collects personal data primarily to offer and enhance our coaching services. This includes data obtained directly from clients, as well as information received through OAuth providers like GitHub, LinkedIn, and Discord for authentication and service improvement purposes.
   
   **Data Controller**:  
   ${organization.legalName}  
@@ -19,7 +23,7 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   Email: ${organization.email}  
   Phone: ${organization.phone}
   
-  For more details on how to contact us regarding your data privacy concerns, please refer to our Impressum.
+  For more details on how to contact us regarding your data privacy concerns, please refer to our Impressum.  
   
   ## User Rights
   
@@ -94,17 +98,23 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   
   All personal data collected for these services are handled in compliance with GDPR guidelines and are used strictly for the intended purposes.
   
-  ### External Service Providers:
-  
-  For some services, we rely on external service providers. These providers are carefully selected, bound by our instructions, and regularly monitored to ensure the security and privacy of your data.
-  
+
   ## External Service Providers and Sub-Processors
-  
-  To provide our services effectively, we partner with external service providers who help us process data in various capacities.
-  
-  ### Primary External Service Provider:
-  
-  - [**Vercel**](https://vercel.com): We use Vercel for hosting our website and related services, including database storage and analytics. Vercel's role is crucial in ensuring the smooth operation and security of our digital infrastructure.
+
+  To provide our services effectively, we partner with external service providers who assist us in processing data in various capacities.
+
+  ### Primary External Service Providers:
+
+  - [**Daily.co**](https://www.daily.co/): Used for video call services. Daily.co offers a transcription feature for video calls, which utilizes Deepgram.com for processing these transcriptions. This transcription service is a vital component of our coaching services, enabling the detailed analysis necessary for personalized feedback.
+
+  - [**Deepgram.com**](https://deepgram.com/): Engaged through Daily.co for transcription services. Deepgram.com processes the audio from our video calls to provide text transcriptions.
+
+  - [**OpenAI**](https://openai.com/): Utilized for generating summaries and insights from the transcribed text. OpenAI's advanced AI models help us to analyze and summarize the content of coaching sessions, enhancing the personalized coaching experience.
+
+  - [**Vercel**](https://vercel.com/): Hosts our website and related services, including database storage and analytics. Vercel's role is crucial for the smooth operation and security of our digital infrastructure.
+
+  These providers are carefully selected and bound by our instructions, ensuring the security and privacy of your data. We ensure that our agreements with these providers comply with GDPR standards, and they are responsible for the compliance of any sub-processors they may use.
+
   
   ### Note on Sub-Processors:
   
@@ -114,7 +124,9 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   
   ## Data Security Measures
   
-  At Q15, we are committed to protecting the personal data we collect and process. We employ a range of security measures to ensure data safety and compliance with GDPR.
+  At ${
+    organization.displayName
+  }, we are committed to protecting the personal data we collect and process. We employ a range of security measures to ensure data safety and compliance with GDPR.
   
   ### Our security measures include:
   
@@ -166,9 +178,13 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   `,
   de: (organization) => `## Einleitung
 
-  Willkommen bei den Datenschutzrichtlinien von Q15. In dieser Richtlinie erfahren Sie, wie wir die persönlichen Daten unserer Kunden und Website-Besucher sammeln, verwenden und schützen. Unser Engagement für den Schutz Ihrer Daten steht an erster Stelle, und wir stellen sicher, dass alle Datenverarbeitungspraktiken mit der Allgemeinen Datenschutzverordnung (GDPR) übereinstimmen.
+  Willkommen bei den Datenschutzrichtlinien von ${
+    organization.displayName
+  }. In dieser Richtlinie erfahren Sie, wie wir die persönlichen Daten unserer Kunden und Website-Besucher sammeln, verwenden und schützen. Unser Engagement für den Schutz Ihrer Daten steht an erster Stelle, und wir stellen sicher, dass alle Datenverarbeitungspraktiken mit der Allgemeinen Datenschutzverordnung (GDPR) übereinstimmen.
   
-  Als Anbieter von Karriere-Coaching-Diensten für Webentwickler sammelt Q15 personenbezogene Daten in erster Linie, um unsere Coaching-Dienste anzubieten und zu verbessern. Dazu gehören Daten, die wir direkt von unseren Kunden erhalten, sowie Informationen, die wir über OAuth-Anbieter wie GitHub, LinkedIn und Discord zum Zwecke der Authentifizierung und Serviceverbesserung erhalten.
+  Als Anbieter von Karriere-Coaching-Diensten für Webentwickler sammelt ${
+    organization.displayName
+  } personenbezogene Daten in erster Linie, um unsere Coaching-Dienste anzubieten und zu verbessern. Dazu gehören Daten, die wir direkt von unseren Kunden erhalten, sowie Informationen, die wir über OAuth-Anbieter wie GitHub, LinkedIn und Discord zum Zwecke der Authentifizierung und Serviceverbesserung erhalten.
   
   **Datenverantwortlicher**:  
   ${organization.legalName}  
@@ -254,17 +270,21 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   
   Alle persönlichen Daten, die für diese Dienste erhoben werden, werden in Übereinstimmung mit den GDPR-Richtlinien behandelt und ausschließlich für die vorgesehenen Zwecke verwendet.
   
-  ### Externe Dienstleister:
-  
-  Für einige Dienste verlassen wir uns auf externe Dienstleister. Diese Anbieter werden sorgfältig ausgewählt, sind an unsere Anweisungen gebunden und werden regelmäßig überwacht, um die Sicherheit und den Schutz Ihrer Daten zu gewährleisten.
-  
   ## Externe Dienstleister und Unterauftragsverarbeiter
-  
+
   Um unsere Dienste effektiv anbieten zu können, arbeiten wir mit externen Dienstleistern zusammen, die uns bei der Verarbeitung von Daten in verschiedenen Funktionen unterstützen.
   
-  ### Primärer externer Dienstanbieter:
+  ### Primäre externe Dienstanbieter:
   
-  - [**Vercel**](https://vercel.com): Wir nutzen Vercel für das Hosting unserer Website und die damit verbundenen Dienste, einschließlich der Speicherung von Datenbanken und Analysen. Die Rolle von Vercel ist entscheidend für den reibungslosen Betrieb und die Sicherheit unserer digitalen Infrastruktur.
+  - [**Daily.co**](https://www.daily.co/): Wird für Videogesprächsdienste verwendet. Daily.co bietet eine Transkriptionsfunktion für Videogespräche, die Deepgram.com für die Verarbeitung dieser Transkriptionen nutzt. Dieser Transkriptionsdienst ist ein wesentlicher Bestandteil unserer Coaching-Dienste, da er die detaillierte Analyse ermöglicht, die für ein personalisiertes Feedback erforderlich ist.
+
+  - [**Deepgram.com**](https://deepgram.com/): Wird durch Daily.co für Transkriptionsdienste engagiert. Deepgram.com verarbeitet die Audioinhalte unserer Videogespräche, um Texttranskriptionen zu erstellen.
+
+  - [**OpenAI**](https://openai.com/): Wird genutzt, um Zusammenfassungen und Einblicke aus dem transkribierten Text zu generieren. Die fortgeschrittenen KI-Modelle von OpenAI helfen uns, den Inhalt der Coaching-Sitzungen zu analysieren und zusammenzufassen, was das personalisierte Coaching-Erlebnis verbessert.
+
+  - [**Vercel**](https://vercel.com/): Hostet unsere Website und die damit verbundenen Dienste, einschließlich der Speicherung von Datenbanken und Analysen. Die Rolle von Vercel ist entscheidend für den reibungslosen Betrieb und die Sicherheit unserer digitalen Infrastruktur.
+  
+  Diese Anbieter sind sorgfältig ausgewählt und an unsere Anweisungen gebunden, um die Sicherheit und den Schutz Ihrer Daten zu gewährleisten. Wir stellen sicher, dass unsere Vereinbarungen mit diesen Anbietern die Standards der GDPR einhalten, und diese Anbieter sind für die Einhaltung der Vorschriften durch ihre Unterauftragsverarbeiter verantwortlich.
   
   ### Hinweis zu Unterauftragsverarbeitern:
   
@@ -274,7 +294,9 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   
   ## Maßnahmen zur Datensicherheit
   
-  Wir bei Q15 verpflichten uns, die von uns erhobenen und verarbeiteten personenbezogenen Daten zu schützen. Wir setzen eine Reihe von Sicherheitsmaßnahmen ein, um die Datensicherheit und die Einhaltung der GDPR zu gewährleisten.
+  Wir bei ${
+    organization.displayName
+  } verpflichten uns, die von uns erhobenen und verarbeiteten personenbezogenen Daten zu schützen. Wir setzen eine Reihe von Sicherheitsmaßnahmen ein, um die Datensicherheit und die Einhaltung der GDPR zu gewährleisten.
   
   ### Unsere Sicherheitsmaßnahmen umfassen:
   

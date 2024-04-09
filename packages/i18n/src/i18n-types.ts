@@ -290,6 +290,14 @@ type RootTranslation = {
 	 * T​e​r​m​s​ ​o​f​ ​U​s​e
 	 */
 	termsOfUse: string
+	/**
+	 * M​i​s​s​i​o​n
+	 */
+	mission: string
+	/**
+	 * I​m​p​r​i​n​t
+	 */
+	imprint: string
 }
 
 export type NamespaceSignupTranslation = {
@@ -620,6 +628,14 @@ export type TranslationFunctions = {
 	 * Terms of Use
 	 */
 	termsOfUse: () => LocalizedString
+	/**
+	 * Mission
+	 */
+	mission: () => LocalizedString
+	/**
+	 * Imprint
+	 */
+	imprint: () => LocalizedString
 	signup: {
 		/**
 		 * Welcome to {name}

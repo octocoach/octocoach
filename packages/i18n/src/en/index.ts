@@ -99,6 +99,8 @@ const en = {
 
   privacyPolicy: "Privacy Policy",
   termsOfUse: "Terms of Use",
+  mission: "Mission",
+  imprint: "Imprint",
 } satisfies BaseTranslation;
 
 export default en;

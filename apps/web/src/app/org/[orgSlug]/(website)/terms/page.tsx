@@ -1,9 +1,18 @@
-import { Box, Text } from "@octocoach/ui";
+import { getLocale } from "@helpers/locale";
+import { Markdown } from "@octocoach/ui";
+import { notFound } from "next/navigation";
+import { getOrganizationWithAddressAndOwnerName } from "../helpers";
+import { makeTerms } from "./content";
 
-export default function Page({ params }: { params: { orgSlug: string } }) {
-  return (
-    <Box textAlign="center">
-      <Text size="l">Terms of Use</Text>
-    </Box>
-  );
+export default async function Page({
+  params: { orgSlug },
+}: {
+  params: { orgSlug: string };
+}) {
+  const organization = await getOrganizationWithAddressAndOwnerName(orgSlug);
+  const locale = getLocale();
+
+  if (!organization) notFound();
+
+  return <Markdown>{makeTerms[locale](organization)}</Markdown>;
 }

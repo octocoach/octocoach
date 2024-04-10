@@ -14,7 +14,6 @@
     "@daily-co/daily-react": "^0.18.0",
     "@formatjs/intl-localematcher": "^0.4.0",
     "@octocoach/auth": "workspace:^",
-    "@octocoach/azav": "workspace:^",
     "@octocoach/charts": "workspace:^",
     "@octocoach/daily": "workspace:^",
     "@octocoach/db": "workspace:^",

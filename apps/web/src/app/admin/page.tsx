@@ -8,9 +8,6 @@ export default function Page() {
   const { LL } = useI18nContext();
   return (
     <Stack>
-      <Link href="/admin/accreditation">
-        <Text>{LL.ACCREDITATION()}</Text>
-      </Link>
       <Link href="/admin/jobs">
         <Text>{LL.JOBS()}</Text>
       </Link>

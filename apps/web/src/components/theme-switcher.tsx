@@ -23,7 +23,7 @@ const ThemeSwitcher = () => {
           const f = getSystemTheme();
           setFlavor(f);
           startTransition(() => {
-            removeTheme();
+            void removeTheme();
           });
           return true;
         }}
@@ -35,7 +35,7 @@ const ThemeSwitcher = () => {
           setValueOnClick={() => {
             setFlavor(f);
             startTransition(() => {
-              setTheme(f);
+              void setTheme(f);
             });
             return true;
           }}

@@ -5,7 +5,6 @@
   "types": "./index.tsx",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint \"**/*.ts*\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -26,9 +25,6 @@
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "csstype": "^3.1.2",
-    "eslint": "^7.32.0",
-    "eslint-config-custom": "workspace:*",
-    "eslint-plugin-storybook": "^0.6.12",
     "globby": "^13.1.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -64,10 +60,5 @@
     "date-fns": "^3.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
   }
 }

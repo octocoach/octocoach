@@ -1,5 +1,7 @@
-const { createVanillaExtractPlugin } = require("@vanilla-extract/next-plugin");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
+import { createVanillaExtractPlugin } from "@vanilla-extract/next-plugin";
+import bundleAnalyzer from "@next/bundle-analyzer";
+const withBundleAnalyzer = bundleAnalyzer({
+  // eslint-disable-next-line no-undef
   enabled: process.env.ANALYZE === "true",
 });
 
@@ -26,6 +28,9 @@ const nextConfig = {
     "@octocoach/ui",
     "@octocoach/db",
   ],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config = {
       ...config,
@@ -35,4 +40,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(withVanillaExtract(nextConfig));
+export default withBundleAnalyzer(withVanillaExtract(nextConfig));

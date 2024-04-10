@@ -20,7 +20,7 @@ import { CreateOrganization, createOrganization } from "./actions";
 export const NewOrganization = () => {
   const sluggify = (input: string): string =>
     input
-      .replace(/[\-_\+]/g, " ")
+      .replace(/[-_+]/g, " ")
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .split(" ")
       .reduce(
@@ -41,7 +41,7 @@ export const NewOrganization = () => {
   const [isSlugModified, setIsSlugModified] = useState(false);
 
   const onChange = (values: CreateOrganization) => {
-    const abbreviation: string = !!values.legalForm
+    const abbreviation: string = values.legalForm
       ? legalForm[values.legalForm].abbreviation
       : "";
     if (!isSlugModified && store.getValue("displayName") !== name) {

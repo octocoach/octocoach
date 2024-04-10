@@ -4,6 +4,7 @@ import { authOrRedirect } from "@helpers/auth";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import {
   Module,
   NewModule,
@@ -17,6 +18,9 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";
 import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
+
+const serialize = <T extends object>(obj: T) =>
+  JSON.parse(JSON.stringify(obj)) as T;
 
 export type SaveModuleData = {
   module: Omit<NewModule, "owner">;
@@ -49,7 +53,7 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
   });
 
   if (moduleResult.success === false) {
-    errors.module = JSON.parse(JSON.stringify(moduleResult.error));
+    errors.module = serialize(moduleResult.error);
   }
 
   const moduleInfoToInsert: SafeParseSuccess<NewModuleInfo>["data"][] = [];
@@ -63,7 +67,7 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
 
     if (result.success === false) {
       // We need to clone the error object because it's not serializable
-      errors.moduleInfo[locale] = JSON.parse(JSON.stringify(result.error));
+      errors.moduleInfo[locale] = serialize(result.error);
     } else {
       moduleInfoToInsert.push(result.data);
     }
@@ -83,10 +87,10 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
       .onConflictDoUpdate({
         target: moduleTable.id,
         set: moduleResult.data,
-        where: eq(moduleTable.id, moduleResult.data.id!),
+        where: eq(moduleTable.id, moduleResult.data.id),
       })
       .returning()
-      .then((rows) => rows[0]?.id!);
+      .then((rows) => getFirstRow(rows).id);
 
     for (const info of moduleInfoToInsert) {
       await trx

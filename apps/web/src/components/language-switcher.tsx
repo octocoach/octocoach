@@ -8,13 +8,7 @@ import { Language } from "@octocoach/ui/icons";
 import { useTransition } from "react";
 import { saveLocale } from "src/actions/language";
 
-const LanguageSwitcher = ({
-  locale,
-  baseUrl,
-}: {
-  locale: Locales;
-  baseUrl: string;
-}) => {
+const LanguageSwitcher = ({ locale }: { locale: Locales }) => {
   const { LL } = useI18nContext();
 
   const [isPending, startTransition] = useTransition();
@@ -31,7 +25,7 @@ const LanguageSwitcher = ({
           value={LL.languages[locale]()}
           setValueOnClick={() => {
             startTransition(() => {
-              saveLocale(locale).then(() => {
+              void saveLocale(locale).then(() => {
                 window.location.reload();
               });
             });

@@ -1,0 +1,13 @@
+{
+  "name": "@octocoach/eslint-config",
+  "private": "true",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": "./index.js",
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^7.6.0"
+  }
+}

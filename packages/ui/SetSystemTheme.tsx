@@ -1,13 +1,13 @@
 "use client";
 
+import { FlavorName } from "@catppuccin/palette";
 import { useEffect } from "react";
 import { getSystemTheme, prefersDarkQuery } from "./helpers";
 import { flavors, themeClass } from "./theme.css";
-import { Flavor } from "./theme/creator";
 
 export { getSystemTheme };
 
-export const setFlavor = (flavor: Flavor) => {
+export const setFlavor = (flavor: FlavorName) => {
   for (const f of flavors) {
     document.documentElement.classList.remove(themeClass[f]);
   }

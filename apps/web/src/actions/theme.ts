@@ -1,9 +1,9 @@
 "use server";
 
-import { Flavor } from "@octocoach/ui/theme/creator";
+import { FlavorName } from "@octocoach/ui/theme/creator";
 import { cookies } from "next/headers";
 
-export const setTheme = async (theme: Flavor) => {
+export const setTheme = async (theme: FlavorName) => {
   cookies().set("theme", theme);
   return theme;
 };

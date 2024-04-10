@@ -1,5 +1,5 @@
+import { FlavorName } from "@catppuccin/palette";
 import { themeValue } from "../theme.css";
-import { Flavor } from "../theme/creator";
 
 export const makePixelBackground = ({
   el,
@@ -8,7 +8,7 @@ export const makePixelBackground = ({
 }: {
   el: HTMLDivElement;
   pixelSize: number;
-  flavor?: Flavor;
+  flavor?: FlavorName;
 }) => {
   const imageWidth = el?.clientWidth || 0;
   const imageHeight = el?.clientHeight || 0;

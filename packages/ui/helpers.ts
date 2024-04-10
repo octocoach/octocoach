@@ -1,3 +1,4 @@
+import { FlavorName } from "@catppuccin/palette";
 import {
   ContentLocale,
   ContentLocaleTypeOf,
@@ -6,7 +7,6 @@ import {
 } from "@octocoach/db/schemas/org/content";
 import type { Locales } from "@octocoach/i18n/src/i18n-types";
 import { colord } from "colord";
-import { Flavor } from "./theme/creator";
 
 export const createAlpha = (color: string, alpha: number) =>
   colord(color).alpha(alpha).toHslString();
@@ -93,6 +93,6 @@ export const isDarkMode = () => {
   return window.matchMedia(prefersDarkQuery).matches;
 };
 
-export const getSystemTheme = (): Flavor => {
+export const getSystemTheme = (): FlavorName => {
   return isDarkMode() ? "mocha" : "latte";
 };

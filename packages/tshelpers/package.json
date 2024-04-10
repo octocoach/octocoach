@@ -1,6 +1,7 @@
 {
   "name": "@octocoach/tshelpers",
   "devDependencies": {
+    "@octocoach/typescript-config": "workspace:^",
     "typescript": "^5.3.3"
   }
 }

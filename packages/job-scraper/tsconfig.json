@@ -1,0 +1,4 @@
+{
+  "extends": "@octocoach/typescript-config/base.json",
+  "include": ["."]
+}

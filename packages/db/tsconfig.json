@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "@octocoach/typescript-config/base.json",
   "compilerOptions": {
     "lib": ["ES2021", "DOM"],
     "module": "ES2022",

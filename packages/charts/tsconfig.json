@@ -1,6 +1,6 @@
 {
   "compilerOptions": { "lib": ["ES2017", "DOM"] },
-  "extends": "tsconfig/react-library.json",
+  "extends": "@octocoach/typescript-config/react-library.json",
   "include": ["."],
   "exclude": ["node_modules"]
 }

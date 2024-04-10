@@ -55,7 +55,7 @@
     "encoding": "^0.1.13",
     "eslint-config-custom": "workspace:*",
     "sharp": "^0.33.1",
-    "tsconfig": "workspace:*",
+    "@octocoach/typescript-config": "workspace:*",
     "typescript": "^5.3.3"
   },
   "engines": {

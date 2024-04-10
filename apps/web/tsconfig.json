@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@octocoach/typescript-config/nextjs.json",
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
     "target": "es2017",

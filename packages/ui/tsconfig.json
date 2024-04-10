@@ -2,7 +2,7 @@
   "compilerOptions": {
     "paths": { "react": ["./node_modules/@types/react"] }
   },
-  "extends": "tsconfig/react-library.json",
+  "extends": "@octocoach/typescript-config/react-library.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

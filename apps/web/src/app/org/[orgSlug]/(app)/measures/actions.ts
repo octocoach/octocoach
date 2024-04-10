@@ -44,7 +44,13 @@ export const createMeeting = async (
       .insert(meetingTable)
       .values(meeting)
       .returning()
-      .then((rows) => rows[0].id);
+      .then((rows) => rows[0]?.id ?? null);
+
+    if (!meetingId) {
+      console.error("Error adding meeting");
+      await trx.rollback();
+      return;
+    }
 
     await trx.insert(meetingParticipantTable).values({
       user: user.id,

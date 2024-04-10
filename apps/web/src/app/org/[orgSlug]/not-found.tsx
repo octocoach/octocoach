@@ -1,5 +1,5 @@
 import { Text } from "@octocoach/ui";
 
 export default function NotFound() {
-  return <Text>This organization does not exist</Text>;
+  return <Text>Oops, the requested resource could not be found.</Text>;
 }

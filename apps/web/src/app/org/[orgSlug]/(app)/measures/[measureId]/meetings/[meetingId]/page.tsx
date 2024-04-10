@@ -6,6 +6,7 @@ import { and, eq } from "@octocoach/db/operators";
 import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params: { orgSlug, meetingId },
@@ -42,6 +43,8 @@ export default async function Page({
     )
     .where(eq(meetingTable.id, meetingId))
     .then((rows) => rows[0] ?? null);
+
+  if (!meeting) notFound();
 
   if (!meeting.roomName) return <Text>No room created</Text>;
 

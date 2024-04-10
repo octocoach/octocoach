@@ -48,9 +48,14 @@ const mapContent = (id: SectionId, input: ContentLocale[]) => {
   const questions: Record<Locales, FAQQuestion>[] = [];
 
   for (let i = 0; i < enValue.questions.length; i++) {
+    const en = enValue.questions[i];
+    const de = deValue.questions[i];
+
+    if (!en || !de) throw new Error("Missing Content Locale");
+
     questions[i] = {
-      en: enValue.questions[i],
-      de: deValue.questions[i],
+      en,
+      de,
     };
   }
 

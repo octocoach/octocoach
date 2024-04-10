@@ -5,6 +5,7 @@ import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { availability as defaultAvailability } from "@octocoach/ui/Scheduler/constants";
 import { Stack } from "@octocoach/ui/Stack/Stack";
+import { notFound } from "next/navigation";
 import { CoachPreferences } from "./coach-preferences";
 import { LinkAccount } from "./link-account";
 
@@ -35,6 +36,8 @@ export default async function Page({
     .from(coachTable)
     .where(eq(coachTable.userId, user.id))
     .then((rows) => rows[0] ?? null);
+
+  if (!coach) notFound();
 
   const availability = coach.availability ?? defaultAvailability;
   const externalCalendars = coach.externalCalendars ?? {

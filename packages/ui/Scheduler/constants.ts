@@ -28,7 +28,7 @@ export const afternoon: Slot = {
 
 const workDay = [morning, afternoon];
 
-export const availability: Availability = {
+export const availability = {
   0: [],
   1: [afternoon],
   2: workDay,
@@ -36,6 +36,6 @@ export const availability: Availability = {
   4: workDay,
   5: [morning],
   6: [],
-};
+} satisfies Availability;
 
 export const coachTimezone = "Europe/Berlin";

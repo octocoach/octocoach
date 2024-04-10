@@ -8,6 +8,9 @@ function getKeys() {
   }
 
   const [key, iv] = keyIv.split(":");
+
+  if (!key || !iv) throw new Error("Malformed Key!");
+
   return { key, iv };
 }
 

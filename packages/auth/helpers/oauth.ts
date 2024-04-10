@@ -76,7 +76,7 @@ export const refreshGoogleToken = async ({
       and(eq(accountTable.userId, userId), eq(accountTable.provider, "google"))
     )
     .returning()
-    .then((rows) => rows[0]);
+    .then((rows) => rows[0]!);
 
   return account;
 };
@@ -95,7 +95,7 @@ export const getAccessToken = async ({
   const db = orgDb(orgSlug);
   const { accountTable } = mkOrgSchema(orgSlug);
 
-  const { accessToken, expiresAt } = await db
+  const row = await db
     .select({
       accessToken: accountTable.access_token,
       expiresAt: accountTable.expires_at,
@@ -105,6 +105,10 @@ export const getAccessToken = async ({
       and(eq(accountTable.userId, userId), eq(accountTable.provider, provider))
     )
     .then((rows) => rows[0] ?? null);
+
+  if (!row) throw new Error(`Couldn't find tokens in db for user ${userId}`);
+
+  const { accessToken, expiresAt } = row;
 
   if (!accessToken) throw new Error(`Missing access_token for user ${userId}`);
 

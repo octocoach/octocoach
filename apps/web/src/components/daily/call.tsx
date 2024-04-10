@@ -48,8 +48,9 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
   }, [screens]);
 
   useEffect(() => {
-    if (remoteScreens.length < 1) {
+    if (!remoteScreens[0]) {
       setActiveScreen(null);
+      return;
     }
 
     setActiveScreen(remoteScreens[0]);

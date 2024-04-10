@@ -18,10 +18,19 @@ export const mapMeasureInfo = (measureInfo: SaveMeasureData["measureInfo"]) => {
       de: measureInfo.de.imageAlt,
     },
     screeningQuestions:
-      measureInfo.en.screeningQuestions?.map((en, i) => ({
-        en,
-        de: measureInfo.de.screeningQuestions![i],
-      })) || [],
+      measureInfo.en.screeningQuestions?.map((en, i) => {
+        const screeningQuestionsDe = measureInfo.de.screeningQuestions;
+        if (!screeningQuestionsDe)
+          throw new Error("Missing German screeningQuestions");
+
+        const de = screeningQuestionsDe[i];
+        if (!de)
+          throw new Error(`Missing German screeningQuestion with index ${i}`);
+        return {
+          en,
+          de,
+        };
+      }) || [],
   };
 };
 

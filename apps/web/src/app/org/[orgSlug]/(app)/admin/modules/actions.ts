@@ -86,7 +86,7 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
         where: eq(moduleTable.id, moduleResult.data.id!),
       })
       .returning()
-      .then((rows) => rows[0]?.id);
+      .then((rows) => rows[0]?.id!);
 
     for (const info of moduleInfoToInsert) {
       await trx

@@ -107,7 +107,7 @@ export const CoachPreferences = ({
               store.getValue($.externalCalendars).google[userEmail]
             }
           >
-            {calendars.google[userEmail].map((calendar) => (
+            {calendars.google[userEmail]?.map((calendar) => (
               <Checkbox
                 label={calendar.summary}
                 value={calendar.id}

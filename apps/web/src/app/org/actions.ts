@@ -51,7 +51,7 @@ export async function createOrganization({
       .insert(addressTable)
       .values({ addressLine1, addressLine2, city, postcode, state, country })
       .returning()
-      .then(([{ id }]) => id);
+      .then((rows) => rows[0]?.id!);
 
     await tx.insert(organizationTable).values({
       displayName,

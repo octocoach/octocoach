@@ -19,7 +19,7 @@ export function authDrizzleAdapter(
         .insert(userTable)
         .values({ ...user, id: nanoid() })
         .returning()
-        .then((rows) => rows[0]);
+        .then((rows) => rows[0]!);
     },
     async getUser(id) {
       return await db
@@ -40,7 +40,7 @@ export function authDrizzleAdapter(
         .insert(sessionTable)
         .values(session)
         .returning()
-        .then((rows) => rows[0]);
+        .then((rows) => rows[0]!);
     },
     async getSessionAndUser(sessionToken) {
       return await db
@@ -59,7 +59,7 @@ export function authDrizzleAdapter(
         .set(user)
         .where(eq(userTable.id, user.id))
         .returning()
-        .then((rows) => rows[0]);
+        .then((rows) => rows[0]!);
     },
     async updateSession(session) {
       return await db
@@ -74,7 +74,7 @@ export function authDrizzleAdapter(
         .insert(accountTable)
         .values(account)
         .returning()
-        .then((rows) => rows[0]);
+        .then((rows) => rows[0]!);
 
       return {
         ...updatedAccount,
@@ -149,6 +149,8 @@ export function authDrizzleAdapter(
           userId: accountTable.userId,
         })
         .then((rows) => rows[0] ?? null);
+
+      if (!deletedAccount) throw new Error("Could not find account to unlink!");
 
       return deletedAccount;
     },

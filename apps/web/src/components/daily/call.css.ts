@@ -3,11 +3,12 @@ import { sprinkles, style, vars } from "@octocoach/ui/vanilla-extract";
 type Area = "main" | "tray" | "thumbs";
 
 const mkGridTemplateAreas = (areas: Area[][]): string => {
-  if (areas.length === 0) {
+  const area = areas[0];
+  if (!area) {
     throw new Error("Area list can't be empty");
   }
 
-  const { length } = areas[0];
+  const { length } = area;
 
   if (!areas.every((area) => area.length === length)) {
     throw new Error("Grid Template Areas must have the same length");

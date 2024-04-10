@@ -106,7 +106,7 @@ export const getContentById = async <T>(slug: string, id: SectionId) => {
       )
     )
     .where(eq(contentTable.id, id))
-    .then((rows) => (rows[0].value as T) ?? null);
+    .then((rows) => (rows[0]?.value as T) ?? null);
 
   return content;
 };
@@ -298,12 +298,14 @@ export const getOrganizationWithAddressAndOwnerName = async (slug: string) => {
     .innerJoin(userTable, eq(userTable.id, organizationTable.owner))
     .where(eq(organizationTable.slug, slug))
     .then((rows) => {
-      if (rows.length !== 1) notFound();
+      const row = rows[0];
+
+      if (!row) notFound();
 
       return {
-        ...rows[0].organization,
-        address: rows[0].address!,
-        ownerName: rows[0].user.name!,
+        ...row.organization,
+        address: row.address!,
+        ownerName: row.user.name!,
       };
     });
 };

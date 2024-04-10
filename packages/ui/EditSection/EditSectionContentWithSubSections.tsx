@@ -51,9 +51,12 @@ const mapContent = (id: SectionId, input: ContentLocale[]) => {
   const subSections: Record<Locales, SectionContentWithImage>[] = [];
 
   for (let i = 0; i < enValue.subSections.length; i++) {
+    const en = enValue.subSections[i];
+    const de = deValue.subSections[i];
+    if (!en || !de) throw new Error("Missing Content Locale");
     subSections[i] = {
-      en: enValue.subSections[i],
-      de: deValue.subSections[i],
+      en,
+      de,
     };
   }
 

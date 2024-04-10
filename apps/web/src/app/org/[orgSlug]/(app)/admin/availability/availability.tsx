@@ -1,6 +1,11 @@
 "use client";
 
-import { Availability, Slot, Time } from "@octocoach/db/schemas/org/coach";
+import {
+  Availability,
+  DayIndex,
+  Slot,
+  Time,
+} from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";
 import { Button, Card, Select, SelectItem, Stack, Text } from "@octocoach/ui";
@@ -101,7 +106,7 @@ export const EditAvailability = ({
 
   if (!availability) return null;
 
-  const onAddSlot = (day: number) => {
+  const onAddSlot = (day: DayIndex) => {
     const newAvailability = { ...availability };
     newAvailability[day] = [
       ...availability[day],

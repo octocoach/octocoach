@@ -1,4 +1,4 @@
-import { Availability } from "@octocoach/db/schemas/org/coach";
+import { Availability, DayIndex } from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Interval,
@@ -9,7 +9,7 @@ import {
   isFuture,
   isSameDay,
 } from "date-fns";
-import { convertToTimeZone, convertToLocalTime } from "date-fns-timezone";
+import { convertToLocalTime, convertToTimeZone } from "date-fns-timezone";
 import { de, enUS } from "date-fns/locale";
 
 export const isAvailable = (
@@ -58,7 +58,7 @@ export const getSlots = ({
   const today = coachDate;
   const tomorrow = addDays(coachDate, 1);
 
-  const todaySlots = availability[today.getDay()].map(
+  const todaySlots = availability[today.getDay() as DayIndex].map(
     ({ startTime, endTime }) => ({
       start: convertToLocalTime(
         new Date(
@@ -83,7 +83,7 @@ export const getSlots = ({
     })
   );
 
-  const tomorrowSlots = availability[tomorrow.getDay()].map(
+  const tomorrowSlots = availability[tomorrow.getDay() as DayIndex].map(
     ({ startTime, endTime }) => ({
       start: convertToLocalTime(
         new Date(

@@ -90,7 +90,7 @@ export const saveMeasure = async (
         where: eq(measureTable.id, measureResult.data.id!),
       })
       .returning()
-      .then((rows) => rows[0]?.id);
+      .then((rows) => rows[0]?.id!);
 
     for (const info of measureInfoToInsert) {
       await trx

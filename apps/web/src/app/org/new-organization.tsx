@@ -56,7 +56,7 @@ export const NewOrganization = () => {
       displayName: "",
       slug: "",
       legalName: "",
-      legalForm: "",
+      legalForm: "EU",
       addressLine1: "",
       addressLine2: "",
       city: "",

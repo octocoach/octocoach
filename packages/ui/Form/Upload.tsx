@@ -15,6 +15,9 @@ export default function Upload({
       throw new Error("No files selected");
     }
     const file = event.target.files[0];
+
+    if (!file) throw new Error("Missing File");
+
     let url = `/api/blob?filename=${file.name}`;
     if (orgSlug) {
       url += `&orgSlug=${orgSlug}`;

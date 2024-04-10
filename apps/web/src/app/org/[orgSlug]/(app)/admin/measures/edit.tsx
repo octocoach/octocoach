@@ -166,10 +166,13 @@ export function EditMeasure({
 
   const addQuestionOption = (idx: number) => {
     for (const locale of dbLocales) {
-      const options =
-        store.getState().values.mappedMeasureInfo.screeningQuestions[idx][
-          locale
-        ].options || ([] as string[]);
+      const question =
+        store.getState().values.mappedMeasureInfo.screeningQuestions[idx];
+      if (!question) throw new Error("Can't find question");
+      const questionLocale = question[locale];
+
+      if (!questionLocale) throw new Error("Can't find question locale");
+      const options = questionLocale.options || ([] as string[]);
 
       store.setValue(
         `mappedMeasureInfo.screeningQuestions.${idx}.${locale}.options`,

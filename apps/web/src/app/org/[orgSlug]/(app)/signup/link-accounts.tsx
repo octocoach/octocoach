@@ -1,13 +1,11 @@
 "use client";
 
-import { getUserAccounts } from "@octocoach/auth/adapters";
+import { OAuthProvidersWithAccount } from "@octocoach/auth";
 import { signIn } from "@octocoach/auth/react";
+import { getEntries } from "@octocoach/tshelpers";
 import { Button, Card, Container, Stack, Text, vars } from "@octocoach/ui";
 import * as Icon from "@octocoach/ui/icons";
 import { ReactElement } from "react";
-
-export type AsyncReturnType<T extends (..._args: any) => Promise<any>> =
-  Awaited<ReturnType<T>>;
 
 const getProviderIcon = (provider: string): ReactElement => {
   switch (provider) {
@@ -25,14 +23,14 @@ const getProviderIcon = (provider: string): ReactElement => {
 export default function LinkAccounts({
   accounts,
 }: {
-  accounts: AsyncReturnType<typeof getUserAccounts>;
+  accounts: OAuthProvidersWithAccount;
 }) {
   return (
     <Container element="section">
       <Stack>
         <Text variation="heading">Please link your social accounts</Text>
         <Stack>
-          {Object.entries(accounts).map(([key, provider]) => (
+          {getEntries(accounts).map(([key, provider]) => (
             <Card key={key}>
               <Stack direction="horizontal">
                 <Stack direction="horizontal" spacing="tight" align="center">
@@ -43,7 +41,7 @@ export default function LinkAccounts({
                 </Stack>
 
                 {!provider.dbAccount ? (
-                  <Button onClick={() => signIn(key)}>Link Account</Button>
+                  <Button onClick={() => void signIn(key)}>Link Account</Button>
                 ) : (
                   <Icon.CheckmarkFilled
                     size="32"

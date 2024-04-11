@@ -30,7 +30,7 @@ const skillLevels: Record<SkillLevel, number> = {
 const Stars = ({ skillLevel }: { skillLevel: SkillLevel }) => {
   return (
     <Stack direction="horizontal">
-      {Array.from(Array(skillLevels[skillLevel])).map((key) => (
+      {Array.from(Array(skillLevels[skillLevel]).keys()).map((key) => (
         <StarFilled key={key} />
       ))}
     </Stack>

@@ -10,13 +10,13 @@ export const TaskCheck = ({
   submitAnswer,
 }: {
   task: Pick<Task, "id" | "question">;
-  submitAnswer: (args: AddUserTaskInterest) => void;
+  submitAnswer: (args: AddUserTaskInterest) => Promise<void>;
 }) => {
   const [isPending, startTransition] = useTransition();
 
   const onAnswer = (answer: Answer) => {
     startTransition(() => {
-      submitAnswer({ answer, taskId: task.id });
+      void submitAnswer({ answer, taskId: task.id });
     });
   };
 

@@ -1,10 +1,11 @@
 "use server";
 
 import { authOrRedirect } from "@helpers/auth";
+import { serialize } from "@helpers/index";
 import { getBaseUrl, orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
+import { and, eq } from "@octocoach/db/operators";
 import {
   Module,
   NewModule,
@@ -18,9 +19,6 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";
 import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
-
-const serialize = <T extends object>(obj: T) =>
-  JSON.parse(JSON.stringify(obj)) as T;
 
 export type SaveModuleData = {
   module: Omit<NewModule, "owner">;

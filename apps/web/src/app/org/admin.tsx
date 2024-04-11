@@ -7,8 +7,8 @@ import { useTransition } from "react";
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
 import { EditContent } from "./edit-content";
-import { EditMission } from "./edit-mission";
 import { EditDomain } from "./edit-domain";
+import { EditMission } from "./edit-mission";
 
 export default function Admin({
   organization,
@@ -19,9 +19,9 @@ export default function Admin({
 }) {
   const [isPending, startTransition] = useTransition();
 
-  async function onDelete() {
-    await startTransition(() => {
-      deleteOrgAction(organization);
+  function onDelete() {
+    startTransition(() => {
+      void deleteOrgAction(organization);
     });
   }
   return (

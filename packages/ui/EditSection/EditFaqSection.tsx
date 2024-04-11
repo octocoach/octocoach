@@ -6,6 +6,8 @@ import {
   SectionContentFAQ,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { startTransition, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -17,8 +19,6 @@ import {
   Text,
   useFormStore,
 } from "..";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { startTransition, useRef, useState } from "react";
 
 const locales: Locales[] = ["en", "de"];
 
@@ -196,7 +196,7 @@ export const EditFaqSection = ({
   id: SectionId;
   name: string;
   content: ContentLocale[];
-  saveContent: (data: NewContentLocale[]) => void;
+  saveContent: (data: NewContentLocale[]) => Promise<void>;
 }) => {
   const defaultValues: MappedDataType = mapContent("faq", content);
 
@@ -225,7 +225,7 @@ export const EditFaqSection = ({
   const onSubmit = () => {
     startTransition(() => {
       const toSave = unmapData(values, id);
-      saveContent(toSave);
+      void saveContent(toSave);
     });
   };
 

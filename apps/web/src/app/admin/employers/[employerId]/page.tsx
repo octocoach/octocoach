@@ -11,6 +11,7 @@ import {
   HiddenInput,
   Stack,
   Text,
+  createDefaultProps,
 } from "@octocoach/ui";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
@@ -50,6 +51,11 @@ export default async function Page({
 
   if (!employer) return notFound();
 
+  const formProps = createDefaultProps({
+    url: employer.url || "",
+    employerId: employer.id,
+  });
+
   return (
     <Stack>
       <Link href="/admin/employers">
@@ -58,12 +64,7 @@ export default async function Page({
         </Text>
       </Link>
       <Logo employer={employer} size={100} />
-      <Form
-        formStoreProps={{
-          defaultValues: { url: employer.url || "", employerId: employer.id },
-        }}
-        onSubmit={changeUrl}
-      >
+      <Form formStoreProps={formProps} onSubmit={changeUrl}>
         <FormField name="url" label="URL">
           <FormInput name="url" />
         </FormField>

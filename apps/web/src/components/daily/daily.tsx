@@ -1,7 +1,7 @@
 "use client";
 
 import { HairCheck } from "@components/daily/hair-check";
-import DailyIFrame, { DailyCall } from "@daily-co/daily-js";
+import DailyIFrame, { DailyAccess, DailyCall } from "@daily-co/daily-js";
 import { DailyAudio, DailyProvider } from "@daily-co/daily-react";
 import { Room } from "@octocoach/daily/types";
 import { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ export const Daily = ({
 
   const [callObject, setCallObject] = useState<DailyCall>();
   const [callState, setCallState] = useState<CallState>("idle");
+  const [access, setAccess] = useState<DailyAccess>("unknown");
 
   useEffect(() => {
     if (!window || !roomName || !token) return;
@@ -28,13 +29,15 @@ export const Daily = ({
 
     setCallObject(callObject);
 
-    if (callState === "idle") {
-      callObject.preAuth({
-        url: mkUrl(roomName),
-        token,
-      });
+    if (callState === "idle" && access === "unknown") {
+      void callObject
+        .preAuth({
+          url: mkUrl(roomName),
+          token,
+        })
+        .then(({ access }) => setAccess(access));
     }
-  }, [roomName, token, callState]);
+  }, [roomName, token, callState, access]);
 
   const joinCall = async () => {
     if (!callObject) return;

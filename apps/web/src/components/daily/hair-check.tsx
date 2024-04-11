@@ -15,7 +15,7 @@ export const HairCheck = ({ joinCall }: { joinCall: () => Promise<void> }) => {
   const { microphones, setMicrophone, cameras, setCamera } = useDevices();
 
   useEffect(() => {
-    callObject?.startCamera();
+    void callObject?.startCamera();
   }, [callObject]);
 
   if (!localSessionId) return null;
@@ -30,7 +30,7 @@ export const HairCheck = ({ joinCall }: { joinCall: () => Promise<void> }) => {
               key={camera.device.deviceId}
               value={camera.device.label}
               setValueOnClick={() => {
-                setCamera(camera.device.deviceId);
+                void setCamera(camera.device.deviceId);
                 return true;
               }}
             />
@@ -42,13 +42,13 @@ export const HairCheck = ({ joinCall }: { joinCall: () => Promise<void> }) => {
               key={microphone.device.deviceId}
               value={microphone.device.label}
               setValueOnClick={() => {
-                setMicrophone(microphone.device.deviceId);
+                void setMicrophone(microphone.device.deviceId);
                 return true;
               }}
             />
           ))}
         </Select>
-        <Button onClick={joinCall}>Join</Button>
+        <Button onClick={() => void joinCall()}>Join</Button>
       </Stack>
     </Stack>
   );

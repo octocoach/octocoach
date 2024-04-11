@@ -69,7 +69,7 @@ export const Tray = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
           >
             <Screen size={24} />
           </Button>
-          <Button onClick={leaveCall} color="error">
+          <Button onClick={() => void leaveCall()} color="error">
             <PhoneBlockFilled size={24} />
           </Button>
         </Stack>

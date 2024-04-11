@@ -104,7 +104,9 @@ export const CoachPreferences = ({
               })
             }
             getValue={() =>
-              store.getValue($.externalCalendars).google[userEmail]
+              store.getValue<ExternalCalendars>($.externalCalendars).google[
+                userEmail
+              ] || []
             }
           >
             {calendars.google[userEmail]?.map((calendar) => (

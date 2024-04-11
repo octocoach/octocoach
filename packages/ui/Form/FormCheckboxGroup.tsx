@@ -1,3 +1,4 @@
+import { CheckboxStoreValue } from "@ariakit/core/checkbox/checkbox-store";
 import * as Ariakit from "@ariakit/react";
 import { PropsWithChildren, forwardRef } from "react";
 import { StringLike } from "../types";
@@ -7,8 +8,8 @@ export interface FormCheckboxGroupProps
   store?: Ariakit.FormStore;
   name?: StringLike;
   label?: string;
-  setValue?: (value: any) => void;
-  getValue?: () => any;
+  setValue?: (value: CheckboxStoreValue) => void;
+  getValue?: () => CheckboxStoreValue;
 }
 
 export const FormCheckboxGroup = forwardRef<
@@ -20,7 +21,7 @@ export const FormCheckboxGroup = forwardRef<
 
   const onSetValue = setValue
     ? setValue
-    : (value: any) => {
+    : (value: CheckboxStoreValue) => {
         if (!name)
           throw new Error("You must either provide a `setValue` or a `name`");
         form.setValue(name, value);
@@ -32,7 +33,7 @@ export const FormCheckboxGroup = forwardRef<
     if (!name)
       throw new Error("You must either provide a `getValue` or a `name`");
 
-    return form.getValue(name);
+    return form.getValue<CheckboxStoreValue>(name);
   };
 
   const currentValue = getCurrentValue();

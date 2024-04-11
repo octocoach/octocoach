@@ -34,15 +34,13 @@ const EditModuleContent = ({
   value?: ModuleContent | null;
   setValue: (content: ModuleContent) => void;
 }) => {
-  const emptyContent: ModuleContent = {
-    links: [],
-  };
-
   useEffect(() => {
     if (!value) {
-      setValue(emptyContent);
+      setValue({
+        links: [],
+      });
     }
-  }, [value]);
+  }, [setValue, value]);
 
   const onAddLink = () => {
     if (!value) throw new Error("Value must be set first");
@@ -120,7 +118,7 @@ const EditModuleLocale = ({
         store.setError(path, issue.message);
       }
     }
-  }, [errors]);
+  }, [errors, store]);
 
   const $ = store.names;
 
@@ -209,38 +207,36 @@ export function EditModule({
   const onSubmit = () => {
     startTransition(() => {
       const values = store.getState().values;
-      const units = parseInt(values.module.units as any);
-      saveModule({ ...values, module: { ...values.module, units } }).then(
-        (result) => {
-          if (result.success === true) {
-            store.reset();
-            onDone();
-            router.refresh();
-          } else if (result.errors) {
-            if (result.errors.module?.issues.length) {
-              for (const issue of result.errors.module.issues) {
-                const path = issue.path.join(".");
-                store.setFieldTouched(path, true);
-                store.setError(path, issue.message);
-              }
+      // const units = parseInt(values.module.units as unknown as string);
+      void saveModule(values).then((result) => {
+        if (result.success === true) {
+          store.reset();
+          onDone();
+          router.refresh();
+        } else if (result.errors) {
+          if (result.errors.module?.issues.length) {
+            for (const issue of result.errors.module.issues) {
+              const path = issue.path.join(".");
+              store.setFieldTouched(path, true);
+              store.setError(path, issue.message);
             }
-            if (result.errors.moduleInfo) {
-              for (const [locale, errors] of getEntries(
-                result.errors.moduleInfo
-              )) {
-                setModuleInfoErrors((cur) => ({
-                  ...cur,
-                  [locale]: errors,
-                }));
-              }
+          }
+          if (result.errors.moduleInfo) {
+            for (const [locale, errors] of getEntries(
+              result.errors.moduleInfo
+            )) {
+              setModuleInfoErrors((cur) => ({
+                ...cur,
+                [locale]: errors,
+              }));
             }
           }
         }
-      );
+      });
     });
   };
 
-  const imageSrc = store.useValue($.module.imageSrc);
+  const imageSrc = store.useValue<string>($.module.imageSrc);
 
   const onCancel = () => {
     startTransition(() => {

@@ -12,7 +12,7 @@ import { Button, Card, Select, SelectItem, Stack, Text } from "@octocoach/ui";
 import { getLocale } from "@octocoach/ui/Scheduler/helpers";
 import { AddFilled, TrashCan } from "@octocoach/ui/icons";
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 const padZeros = (n: number) => String(n).padStart(2, "0");
 

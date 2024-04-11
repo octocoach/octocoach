@@ -25,7 +25,7 @@ export const ModulesCompoent = ({
 
   const onRemove = (mod: ModuleWithInfo) => {
     startTransition(() => {
-      removeMeasureFromModuleWithSlug({
+      void removeMeasureFromModuleWithSlug({
         measureId,
         moduleId: mod.id,
       }).then((res): void => {

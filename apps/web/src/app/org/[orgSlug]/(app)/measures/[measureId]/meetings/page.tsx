@@ -27,7 +27,6 @@ export default async function Page({
   const {
     meetingTable,
     meetingParticipantTable,
-    measureInfoTable,
     measureTable,
     enrollmentTable,
   } = mkOrgSchema(orgSlug);

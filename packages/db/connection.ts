@@ -12,6 +12,7 @@ let client: VercelPool;
 if (!process.env.VERCEL_ENV && !process.env.MIGRATING_PROD) {
   // We are running locally
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
   if (!(typeof (globalThis as any).EdgeRuntime === "string")) {
     // We are running in node and need to provide a WebSocket constructor
     neonConfig.webSocketConstructor = ws;
@@ -22,7 +23,7 @@ if (!process.env.VERCEL_ENV && !process.env.MIGRATING_PROD) {
   neonConfig.pipelineTLS = false;
   neonConfig.pipelineConnect = false;
 
-  let globalClient = global as typeof globalThis & {
+  const globalClient = global as typeof globalThis & {
     client: VercelPool;
   };
 

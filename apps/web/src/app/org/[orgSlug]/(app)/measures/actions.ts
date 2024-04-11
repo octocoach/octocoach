@@ -48,7 +48,7 @@ export const createMeeting = async (
 
     if (!meetingId) {
       console.error("Error adding meeting");
-      await trx.rollback();
+      trx.rollback();
       return;
     }
 

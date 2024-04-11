@@ -77,7 +77,7 @@ export const getSkills = async ({
   const searchParams = new URLSearchParams(params);
 
   const response = await fetch(
-    `https://emsiservices.com/skills/versions/latest/skills?${searchParams}`,
+    `https://emsiservices.com/skills/versions/latest/skills?${searchParams.toString()}`,
     {
       headers: {
         Authorization: `Bearer ${access_token}`,

@@ -1,5 +1,4 @@
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
-import { BarChartItem } from "@octocoach/charts/bar";
 import { orgDb } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";

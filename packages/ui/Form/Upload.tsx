@@ -28,7 +28,7 @@ export default function Upload({
       body: file,
     });
 
-    const newBlob = await response.json();
+    const newBlob = (await response.json()) as { url: string };
 
     onUploaded(newBlob.url);
   };

@@ -32,7 +32,7 @@ export const Timeslots = ({
   useEffect(() => {
     setBusyIntervals(null);
 
-    getBusyIntervals(selectedDate).then(setBusyIntervals);
+    void getBusyIntervals(selectedDate).then(setBusyIntervals);
 
     const slots = getSlots({
       availability,
@@ -41,7 +41,7 @@ export const Timeslots = ({
       duration: 30,
     });
     setTimeslots(slots);
-  }, [selectedDate]);
+  }, [getBusyIntervals, selectedDate]);
 
   return (
     <div className={timeslotsContainer}>

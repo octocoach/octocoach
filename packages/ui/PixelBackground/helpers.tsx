@@ -14,7 +14,7 @@ export const makePixelBackground = ({
   const imageHeight = el?.clientHeight || 0;
   const theme = themeValue[flavor];
 
-  let rects: string[] = [];
+  const rects: string[] = [];
 
   for (let x = 0; x < imageWidth; x += pixelSize) {
     for (let y = 0; y < imageHeight; y += pixelSize) {

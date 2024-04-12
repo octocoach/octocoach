@@ -1,5 +1,4 @@
 import { ElementType, ReactNode } from "react";
-import { Text } from "../Text/Text";
 import { ButtonVariants, button } from "./button.css";
 
 type Props = {

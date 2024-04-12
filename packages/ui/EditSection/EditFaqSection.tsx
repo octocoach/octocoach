@@ -1,3 +1,4 @@
+import { Names } from "@ariakit/core/form/types";
 import {
   ContentLocale,
   ContentLocaleTypeOf,
@@ -129,6 +130,41 @@ const EditTitle = ({
   );
 };
 
+const EditQuestionLocale = ({
+  locale,
+  names,
+}: {
+  locale: Locales;
+  names: Names<Record<Locales, FAQQuestion>>;
+}) => {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  const [height, setHeight] = useState<number | "10rem">("10rem");
+
+  const onInput = () => {
+    setHeight("10rem");
+    setHeight(ref.current ? ref.current.scrollHeight : "10rem");
+  };
+
+  const $ = names;
+
+  return (
+    <Box paddingX="none" paddingY="none" grow key={locale}>
+      <Stack>
+        <FormField name={$[locale].question} label="Question">
+          <FormInput name={$[locale].question} />
+        </FormField>
+        <FormField name={$[locale].answer} label="Answer">
+          <FormInput
+            name={$[locale].answer}
+            render={<textarea ref={ref} onInput={onInput} style={{ height }} />}
+          />
+        </FormField>
+      </Stack>
+    </Box>
+  );
+};
+
 const EditQuestion = ({
   index,
   value,
@@ -145,43 +181,16 @@ const EditQuestion = ({
     },
   });
 
-  const $ = store.names;
-
   return (
     <Form store={store}>
       <Stack direction="horizontal">
-        {locales.map((locale) => {
-          const ref = useRef<HTMLTextAreaElement>(null);
-
-          const [height, setHeight] = useState<number | "10rem">("10rem");
-
-          const onInput = () => {
-            setHeight("10rem");
-            setHeight(ref.current ? ref.current.scrollHeight : "10rem");
-          };
-
-          return (
-            <Box paddingX="none" paddingY="none" grow key={locale}>
-              <Stack>
-                <FormField name={$[locale].question} label="Question">
-                  <FormInput name={$[locale].question} />
-                </FormField>
-                <FormField name={$[locale].answer} label="Answer">
-                  <FormInput
-                    name={$[locale].answer}
-                    render={
-                      <textarea
-                        ref={ref}
-                        onInput={onInput}
-                        style={{ height }}
-                      />
-                    }
-                  />
-                </FormField>
-              </Stack>
-            </Box>
-          );
-        })}
+        {locales.map((locale) => (
+          <EditQuestionLocale
+            key={locale}
+            locale={locale}
+            names={store.names}
+          />
+        ))}
       </Stack>
     </Form>
   );

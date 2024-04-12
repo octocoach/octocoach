@@ -50,7 +50,7 @@ export const Scheduler = ({
     const endTime = addMinutes(startTime, 45);
 
     startTransition(() => {
-      createMeeting({
+      void createMeeting({
         meeting: {
           measure: measureId,
           type: meetingType,
@@ -64,7 +64,7 @@ export const Scheduler = ({
 
   return (
     <div className={schedulerContainer}>
-      <Person name={coach.name} image={coach.image} meetingType={meetingType} />
+      <Person name={coach.name} image={coach.image} />
       {!selectedTimeslot ? (
         <div className={schedulerContent}>
           <Stack>

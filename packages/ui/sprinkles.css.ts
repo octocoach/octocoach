@@ -7,7 +7,7 @@ const ratio = (1 + Math.sqrt(5)) / 2;
 
 let prev: number = base;
 
-export let space = Object.fromEntries(
+export const space = Object.fromEntries(
   Array.from(Array(10).keys()).map((i) => {
     const c = prev;
     prev *= ratio;

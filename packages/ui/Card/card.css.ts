@@ -1,7 +1,6 @@
 import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
-import { vars } from "../theme.css";
 import { space } from "../sprinkles.css";
-import { createAlpha } from "../helpers";
+import { vars } from "../theme.css";
 
 export const card = recipe({
   base: {

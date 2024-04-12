@@ -22,9 +22,11 @@ export const autocomplete = async (text: string): Promise<string[]> => {
   geoapifyUrl.searchParams.append("type", "city");
   geoapifyUrl.searchParams.append("limit", "10");
 
-  const response = await (await fetch(geoapifyUrl)).json();
+  const response = (await (await fetch(geoapifyUrl)).json()) as {
+    features: Feature[] | undefined;
+  };
 
-  const features: Feature[] = response.features || [];
+  const features = response.features || [];
 
   console.log(features);
 

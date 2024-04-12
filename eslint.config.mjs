@@ -8,6 +8,7 @@ import reactHooksPlugin from "eslint-plugin-react-hooks";
 import globals from "globals";
 import url from "node:url";
 import tseslint from "typescript-eslint";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const compat = new FlatCompat({
@@ -17,9 +18,10 @@ const compat = new FlatCompat({
 export default tseslint.config(
   {
     plugins: {
+      ["jsx-a11y"]: jsxA11yPlugin,
       ["next"]: nextPlugin,
-      ["react"]: reactPlugin,
       ["react-hooks"]: reactHooksPlugin,
+      ["react"]: reactPlugin,
     },
   },
   eslint.configs.recommended,
@@ -68,6 +70,32 @@ export default tseslint.config(
       ...compat.config(nextPlugin.configs["core-web-vitals"]),
     ],
   },
+
+  // Rules for the ui package
+
+  {
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    extends: [
+      ...compat.config(reactPlugin.configs.recommended),
+      ...compat.config(reactPlugin.configs["jsx-runtime"]),
+      ...compat.config(reactHooksPlugin.configs.recommended),
+      ...compat.config(jsxA11yPlugin.configs.recommended),
+    ],
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      "react/display-name": "off",
+    },
+  },
+  {
+    ignores: ["**/.storybook/"],
+  },
+
+  // Globals for eslint config
+
   {
     files: ["eslint.config.{js,mjs,cjs}"],
     languageOptions: {

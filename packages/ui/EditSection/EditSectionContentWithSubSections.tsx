@@ -1,5 +1,6 @@
 "use client";
 
+import { Names } from "@ariakit/core/form/types";
 import {
   ContentLocale,
   ContentLocaleTypeOf,
@@ -129,6 +130,44 @@ const EditTitle = ({
   );
 };
 
+const EditSubSectionLocale = ({
+  locale,
+  names,
+}: {
+  locale: Locales;
+  names: Names<Record<Locales, SectionContentWithImage>>;
+}) => {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  const [height, setHeight] = useState<number | "10rem">("10rem");
+
+  const onInput = () => {
+    setHeight("10rem");
+    setHeight(ref.current ? ref.current.scrollHeight : "10rem");
+  };
+
+  const $ = names;
+
+  return (
+    <Box paddingX="none" paddingY="none" grow key={locale}>
+      <Stack>
+        <FormField name={$[locale].image.alt} label="Alt Text">
+          <FormInput name={$[locale].image.alt} />
+        </FormField>
+        <FormField name={$[locale].title} label="Title">
+          <FormInput name={$[locale].title} />
+        </FormField>
+        <FormField name={$[locale].text} label="Text">
+          <FormInput
+            name={$[locale].text}
+            render={<textarea ref={ref} onInput={onInput} style={{ height }} />}
+          />
+        </FormField>
+      </Stack>
+    </Box>
+  );
+};
+
 const EditSubSection = ({
   index,
   value,
@@ -149,8 +188,6 @@ const EditSubSection = ({
     },
   });
 
-  const $ = store.names;
-
   const { src, alt } = store.useState().values.en.image;
 
   return (
@@ -167,41 +204,13 @@ const EditSubSection = ({
       />
       {!!src && <img src={src} alt={alt} />}
       <Stack direction="horizontal">
-        {locales.map((locale) => {
-          const ref = useRef<HTMLTextAreaElement>(null);
-
-          const [height, setHeight] = useState<number | "10rem">("10rem");
-
-          const onInput = () => {
-            setHeight("10rem");
-            setHeight(ref.current ? ref.current.scrollHeight : "10rem");
-          };
-
-          return (
-            <Box paddingX="none" paddingY="none" grow key={locale}>
-              <Stack>
-                <FormField name={$[locale].image.alt} label="Alt Text">
-                  <FormInput name={$[locale].image.alt} />
-                </FormField>
-                <FormField name={$[locale].title} label="Title">
-                  <FormInput name={$[locale].title} />
-                </FormField>
-                <FormField name={$[locale].text} label="Text">
-                  <FormInput
-                    name={$[locale].text}
-                    render={
-                      <textarea
-                        ref={ref}
-                        onInput={onInput}
-                        style={{ height }}
-                      />
-                    }
-                  />
-                </FormField>
-              </Stack>
-            </Box>
-          );
-        })}
+        {locales.map((locale) => (
+          <EditSubSectionLocale
+            key={locale}
+            locale={locale}
+            names={store.names}
+          />
+        ))}
       </Stack>
     </Form>
   );
@@ -245,7 +254,7 @@ export const EditSectionContentWithSubSections = ({
   const onSubmit = () => {
     startTransition(() => {
       const toSave = unmapData(values, id);
-      saveContent(toSave);
+      void saveContent(toSave);
     });
   };
 

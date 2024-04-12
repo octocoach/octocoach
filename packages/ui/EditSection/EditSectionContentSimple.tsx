@@ -8,6 +8,7 @@ import {
   SectionId,
 } from "@octocoach/db/schemas/org/content";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { useTransition } from "react";
 import {
   Box,
   Button,
@@ -18,8 +19,7 @@ import {
   Text,
   useFormStore,
 } from "..";
-import { useTransition } from "react";
-import { filterContentById, getContent } from "../helpers";
+import { getContent } from "../helpers";
 
 const EditSectionLocale = ({
   locale,
@@ -107,7 +107,7 @@ export const EditSectionContentSimple = ({
   const onSubmit = () => {
     const toSave = Object.values(store.getState().values);
     startTransition(() => {
-      saveContent(toSave);
+      void saveContent(toSave);
     });
   };
 

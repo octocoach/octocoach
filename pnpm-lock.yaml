@@ -28,6 +28,9 @@ importers:
       eslint-config-next:
         specifier: ^14.1.4
         version: 14.1.4(eslint@8.57.0)(typescript@5.4.5)
+      eslint-plugin-jsx-a11y:
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.57.0)
       eslint-plugin-react:
         specifier: ^7.34.1
         version: 7.34.1(eslint@8.57.0)

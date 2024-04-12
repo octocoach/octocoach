@@ -21,7 +21,8 @@
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg"
+        "mtxr.sqltools-driver-pg",
+        "YoavBls.pretty-ts-errors"
       ]
     }
   }

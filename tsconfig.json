@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "module": "ES2022"
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "allowJs": true,
+    "noEmit": true,
+    "types": ["@types/node"]
   },
   "extends": "./packages/tsconfig/base.json",
-  "include": ["typings"]
+  "include": ["typings", "eslint.config.mjs", "vitest.*.ts"]
 }

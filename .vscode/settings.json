@@ -50,5 +50,6 @@
       "username": "octocoach",
       "password": "octocoach"
     }
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

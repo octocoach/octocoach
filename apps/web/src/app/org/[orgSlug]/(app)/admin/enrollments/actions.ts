@@ -7,8 +7,6 @@ import { and, eq } from "@octocoach/db/operators";
 import { Enrollment } from "@octocoach/db/schemas/org/enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
-import { customAlphabet } from "nanoid";
-import { lowercase } from "nanoid-dictionary";
 import { Resend } from "resend";
 import { EnrollmentTemplate } from "./email-templates";
 
@@ -18,8 +16,7 @@ export const createRoom = async (
 ) => {
   const { user } = await authOrRedirect(orgSlug);
   const daily = new Daily();
-  const nameSlice = customAlphabet(lowercase, 3);
-  const roomName = `${nameSlice()}-${nameSlice()}-${nameSlice()}`;
+  const roomName = daily.createRoomName();
   const db = orgDb(orgSlug);
   const {
     enrollmentTable,

@@ -10,7 +10,9 @@ import url from "node:url";
 import tseslint from "typescript-eslint";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const compat = new FlatCompat({ baseDirectory: __dirname });
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 export default tseslint.config(
   {
@@ -25,7 +27,11 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        project: ["./apps/*/tsconfig.json", "./packages/*/tsconfig.json"],
+        project: [
+          "tsconfig.json",
+          "./apps/*/tsconfig.json",
+          "./packages/*/tsconfig.json",
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -40,7 +46,12 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["**/node_modules/**", "**/.next/**", "**/*.test.*", "typings/*"],
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/*.test.*",
+      "typings/**/*",
+    ],
   },
   {
     files: ["**/*.{js,cjs,mjs}"],
@@ -54,7 +65,6 @@ export default tseslint.config(
     extends: [
       ...compat.config(reactPlugin.configs["jsx-runtime"]),
       ...compat.config(reactHooksPlugin.configs.recommended),
-      ...compat.config(nextPlugin.configs.recommended),
       ...compat.config(nextPlugin.configs["core-web-vitals"]),
     ],
   },

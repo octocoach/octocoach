@@ -46,7 +46,7 @@
     "drizzle-kit": "^0.20.6",
     "eslint": "8",
     "tsx": "^3.12.7",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "drizzle-kit": "^0.19.13"

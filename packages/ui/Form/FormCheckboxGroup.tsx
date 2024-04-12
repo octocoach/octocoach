@@ -5,7 +5,6 @@ import { StringLike } from "../types";
 
 export interface FormCheckboxGroupProps
   extends PropsWithChildren<Ariakit.FormGroupProps> {
-  store?: Ariakit.FormStore;
   name?: StringLike;
   label?: string;
   setValue?: (value: CheckboxStoreValue) => void;
@@ -15,16 +14,16 @@ export interface FormCheckboxGroupProps
 export const FormCheckboxGroup = forwardRef<
   HTMLDivElement,
   FormCheckboxGroupProps
->(({ children, label, name, store, getValue, setValue }, ref) => {
-  const form = store || Ariakit.useFormContext();
-  if (!form) throw new Error("FormCheckboxGroup must be used within a Form");
+>(({ children, label, name, getValue, setValue }, ref) => {
+  const store = Ariakit.useFormContext();
+  if (!store) throw new Error("FormCheckboxGroup must be used within a Form");
 
   const onSetValue = setValue
     ? setValue
     : (value: CheckboxStoreValue) => {
         if (!name)
           throw new Error("You must either provide a `setValue` or a `name`");
-        form.setValue(name, value);
+        store.setValue(name, value);
       };
 
   const getCurrentValue = () => {
@@ -33,7 +32,7 @@ export const FormCheckboxGroup = forwardRef<
     if (!name)
       throw new Error("You must either provide a `getValue` or a `name`");
 
-    return form.getValue<CheckboxStoreValue>(name);
+    return store.getValue<CheckboxStoreValue>(name);
   };
 
   const currentValue = getCurrentValue();

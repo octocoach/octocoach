@@ -1,41 +1,21 @@
 "use client";
 
-import { FormStoreProps, FormStoreValues } from "@ariakit/core/form/form-store";
-import { AnyObject, PickRequired } from "@ariakit/core/utils/types";
+import { FormStoreValues } from "@ariakit/core/form/form-store";
 import * as Ariakit from "@ariakit/react";
 import { ReactNode, startTransition } from "react";
 
-type RequiredFormStoreProps<T extends AnyObject> = PickRequired<
-  FormStoreProps<T>,
-  | "values"
-  | "defaultValues"
-  | "errors"
-  | "defaultErrors"
-  | "touched"
-  | "defaultTouched"
->;
-
 type FormProps<T extends FormStoreValues> = {
   children: ReactNode;
-  store?: Ariakit.FormStore<T>;
-  formStoreProps?: RequiredFormStoreProps<T>;
+  store: Ariakit.FormStore<T>;
   onSubmit?: (data: T) => Promise<void> | void;
 };
 
 export const Form = <T extends FormStoreValues>({
   children,
   store,
-  formStoreProps,
   onSubmit,
 }: FormProps<T>) => {
-  if (!store) {
-    if (!formStoreProps)
-      throw new Error("You must either provide a store or formStoreProps");
-
-    store = Ariakit.useFormStore<T>(formStoreProps);
-  }
-
-  if (store && onSubmit) {
+  if (onSubmit) {
     store.useSubmit((state) => {
       startTransition(() => {
         void onSubmit(state.values);
@@ -50,13 +30,22 @@ export const Form = <T extends FormStoreValues>({
   );
 };
 
-export function createDefaultProps<T extends AnyObject>(
-  values: T
-): RequiredFormStoreProps<T> {
-  return {
-    defaultValues: values,
-    defaultTouched: {},
-    defaultErrors: {},
-    defaultItems: [],
-  };
-}
+type FormWithStoreProps<T extends FormStoreValues> = {
+  children: ReactNode;
+  defaultValues: T;
+  onSubmit?: (data: T) => Promise<void> | void;
+};
+
+export const FormWithStore = <T extends FormStoreValues>({
+  children,
+  defaultValues,
+  onSubmit,
+}: FormWithStoreProps<T>) => {
+  const store = Ariakit.useFormStore<T>({ defaultValues });
+
+  return (
+    <Form store={store} onSubmit={onSubmit}>
+      {children}
+    </Form>
+  );
+};

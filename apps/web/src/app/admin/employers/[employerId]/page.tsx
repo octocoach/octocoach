@@ -5,13 +5,12 @@ import { employerTable } from "@octocoach/db/schemas/common/employer";
 import Message from "@octocoach/i18n/src/react-message";
 import {
   Button,
-  Form,
   FormField,
   FormInput,
+  FormWithStore,
   HiddenInput,
   Stack,
   Text,
-  createDefaultProps,
 } from "@octocoach/ui";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
@@ -51,11 +50,6 @@ export default async function Page({
 
   if (!employer) return notFound();
 
-  const formProps = createDefaultProps({
-    url: employer.url || "",
-    employerId: employer.id,
-  });
-
   return (
     <Stack>
       <Link href="/admin/employers">
@@ -64,13 +58,19 @@ export default async function Page({
         </Text>
       </Link>
       <Logo employer={employer} size={100} />
-      <Form formStoreProps={formProps} onSubmit={changeUrl}>
+      <FormWithStore
+        defaultValues={{
+          url: employer.url || "",
+          employerId: employer.id,
+        }}
+        onSubmit={changeUrl}
+      >
         <FormField name="url" label="URL">
           <FormInput name="url" />
         </FormField>
         <HiddenInput name="employerId" />
         <Button type="submit">Submit</Button>
-      </Form>
+      </FormWithStore>
       <Text size="xl">{employer.name}</Text>
       <Text>{employer.url}</Text>
       <Stack>

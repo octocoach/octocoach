@@ -12,7 +12,6 @@
     "@types/nanoid-dictionary": "^4.2.3",
     "@types/node": "^20.11.18",
     "dotenv": "^16.3.1",
-    "eslint": "8",
     "jwt-decode": "^4.0.0",
     "tsx": "^3.12.7"
   },

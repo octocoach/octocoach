@@ -1,4 +1,4 @@
-import { end } from "@octocoach/db/connection";
+import { end } from "@octocoach/db/connection.js";
 import { afterAll, describe, expect, test } from "vitest";
 
 describe.skip("It correctly matches existing skills", () => {

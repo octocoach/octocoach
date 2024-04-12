@@ -1,4 +1,5 @@
 import { type Database } from "@octocoach/db/connection";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { eq, sql } from "@octocoach/db/operators";
 import { skillsMissingTasksTable } from "@octocoach/db/schemas/common/skills-missing-tasks";
 import { skillsTasksTable } from "@octocoach/db/schemas/common/skills-tasks";
@@ -37,15 +38,16 @@ const createSkillMissing = async (description: string, db: Database) => {
 
   const embedding = await getEmbeddings(description);
 
-  return (
-    await db
-      .insert(skillMissingTable)
-      .values({
-        name: description,
-        embedding,
-      })
-      .returning()
-  )[0];
+  const newSkillMissing = await db
+    .insert(skillMissingTable)
+    .values({
+      name: description,
+      embedding,
+    })
+    .returning()
+    .then((rows) => getFirstRow(rows));
+
+  return newSkillMissing;
 };
 
 const findWithStringMatch = async (description: string, db: Database) => {

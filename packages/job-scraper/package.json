@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "scrape": "tsx -r dotenv/config src/index.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@octocoach/typescript-config": "workspace:^",

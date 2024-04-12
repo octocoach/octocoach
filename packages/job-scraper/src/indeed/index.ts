@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { and, eq, or } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
 import { jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
-import { JobScraper } from "../job-scraper";
+import { BuildURLParams, JobScraper } from "../job-scraper";
 import blacklist from "./blacklist";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 
 /**
  * IndeedScraper class that extends JobScraper class
@@ -21,7 +23,7 @@ export class IndeedScraper extends JobScraper {
    * @param query - search query for job postings
    * @returns URL string
    */
-  buildUrl({ age, location, pageNo, query }) {
+  buildUrl({ age, location, pageNo, query }: BuildURLParams) {
     const url = new URL("https://de.indeed.com/jobs");
 
     url.searchParams.append("q", query);
@@ -42,19 +44,26 @@ export class IndeedScraper extends JobScraper {
    * @returns Promise that resolves when the page is cleaned
    */
   async cleanPage(): Promise<void> {
+    if (!this.page) {
+      throw new Error("No page to clean");
+    }
     try {
       await this.page.getByText("Alle ablehnen").click({ timeout: 1000 });
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
 
     // Close the Continue with Google Modal
     try {
       await this.page.evaluate(() => {
         // @ts-ignore
-        if (window.hasOwnProperty("closeGoogleOnlyModal"))
+        if ("closeGoogleOnlyModal" in window)
           // @ts-ignore
           window.closeGoogleOnlyModal();
       });
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
 
     const close$ = this.page
       .locator("[role=dialog]")
@@ -65,7 +74,9 @@ export class IndeedScraper extends JobScraper {
         await this.sleep(500);
         await e.click({ timeout: 3000 });
       }
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
   }
 
   /**
@@ -73,6 +84,9 @@ export class IndeedScraper extends JobScraper {
    * @returns Promise that resolves when the page is processed
    */
   async processCurrentPage(): Promise<void> {
+    if (!this.page) {
+      throw new Error("The page has not been initialized");
+    }
     const items = await this.page
       .locator("#mosaic-jobResults ul > li")
       .filter({ has: this.page.locator("h2") })
@@ -117,20 +131,16 @@ export class IndeedScraper extends JobScraper {
 
         await client.detach();
 
-        const $header = await viewJobPage.locator(
-          ".jobsearch-InfoHeaderContainer"
-        );
+        const $header = viewJobPage.locator(".jobsearch-InfoHeaderContainer");
 
-        const $description = await viewJobPage.locator(
+        const $description = viewJobPage.locator(
           ".jobsearch-JobComponent-description"
         );
 
-        const $company = await $header.locator("[data-company-name=true]");
+        const $company = $header.locator("[data-company-name=true]");
 
         const title = (
-          await (
-            await $header.locator(".jobsearch-JobInfoHeader-title")
-          ).innerText()
+          await $header.locator(".jobsearch-JobInfoHeader-title").innerText()
         )
           .replace("- job post", "")
           .trim();
@@ -181,31 +191,31 @@ export class IndeedScraper extends JobScraper {
             await page.close();
           }
 
-          const newCompany = await this.db
+          employer = await this.db
             .insert(employerTable)
             .values({
               name: companyName,
               indeed: companySourceId,
               url: companyUrl,
             })
-            .returning();
-
-          employer = newCompany[0];
+            .returning()
+            .then((rows) => getFirstRow(rows));
         }
 
-        const location = await (
-          await $header
-            .locator('[data-testid="inlineHeader-companyLocation"]')
-            .filter({ hasNotText: /Bewertungen/ })
-            .or($header.getByText("Homeoffice"))
-            .first()
-        )?.innerText();
+        if (!employer) throw new Error("Employer could not be created");
+
+        const location = await $header
+          .locator('[data-testid="inlineHeader-companyLocation"]')
+          .filter({ hasNotText: /Bewertungen/ })
+          .or($header.getByText("Homeoffice"))
+          .first()
+          ?.innerText();
 
         console.log("Locaion", location);
 
-        const descriptionHTML = await (
-          await $description?.locator("#jobDescriptionText")
-        )?.innerHTML();
+        const descriptionHTML = await $description
+          ?.locator("#jobDescriptionText")
+          ?.innerHTML();
 
         await viewJobPage.close();
 

@@ -9,7 +9,7 @@ const indeedURL = new URL(
 indeedURL.searchParams.append("query", term);
 indeedURL.searchParams.append("count", "100");
 
-const indeedTitles = (await got.get(indeedURL.toString()).json()) as string[];
+const indeedTitles = await got.get(indeedURL.toString()).json();
 
 console.log(indeedURL.toString());
 console.log(indeedTitles);
@@ -20,7 +20,7 @@ const kununuURL = new URL(
 
 kununuURL.searchParams.append("pattern", term);
 
-const kununuTitles = (await got.get(kununuURL.toString()).json()) as string[];
+const kununuTitles = await got.get(kununuURL.toString()).json();
 
 console.log(kununuURL.toString());
 console.log(kununuTitles);

@@ -179,9 +179,6 @@ importers:
       encoding:
         specifier: ^0.1.13
         version: 0.1.13
-      eslint:
-        specifier: '8'
-        version: 8.57.0
       sharp:
         specifier: ^0.33.1
         version: 0.33.1
@@ -317,9 +314,6 @@ importers:
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
-      eslint:
-        specifier: '8'
-        version: 8.57.0
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
@@ -402,9 +396,6 @@ importers:
       drizzle-kit:
         specifier: ^0.20.6
         version: 0.20.6(patch_hash=qoev7a5lp7akqwtkg6upbdcgzy)
-      eslint:
-        specifier: '8'
-        version: 8.57.0
       tsx:
         specifier: ^3.12.7
         version: 3.12.7

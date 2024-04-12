@@ -2,7 +2,8 @@
   "name": "@octocoach/auth",
   "private": "true",
   "scripts": {
-    "generate:keys": "tsx ./generate-keys.ts"
+    "generate:keys": "tsx ./generate-keys.ts",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@octocoach/tshelpers": "workspace:^",

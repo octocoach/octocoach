@@ -15,7 +15,7 @@ export const FormSelect = forwardRef<HTMLButtonElement, FormSelectProps>(
     const form = Ariakit.useFormContext();
     if (!form) throw new Error("FormSelect must be used within a Form");
 
-    const value = form.useValue(name);
+    const value = form.useValue<string | undefined>(name);
 
     const select = (
       <Select

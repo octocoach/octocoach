@@ -3,10 +3,11 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Interval,
   addDays,
+  addHours,
   addMinutes,
   areIntervalsOverlapping,
   format,
-  isFuture,
+  isAfter,
   isSameDay,
 } from "date-fns";
 import { convertToLocalTime, convertToTimeZone } from "date-fns-timezone";
@@ -47,16 +48,19 @@ export const getSlots = ({
   coachTimezone,
   date,
   duration,
+  hoursBuffer,
 }: {
   availability: Availability;
   coachTimezone: string;
   date: Date;
   duration: number;
+  hoursBuffer: number;
 }): Date[] => {
   const coachDate = convertToTimeZone(date, { timeZone: coachTimezone });
 
   const today = coachDate;
   const tomorrow = addDays(coachDate, 1);
+  const now = new Date();
 
   const todaySlots = availability[today.getDay() as DayIndex].map(
     ({ startTime, endTime }) => ({
@@ -118,9 +122,9 @@ export const getSlots = ({
       }
       return out;
     })
-    .filter((d) => {
-      return isSameDay(date, d) && isFuture(d);
-    });
+    .filter(
+      (d) => isSameDay(date, d) && isAfter(d, addHours(now, hoursBuffer))
+    );
 
   return slots;
 };

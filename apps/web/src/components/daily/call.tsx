@@ -73,13 +73,7 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
         .filter((id) => !!activeScreen || id !== activeSpeakerId)
         .map((id) => ({ id, isScreenShare: false })),
     ];
-  }, [
-    remoteScreens,
-    remoteParticipantsIds,
-    activeScreen,
-    activeScreen?.session_id,
-    activeSpeakerId,
-  ]);
+  }, [remoteScreens, remoteParticipantsIds, activeScreen, activeSpeakerId]);
 
   return (
     <div className={callClass}>

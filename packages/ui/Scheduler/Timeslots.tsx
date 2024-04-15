@@ -1,3 +1,5 @@
+"use client";
+
 import { CircleFilled, Misuse } from "@carbon/icons-react";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { Interval, format } from "date-fns";
@@ -7,9 +9,10 @@ import { Center } from "../Center/Center";
 import { Spinner } from "../Spinner/Spinner";
 import { Text } from "../Text/Text";
 import { vars } from "../theme.css";
-import { availability, coachTimezone, duration } from "./constants";
+import { coachTimezone, duration } from "./constants";
 import { getLocale, getSlots, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
+import { Availability } from "@octocoach/db/schemas/org/coach";
 
 export const Timeslots = ({
   selectedDate,
@@ -18,6 +21,7 @@ export const Timeslots = ({
   creatingMeeting,
   locale,
   hoursBuffer,
+  availability,
 }: {
   selectedDate: Date;
   setSelectedTimeslot: Dispatch<SetStateAction<Date | undefined>>;
@@ -25,6 +29,7 @@ export const Timeslots = ({
   creatingMeeting: boolean;
   locale: Locales;
   hoursBuffer: number;
+  availability: Availability;
 }) => {
   const [timeslots, setTimeslots] = useState<Date[]>([]);
   const [busyIntervals, setBusyIntervals] = useState<Interval[] | null>(null);
@@ -39,9 +44,10 @@ export const Timeslots = ({
       coachTimezone,
       date: selectedDate,
       duration: 30,
+      hoursBuffer,
     });
     setTimeslots(slots);
-  }, [getBusyIntervals, selectedDate]);
+  }, [getBusyIntervals, hoursBuffer, selectedDate, availability]);
 
   return (
     <div className={timeslotsContainer}>

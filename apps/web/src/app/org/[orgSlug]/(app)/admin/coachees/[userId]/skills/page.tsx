@@ -1,5 +1,4 @@
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
-import { BarChartItem } from "@octocoach/charts/bar";
 import { orgDb } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
@@ -65,14 +64,14 @@ export default async function Page({
         containerId={containerId}
         height={300}
         data={Object.entries(
-          user.usersSkillLevels.reduce(
-            (acc, curr) => ({
+          user.usersSkillLevels.reduce((acc, curr) => {
+            const currentLevel = acc[curr.skill.subcategory.name] || 0;
+
+            return {
               ...acc,
-              [curr.skill.subcategory.name]:
-                acc[curr.skill.subcategory.name] + 1 || 1,
-            }),
-            {} as Record<string, number>
-          )
+              [curr.skill.subcategory.name]: currentLevel + 1,
+            };
+          }, {} as Record<string, number>)
         )
           .map(([label, value]) => ({ label, value }))
           .sort((a, b) => b.value - a.value)}

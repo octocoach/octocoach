@@ -19,7 +19,7 @@ export const addMeasureToModule = async (
     .select({ max: max(measureModuleTable.order) })
     .from(measureModuleTable)
     .where(eq(measureModuleTable.measure, measureId))
-    .then((res) => (res[0].max === null ? 0 : res[0].max + 1));
+    .then((res) => (!res[0]?.max ? 0 : res[0].max + 1));
 
   await db
     .insert(measureModuleTable)

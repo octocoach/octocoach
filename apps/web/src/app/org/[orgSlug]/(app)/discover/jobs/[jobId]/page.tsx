@@ -15,6 +15,7 @@ import {
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Card, Markdown, Stack, Text } from "@octocoach/ui";
+import { notFound } from "next/navigation";
 import { Skill } from "./skill";
 import { Task, type TaskSkill } from "./task";
 
@@ -105,6 +106,8 @@ export default async function Page({
     )
     .where(eq(taskTable.jobId, params.jobId))
     .orderBy(({ name }) => asc(name));
+
+  if (!job) notFound();
 
   return (
     <Stack>

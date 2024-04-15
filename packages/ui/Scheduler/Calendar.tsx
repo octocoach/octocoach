@@ -1,17 +1,16 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { WeekdaysHeading } from "./Weekdays";
-import { Button } from "../Button/Button";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   eachDayOfInterval,
   endOfDay,
   format,
   isPast,
   isSameDay,
-  isWeekend,
   lastDayOfMonth,
 } from "date-fns";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Button } from "../Button/Button";
+import { WeekdaysHeading } from "./Weekdays";
 import { calendarContainer } from "./calendar.css";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const Calendar = ({
   year,

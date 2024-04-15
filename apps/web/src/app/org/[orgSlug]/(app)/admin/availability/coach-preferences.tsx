@@ -60,7 +60,7 @@ export const CoachPreferences = ({
   const $ = store.names;
 
   useEffect(() => {
-    getGoogleCalendars({ userId, orgSlug }).then((calendars) => {
+    void getGoogleCalendars({ userId, orgSlug }).then((calendars) => {
       setCalendars({ google: { [userEmail]: calendars } });
     });
   }, [orgSlug, userId, userEmail]);
@@ -68,7 +68,7 @@ export const CoachPreferences = ({
   const onSaveCoachPreferences = () => {
     startTransition(() => {
       const { values } = store.getState();
-      saveCoachPreferences(orgSlug, values).then(() => {
+      void saveCoachPreferences(orgSlug, values).then(() => {
         console.log("Done");
       });
     });
@@ -104,10 +104,12 @@ export const CoachPreferences = ({
               })
             }
             getValue={() =>
-              store.getValue($.externalCalendars).google[userEmail]
+              store.getValue<ExternalCalendars>($.externalCalendars).google[
+                userEmail
+              ] || []
             }
           >
-            {calendars.google[userEmail].map((calendar) => (
+            {calendars.google[userEmail]?.map((calendar) => (
               <Checkbox
                 label={calendar.summary}
                 value={calendar.id}

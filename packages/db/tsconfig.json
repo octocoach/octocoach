@@ -1,10 +1,4 @@
 {
-  "extends": "tsconfig/base.json",
-  "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
-    "module": "ES2022",
-    "target": "ES2022"
-  },
-  "include": ["."],
-  "exclude": ["node_modules"]
+  "extends": "@octocoach/typescript-config/react-library.json",
+  "include": ["."]
 }

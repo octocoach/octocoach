@@ -29,7 +29,9 @@ export const autocomplete = async (
   geoapifyUrl.searchParams.append("lang", "de");
   if (type) geoapifyUrl.searchParams.append("type", type);
 
-  const response = await (await fetch(geoapifyUrl)).json();
+  const response = (await (await fetch(geoapifyUrl)).json()) as {
+    features: Feature[];
+  };
 
   return response.features || [];
 };

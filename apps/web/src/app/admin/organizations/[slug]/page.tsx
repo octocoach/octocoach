@@ -1,6 +1,6 @@
 import { Text } from "@octocoach/ui";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default function Page() {
   return (
     <div>
       <Text>Organization Name</Text>

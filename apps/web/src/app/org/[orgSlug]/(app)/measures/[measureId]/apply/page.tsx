@@ -56,7 +56,7 @@ export default async function Page({
   if (!profile) {
     const search = new URLSearchParams();
     search.set("origin", `/measures/${measureId}/apply`);
-    orgRedirect(`signup?${search}`);
+    orgRedirect(`signup?${search.toString()}`);
   }
 
   const measure = await db

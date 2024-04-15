@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import adriaan from "../../../../../adriaan_64.png";
 
-export default async function Page() {
+export default function Page() {
   const baseUrl = getBaseUrl();
 
   return (

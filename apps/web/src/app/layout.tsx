@@ -4,7 +4,7 @@ import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
-import { Flavor } from "@octocoach/ui/theme/creator";
+import { FlavorName } from "@octocoach/ui/theme/creator";
 import { Analytics } from "@vercel/analytics/react";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
@@ -33,7 +33,7 @@ export default async function RootLayout({
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];
-  const flavor = cookieStore.get("theme")?.value as Flavor | undefined;
+  const flavor = cookieStore.get("theme")?.value as FlavorName | undefined;
 
   return (
     <html

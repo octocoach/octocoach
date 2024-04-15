@@ -119,7 +119,7 @@ export const EditSectionContentWithImage = ({
 
     const toSave = Object.values(store.getState().values);
     startTransition(() => {
-      saveContent(toSave);
+      void saveContent(toSave);
     });
   };
 

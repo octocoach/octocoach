@@ -109,7 +109,7 @@ export function EditMeasure({
     );
 
     startTransition(() => {
-      saveMeasure({ measure, measureInfo }).then((result) => {
+      void saveMeasure({ measure, measureInfo }).then((result) => {
         if (result.success === true) {
           store.reset();
           onDone();
@@ -145,7 +145,7 @@ export function EditMeasure({
 
   const $ = store.names;
   $.mappedMeasureInfo.title.en;
-  const imageSrc = store.useValue($.measure.imageSrc);
+  const imageSrc = store.useValue<string>($.measure.imageSrc);
 
   const onCancel = () => {
     startTransition(() => {
@@ -166,10 +166,13 @@ export function EditMeasure({
 
   const addQuestionOption = (idx: number) => {
     for (const locale of dbLocales) {
-      const options =
-        store.getState().values.mappedMeasureInfo.screeningQuestions[idx][
-          locale
-        ].options || ([] as string[]);
+      const question =
+        store.getState().values.mappedMeasureInfo.screeningQuestions[idx];
+      if (!question) throw new Error("Can't find question");
+      const questionLocale = question[locale];
+
+      if (!questionLocale) throw new Error("Can't find question locale");
+      const options = questionLocale.options || ([] as string[]);
 
       store.setValue(
         `mappedMeasureInfo.screeningQuestions.${idx}.${locale}.options`,

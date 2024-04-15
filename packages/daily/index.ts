@@ -1,82 +1,58 @@
+import { $Fetch, ofetch } from "ofetch";
 import { MeetingToken, MeetingTokenOptions, Room, RoomOptions } from "./types";
+import { customAlphabet } from "nanoid";
+import { lowercase } from "nanoid-dictionary";
 
 export class Daily {
-  private apiKey: string;
+  private fetch: $Fetch;
 
-  constructor(apiKey?: string) {
-    if (apiKey) {
-      this.apiKey = apiKey;
-    } else if (process.env.DAILY_KEY) {
-      this.apiKey = process.env.DAILY_KEY;
-    } else {
+  constructor(apiKey: string | undefined = process.env.DAILY_KEY) {
+    if (!apiKey) {
       throw new Error(
         "You must provide a Daily API key or set DAILY_KEY in the environment"
       );
     }
-  }
 
-  private request(
-    method: "GET" | "POST" | "DELETE",
-    endpoint: string,
-    body?: any
-  ) {
-    return fetch(`https://api.daily.co/v1/${endpoint}`, {
-      method,
-      body: body ? JSON.stringify(body) : null,
-      headers: { Authorization: `Bearer ${this.apiKey}` },
+    this.fetch = ofetch.create({
+      baseURL: "https://api.daily.co/v1",
+      headers: { Authorization: `Bearer ${apiKey}` },
+      retry: 3,
+      retryDelay: 500,
     });
   }
 
-  async createRoom(options: RoomOptions) {
-    const res = await this.request("POST", "rooms", options);
-
-    if (!res.ok) {
-      throw new Error("Failed to create room");
-    }
-
-    const room: Room = await res.json();
-
-    return room;
+  async createRoom(body: RoomOptions) {
+    return await this.fetch<Room>("/rooms", { method: "POST", body });
   }
 
   async listRooms() {
-    const res = await this.request("GET", "rooms");
-    if (!res.ok) {
-      console.error(res.text());
-      throw new Error("Failed to fecth rooms");
-    }
+    const { data } = await this.fetch<{ data: Room[] }>("/rooms");
 
-    const { data }: { data: Room[] } = await res.json();
     return data;
   }
 
   async deleteRoom(roomName: Room["name"]) {
-    const res = await this.request("DELETE", `rooms/${roomName}`);
-    if (!res.ok) {
-      console.error(await res.text());
-      throw new Error("Could not delete room");
-    }
-
-    console.log(`Room ${roomName} deleted`);
+    await this.fetch(`rooms/${roomName}`, { method: "DELETE" });
   }
 
   async createMeetingToken(options: MeetingTokenOptions) {
-    const res = await this.request("POST", "meeting-tokens", {
-      properties: {
-        room_name: options.roomName,
-        is_owner: options.isOwner,
-        user_name: options.userName,
-        user_id: options.userId,
+    const { token } = await this.fetch<MeetingToken>("/meeting-tokens", {
+      method: "POST",
+      body: {
+        properties: {
+          room_name: options.roomName,
+          is_owner: options.isOwner,
+          user_name: options.userName,
+          user_id: options.userId,
+        },
       },
     });
 
-    if (!res.ok) {
-      console.error(await res.text());
-      throw new Error("Failed to create meeting token");
-    }
-
-    const { token }: MeetingToken = await res.json();
-
     return token;
+  }
+
+  createRoomName() {
+    const nameSlice = customAlphabet(lowercase, 3);
+    return `${nameSlice()}-${nameSlice()}-${nameSlice()}`;
   }
 }

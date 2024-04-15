@@ -5,9 +5,9 @@ import { employerTable } from "@octocoach/db/schemas/common/employer";
 import Message from "@octocoach/i18n/src/react-message";
 import {
   Button,
-  Form,
   FormField,
   FormInput,
+  FormWithStore,
   HiddenInput,
   Stack,
   Text,
@@ -58,9 +58,10 @@ export default async function Page({
         </Text>
       </Link>
       <Logo employer={employer} size={100} />
-      <Form
-        formStoreProps={{
-          defaultValues: { url: employer.url || "", employerId: employer.id },
+      <FormWithStore
+        defaultValues={{
+          url: employer.url || "",
+          employerId: employer.id,
         }}
         onSubmit={changeUrl}
       >
@@ -69,7 +70,7 @@ export default async function Page({
         </FormField>
         <HiddenInput name="employerId" />
         <Button type="submit">Submit</Button>
-      </Form>
+      </FormWithStore>
       <Text size="xl">{employer.name}</Text>
       <Text>{employer.url}</Text>
       <Stack>

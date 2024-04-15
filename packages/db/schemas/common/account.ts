@@ -1,12 +1,13 @@
-import type { AdapterAccount } from "@octocoach/auth/adapters";
 import { integer, text } from "drizzle-orm/pg-core";
 import { type OrgUserTable, type UserTable } from "./user";
+
+type AccountType = "oauth" | "oidc" | "email";
 
 export const mkAccountCols = (users: UserTable | OrgUserTable) => ({
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  type: text("type").$type<AdapterAccount["type"]>().notNull(),
+  type: text("type").$type<AccountType>().notNull(),
   provider: text("provider").notNull(),
   providerAccountId: text("provider_account_id").notNull(),
   refresh_token: text("refresh_token"),

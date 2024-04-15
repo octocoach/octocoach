@@ -1,3 +1,4 @@
+import { Names } from "@ariakit/core/form/types";
 import {
   ContentLocale,
   ContentLocaleTypeOf,
@@ -6,6 +7,8 @@ import {
   SectionContentFAQ,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { startTransition, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -17,8 +20,6 @@ import {
   Text,
   useFormStore,
 } from "..";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { startTransition, useRef, useState } from "react";
 
 const locales: Locales[] = ["en", "de"];
 
@@ -48,9 +49,14 @@ const mapContent = (id: SectionId, input: ContentLocale[]) => {
   const questions: Record<Locales, FAQQuestion>[] = [];
 
   for (let i = 0; i < enValue.questions.length; i++) {
+    const en = enValue.questions[i];
+    const de = deValue.questions[i];
+
+    if (!en || !de) throw new Error("Missing Content Locale");
+
     questions[i] = {
-      en: enValue.questions[i],
-      de: deValue.questions[i],
+      en,
+      de,
     };
   }
 
@@ -124,6 +130,41 @@ const EditTitle = ({
   );
 };
 
+const EditQuestionLocale = ({
+  locale,
+  names,
+}: {
+  locale: Locales;
+  names: Names<Record<Locales, FAQQuestion>>;
+}) => {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  const [height, setHeight] = useState<number | "10rem">("10rem");
+
+  const onInput = () => {
+    setHeight("10rem");
+    setHeight(ref.current ? ref.current.scrollHeight : "10rem");
+  };
+
+  const $ = names;
+
+  return (
+    <Box paddingX="none" paddingY="none" grow key={locale}>
+      <Stack>
+        <FormField name={$[locale].question} label="Question">
+          <FormInput name={$[locale].question} />
+        </FormField>
+        <FormField name={$[locale].answer} label="Answer">
+          <FormInput
+            name={$[locale].answer}
+            render={<textarea ref={ref} onInput={onInput} style={{ height }} />}
+          />
+        </FormField>
+      </Stack>
+    </Box>
+  );
+};
+
 const EditQuestion = ({
   index,
   value,
@@ -140,43 +181,16 @@ const EditQuestion = ({
     },
   });
 
-  const $ = store.names;
-
   return (
     <Form store={store}>
       <Stack direction="horizontal">
-        {locales.map((locale) => {
-          const ref = useRef<HTMLTextAreaElement>(null);
-
-          const [height, setHeight] = useState<number | "10rem">("10rem");
-
-          const onInput = () => {
-            setHeight("10rem");
-            setHeight(ref.current ? ref.current.scrollHeight : "10rem");
-          };
-
-          return (
-            <Box paddingX="none" paddingY="none" grow key={locale}>
-              <Stack>
-                <FormField name={$[locale].question} label="Question">
-                  <FormInput name={$[locale].question} />
-                </FormField>
-                <FormField name={$[locale].answer} label="Answer">
-                  <FormInput
-                    name={$[locale].answer}
-                    render={
-                      <textarea
-                        ref={ref}
-                        onInput={onInput}
-                        style={{ height }}
-                      />
-                    }
-                  />
-                </FormField>
-              </Stack>
-            </Box>
-          );
-        })}
+        {locales.map((locale) => (
+          <EditQuestionLocale
+            key={locale}
+            locale={locale}
+            names={store.names}
+          />
+        ))}
       </Stack>
     </Form>
   );
@@ -191,7 +205,7 @@ export const EditFaqSection = ({
   id: SectionId;
   name: string;
   content: ContentLocale[];
-  saveContent: (data: NewContentLocale[]) => void;
+  saveContent: (data: NewContentLocale[]) => Promise<void>;
 }) => {
   const defaultValues: MappedDataType = mapContent("faq", content);
 
@@ -220,7 +234,7 @@ export const EditFaqSection = ({
   const onSubmit = () => {
     startTransition(() => {
       const toSave = unmapData(values, id);
-      saveContent(toSave);
+      void saveContent(toSave);
     });
   };
 

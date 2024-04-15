@@ -39,7 +39,7 @@ export const Edit = ({ organization }: { organization: Organization }) => {
   return (
     <Container element="section">
       <Form store={store} onSubmit={onSubmit}>
-        <HiddenInput name={`${$.slug}`} />
+        <HiddenInput name={`${$.slug.toString()}`} />
         <Stack>
           <Text size="xl">Marketing</Text>
           <Text size="l">Logo</Text>

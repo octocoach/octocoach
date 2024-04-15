@@ -1,5 +1,5 @@
 import { AnyColumn, sql } from "drizzle-orm";
-import { customType, pgEnum } from "drizzle-orm/pg-core";
+import { customType } from "drizzle-orm/pg-core";
 
 export type { AnyColumn };
 

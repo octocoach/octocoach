@@ -15,7 +15,7 @@ export const Delete = ({
 
   const onDelete = () => {
     startTransition(() => {
-      deleteAction(id);
+      void deleteAction(id);
     });
   };
 

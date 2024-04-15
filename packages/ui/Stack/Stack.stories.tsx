@@ -30,8 +30,8 @@ export const Basic: Story = {
   args: {
     children: (
       <>
-        {["One", "Two", "Three"].map((n) => (
-          <Item>{n}</Item>
+        {["One", "Two", "Three"].map((n, i) => (
+          <Item key={i}>{n}</Item>
         ))}
       </>
     ),

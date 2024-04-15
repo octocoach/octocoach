@@ -47,11 +47,11 @@ export const Profile = ({
   const [isPending, startTransition] = useTransition();
   const [submitting, setSubmitting] = useState(false);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     startTransition(() => {
       const { values } = store.getState();
       setSubmitting(true);
-      saveProfile(
+      void saveProfile(
         {
           orgSlug,
           userId: session!.user.id,

@@ -24,6 +24,7 @@ const QuestionLocale = ({
   index: number;
   locale: Locales;
 }) => {
+  if (!questionLocale) throw new Error("Missing Question Locale");
   const { LL } = useI18nContext();
   const path = `mappedMeasureInfo.screeningQuestions.${index}.${locale}`;
 

@@ -1,10 +1,14 @@
 import { orgDb } from "@octocoach/db/connection";
 import { fromEntries, getEntries } from "@octocoach/tshelpers";
-
+import type { AdapterAccount } from "@auth/core/adapters";
 export type { Adapter, AdapterAccount } from "@auth/core/adapters";
 export { authDrizzleAdapter } from "./drizzle";
+export type OAuthProviders = Record<
+  AvailableOAuthProviders,
+  OAuthProvider & AdapterAccount
+>;
 
-import { oauthProviders } from "..";
+import { AvailableOAuthProviders, OAuthProvider, oauthProviders } from "..";
 
 export const getUserAccounts = async (userId: string, orgSlug?: string) => {
   const db = orgSlug

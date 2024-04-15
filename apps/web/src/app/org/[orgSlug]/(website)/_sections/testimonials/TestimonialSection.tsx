@@ -53,7 +53,7 @@ const Testimonial = ({ content }: TestimonialProps) => {
     return () => {
       window.removeEventListener("resize", refreshClientHeight);
     };
-  }, [ref.current]);
+  }, []);
 
   return (
     <Scrollytelling.Root debug={false}>

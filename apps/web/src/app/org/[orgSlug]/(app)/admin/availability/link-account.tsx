@@ -5,7 +5,7 @@ import { Button } from "@octocoach/ui";
 
 export const LinkAccount = () => {
   const onClick = () => {
-    signIn("google");
+    void signIn("google");
   };
 
   return <Button onClick={onClick}>Link</Button>;

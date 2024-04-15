@@ -1,10 +1,18 @@
 import { Database } from "@octocoach/db/connection";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { NewJob, jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { Browser, BrowserContext, Page, devices } from "playwright";
 import { getEmbeddings } from "./embeddings";
 import { extractTasks } from "./tasks";
+
+export interface BuildURLParams {
+  age: number;
+  location: string;
+  pageNo?: number;
+  query: string;
+}
 
 /**
  * This abstract class represents a job scraper that can scrape job postings from various websites.
@@ -18,7 +26,7 @@ export abstract class JobScraper {
    *
    * @protected
    */
-  protected page: Page;
+  protected page: Page | undefined;
 
   /**
    * Creates an instance of JobScraper.
@@ -48,17 +56,7 @@ export abstract class JobScraper {
    *
    * @returns {string} The URL for the job search query.
    */
-  abstract buildUrl({
-    age,
-    location,
-    pageNo,
-    query,
-  }: {
-    age: number;
-    location: string;
-    pageNo?: number;
-    query: string;
-  }): string;
+  abstract buildUrl({ age, location, pageNo, query }: BuildURLParams): string;
 
   /**
    * Cleans up the current page before scraping job postings.
@@ -107,10 +105,13 @@ export abstract class JobScraper {
       "Desktop Safari",
     ];
 
-    const device =
-      devices[
-        deviceDescriptors[Math.floor(Math.random() * deviceDescriptors.length)]
-      ];
+    const idx = Math.floor(Math.random() * deviceDescriptors.length);
+    const chosenDevice = deviceDescriptors[idx];
+    if (!chosenDevice)
+      throw new Error("Could not choose a random device descriptor");
+
+    const device = devices[chosenDevice];
+    if (!device) throw new Error("Could not spoof a device");
 
     const { viewport } = device;
     const width = Math.floor(
@@ -154,6 +155,7 @@ export abstract class JobScraper {
         let pageNo = 0;
 
         await this.goToPage(this.buildUrl({ ...urlParams, query }));
+        if (!this.page) throw new Error("No page!");
         await this.sleep(1000);
         await this.cleanPage();
         await this.processCurrentPage();
@@ -206,7 +208,7 @@ export abstract class JobScraper {
       })
       .onConflictDoNothing()
       .returning()
-      .then((rows) => rows[0] ?? null);
+      .then((rows) => getFirstRow(rows));
 
     await extractTasks({ db: this.db, job });
   }

@@ -1,29 +1,29 @@
+import { CheckboxStoreValue } from "@ariakit/core/checkbox/checkbox-store";
 import * as Ariakit from "@ariakit/react";
 import { PropsWithChildren, forwardRef } from "react";
 import { StringLike } from "../types";
 
 export interface FormCheckboxGroupProps
   extends PropsWithChildren<Ariakit.FormGroupProps> {
-  store?: Ariakit.FormStore;
   name?: StringLike;
   label?: string;
-  setValue?: (value: any) => void;
-  getValue?: () => any;
+  setValue?: (value: CheckboxStoreValue) => void;
+  getValue?: () => CheckboxStoreValue;
 }
 
 export const FormCheckboxGroup = forwardRef<
   HTMLDivElement,
   FormCheckboxGroupProps
->(({ children, label, name, store, getValue, setValue }, ref) => {
-  const form = store || Ariakit.useFormContext();
-  if (!form) throw new Error("FormCheckboxGroup must be used within a Form");
+>(({ children, label, name, getValue, setValue }, ref) => {
+  const store = Ariakit.useFormContext();
+  if (!store) throw new Error("FormCheckboxGroup must be used within a Form");
 
   const onSetValue = setValue
     ? setValue
-    : (value: any) => {
+    : (value: CheckboxStoreValue) => {
         if (!name)
           throw new Error("You must either provide a `setValue` or a `name`");
-        form.setValue(name, value);
+        store.setValue(name, value);
       };
 
   const getCurrentValue = () => {
@@ -32,7 +32,7 @@ export const FormCheckboxGroup = forwardRef<
     if (!name)
       throw new Error("You must either provide a `getValue` or a `name`");
 
-    return form.getValue(name);
+    return store.getValue<CheckboxStoreValue>(name);
   };
 
   const currentValue = getCurrentValue();

@@ -3,8 +3,8 @@ export type Privacy = "public" | "private";
 // Rooms
 
 export interface RoomOptions {
-  name?: string;
-  privacy?: Privacy;
+  name: string;
+  privacy: Privacy;
 }
 
 export interface Room {

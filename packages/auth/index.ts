@@ -1,3 +1,4 @@
+import { AdapterAccount } from "@auth/core/adapters";
 import { orgDb } from "@octocoach/db/connection";
 import { DefaultSession } from "next-auth";
 
@@ -5,7 +6,7 @@ export type { DefaultSession, Session } from "next-auth";
 
 export { mkAuth } from "./auth";
 
-interface OAuthProvider {
+export interface OAuthProvider {
   displayName: string;
   required: boolean;
 }
@@ -16,7 +17,14 @@ export type AvailableOAuthProviders =
   | "discord"
   | "google";
 
-export const oauthProviders: Record<AvailableOAuthProviders, OAuthProvider> = {
+export type OAuthProviders = Record<AvailableOAuthProviders, OAuthProvider>;
+
+export type OAuthProvidersWithAccount = Record<
+  AvailableOAuthProviders,
+  OAuthProvider & AdapterAccount
+>;
+
+export const oauthProviders: OAuthProviders = {
   github: { displayName: "Github", required: true },
   linkedin: { displayName: "LinkedIn", required: true },
   discord: { displayName: "Discord", required: true },

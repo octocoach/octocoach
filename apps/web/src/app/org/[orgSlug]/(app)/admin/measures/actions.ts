@@ -1,8 +1,10 @@
 "use server";
 
 import { authOrRedirect } from "@helpers/auth";
+import { serialize } from "@helpers/index";
 import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import {
@@ -53,7 +55,7 @@ export const saveMeasure = async (
   });
 
   if (measureResult.success === false) {
-    errors.measure = JSON.parse(JSON.stringify(measureResult.error));
+    errors.measure = serialize(measureResult.error);
   }
 
   const measureInfoToInsert: SafeParseSuccess<NewMeasureInfo>["data"][] = [];
@@ -67,7 +69,7 @@ export const saveMeasure = async (
 
     if (result.success === false) {
       // We need to clone the error object because it's not serializable
-      errors.measureInfo[locale] = JSON.parse(JSON.stringify(result.error));
+      errors.measureInfo[locale] = serialize(result.error);
     } else {
       measureInfoToInsert.push(result.data);
     }
@@ -87,10 +89,10 @@ export const saveMeasure = async (
       .onConflictDoUpdate({
         target: measureTable.id,
         set: measureResult.data,
-        where: eq(measureTable.id, measureResult.data.id!),
+        where: eq(measureTable.id, measureResult.data.id),
       })
       .returning()
-      .then((rows) => rows[0]?.id);
+      .then((rows) => getFirstRow(rows).id);
 
     for (const info of measureInfoToInsert) {
       await trx
@@ -140,6 +142,6 @@ export const deleteMeasure = async (
   redirect(`/org/${orgSlug}/admin/measures`);
 };
 
-export const redirectToMeasure = async (id: Measure["id"]) => {
+export const redirectToMeasure = (id: Measure["id"]) => {
   orgRedirect(`/admin/measures/${id}`);
 };

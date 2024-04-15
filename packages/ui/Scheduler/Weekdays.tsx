@@ -17,7 +17,7 @@ export const WeekdaysHeading = ({ locale }: { locale: Locales }) => {
         format(day, "EEE", { locale: getLocale(locale) })
       )
     );
-  }, []);
+  }, [locale]);
 
   return (
     <>

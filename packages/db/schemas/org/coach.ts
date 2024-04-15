@@ -15,7 +15,9 @@ export type Slot = {
   endTime: Time;
 };
 
-export type Availability = Record<number, Slot[]>;
+export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type Availability = Record<DayIndex, Slot[]>;
 
 export type CalendarProvider = "google";
 

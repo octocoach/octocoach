@@ -17,7 +17,7 @@ export const PixelBackground = ({
     } else {
       setBackgroundImage("none");
     }
-  }, [ref.current]);
+  }, [pixelSize]);
 
   return (
     <div

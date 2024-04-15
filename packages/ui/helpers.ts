@@ -1,38 +1,14 @@
+import { FlavorName } from "@catppuccin/palette";
 import {
   ContentLocale,
-  ContentLocaleTypeOf,
   SectionContent,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
 import type { Locales } from "@octocoach/i18n/src/i18n-types";
 import { colord } from "colord";
-import { Flavor } from "./theme/creator";
 
 export const createAlpha = (color: string, alpha: number) =>
   colord(color).alpha(alpha).toHslString();
-
-export const getContentById = <T>(
-  content: { id: SectionId; value: unknown }[],
-  id: SectionId
-) => {
-  const found = content.find((c) => c.id === id);
-  if (!found) {
-    console.warn(`Content with id ${id} not found`);
-    return {} as T;
-  }
-
-  return found.value as T;
-};
-
-export const filterContentByLocale = (
-  content: { id: SectionId; value: SectionContent; locale: Locales }[],
-  locale: Locales
-) => content.filter((c) => c.locale === locale);
-
-export const filterContentById = <T = SectionContent>(
-  content: ContentLocale[],
-  id: SectionId
-) => content.filter((c) => c.id === id) as ContentLocaleTypeOf<T>[];
 
 const image = {
   src: "",
@@ -93,6 +69,6 @@ export const isDarkMode = () => {
   return window.matchMedia(prefersDarkQuery).matches;
 };
 
-export const getSystemTheme = (): Flavor => {
+export const getSystemTheme = (): FlavorName => {
   return isDarkMode() ? "mocha" : "latte";
 };

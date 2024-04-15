@@ -1,6 +1,6 @@
+import { FlavorName } from "@catppuccin/palette";
 import { createThemeContract, style } from "@vanilla-extract/css";
 import {
-  Flavor,
   colorAlphas,
   createThemeBase,
   createThemeVariant,
@@ -46,17 +46,17 @@ export const vars = createThemeContract({
   },
 });
 
-export const flavors: Flavor[] = ["latte", "frappe", "macchiato", "mocha"];
+export const flavors: FlavorName[] = ["latte", "frappe", "macchiato", "mocha"];
 
 export const themeClass = flavors.reduce(
   (acc, cur) => ({ ...acc, [cur]: createThemeVariant(cur) }),
   {}
-) as Record<Flavor, string>;
+) as Record<FlavorName, string>;
 
 export const themeValue = flavors.reduce(
   (acc, cur) => ({ ...acc, [cur]: createThemeBase(cur) }),
   {}
-) as Record<Flavor, ReturnType<typeof createThemeBase>>;
+) as Record<FlavorName, ReturnType<typeof createThemeBase>>;
 
 export const bg = style({
   backgroundColor: vars.color.background.base.normal,

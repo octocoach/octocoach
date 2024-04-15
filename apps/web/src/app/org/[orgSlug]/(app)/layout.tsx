@@ -26,7 +26,7 @@ export default async function AppLayout({
   return (
     <Container width="contained">
       <Nav organization={organization} href={baseUrl}>
-        <LanguageSwitcher baseUrl={baseUrl} locale={locale} />
+        <LanguageSwitcher locale={locale} />
         <ThemeSwitcher />
       </Nav>
       {children}

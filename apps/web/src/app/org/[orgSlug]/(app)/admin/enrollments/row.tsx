@@ -38,7 +38,7 @@ export const EnrollmentRow = ({
 
   const onCreateRoom = () => {
     startTransition(() => {
-      createRoom(enrollment).then(() => {
+      void createRoom(enrollment).then(() => {
         router.refresh();
       });
     });

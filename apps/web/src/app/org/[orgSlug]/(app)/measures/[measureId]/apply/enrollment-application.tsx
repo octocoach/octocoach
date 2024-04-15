@@ -7,6 +7,7 @@ import {
   ScreeningQuestion,
 } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import Message from "@octocoach/i18n/src/react-message";
 import {
   Button,
   ButtonLink,
@@ -22,10 +23,9 @@ import {
   Text,
   useFormStore,
 } from "@octocoach/ui";
-import { CreateEnrollmentParams } from "./actions";
-import { useTransition } from "react";
-import Message from "@octocoach/i18n/src/react-message";
 import Link from "next/link";
+import { useTransition } from "react";
+import { CreateEnrollmentParams } from "./actions";
 
 export const EnrollmentApplication = ({
   measure,
@@ -56,7 +56,7 @@ export const EnrollmentApplication = ({
   const onSubmit = () => {
     startTransition(() => {
       const screeningAnswers = store.getState().values;
-      createEnrollment({ measure: measure.id, screeningAnswers });
+      void createEnrollment({ measure: measure.id, screeningAnswers });
     });
   };
 

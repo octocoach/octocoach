@@ -38,13 +38,13 @@ export const SkillCheck = ({
   submitAnswer,
 }: {
   skill: Pick<Skill, "id" | "name" | "description">;
-  submitAnswer: (args: SkillAssessment) => void;
+  submitAnswer: (args: SkillAssessment) => Promise<void>;
 }) => {
   const [isPending, startTransition] = useTransition();
 
   const onAnswer = ({ skillLevel }: { skillLevel: SkillLevel }) => {
     startTransition(() => {
-      submitAnswer({ id: skill.id, level: skillLevel });
+      void submitAnswer({ id: skill.id, level: skillLevel });
     });
   };
 

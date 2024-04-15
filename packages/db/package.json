@@ -10,6 +10,7 @@
     "seed": "tsx -r dotenv/config seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
     "test": "vitest",
+    "lint": "eslint .",
     "check": "tsx src/schema/organization/members.ts",
     "create:org": "tsx -r dotenv/config src/create-org.ts",
     "new:org": "tsx -r dotenv/config src/new-org.ts",
@@ -18,7 +19,6 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
-    "@octocoach/auth": "workspace:^",
     "@types/cli-progress": "^3.11.0",
     "@vercel/postgres": "^0.5.1",
     "cli-progress": "^3.12.0",
@@ -37,15 +37,15 @@
   },
   "devDependencies": {
     "@octocoach/i18n": "workspace:^",
+    "@octocoach/typescript-config": "workspace:*",
     "@types/minimist": "^1.2.2",
     "@types/nanoid-dictionary": "^4.2.3",
     "@types/node": "^20.3.2",
     "@types/ws": "^8.5.10",
     "dotenv": "^16.0.3",
     "drizzle-kit": "^0.20.6",
-    "tsconfig": "workspace:*",
     "tsx": "^3.12.7",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "drizzle-kit": "^0.19.13"

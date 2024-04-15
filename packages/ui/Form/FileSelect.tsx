@@ -9,7 +9,12 @@ export const FileSelect = ({
 }) => {
   return (
     <span className={fileSelectContainer}>
-      <input type="file" onChange={onSelect} />
+      <input
+        type="file"
+        onChange={(ev) => {
+          void onSelect(ev);
+        }}
+      />
     </span>
   );
 };

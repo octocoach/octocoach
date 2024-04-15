@@ -1,14 +1,18 @@
 "use server";
 
-import { Flavor } from "@octocoach/ui/theme/creator";
+import { FlavorName } from "@octocoach/ui/theme/creator";
 import { cookies } from "next/headers";
 
-export const setTheme = async (theme: Flavor) => {
-  cookies().set("theme", theme);
-  return theme;
+export const setTheme = async (theme: FlavorName) => {
+  return new Promise<void>((resolve) => {
+    cookies().set("theme", theme);
+    resolve();
+  });
 };
 
 export const removeTheme = async () => {
-  cookies().delete("theme");
-  return;
+  return new Promise<void>((resolve) => {
+    cookies().delete("theme");
+    resolve();
+  });
 };

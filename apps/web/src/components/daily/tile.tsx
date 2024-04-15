@@ -8,14 +8,13 @@ export const Tile = ({
   id,
   isScreenShare,
   isLocal,
-  isAlone,
 }: {
   id: string;
   isScreenShare?: boolean;
   isAlone?: boolean;
   isLocal?: boolean;
 }) => {
-  const videoState = useVideoTrack(id);
+  const _videoState = useVideoTrack(id);
 
   return (
     <div className={tileClass}>

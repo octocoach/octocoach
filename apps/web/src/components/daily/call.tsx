@@ -48,8 +48,9 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
   }, [screens]);
 
   useEffect(() => {
-    if (remoteScreens.length < 1) {
+    if (!remoteScreens[0]) {
       setActiveScreen(null);
+      return;
     }
 
     setActiveScreen(remoteScreens[0]);
@@ -72,13 +73,7 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
         .filter((id) => !!activeScreen || id !== activeSpeakerId)
         .map((id) => ({ id, isScreenShare: false })),
     ];
-  }, [
-    remoteScreens,
-    remoteParticipantsIds,
-    activeScreen,
-    activeScreen?.session_id,
-    activeSpeakerId,
-  ]);
+  }, [remoteScreens, remoteParticipantsIds, activeScreen, activeSpeakerId]);
 
   return (
     <div className={callClass}>

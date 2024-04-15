@@ -3,7 +3,24 @@ type LegalFormInfo = {
   abbreviation: string;
 };
 
-export const legalForm: Record<string, LegalFormInfo> = {
+export type LegalForm =
+  | "EU"
+  | "GbR"
+  | "OHG"
+  | "KG"
+  | "GmbH"
+  | "UG"
+  | "AG"
+  | "eG"
+  | "gAG"
+  | "gGmbH"
+  | "PartG"
+  | "KGaA"
+  | "Verein"
+  | "GmbHCoKG"
+  | "GmbHCoOHG";
+
+export const legalForm: Record<LegalForm, LegalFormInfo> = {
   EU: {
     fullName: "Einzelunternehmen", // Sole Proprietorship
     abbreviation: "EU",

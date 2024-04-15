@@ -1,15 +1,16 @@
-import { Availability } from "@octocoach/db/schemas/org/coach";
+import { Availability, DayIndex } from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
   Interval,
   addDays,
+  addHours,
   addMinutes,
   areIntervalsOverlapping,
   format,
-  isFuture,
+  isAfter,
   isSameDay,
 } from "date-fns";
-import { convertToTimeZone, convertToLocalTime } from "date-fns-timezone";
+import { convertToLocalTime, convertToTimeZone } from "date-fns-timezone";
 import { de, enUS } from "date-fns/locale";
 
 export const isAvailable = (
@@ -47,18 +48,21 @@ export const getSlots = ({
   coachTimezone,
   date,
   duration,
+  hoursBuffer,
 }: {
   availability: Availability;
   coachTimezone: string;
   date: Date;
   duration: number;
+  hoursBuffer: number;
 }): Date[] => {
   const coachDate = convertToTimeZone(date, { timeZone: coachTimezone });
 
   const today = coachDate;
   const tomorrow = addDays(coachDate, 1);
+  const now = new Date();
 
-  const todaySlots = availability[today.getDay()].map(
+  const todaySlots = availability[today.getDay() as DayIndex].map(
     ({ startTime, endTime }) => ({
       start: convertToLocalTime(
         new Date(
@@ -83,7 +87,7 @@ export const getSlots = ({
     })
   );
 
-  const tomorrowSlots = availability[tomorrow.getDay()].map(
+  const tomorrowSlots = availability[tomorrow.getDay() as DayIndex].map(
     ({ startTime, endTime }) => ({
       start: convertToLocalTime(
         new Date(
@@ -118,9 +122,9 @@ export const getSlots = ({
       }
       return out;
     })
-    .filter((d) => {
-      return isSameDay(date, d) && isFuture(d);
-    });
+    .filter(
+      (d) => isSameDay(date, d) && isAfter(d, addHours(now, hoursBuffer))
+    );
 
   return slots;
 };

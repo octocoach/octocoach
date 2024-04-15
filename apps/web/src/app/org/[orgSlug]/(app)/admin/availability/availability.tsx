@@ -1,13 +1,18 @@
 "use client";
 
-import { Availability, Slot, Time } from "@octocoach/db/schemas/org/coach";
+import {
+  Availability,
+  DayIndex,
+  Slot,
+  Time,
+} from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";
 import { Button, Card, Select, SelectItem, Stack, Text } from "@octocoach/ui";
 import { getLocale } from "@octocoach/ui/Scheduler/helpers";
 import { AddFilled, TrashCan } from "@octocoach/ui/icons";
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 const padZeros = (n: number) => String(n).padStart(2, "0");
 
@@ -101,7 +106,7 @@ export const EditAvailability = ({
 
   if (!availability) return null;
 
-  const onAddSlot = (day: number) => {
+  const onAddSlot = (day: DayIndex) => {
     const newAvailability = { ...availability };
     newAvailability[day] = [
       ...availability[day],

@@ -4,6 +4,7 @@ import { authOrRedirect } from "@helpers/auth";
 import { encrypt } from "@octocoach/auth/helpers";
 import { db } from "@octocoach/db/connection";
 import { createOrgStatements, meta } from "@octocoach/db/helpers/create-org";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { eq, sql } from "@octocoach/db/operators";
 import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
 import {
@@ -51,7 +52,7 @@ export async function createOrganization({
       .insert(addressTable)
       .values({ addressLine1, addressLine2, city, postcode, state, country })
       .returning()
-      .then(([{ id }]) => id);
+      .then((rows) => getFirstRow(rows).id);
 
     await tx.insert(organizationTable).values({
       displayName,
@@ -89,7 +90,7 @@ export async function onSubmit(organizationDetails: OrganizationDetails) {
   await db
     .update(organizationTable)
     .set(organization)
-    .where(eq(organizationTable.slug, organizationDetails.slug));
+    .where(eq(organizationTable.slug, slug));
 
   revalidatePath("/org", "layout");
 }

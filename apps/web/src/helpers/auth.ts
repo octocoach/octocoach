@@ -16,7 +16,7 @@ export async function authOrRedirect(orgSlug?: string) {
     callbackUrl,
   });
 
-  if (!session) redirect(`/api/auth/signin?${searchParams}`);
+  if (!session) redirect(`/api/auth/signin?${searchParams.toString()}`);
 
   return session;
 }

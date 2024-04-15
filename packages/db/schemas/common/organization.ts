@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { integer, pgEnum, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { toTuple } from "../helpers";
 import { addressTable } from "./address";
-import { legalForm } from "./legal-form";
+import { LegalForm, legalForm } from "./legal-form";
 import { OrgUserTable, UserTable, mkUserCols } from "./user";
 
 export const whitelistedUsers = [
@@ -20,7 +20,7 @@ export const mkOrganizationTable = (userTable: UserTable | OrgUserTable) =>
     id: serial("id").notNull().primaryKey(),
     displayName: text("display_name").notNull(),
     legalName: text("legal_name").notNull().default(""),
-    legalForm: legalFormEnum("type").notNull().default("EU"),
+    legalForm: legalFormEnum("type").notNull().default("EU").$type<LegalForm>(),
     slug: text("slug").notNull(),
     owner: text("user_id")
       .notNull()

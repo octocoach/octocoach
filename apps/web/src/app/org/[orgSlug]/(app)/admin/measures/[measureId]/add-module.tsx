@@ -25,7 +25,7 @@ export const AddModuleToMeasure = ({
 
   const onAdd = (mod: ModuleWithInfo) =>
     startTransition(() => {
-      addMeasureToModuleWithSlug({
+      void addMeasureToModuleWithSlug({
         measureId,
         moduleId: mod.id,
       }).then((res): void => {

@@ -1,8 +1,9 @@
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
+
 import { embedding } from "../data-types/embedding";
 import { skillSubcategoryTable } from "./skill-subcategory";
 import { skillTypeTable } from "./skill-type";
-import { createSelectSchema } from "drizzle-zod";
 
 export type NewSkill = typeof skillTable.$inferInsert;
 export type Skill = typeof skillTable.$inferSelect;

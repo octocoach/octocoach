@@ -1,6 +1,7 @@
 import { CheckboxStoreValue } from "@ariakit/core/checkbox/checkbox-store";
 import * as Ariakit from "@ariakit/react";
-import { PropsWithChildren, forwardRef } from "react";
+import { forwardRef, PropsWithChildren } from "react";
+
 import { StringLike } from "../types";
 
 export interface FormCheckboxGroupProps

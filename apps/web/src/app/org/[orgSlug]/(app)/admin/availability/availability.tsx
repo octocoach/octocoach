@@ -9,8 +9,8 @@ import {
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";
 import { Button, Card, Select, SelectItem, Stack, Text } from "@octocoach/ui";
-import { getLocale } from "@octocoach/ui/Scheduler/helpers";
 import { AddFilled, TrashCan } from "@octocoach/ui/icons";
+import { getLocale } from "@octocoach/ui/Scheduler/helpers";
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
 import { useMemo } from "react";
 

@@ -8,9 +8,10 @@ import {
   lastDayOfMonth,
 } from "date-fns";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
 import { Button } from "../Button/Button";
-import { WeekdaysHeading } from "./Weekdays";
 import { calendarContainer } from "./calendar.css";
+import { WeekdaysHeading } from "./Weekdays";
 
 export const Calendar = ({
   year,

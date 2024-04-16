@@ -1,4 +1,5 @@
 import { boolean, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { meetingAttendanceEnum, meetingRoleEnum } from "../data-types/meeting";
 import { mkMeetingTable } from "./meeting";

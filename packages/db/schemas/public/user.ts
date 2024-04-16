@@ -1,7 +1,8 @@
-import { pgTable } from "drizzle-orm/pg-core";
-import { mkUserCols } from "../common/user";
 import { relations } from "drizzle-orm";
+import { pgTable } from "drizzle-orm/pg-core";
+
 import { mkOrganizationTable } from "../common/organization";
+import { mkUserCols } from "../common/user";
 
 export type PlatformUser = typeof userTable.$inferSelect;
 export type NewPlatformUser = typeof userTable.$inferInsert;

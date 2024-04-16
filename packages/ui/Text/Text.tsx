@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
-import { TextVariants, text } from "./text.css";
+
+import { text, TextVariants } from "./text.css";
 
 type AllowedElements = "h1" | "h2" | "p" | "span";
 

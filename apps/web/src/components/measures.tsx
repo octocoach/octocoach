@@ -5,6 +5,7 @@ import { Card } from "@octocoach/ui/Card/Card";
 import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import Link from "next/link";
+
 import { CertquaMeasureSeal } from "./certqua-seal/measure";
 import { FillImage } from "./fill-image";
 import { FundedByBA } from "./funded-by-ba";

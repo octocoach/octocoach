@@ -4,6 +4,7 @@ import { eq } from "@octocoach/db/operators";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
+
 import { cookieNames, xHeaders } from "./const";
 
 // TODO: This is a workaround until this is solved:

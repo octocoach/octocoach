@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { CardVariants, card } from "./card.css";
+import { card, CardVariants } from "./card.css";
 
 export const Card = React.forwardRef<
   HTMLDivElement,

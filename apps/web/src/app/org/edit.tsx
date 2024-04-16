@@ -14,6 +14,7 @@ import {
 } from "@octocoach/ui";
 import Upload from "@octocoach/ui/Form/Upload";
 import Image from "next/image";
+
 import { onSubmit, type OrganizationDetails } from "./actions";
 
 export const Edit = ({ organization }: { organization: Organization }) => {

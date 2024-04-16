@@ -9,13 +9,14 @@ import {
   employerTable,
   jobTable,
   skillCategoryTable,
+  skillsTasksTable,
   skillSubcategoryTable,
   skillTable,
-  skillsTasksTable,
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Card, Markdown, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
+
 import { Skill } from "./skill";
 import { Task, type TaskSkill } from "./task";
 

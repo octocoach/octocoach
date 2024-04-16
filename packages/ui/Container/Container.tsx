@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
-import { ContainerVariants, container } from "./container.css";
+
+import { container, ContainerVariants } from "./container.css";
 type AllowedElement = "div" | "section" | "main" | "article" | "header" | "nav";
 
 export const Container = ({

@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
 import { integer, json, text } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
-import { mkUserTable } from "./user";
 import { mkMeasureTable } from "./measure";
 import { mkModuleTable } from "./module";
+import { mkUserTable } from "./user";
 
 export type Time = {
   hh: number;

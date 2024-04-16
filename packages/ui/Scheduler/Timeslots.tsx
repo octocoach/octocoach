@@ -1,9 +1,11 @@
 "use client";
 
 import { CircleFilled, Misuse } from "@carbon/icons-react";
+import { Availability } from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { Interval, format } from "date-fns";
+import { format, Interval } from "date-fns";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
 import { Button } from "../Button/Button";
 import { Center } from "../Center/Center";
 import { Spinner } from "../Spinner/Spinner";
@@ -12,7 +14,6 @@ import { vars } from "../theme.css";
 import { coachTimezone, duration } from "./constants";
 import { getLocale, getSlots, isAvailable } from "./helpers";
 import { timeslotsContainer, timeslotsContent } from "./timeslots.css";
-import { Availability } from "@octocoach/db/schemas/org/coach";
 
 export const Timeslots = ({
   selectedDate,

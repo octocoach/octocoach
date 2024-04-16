@@ -2,6 +2,7 @@
 
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { formatDate } from "date-fns";
+
 import { getLocale } from "../Scheduler/helpers";
 
 /**

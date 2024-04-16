@@ -1,8 +1,9 @@
 import { relations } from "drizzle-orm";
-import { taskTable } from "../common/task";
+
 import { jobTable } from "../common/job";
-import { skillsTasksTable } from "../common/skills-tasks";
 import { skillsMissingTasksTable } from "../common/skills-missing-tasks";
+import { skillsTasksTable } from "../common/skills-tasks";
+import { taskTable } from "../common/task";
 import { mkUsersTaskInterestTable } from "./users-task-interest";
 
 export { taskTable };

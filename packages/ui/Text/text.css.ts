@@ -1,4 +1,5 @@
-import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
+import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
+
 import { vars } from "../theme.css";
 
 export const text = recipe({

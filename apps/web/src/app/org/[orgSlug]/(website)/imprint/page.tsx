@@ -1,6 +1,7 @@
 import { getLocale } from "@helpers/locale";
 import { Markdown } from "@octocoach/ui";
 import { notFound } from "next/navigation";
+
 import { getOrganizationWithAddressAndOwnerName } from "../helpers";
 import { makeImpressum } from "./content";
 

@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, text } from "drizzle-orm/pg-core";
+
 import { skillTable } from "./skill";
 import { skillCategoryTable } from "./skill-category";
 

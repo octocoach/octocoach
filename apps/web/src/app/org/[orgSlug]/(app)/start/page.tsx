@@ -2,6 +2,7 @@ import { getBaseUrl } from "@helpers/navigation";
 import { Box, ButtonLink, Grid, Stack, Text } from "@octocoach/ui";
 import Image from "next/image";
 import Link from "next/link";
+
 import adriaan from "../../../../../adriaan_64.png";
 
 export default function Page() {

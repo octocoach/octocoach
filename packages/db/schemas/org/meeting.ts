@@ -1,6 +1,7 @@
 import { text, timestamp } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { meetingTypeEnum } from "../data-types/meeting";
 import { mkMeasureTable } from "./measure";

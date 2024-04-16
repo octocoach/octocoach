@@ -1,9 +1,10 @@
 import { Database } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
-import { NewJob, jobTable } from "@octocoach/db/schemas/common/job";
+import { jobTable, NewJob } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
 import { NodeHtmlMarkdown } from "node-html-markdown";
-import { Browser, BrowserContext, Page, devices } from "playwright";
+import { Browser, BrowserContext, devices, Page } from "playwright";
+
 import { getEmbeddings } from "./embeddings";
 import { extractTasks } from "./tasks";
 

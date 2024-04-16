@@ -1,4 +1,5 @@
 import { relations } from "drizzle-orm";
+
 import { skillTable } from "../common/skill";
 import { skillSubcategoryTable } from "../common/skill-subcategory";
 import { skillTypeTable } from "../common/skill-type";

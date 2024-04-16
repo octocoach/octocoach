@@ -3,6 +3,7 @@ import { orgDb } from "@octocoach/db/connection";
 import Message from "@octocoach/i18n/src/react-message";
 import { Box, Grid, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
+
 import { Profile } from "./profile";
 
 export default async function Page({

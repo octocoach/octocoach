@@ -7,6 +7,7 @@ import {
   HeroSection,
   TestimonialsSection,
 } from "@sections/index";
+
 import { getContent, getMeasuresWithInfo } from "./helpers";
 
 export default async function Page({

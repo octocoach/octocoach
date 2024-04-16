@@ -7,6 +7,7 @@ import {
   Text,
 } from "@octocoach/ui";
 import { notFound } from "next/navigation";
+
 import { getContentById } from "../helpers";
 
 export default async function Page({

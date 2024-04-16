@@ -1,9 +1,9 @@
 import { db } from "@octocoach/db/connection";
 import { desc, eq, sql } from "@octocoach/db/operators";
 import {
+  skillsTasksTable,
   skillSubcategoryTable,
   skillTable,
-  skillsTasksTable,
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Card, Container, Stack, Text } from "@octocoach/ui";

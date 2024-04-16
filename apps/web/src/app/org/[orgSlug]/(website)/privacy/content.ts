@@ -1,4 +1,5 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+
 import { OrganizationWithContent } from "../helpers";
 
 type MakePrivacyPolicy = (organization: OrganizationWithContent) => string;

@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Stack } from "./Stack";
-import { vars } from "../theme.css";
 import { ReactNode } from "react";
+
+import { vars } from "../theme.css";
+import { Stack } from "./Stack";
 
 const meta: Meta<typeof Stack> = {
   title: "Atoms/Stack",

@@ -1,8 +1,9 @@
+import "@octocoach/ui/reset.css";
+
 import { I18nProvider } from "@octocoach/i18n";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
-import "@octocoach/ui/reset.css";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
 import { FlavorName } from "@octocoach/ui/theme/creator";
 import { Analytics } from "@vercel/analytics/react";

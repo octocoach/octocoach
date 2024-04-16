@@ -1,5 +1,6 @@
-import { flavors, type FlavorName } from "@catppuccin/palette";
+import { type FlavorName, flavors } from "@catppuccin/palette";
 import { createTheme } from "@vanilla-extract/css";
+
 import { createAlpha } from "../helpers";
 import { vars } from "../theme.css";
 

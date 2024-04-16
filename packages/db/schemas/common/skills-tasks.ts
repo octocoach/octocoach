@@ -1,7 +1,8 @@
+import { relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
+
 import { skillTable } from "./skill";
 import { taskTable } from "./task";
-import { relations } from "drizzle-orm";
 
 export type SkillsTasks = typeof skillsTasksTable.$inferSelect;
 export type NewSkillsTasks = typeof skillsTasksTable.$inferInsert;

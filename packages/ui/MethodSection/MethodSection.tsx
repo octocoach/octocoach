@@ -2,6 +2,7 @@ import {
   SectionContentWithSubSections,
   SectionId,
 } from "@octocoach/db/schemas/org/content";
+
 import { Box, Stack, Text } from "..";
 
 export const methodSectionId: SectionId = "method";

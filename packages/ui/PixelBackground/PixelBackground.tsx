@@ -1,6 +1,7 @@
 "use client";
 
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
+
 import { makePixelBackground } from "./helpers";
 
 export const PixelBackground = ({

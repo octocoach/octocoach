@@ -6,7 +6,7 @@ import { db } from "@octocoach/db/connection";
 import { createOrgStatements, meta } from "@octocoach/db/helpers/create-org";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { eq, sql } from "@octocoach/db/operators";
-import { NewAddress, addressTable } from "@octocoach/db/schemas/common/address";
+import { addressTable, NewAddress } from "@octocoach/db/schemas/common/address";
 import {
   NewOragnization,
   Organization,

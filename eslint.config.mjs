@@ -1,14 +1,16 @@
 // @ts-check
 
+import url from "node:url";
+
 import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import globals from "globals";
-import url from "node:url";
 import tseslint from "typescript-eslint";
-import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const compat = new FlatCompat({
@@ -22,6 +24,7 @@ export default tseslint.config(
       ["next"]: nextPlugin,
       ["react-hooks"]: reactHooksPlugin,
       ["react"]: reactPlugin,
+      ["simple-import-sort"]: simpleImportSortPlugin,
     },
   },
   eslint.configs.recommended,
@@ -45,6 +48,7 @@ export default tseslint.config(
           varsIgnorePattern: "^_",
         },
       ],
+      "simple-import-sort/imports": "error",
     },
   },
   {

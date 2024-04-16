@@ -1,5 +1,6 @@
 import { useParticipantProperty } from "@daily-co/daily-react";
 import { Text } from "@octocoach/ui";
+
 import { usernameClass } from "./username.css";
 
 export const Username = ({

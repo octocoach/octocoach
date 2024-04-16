@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import seal from "./assets/certqua_org_s.png";
 
 export const CertquaOrgSeal = () => (

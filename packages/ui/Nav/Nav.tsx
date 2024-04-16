@@ -1,5 +1,6 @@
 import type { Organization } from "@octocoach/db/schemas/common/organization";
 import { ReactNode } from "react";
+
 import { Text } from "../Text/Text";
 import { logo, logoWrapper, nav, topBar } from "./nav.css";
 

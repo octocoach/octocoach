@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, primaryKey, text } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkMeasureTable } from "./measure";
 import { mkModuleTable } from "./module";

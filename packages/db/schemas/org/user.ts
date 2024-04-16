@@ -1,7 +1,8 @@
 import { relations } from "drizzle-orm";
+
 import { mkOrganizationTable } from "../common/organization";
-import { mkUserCols } from "../common/user";
 import { mkOrgPgSchema } from "../common/pg-schema";
+import { mkUserCols } from "../common/user";
 import { mkUserProfileTable } from "./user-profile";
 import { mkUsersSkillLevelsTable } from "./users-skill-levels";
 import { mkUsersTaskInterestTable } from "./users-task-interest";

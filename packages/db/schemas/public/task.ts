@@ -1,4 +1,5 @@
 import { relations } from "drizzle-orm";
+
 import { jobTable } from "../common/job";
 import { skillsMissingTasksTable } from "../common/skills-missing-tasks";
 import { skillsTasksTable } from "../common/skills-tasks";

@@ -11,9 +11,10 @@ import { Center } from "@octocoach/ui/Center/Center";
 import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { Text } from "@octocoach/ui/Text/Text";
-import { useEffect, useRef, useState } from "react";
-import { pinClass } from "./testimonial.css";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+import { pinClass } from "./testimonial.css";
 
 export const testimonialsSectionId: SectionId = "testimonials";
 

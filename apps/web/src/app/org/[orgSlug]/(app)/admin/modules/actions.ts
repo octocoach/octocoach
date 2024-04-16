@@ -7,13 +7,13 @@ import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import {
-  Module,
-  NewModule,
-  NewModuleInfo,
   insertModuleInfoSchema,
   insertModuleSchema,
   mkModuleInfoTable,
   mkModuleTable,
+  Module,
+  NewModule,
+  NewModuleInfo,
 } from "@octocoach/db/schemas/org/module";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";

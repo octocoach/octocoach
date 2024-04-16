@@ -8,13 +8,13 @@ import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import {
-  Measure,
-  NewMeasure,
-  NewMeasureInfo,
   insertMeasureInfoSchema,
   insertMeasureSchema,
+  Measure,
   mkMeasureInfoTable,
   mkMeasureTable,
+  NewMeasure,
+  NewMeasureInfo,
 } from "@octocoach/db/schemas/org/measure";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { getEntries } from "@octocoach/tshelpers";

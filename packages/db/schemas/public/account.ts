@@ -1,4 +1,5 @@
 import { pgTable, primaryKey } from "drizzle-orm/pg-core";
+
 import { mkAccountCols } from "../common/account";
 import { userTable } from "./user";
 

@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@octocoach/lint-staged-config": "workspace:^",
+    "@octocoach/typescript-config": "workspace:*",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@octocoach/typescript-config": "workspace:*"
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
     "@octocoach/db": "workspace:^",

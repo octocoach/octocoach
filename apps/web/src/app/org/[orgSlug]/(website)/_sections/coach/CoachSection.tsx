@@ -6,6 +6,7 @@ import { Box } from "@octocoach/ui/Box/Box";
 import { Markdown } from "@octocoach/ui/Markdown/Markdown";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { Text } from "@octocoach/ui/Text/Text";
+import Image from "next/image";
 
 export const coachSectionId: SectionId = "coach";
 
@@ -19,15 +20,23 @@ export const CoachSection = ({ content }: CoachSectionProps) => {
   return (
     <Box paddingY="medium">
       <Stack align="center">
-        <img
-          src={content.image.src}
+        <div
           style={{
-            imageRendering: "pixelated",
-            width: "clamp(280px, 50%, 400px)",
-            minWidth: 280,
+            position: "relative",
+            width: "min(100%, 400px)",
+            height: "clamp(200px, calc(100vw * 0.3), 400px)",
           }}
-          alt={content.image.alt}
-        />
+        >
+          <Image
+            src={content.image.src}
+            style={{
+              imageRendering: "pixelated",
+              objectFit: "contain",
+            }}
+            fill={true}
+            alt={content.image.alt}
+          />
+        </div>
         <Box paddingX="none">
           <Text element="h2" size="l" weight="bold">
             {content.title}

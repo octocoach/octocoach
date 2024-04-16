@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/typescript-config": "workspace:^",
     "chalk": "^5.3.0",
     "playwright": "^1.40.1",

@@ -1,3 +1,4 @@
+import { FillImage } from "@components/fill-image";
 import type {
   SectionContentWithImage,
   SectionId,
@@ -20,11 +21,11 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
   return (
     <Box paddingX="small" paddingY="medium">
       <Grid placeItems="center" gap="medium">
-        <img
+        <FillImage
           src={content.image.src}
-          width={400}
           alt={content.image.alt}
-          style={{ imageRendering: "pixelated" }}
+          minHeight={300}
+          objectFit="contain"
         />
 
         <Stack spacing="tight">

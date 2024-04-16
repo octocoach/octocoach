@@ -13,6 +13,7 @@ import { Stack } from "@octocoach/ui/Stack/Stack";
 import { Text } from "@octocoach/ui/Text/Text";
 import { useEffect, useRef, useState } from "react";
 import { pinClass } from "./testimonial.css";
+import Image from "next/image";
 
 export const testimonialsSectionId: SectionId = "testimonials";
 
@@ -73,7 +74,7 @@ const Testimonial = ({ content }: TestimonialProps) => {
                   fromTo: [{ borderRadius: 100 }, { borderRadius: 6 }],
                 }}
               >
-                <img
+                <Image
                   src={content.image.src}
                   alt={content.image.alt}
                   width={200}

@@ -45,6 +45,7 @@ export default async function Icon({
 
   return new ImageResponse(
     (
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={organization.logo}
         style={{ width: "100%", height: "100%" }}

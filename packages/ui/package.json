@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@octocoach/db": "workspace:^",
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/typescript-config": "workspace:*",
     "@storybook/addon-a11y": "^7.0.18",
     "@storybook/addon-essentials": "^7.0.18",

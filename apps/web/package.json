@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.2",
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/tshelpers": "workspace:^",
     "@octocoach/typescript-config": "workspace:*",
     "@types/negotiator": "^0.6.3",

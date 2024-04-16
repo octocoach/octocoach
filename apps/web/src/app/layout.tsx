@@ -1,7 +1,7 @@
 import "@octocoach/ui/reset.css";
 
+import { getLocale } from "@helpers/locale";
 import { I18nProvider } from "@octocoach/i18n";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadedLocales } from "@octocoach/i18n/src/i18n-util";
 import { loadLocaleAsync } from "@octocoach/i18n/src/i18n-util.async";
 import { bg, themeClass } from "@octocoach/ui/theme.css";
@@ -30,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = cookies();
-  const locale = (cookieStore.get("locale")?.value || "en") as Locales;
+  const locale = getLocale();
 
   await loadLocaleAsync(locale);
   const dictionary = loadedLocales[locale];

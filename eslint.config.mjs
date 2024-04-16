@@ -65,10 +65,21 @@ export default tseslint.config(
   {
     files: ["apps/web/**/*.{js,ts,jsx,tsx}"],
     extends: [
+      ...compat.config(reactPlugin.configs.recommended),
       ...compat.config(reactPlugin.configs["jsx-runtime"]),
       ...compat.config(reactHooksPlugin.configs.recommended),
+      ...compat.config(jsxA11yPlugin.configs.recommended),
+      ...compat.config(nextPlugin.configs.recommended),
       ...compat.config(nextPlugin.configs["core-web-vitals"]),
     ],
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      "react/display-name": "off",
+    },
   },
 
   // Rules for the ui package

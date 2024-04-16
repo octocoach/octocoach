@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@octocoach/i18n": "workspace:^",
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/typescript-config": "workspace:*",
     "@types/minimist": "^1.2.2",
     "@types/nanoid-dictionary": "^4.2.3",

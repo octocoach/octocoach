@@ -6,12 +6,13 @@ import { mkUsersSkillLevelsTable } from "@octocoach/db/schemas/org/users-skill-l
 import { mkUsersTaskInterestTable } from "@octocoach/db/schemas/org/users-task-interest";
 import {
   jobTable,
-  skillTable,
   skillsTasksTable,
+  skillTable,
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
+
 import { addUserSkillLevel, addUserTaskInterest } from "./actions";
 import { getMatchingJobs } from "./helpers";
 import { SkillCheck } from "./skill-check";

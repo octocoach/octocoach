@@ -1,4 +1,4 @@
-import { Slot, Availability } from "@octocoach/db/schemas/org/coach";
+import { Availability, Slot } from "@octocoach/db/schemas/org/coach";
 
 export const hoursBuffer = 12;
 

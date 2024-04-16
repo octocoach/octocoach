@@ -1,6 +1,7 @@
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
 import { useEffect, useState } from "react";
+
 import { Text } from "../Text/Text";
 import { getLocale } from "./helpers";
 

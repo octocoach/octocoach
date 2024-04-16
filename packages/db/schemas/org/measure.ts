@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import { boolean, json, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 import { mkCoachTable } from "./coach";

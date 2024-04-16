@@ -4,6 +4,7 @@ import { Organization } from "@octocoach/db/schemas/common/organization";
 import { ContentLocale } from "@octocoach/db/schemas/org/content";
 import { Button, Card, Container, Stack, Text } from "@octocoach/ui";
 import { useTransition } from "react";
+
 import { deleteOrgAction } from "./actions";
 import { Edit } from "./edit";
 import { EditContent } from "./edit-content";

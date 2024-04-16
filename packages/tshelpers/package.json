@@ -1,6 +1,7 @@
 {
   "name": "@octocoach/tshelpers",
   "devDependencies": {
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/typescript-config": "workspace:^",
     "typescript": "^5.4.5"
   }

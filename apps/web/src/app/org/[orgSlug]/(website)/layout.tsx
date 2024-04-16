@@ -5,6 +5,7 @@ import { getBaseUrl } from "@helpers/navigation";
 import { Container, Nav } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+
 import Footer from "./footer";
 import { getOrganizationWithAddressAndOwnerName } from "./helpers";
 

@@ -1,8 +1,9 @@
 import { relations } from "drizzle-orm";
 import { primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+
+import { mkOrgPgSchema } from "../common/pg-schema";
 import { skillTable } from "../common/skill";
 import { skillLevelEnum } from "../common/skill-level";
-import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkUserTable } from "./user";
 
 export type UsersSkillLevels = ReturnType<

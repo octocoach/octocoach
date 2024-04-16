@@ -1,5 +1,5 @@
-import { createVanillaExtractPlugin } from "@vanilla-extract/next-plugin";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { createVanillaExtractPlugin } from "@vanilla-extract/next-plugin";
 const withBundleAnalyzer = bundleAnalyzer({
   // eslint-disable-next-line no-undef
   enabled: process.env.ANALYZE === "true",

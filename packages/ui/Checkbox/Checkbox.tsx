@@ -1,5 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { forwardRef } from "react";
+
 import { Text } from "../Text/Text";
 import { checkbox } from "./checkbox.css";
 

@@ -1,4 +1,5 @@
 import { primaryKey } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkVerificationTokensCols } from "../common/verification-token";
 

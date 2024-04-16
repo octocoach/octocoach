@@ -6,6 +6,7 @@ import OpenAI from "openai";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
+
 import { getEmbeddings } from "./embeddings";
 import { makeToolChoice, zodParseJSON } from "./helpers";
 import { matchSkill } from "./skills";

@@ -1,4 +1,5 @@
 import { getLocale } from "@helpers/locale";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq, isNull } from "@octocoach/db/operators";
 import {
@@ -11,13 +12,13 @@ import {
   mkModuleTable,
 } from "@octocoach/db/schemas/org/module";
 import { ButtonLink, Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import { deleteMeasure } from "../actions";
 import { AddModuleToMeasure } from "./add-module";
 import { Delete } from "./delete";
 import { ModulesCompoent } from "./modules";
-import { getBaseUrl } from "@helpers/navigation";
-import Link from "next/link";
 
 export default async function Page({
   params,

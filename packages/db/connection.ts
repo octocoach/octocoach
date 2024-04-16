@@ -1,7 +1,8 @@
 import { neonConfig } from "@neondatabase/serverless";
-import { VercelPool, createPool, sql } from "@vercel/postgres";
+import { createPool, sql, VercelPool } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import ws from "ws";
+
 import { mkOrgSchema } from "./schemas/org/schema";
 import { publicSchema } from "./schemas/public/schema";
 

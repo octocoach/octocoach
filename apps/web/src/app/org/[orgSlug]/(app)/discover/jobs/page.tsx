@@ -1,8 +1,9 @@
-import { Card, Stack, Text } from "@octocoach/ui";
-import { getMatchingJobs } from "../helpers";
-import Link from "next/link";
-import { getBaseUrl } from "@helpers/navigation";
 import { Breadcrumbs } from "@components/breadcrumbs";
+import { getBaseUrl } from "@helpers/navigation";
+import { Card, Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
+
+import { getMatchingJobs } from "../helpers";
 
 export default async function Page({
   params,

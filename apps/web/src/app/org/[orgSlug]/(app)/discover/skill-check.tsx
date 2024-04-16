@@ -4,9 +4,10 @@ import { Skill } from "@octocoach/db/schemas/common/skill";
 import { SkillLevel } from "@octocoach/db/schemas/common/skill-level";
 import { skillLevelEnum } from "@octocoach/db/schemas/public/schema";
 import Message from "@octocoach/i18n/src/react-message";
-import { Stack, Text, Button } from "@octocoach/ui";
-import { SkillAssessment } from "./actions";
+import { Button, Stack, Text } from "@octocoach/ui";
 import { useState, useTransition } from "react";
+
+import { SkillAssessment } from "./actions";
 
 const SkillDescription = ({ description }: { description: string }) => {
   const [showMore, setShowMore] = useState(false);

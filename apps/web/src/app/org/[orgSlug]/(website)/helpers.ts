@@ -2,11 +2,11 @@ import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq, sql } from "@octocoach/db/operators";
 import {
+  mkContentLocaleTable,
+  mkContentTable,
   SectionContent,
   SectionContentSimple,
   SectionId,
-  mkContentLocaleTable,
-  mkContentTable,
 } from "@octocoach/db/schemas/org/content";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
@@ -14,6 +14,7 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { userTable } from "@octocoach/db/schemas/public/schema";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { notFound } from "next/navigation";
+
 import {
   AboutSectionContent,
   CoachSectionContent,

@@ -1,14 +1,16 @@
 // @ts-check
 
+import url from "node:url";
+
 import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import globals from "globals";
-import url from "node:url";
 import tseslint from "typescript-eslint";
-import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const compat = new FlatCompat({
@@ -22,6 +24,7 @@ export default tseslint.config(
       ["next"]: nextPlugin,
       ["react-hooks"]: reactHooksPlugin,
       ["react"]: reactPlugin,
+      ["simple-import-sort"]: simpleImportSortPlugin,
     },
   },
   eslint.configs.recommended,
@@ -45,6 +48,7 @@ export default tseslint.config(
           varsIgnorePattern: "^_",
         },
       ],
+      "simple-import-sort/imports": "error",
     },
   },
   {
@@ -65,10 +69,21 @@ export default tseslint.config(
   {
     files: ["apps/web/**/*.{js,ts,jsx,tsx}"],
     extends: [
+      ...compat.config(reactPlugin.configs.recommended),
       ...compat.config(reactPlugin.configs["jsx-runtime"]),
       ...compat.config(reactHooksPlugin.configs.recommended),
+      ...compat.config(jsxA11yPlugin.configs.recommended),
+      ...compat.config(nextPlugin.configs.recommended),
       ...compat.config(nextPlugin.configs["core-web-vitals"]),
     ],
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      "react/display-name": "off",
+    },
   },
 
   // Rules for the ui package

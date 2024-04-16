@@ -1,7 +1,8 @@
+import Message from "@octocoach/i18n/src/react-message";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { Text } from "@octocoach/ui/Text/Text";
+
 import { BaLogo } from "./ba-logo";
-import Message from "@octocoach/i18n/src/react-message";
 
 export const FundedByBA = () => (
   <Stack align="center" justify="center" wrap spacing="tight">

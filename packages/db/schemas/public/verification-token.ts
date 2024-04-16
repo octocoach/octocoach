@@ -1,4 +1,5 @@
 import { pgTable, primaryKey } from "drizzle-orm/pg-core";
+
 import { mkVerificationTokensCols } from "../common/verification-token";
 
 export const verificationTokenTable = pgTable(

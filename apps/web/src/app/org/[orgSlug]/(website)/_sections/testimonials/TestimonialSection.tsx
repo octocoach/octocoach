@@ -11,7 +11,9 @@ import { Center } from "@octocoach/ui/Center/Center";
 import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { Text } from "@octocoach/ui/Text/Text";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
 import { pinClass } from "./testimonial.css";
 
 export const testimonialsSectionId: SectionId = "testimonials";
@@ -73,7 +75,7 @@ const Testimonial = ({ content }: TestimonialProps) => {
                   fromTo: [{ borderRadius: 100 }, { borderRadius: 6 }],
                 }}
               >
-                <img
+                <Image
                   src={content.image.src}
                   alt={content.image.alt}
                   width={200}

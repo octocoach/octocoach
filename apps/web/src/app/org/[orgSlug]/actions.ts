@@ -1,10 +1,9 @@
 "use server";
 
-import { eq, sql } from "@octocoach/db/operators";
 import { db } from "@octocoach/db/connection";
-
-import { redirect } from "next/navigation";
+import { eq, sql } from "@octocoach/db/operators";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
+import { redirect } from "next/navigation";
 
 export async function deleteOrgAction(slug: string) {
   if (!slug) {

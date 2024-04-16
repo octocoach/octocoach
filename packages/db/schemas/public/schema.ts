@@ -1,28 +1,24 @@
-import * as account from "./account";
-import * as session from "./session";
-import * as user from "./user";
-import * as verificationToken from "./verification-token";
-
+import * as address from "../common/address";
+import * as employer from "../common/employer";
+import * as job from "../common/job";
 import {
   legalFormEnum,
   mkOrganizationTable,
   mkOrganizationTableRelations,
 } from "../common/organization";
-import * as address from "../common/address";
-
-import * as employer from "../common/employer";
-import * as job from "../common/job";
-
-import * as skillLevel from "../common/skill-level";
-import * as skillType from "../common/skill-type";
 import * as skillCategory from "../common/skill-category";
-import * as skillSubcategory from "../common/skill-subcategory";
-import * as skill from "./skill";
+import * as skillLevel from "../common/skill-level";
 import * as skillMissing from "../common/skill-missing";
+import * as skillSubcategory from "../common/skill-subcategory";
+import * as skillType from "../common/skill-type";
 import * as skillsMissingTasks from "../common/skills-missing-tasks";
 import * as skillsTasks from "../common/skills-tasks";
-
+import * as account from "./account";
+import * as session from "./session";
+import * as skill from "./skill";
 import * as task from "./task";
+import * as user from "./user";
+import * as verificationToken from "./verification-token";
 
 export const { accountTable } = account;
 export const { sessionTable } = session;

@@ -8,6 +8,7 @@
     "test": "vitest"
   },
   "devDependencies": {
+    "@octocoach/lint-staged-config": "workspace:^",
     "@octocoach/typescript-config": "workspace:*",
     "@types/nanoid-dictionary": "^4.2.3",
     "@types/node": "^20.11.18",

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { BoxVariants, box } from "./box.css";
+
+import { box, BoxVariants } from "./box.css";
 
 export const Box = React.forwardRef<
   HTMLDivElement,

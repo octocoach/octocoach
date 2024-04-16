@@ -1,11 +1,12 @@
 import { date, json, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { z } from "zod";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { enrollmentStatusEnum } from "../data-types/enrollment";
+import { dbLocales } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { mkMeasureTable } from "./measure";
 import { mkUserTable } from "./user";
-import { z } from "zod";
-import { dbLocales } from "../data-types/locale";
 
 export type ScreeningAnswers = z.infer<typeof screeningAnswersSchema>;
 

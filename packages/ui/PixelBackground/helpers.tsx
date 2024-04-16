@@ -1,4 +1,5 @@
 import { FlavorName } from "@catppuccin/palette";
+
 import { themeValue } from "../theme.css";
 
 export const makePixelBackground = ({

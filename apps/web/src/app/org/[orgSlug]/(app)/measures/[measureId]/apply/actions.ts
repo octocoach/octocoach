@@ -7,7 +7,7 @@ import { and, asc, eq, gte, lt } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
 import { NewEnrollment } from "@octocoach/db/schemas/org/enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Interval, addHours, endOfDay, startOfDay } from "date-fns";
+import { addHours, endOfDay, Interval, startOfDay } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 

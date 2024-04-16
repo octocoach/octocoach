@@ -2,6 +2,7 @@
 
 import { FlavorName } from "@catppuccin/palette";
 import { useEffect } from "react";
+
 import { getSystemTheme, prefersDarkQuery } from "./helpers";
 import { flavors, themeClass } from "./theme.css";
 

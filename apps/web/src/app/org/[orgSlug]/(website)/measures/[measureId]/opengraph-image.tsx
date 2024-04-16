@@ -1,3 +1,4 @@
+import { FillImage } from "@components/fill-image";
 import { orgDb } from "@octocoach/db/connection";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ImageResponse } from "next/og";
@@ -22,18 +23,10 @@ export default async function Image({
     where: (table, { eq }) => eq(table.id, measureId),
   });
 
+  if (!measure?.imageSrc) throw new Error(`No imgage for measure ${measureId}`);
+
   return new ImageResponse(
-    (
-      <img
-        src={measure?.imageSrc || ""}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          imageRendering: "pixelated",
-        }}
-      />
-    ),
+    <FillImage src={measure.imageSrc} alt="Measure Preview Image" />,
     { ...size }
   );
 }

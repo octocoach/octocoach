@@ -6,12 +6,14 @@ export const FillImage = ({
   minHeight = 0,
   minWidth = 0,
   roundedCorners,
+  objectFit = "cover",
 }: {
   src: string;
   alt: string;
   minHeight?: number;
   minWidth?: number;
   roundedCorners?: boolean;
+  objectFit?: "cover" | "contain";
 }) => (
   <div
     style={{
@@ -27,7 +29,7 @@ export const FillImage = ({
       alt={alt}
       fill
       style={{
-        objectFit: "cover",
+        objectFit,
         imageRendering: "pixelated",
         zIndex: 0,
         borderRadius: roundedCorners ? ".25rem" : 0,

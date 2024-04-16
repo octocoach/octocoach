@@ -1,6 +1,7 @@
 "use client";
 
 import Message from "@octocoach/i18n/src/react-message";
+
 import { Text } from "../Text/Text";
 import { person, personImage } from "./person.css";
 

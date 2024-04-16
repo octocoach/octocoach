@@ -1,4 +1,5 @@
-import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
+import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
+
 import { space } from "../sprinkles.css";
 
 export const stack = recipe({

@@ -4,6 +4,7 @@ import { Card, Container, Markdown, Stack, Text } from "@octocoach/ui";
 import { render } from "ai/rsc";
 import OpenAI from "openai";
 import { ReactNode } from "react";
+
 import { summarySystemPrompt, summaryUserPrompt } from "./messages";
 
 async function getSummary({

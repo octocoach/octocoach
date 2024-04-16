@@ -1,17 +1,17 @@
 import { Availability, DayIndex } from "@octocoach/db/schemas/org/coach";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import {
-  Interval,
   addDays,
   addHours,
   addMinutes,
   areIntervalsOverlapping,
   format,
+  Interval,
   isAfter,
   isSameDay,
 } from "date-fns";
-import { convertToLocalTime, convertToTimeZone } from "date-fns-timezone";
 import { de, enUS } from "date-fns/locale";
+import { convertToLocalTime, convertToTimeZone } from "date-fns-timezone";
 
 export const isAvailable = (
   date: Date,

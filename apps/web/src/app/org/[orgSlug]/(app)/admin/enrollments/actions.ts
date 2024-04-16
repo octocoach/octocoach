@@ -8,6 +8,7 @@ import { Enrollment } from "@octocoach/db/schemas/org/enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { Resend } from "resend";
+
 import { EnrollmentTemplate } from "./email-templates";
 
 export const createRoom = async (

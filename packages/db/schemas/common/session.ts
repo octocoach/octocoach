@@ -1,4 +1,5 @@
 import { text, timestamp } from "drizzle-orm/pg-core";
+
 import type { OrgUserTable, UserTable } from "./user";
 
 export const mkSessionCols = (user: UserTable | OrgUserTable) => ({

@@ -6,6 +6,7 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { availability as defaultAvailability } from "@octocoach/ui/Scheduler/constants";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import { notFound } from "next/navigation";
+
 import { CoachPreferences } from "./coach-preferences";
 import { LinkAccount } from "./link-account";
 

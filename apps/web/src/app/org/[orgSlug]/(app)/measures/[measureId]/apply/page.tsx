@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import { createMeeting } from "../../actions";
 import { createEnrollment, getBusyIntervals } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";

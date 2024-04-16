@@ -1,6 +1,6 @@
+import type { AdapterAccount } from "@auth/core/adapters";
 import { orgDb } from "@octocoach/db/connection";
 import { fromEntries, getEntries } from "@octocoach/tshelpers";
-import type { AdapterAccount } from "@auth/core/adapters";
 export type { Adapter, AdapterAccount } from "@auth/core/adapters";
 export { authDrizzleAdapter } from "./drizzle";
 export type OAuthProviders = Record<

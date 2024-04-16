@@ -1,13 +1,13 @@
 import { BarChart, PackCircles, SkillByCategory } from "@octocoach/charts";
 import { orgDb } from "@octocoach/db/connection";
+import {
+  type SkillLevel,
+  skillLevelEnum,
+} from "@octocoach/db/schemas/common/skill-level";
 import Message from "@octocoach/i18n/src/react-message";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import {
-  skillLevelEnum,
-  type SkillLevel,
-} from "@octocoach/db/schemas/common/skill-level";
 import { notFound } from "next/navigation";
 
 export default async function Page({

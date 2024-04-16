@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
 import { integer, pgEnum, pgTable, serial, text } from "drizzle-orm/pg-core";
+
 import { toTuple } from "../helpers";
 import { addressTable } from "./address";
 import { LegalForm, legalForm } from "./legal-form";
-import { OrgUserTable, UserTable, mkUserCols } from "./user";
+import { mkUserCols, OrgUserTable, UserTable } from "./user";
 
 export const whitelistedUsers = [
   "avanderbergh@gmail.com",

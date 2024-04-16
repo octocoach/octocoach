@@ -3,6 +3,7 @@ import { Organization } from "@octocoach/db/schemas/common/organization";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+
 import { isCoach as isCoachFn } from ".";
 import { authDrizzleAdapter } from "./adapters";
 import { decrypt } from "./helpers/crypto";

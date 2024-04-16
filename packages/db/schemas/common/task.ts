@@ -1,4 +1,5 @@
 import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
+
 import { embedding } from "../data-types/embedding";
 import { jobTable } from "./job";
 

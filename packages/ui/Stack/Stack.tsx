@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
-import { StackVariants, stack } from "./stack.css";
+
+import { stack, StackVariants } from "./stack.css";
 
 export const Stack = ({
   children,

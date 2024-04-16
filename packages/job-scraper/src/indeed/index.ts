@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq, or } from "@octocoach/db/operators";
 import { employerTable } from "@octocoach/db/schemas/common/employer";
 import { jobTable } from "@octocoach/db/schemas/common/job";
 import chalk from "chalk";
 import snakeCase from "just-snake-case";
 import { Locator } from "playwright";
+
 import { BuildURLParams, JobScraper } from "../job-scraper";
 import blacklist from "./blacklist";
-import { getFirstRow } from "@octocoach/db/helpers/rows";
 
 /**
  * IndeedScraper class that extends JobScraper class

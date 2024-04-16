@@ -1,5 +1,6 @@
-import type { Config } from "drizzle-kit";
 import "dotenv/config";
+
+import type { Config } from "drizzle-kit";
 
 const host = process.env.POSTGRES_HOST;
 const port = process.env.POSTGRES_PORT;

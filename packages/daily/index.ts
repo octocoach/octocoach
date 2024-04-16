@@ -1,7 +1,8 @@
-import { $Fetch, ofetch } from "ofetch";
-import { MeetingToken, MeetingTokenOptions, Room, RoomOptions } from "./types";
 import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
+import { $Fetch, ofetch } from "ofetch";
+
+import { MeetingToken, MeetingTokenOptions, Room, RoomOptions } from "./types";
 
 export class Daily {
   private fetch: $Fetch;

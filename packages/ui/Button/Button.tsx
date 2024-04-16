@@ -1,8 +1,8 @@
 import * as Ariakit from "@ariakit/react";
-import * as React from "react";
-import { ButtonVariants, button } from "./button.css";
-
 import { ButtonProps } from "@ariakit/react/button";
+import * as React from "react";
+
+import { button, ButtonVariants } from "./button.css";
 
 type Props = ButtonProps & ButtonVariants;
 

@@ -3,9 +3,9 @@
 import { orgDb } from "@octocoach/db/connection";
 import { sql } from "@octocoach/db/operators";
 import {
-  NewContentLocale,
   mkContentLocaleTable,
   mkContentTable,
+  NewContentLocale,
 } from "@octocoach/db/schemas/org/content";
 import { revalidatePath } from "next/cache";
 

@@ -1,4 +1,5 @@
 import { json, primaryKey, text } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 

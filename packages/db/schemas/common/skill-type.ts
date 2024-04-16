@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text } from "drizzle-orm/pg-core";
+
 import { skillTable } from "./skill";
 
 export type SkillType = typeof skillTypeTable.$inferSelect;

@@ -1,4 +1,5 @@
-import { RecipeVariants, recipe } from "@vanilla-extract/recipes";
+import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
+
 import { sprinkles } from "../sprinkles.css";
 
 export const container = recipe({

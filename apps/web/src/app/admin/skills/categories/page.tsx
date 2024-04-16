@@ -1,15 +1,14 @@
-import { sql, eq, desc } from "@octocoach/db/operators";
 import { db } from "@octocoach/db/connection";
-
-import { Container, Stack, Text } from "@octocoach/ui";
-import Link from "next/link";
+import { desc, eq, sql } from "@octocoach/db/operators";
 import {
   skillCategoryTable,
+  skillsTasksTable,
   skillSubcategoryTable,
   skillTable,
-  skillsTasksTable,
   taskTable,
 } from "@octocoach/db/schemas/public/schema";
+import { Container, Stack, Text } from "@octocoach/ui";
+import Link from "next/link";
 
 export default async function Page() {
   const categories = await db

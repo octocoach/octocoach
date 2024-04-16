@@ -3,8 +3,9 @@ import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Stack } from "@octocoach/ui/Stack/Stack";
-import { EnrollmentRow } from "./row";
+
 import { createRoom } from "./actions";
+import { EnrollmentRow } from "./row";
 
 export default async function Page({
   params: { orgSlug },

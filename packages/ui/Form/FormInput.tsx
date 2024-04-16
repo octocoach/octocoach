@@ -1,8 +1,9 @@
 import * as Ariakit from "@ariakit/react";
-import { forwardRef } from "react";
 import { clsx } from "clsx";
-import { formInput, formInputWrapper } from "./formInput.css";
+import { forwardRef } from "react";
+
 import { Text } from "../Text/Text";
+import { formInput, formInputWrapper } from "./formInput.css";
 
 export interface FormInputProps extends Ariakit.FormInputProps {
   suffix?: string;

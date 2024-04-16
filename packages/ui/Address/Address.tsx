@@ -1,15 +1,16 @@
 "use client";
 import * as Ariakit from "@ariakit/react";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import debounce from "just-debounce-it";
 import { useState } from "react";
+
 import { FormField } from "../Form/FormField";
 import { FormInput } from "../Form/FormInput";
 import { formInput, formInputWrapper } from "../Form/formInput.css";
 import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
 import { comboboxItem, comboboxPopover } from "./address.css";
-import { Feature, autocomplete } from "./helpers";
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
+import { autocomplete, Feature } from "./helpers";
 
 const Combobox = ({
   label,

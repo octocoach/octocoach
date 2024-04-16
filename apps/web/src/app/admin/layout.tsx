@@ -2,6 +2,7 @@ import { superAdminUser } from "@app/constants";
 import { authOrRedirect } from "@helpers/auth";
 import { SessionProvider } from "@octocoach/auth/react";
 import { Box, Text } from "@octocoach/ui";
+
 import LayoutClient from "./layout-client";
 
 export default async function Layout({

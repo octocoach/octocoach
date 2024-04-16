@@ -1,4 +1,5 @@
 import { integer, text } from "drizzle-orm/pg-core";
+
 import { type OrgUserTable, type UserTable } from "./user";
 
 type AccountType = "oauth" | "oidc" | "email";

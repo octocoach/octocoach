@@ -1,5 +1,6 @@
 import { FlavorName } from "@catppuccin/palette";
 import { createThemeContract, style } from "@vanilla-extract/css";
+
 import {
   colorAlphas,
   createThemeBase,

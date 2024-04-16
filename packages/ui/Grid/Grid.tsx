@@ -1,5 +1,6 @@
 import React from "react";
-import { GridVariants, grid } from "./grid.css";
+
+import { grid, GridVariants } from "./grid.css";
 
 export const Grid = React.forwardRef<
   HTMLDivElement,

@@ -5,18 +5,19 @@ import type { Measure } from "@octocoach/db/schemas/org/measure";
 import type { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
-import { Interval, addMinutes, format } from "date-fns";
+import { addMinutes, format, Interval } from "date-fns";
 import { useState, useTransition } from "react";
+
 import { Button } from "../Button/Button";
 import { Card } from "../Card/Card";
 import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
 import { Calendar } from "./Calendar";
 import { CalendarNavigation } from "./CalendarNavigation";
-import { Person } from "./Person";
-import { Timeslots } from "./Timeslots";
 import { getLocale } from "./helpers";
+import { Person } from "./Person";
 import { schedulerContainer, schedulerContent } from "./scheduler.css";
+import { Timeslots } from "./Timeslots";
 import { CreateMeetingParams } from "./types";
 
 export const Scheduler = ({

@@ -2,9 +2,8 @@
 
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { Select, SelectItem } from "@octocoach/ui";
-import { getSystemTheme, setFlavor } from "@octocoach/ui/SetSystemTheme";
 import { BrightnessContrast } from "@octocoach/ui/icons";
-
+import { getSystemTheme, setFlavor } from "@octocoach/ui/SetSystemTheme";
 import { flavors } from "@octocoach/ui/theme.css";
 import { startTransition } from "react";
 import { removeTheme, setTheme } from "src/actions/theme";

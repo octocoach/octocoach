@@ -18,11 +18,12 @@ import {
 } from "@octocoach/ui";
 import { Save } from "@octocoach/ui/icons";
 import { useEffect, useState, useTransition } from "react";
+
 import {
-  GoogleCalendar,
-  SaveCoachPreferencesValues,
   getGoogleCalendars,
+  GoogleCalendar,
   saveCoachPreferences,
+  SaveCoachPreferencesValues,
 } from "./actions";
 import { EditAvailability } from "./availability";
 

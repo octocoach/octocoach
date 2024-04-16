@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { boolean, text } from "drizzle-orm/pg-core";
+
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkUserTable } from "./user";
 

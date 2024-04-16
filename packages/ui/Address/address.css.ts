@@ -1,6 +1,7 @@
 import { style } from "@vanilla-extract/css";
-import { vars } from "../theme.css";
+
 import { sprinkles } from "../sprinkles.css";
+import { vars } from "../theme.css";
 
 export const comboboxPopover = style([
   {

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import { center } from "./center.css";
 
 export const Center = ({

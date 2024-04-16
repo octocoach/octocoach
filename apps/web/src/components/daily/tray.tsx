@@ -15,6 +15,7 @@ import {
   VideoOffFilled,
 } from "@octocoach/ui/icons";
 import { useCallback } from "react";
+
 import { trayClass } from "./tray.css";
 
 export const Tray = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {

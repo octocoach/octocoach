@@ -1,8 +1,9 @@
 import { db, end, orgDb } from "@octocoach/db/connection";
-import { chromium } from "playwright";
-import { IndeedScraper } from "./indeed/index";
-import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { organizationTable } from "@octocoach/db/schemas/public/schema";
+import { chromium } from "playwright";
+
+import { IndeedScraper } from "./indeed/index";
 
 const locationSet = new Set(["Remote"]);
 const orgs = await db.select().from(organizationTable);

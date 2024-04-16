@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
+
 import { skillTable } from "../common/skill";
 import {
+  skillsTasksTable,
   skillSubcategoryTable,
   skillTypeTable,
-  skillsTasksTable,
 } from "./schema";
 
 export { skillTable };

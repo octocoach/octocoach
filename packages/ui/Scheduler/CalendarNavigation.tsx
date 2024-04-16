@@ -1,10 +1,11 @@
-import { PreviousFilled, NextFilled } from "@carbon/icons-react";
+import { NextFilled, PreviousFilled } from "@carbon/icons-react";
+import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { Dispatch, SetStateAction } from "react";
+
+import { Button } from "../Button/Button";
 import { Stack } from "../Stack/Stack";
 import { Text } from "../Text/Text";
 import { getMonthName } from "./helpers";
-import { Button } from "../Button/Button";
-import { Dispatch, SetStateAction } from "react";
-import { Locales } from "@octocoach/i18n/src/i18n-types";
 
 export const CalendarNavigation = ({
   month,

@@ -3,6 +3,7 @@ import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { cwd } from "process";
+
 import { db, end } from "./connection";
 import { organizationTable } from "./schemas/public/schema";
 

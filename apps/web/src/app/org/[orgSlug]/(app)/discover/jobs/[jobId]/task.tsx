@@ -4,6 +4,7 @@ import { Skill } from "@octocoach/db/schemas/common/skill";
 import { SkillLevel } from "@octocoach/db/schemas/common/skill-level";
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import { StarFilled } from "@octocoach/ui/icons";
+
 import { TaskIcon } from "./task-icon";
 
 export interface TaskSkill {

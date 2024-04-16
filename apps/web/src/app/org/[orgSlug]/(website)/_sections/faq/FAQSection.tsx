@@ -50,17 +50,25 @@ export const Faq = ({ qa, idx, onOpen, isOpen }: FAQProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Card>
-      <div
-        ref={ref}
-        onClick={() => {
+    <div
+      ref={ref}
+      tabIndex={10 + idx}
+      onKeyDown={(ev) => {
+        if (["Space", "Enter"].includes(ev.code)) {
           onOpen(idx);
           ref.current?.scrollIntoView();
-        }}
-        style={{
-          cursor: "pointer",
-        }}
-      >
+        }
+      }}
+      role="button"
+      onClick={() => {
+        onOpen(idx);
+        ref.current?.scrollIntoView();
+      }}
+      style={{
+        cursor: "pointer",
+      }}
+    >
+      <Card>
         <Stack
           direction="horizontal"
           spacing="tight"
@@ -72,9 +80,9 @@ export const Faq = ({ qa, idx, onOpen, isOpen }: FAQProps) => {
           </Text>
           {getButton()}
         </Stack>
-      </div>
-      {getAnswer()}
-    </Card>
+        {getAnswer()}
+      </Card>
+    </div>
   );
 };
 

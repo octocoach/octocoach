@@ -1,6 +1,7 @@
 "use server";
 
 import { orgDb } from "@octocoach/db/connection";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq, gt, max, sql } from "@octocoach/db/operators";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { mkMeasureModuleTable } from "@octocoach/db/schemas/org/measure-module";
@@ -19,7 +20,8 @@ export const addMeasureToModule = async (
     .select({ max: max(measureModuleTable.order) })
     .from(measureModuleTable)
     .where(eq(measureModuleTable.measure, measureId))
-    .then((res) => (!res[0]?.max ? 0 : res[0].max + 1));
+    .then((rows) => getFirstRow(rows))
+    .then(({ max }) => (max === null ? 0 : max + 1));
 
   await db
     .insert(measureModuleTable)

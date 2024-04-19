@@ -14,7 +14,7 @@ import { Text } from "@octocoach/ui/Text/Text";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { pinClass } from "./testimonial.css";
+import { pinClass, wordClass } from "./testimonial.css";
 
 export const testimonialsSectionId: SectionId = "testimonials";
 
@@ -31,7 +31,7 @@ const splitText = (text: string) => {
   const words = text.split(" ");
 
   return words.map((word, i) => (
-    <span key={i}>
+    <span key={i} className={wordClass}>
       {word}
       {i !== words.length - 1 ? " " : ""}
     </span>
@@ -93,9 +93,13 @@ const Testimonial = ({ content }: TestimonialProps) => {
                       end: 80,
                       fromTo: [
                         {
-                          opacity: 0.2,
+                          "--casl": 0,
+                          fontWeight: 200,
                         },
-                        { opacity: 1 },
+                        {
+                          "--casl": 1,
+                          fontWeight: 400,
+                        },
                       ],
                     }}
                   >

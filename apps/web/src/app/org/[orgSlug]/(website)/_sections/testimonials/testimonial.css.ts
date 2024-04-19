@@ -5,3 +5,9 @@ export const pinClass = style([
     position: "relative",
   },
 ]);
+
+export const wordClass = style([
+  {
+    fontVariationSettings: `'CASL' var(--casl)`,
+  },
+]);

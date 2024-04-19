@@ -9,6 +9,7 @@ import Link from "next/link";
 import { CertquaMeasureSeal } from "./certqua-seal/measure";
 import { FillImage } from "./fill-image";
 import { FundedByBA } from "./funded-by-ba";
+import { jiggleClass } from "./measures.css";
 
 export const Measures = ({
   measures,
@@ -52,14 +53,16 @@ export const Measures = ({
                     wrap
                   >
                     {measure.accredited && <CertquaMeasureSeal />}
-                    <ButtonLink
-                      href={href}
-                      Element={Link}
-                      glow
-                      color="contrast"
-                    >
-                      <Message id="measures.readMore" />
-                    </ButtonLink>
+                    <div className={jiggleClass}>
+                      <ButtonLink
+                        href={href}
+                        Element={Link}
+                        glow
+                        color="contrast"
+                      >
+                        <Message id="measures.readMore" />
+                      </ButtonLink>
+                    </div>
                   </Stack>
                 </Stack>
               </Grid>

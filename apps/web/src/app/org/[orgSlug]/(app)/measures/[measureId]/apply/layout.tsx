@@ -3,6 +3,7 @@ import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { I18nNamespace } from "@octocoach/i18n";
 import Message from "@octocoach/i18n/src/react-message";
 import { Box } from "@octocoach/ui/Box/Box";
 import { Grid } from "@octocoach/ui/Grid/Grid";
@@ -44,24 +45,26 @@ export default async function Layout({
   if (!measure) notFound();
 
   return (
-    <Box marginY="medium">
-      <Stack>
-        <Grid gap="large" columns="auto" placeItems="center">
-          <FillImage
-            src={measure.imageSrc}
-            alt={measure.imageAlt}
-            minHeight={150}
-            roundedCorners
-          />
-          <Box>
-            <Text size="l" weight="light" variation="casual">
-              <Message id="measure.application.application" />
-            </Text>
-            <Text size="xl">{measure.title}</Text>
-          </Box>
-        </Grid>
-        {children}
-      </Stack>
-    </Box>
+    <I18nNamespace namespace="apply">
+      <Box marginY="medium">
+        <Stack>
+          <Grid gap="large" columns="auto" placeItems="center">
+            <FillImage
+              src={measure.imageSrc}
+              alt={measure.imageAlt}
+              minHeight={150}
+              roundedCorners
+            />
+            <Box>
+              <Text size="l" weight="light" variation="casual">
+                <Message id="apply.applicationFor" />
+              </Text>
+              <Text size="xl">{measure.title}</Text>
+            </Box>
+          </Grid>
+          {children}
+        </Stack>
+      </Box>
+    </I18nNamespace>
   );
 }

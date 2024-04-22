@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
+
 import { useI18nContext } from "./i18n-react";
 import { Namespaces, Translations } from "./i18n-types";
 import { loadedLocales } from "./i18n-util";
@@ -18,7 +19,7 @@ export function I18nNamespace({
   const [dictionary, setDictionary] = useState<Translations>();
 
   useEffect(() => {
-    loadNamespaceAsync(locale, namespace).then(() => {
+    void loadNamespaceAsync(locale, namespace).then(() => {
       setLocale(locale);
       setDictionary(loadedLocales[locale]);
     });

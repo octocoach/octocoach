@@ -38,7 +38,13 @@ export const Measures = ({
                 </Link>
                 <Stack>
                   {measure.accredited && (
-                    <Stack direction="horizontal" justify="right">
+                    <Stack
+                      direction="horizontal"
+                      justify="between"
+                      wrap
+                      align="left"
+                    >
+                      <CertquaMeasureSeal />
                       <FundedByBA />
                     </Stack>
                   )}
@@ -46,20 +52,9 @@ export const Measures = ({
                     <Link href={href}>{measure.title}</Link>
                   </Text>
                   <Markdown>{measure.description}</Markdown>
-                  <Stack
-                    direction="horizontal"
-                    align="center"
-                    justify={measure.accredited ? "around" : "right"}
-                    wrap
-                  >
-                    {measure.accredited && <CertquaMeasureSeal />}
+                  <Stack direction="horizontal" justify="right">
                     <div className={jiggleClass}>
-                      <ButtonLink
-                        href={href}
-                        Element={Link}
-                        glow
-                        color="contrast"
-                      >
+                      <ButtonLink href={href} Element={Link} glow size="large">
                         <Message id="measures.readMore" />
                       </ButtonLink>
                     </div>

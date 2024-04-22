@@ -1,5 +1,3 @@
-"use client";
-
 import {
   DailyEventObjectActiveSpeakerChange,
   DailyEventObjectParticipant,
@@ -21,7 +19,13 @@ import {
 import { Tile } from "./tile";
 import { Tray } from "./tray";
 
-export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
+export const Call = ({
+  leaveCall,
+  isOwner,
+}: {
+  leaveCall: () => Promise<void>;
+  isOwner: boolean;
+}) => {
   const [activeSpeakerId, setActiveSpeakerId] = useState<string | null>(null);
   const [activeScreen, setActiveScreen] = useState<ScreenShare | null>(null);
   const [remoteScreens, setRemoteScreens] = useState<ScreenShare[]>([]);
@@ -106,7 +110,7 @@ export const Call = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
         </div>
       ) : null}
 
-      <Tray leaveCall={leaveCall} />
+      <Tray leaveCall={leaveCall} isOwner={isOwner} />
     </div>
   );
 };

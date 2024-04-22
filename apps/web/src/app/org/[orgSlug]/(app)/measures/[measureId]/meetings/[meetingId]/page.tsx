@@ -60,12 +60,21 @@ export default async function Page({
 
   const daily = new Daily();
 
+  const isOwner = meeting.role === "coach";
+
   const token = await daily.createMeetingToken({
+    autoStartTranscription: true,
     roomName: meeting.roomName,
-    isOwner: meeting.role === "coach",
+    isOwner,
     userId: user.id,
     userName,
   });
 
-  return <DailyComponent roomName={meeting.roomName} token={token} />;
+  return (
+    <DailyComponent
+      roomName={meeting.roomName}
+      token={token}
+      isOwner={isOwner}
+    />
+  );
 }

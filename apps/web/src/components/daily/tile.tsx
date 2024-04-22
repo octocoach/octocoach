@@ -1,5 +1,3 @@
-"use client";
-
 import { DailyVideo, useVideoTrack } from "@daily-co/daily-react";
 
 import { tileClass, tileVideoClass } from "./tile.css";

@@ -5,7 +5,7 @@ import {
   useScreenShare,
   useVideoTrack,
 } from "@daily-co/daily-react";
-import { Button, Card, Stack } from "@octocoach/ui";
+import { Button, Card, Stack, Text } from "@octocoach/ui";
 import {
   MicrophoneFilled,
   MicrophoneOffFilled,
@@ -18,7 +18,13 @@ import { useCallback } from "react";
 
 import { trayClass } from "./tray.css";
 
-export const Tray = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
+export const Tray = ({
+  leaveCall,
+  isOwner,
+}: {
+  leaveCall: () => Promise<void>;
+  isOwner: boolean;
+}) => {
   const callObject = useDaily();
 
   const { isSharingScreen, startScreenShare, stopScreenShare } =
@@ -73,6 +79,7 @@ export const Tray = ({ leaveCall }: { leaveCall: () => Promise<void> }) => {
           <Button onClick={() => void leaveCall()} color="error">
             <PhoneBlockFilled size={24} />
           </Button>
+          {isOwner && <Text>Owner</Text>}
         </Stack>
       </Card>
     </div>

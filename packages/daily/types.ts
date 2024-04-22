@@ -2,9 +2,20 @@ export type Privacy = "public" | "private";
 
 // Rooms
 
+export interface RoomProperties {
+  enable_transcription_storage?: boolean;
+  auto_transcription_settings?: {
+    model?: "nova-2";
+    extra?: {
+      detect_language?: boolean;
+    };
+  };
+}
+
 export interface RoomOptions {
   name: string;
   privacy: Privacy;
+  autoTranscription?: boolean;
 }
 
 export interface Room {
@@ -17,6 +28,7 @@ export interface Room {
 // Meeting Tokens
 
 export interface MeetingTokenOptions {
+  autoStartTranscription: boolean;
   roomName: string;
   isOwner: boolean;
   userName: string;

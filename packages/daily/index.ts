@@ -2,7 +2,13 @@ import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
 import { $Fetch, ofetch } from "ofetch";
 
-import { MeetingToken, MeetingTokenOptions, Room, RoomOptions } from "./types";
+import type {
+  MeetingToken,
+  MeetingTokenOptions,
+  Room,
+  RoomOptions,
+  RoomProperties,
+} from "./types";
 
 export class Daily {
   private fetch: $Fetch;
@@ -22,8 +28,26 @@ export class Daily {
     });
   }
 
-  async createRoom(body: RoomOptions) {
-    return await this.fetch<Room>("/rooms", { method: "POST", body });
+  async createRoom(options: RoomOptions) {
+    const body: RoomOptions & { properties?: RoomProperties } = {
+      name: options.name,
+      privacy: options.privacy,
+    };
+
+    if (options.autoTranscription) {
+      body.properties = {
+        enable_transcription_storage: true,
+        auto_transcription_settings: {
+          model: "nova-2",
+          extra: { detect_language: true },
+        },
+      };
+    }
+
+    return await this.fetch<Room>("/rooms", {
+      method: "POST",
+      body,
+    });
   }
 
   async listRooms() {
@@ -41,6 +65,7 @@ export class Daily {
       method: "POST",
       body: {
         properties: {
+          auto_start_transcription: options.autoStartTranscription,
           room_name: options.roomName,
           is_owner: options.isOwner,
           user_name: options.userName,

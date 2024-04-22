@@ -109,7 +109,7 @@ export const EnrollmentApplication = ({
     <Card>
       <Stack spacing="loose">
         <Text variation="casual" size="l">
-          <Message id="measure.application.screeningQuestions" />
+          <Message id="apply.screeningQuestions" />
         </Text>
         <Form store={store}>
           <Stack>

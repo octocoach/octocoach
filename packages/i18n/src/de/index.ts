@@ -80,15 +80,6 @@ const de = {
   },
   measure: {
     fundedBy: "100% finanziert von der",
-    application: {
-      application: "Bewerbung für",
-      screeningQuestions:
-        "Bitte beantworte einige Fragen, damit wir beurteilen können, ob du für diese Bildungsmaßnahme in Frage kommst...",
-      thankYou: "Vielen Dank für deine Bewerbung!",
-      weWillBeInTouch: "Wir werden uns in Kürze über {email} bei dir melden.",
-      whileWaiting:
-        "In der Zwischenzeit findest du hier einige Dinge, die du tun kannst, während du auf unsere Antwort wartest...",
-    },
   },
   address: {
     line1: "Adresse Zeile 1",

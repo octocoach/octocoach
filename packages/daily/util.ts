@@ -3,12 +3,7 @@ import { Room } from "./types";
 
 const daily = new Daily();
 
-const roomsToKeep: Room["name"][] = [
-  "rxg-lwj-xfa",
-  "pht-ghb-svv",
-  "hos-ucq-rdx",
-  "idr-wed-iqa",
-];
+const roomsToKeep: Room["name"][] = ["rxg-lwj-xfa"];
 
 const rooms = await daily.listRooms();
 

@@ -168,13 +168,24 @@ export default async function Page({
                   params={{ name: existingMeeting.coach }}
                 />
               </Text>
-              <Text size="xl" textAlign="center" weight="light">
-                <LocalTime
-                  timestamp={existingMeeting.startTime}
-                  formatStr={`PPPP '${locale === "de" ? "um" : "at"}' HH:mm`}
-                  locale={locale}
-                />
-              </Text>
+              <Stack justify="center" spacing="tight">
+                <Text size="l" weight="light">
+                  📅{" "}
+                  <LocalTime
+                    timestamp={existingMeeting.startTime}
+                    formatStr={"PPPP"}
+                    locale={locale}
+                  />
+                </Text>
+                <Text size="l" weight="light">
+                  ⏰{" "}
+                  <LocalTime
+                    timestamp={existingMeeting.startTime}
+                    formatStr="HH:mm"
+                    locale={locale}
+                  />
+                </Text>
+              </Stack>
               <JoinButton
                 baseUrl={baseUrl}
                 measureId={measureId}
@@ -195,14 +206,37 @@ export default async function Page({
       });
 
       return (
-        <Scheduler
-          locale={locale}
-          createMeeting={createMeetingWithSlug}
-          measureId={measureId}
-          coach={coach}
-          meetingType="consultation"
-          getBusyIntervals={boundGetBusyIntervals}
-        />
+        <Stack justify="center">
+          <Text size="l" weight="light" element="span">
+            <Text element="span" weight="heavy" variation="casual" size="l">
+              <Message id="apply.fantasticNews" />
+            </Text>{" "}
+            <Message id="apply.almostThere" />
+          </Text>
+          <Text>
+            <Message
+              id="apply.provisionallyApproved"
+              params={{ measureTitle: measure.title }}
+            />
+          </Text>
+          <Text>
+            <Message id="apply.letsDiscuss" />
+          </Text>
+          <Scheduler
+            locale={locale}
+            createMeeting={createMeetingWithSlug}
+            measureId={measureId}
+            coach={coach}
+            meetingType="consultation"
+            getBusyIntervals={boundGetBusyIntervals}
+          />
+          <Text>
+            <Message id="apply.noTime" />
+          </Text>
+          <Text>
+            <Message id="apply.lookingForward" />
+          </Text>
+        </Stack>
       );
     } else {
       const moduleInfo = await db
@@ -240,19 +274,21 @@ export default async function Page({
                   weight="bold"
                   textAlign="center"
                 >
-                  <Message id={"measure.application.thankYou"} />
+                  <Message id="apply.thankYou" />
                 </Text>
                 <Text textAlign="center">
-                  <Message
-                    id="measure.application.weWillBeInTouch"
-                    params={{ email: user.email }}
-                  />
+                  {user && (
+                    <Message
+                      id="apply.weWillBeInTouch"
+                      params={{ email: user.email }}
+                    />
+                  )}
                 </Text>
               </Stack>
               {hasLinks && (
                 <Stack>
                   <Text size="l" weight="light" variation="casual">
-                    <Message id="measure.application.whileWaiting" />
+                    <Message id="apply.whileWaiting" />
                   </Text>
                   <Stack>
                     {moduleInfo?.map((info, key) =>

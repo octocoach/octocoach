@@ -11,7 +11,7 @@ const jiggleAnimation = keyframes({
 
 export const jiggleClass = style({
   animationName: jiggleAnimation,
-  animationDuration: "5s",
+  animationDuration: "3s",
   animationIterationCount: "infinite",
-  animationDelay: "10s",
+  animationDelay: "5s",
 });

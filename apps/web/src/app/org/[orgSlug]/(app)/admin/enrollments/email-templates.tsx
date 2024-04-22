@@ -16,23 +16,28 @@ export const EnrollmentTemplate = ({
   const rootDomain = domain
     ? `https://${domain}`
     : `https://octo.coach/org/${orgSlug}`;
+
   return (
     <div>
       <p>Hey {firstName || "there"},</p>
       <p>
-        Thank you for applying for <b>{measureTitle}</b>. After looking at your
-        applicaion, it seems that this might be a suitable measure for you.
+        🎉 <b>We&apos;re thrilled about your interest in {measureTitle}!</b> 🎉
       </p>
       <p>
-        I would like to invite you to join a video call with me to discuss next
-        steps.
+        Your application caught our eye, and it looks like this could be the
+        perfect fit for you.
       </p>
       <p>
-        Please{" "}
-        <a href={`${rootDomain}/measures/${measureId}/apply`}>click here</a> to
-        schedule a call
+        Let&apos;s chat and carve out your next steps. Shall we? Schedule a
+        video call with me, and we’ll dive into the exciting details together.
       </p>
-      <p>I&apos;m looking forward to speaking with you soon.</p>
+      <p>
+        👉{" "}
+        <a href={`${rootDomain}/measures/${measureId}/apply`}>
+          Schedule Our Chat
+        </a>
+      </p>
+      <p>Can&apos;t wait to connect and kickstart this journey with you.</p>
       <p>
         Kind Regards,
         <br />

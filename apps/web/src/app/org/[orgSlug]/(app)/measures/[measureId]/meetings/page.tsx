@@ -24,6 +24,8 @@ export default async function Page({
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
 
+  console.log(user);
+
   const {
     meetingTable,
     meetingParticipantTable,
@@ -53,7 +55,6 @@ export default async function Page({
 
   if (!measure) notFound();
 
-  console.log("Measure");
   console.log(measure);
 
   if (!measure.roomName) {

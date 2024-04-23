@@ -2,7 +2,8 @@ import { Daily as DailyComponent } from "@components/daily/daily";
 import { authOrRedirect } from "@helpers/auth";
 import { Daily } from "@octocoach/daily";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq, or } from "@octocoach/db/operators";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
+import { and, eq } from "@octocoach/db/operators";
 import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
@@ -24,9 +25,6 @@ export default async function Page({
 
   const meeting = await db
     .select({
-      coach: enrollmentTable.coach,
-      coachee: enrollmentTable.coachee,
-      roomName: enrollmentTable.roomName,
       startTime: meetingTable.startTime,
       endTime: meetingTable.endTime,
       role: meetingParticipantTable.role,
@@ -39,22 +37,6 @@ export default async function Page({
         eq(meetingParticipantTable.user, user.id)
       )
     )
-    .innerJoin(
-      enrollmentTable,
-      and(
-        eq(meetingTable.measure, enrollmentTable.measure),
-        or(
-          and(
-            eq(meetingParticipantTable.role, "coach"),
-            eq(enrollmentTable.coach, meetingParticipantTable.user)
-          ),
-          and(
-            eq(meetingParticipantTable.role, "coachee"),
-            eq(enrollmentTable.coachee, meetingParticipantTable.user)
-          )
-        )
-      )
-    )
     .where(eq(meetingTable.id, meetingId))
     .then((rows) => {
       console.log(rows);
@@ -63,7 +45,44 @@ export default async function Page({
 
   if (!meeting) notFound();
 
-  if (!meeting.roomName) return <Text>No room created</Text>;
+  let roomName: string | null = null;
+
+  if (meeting.role === "coachee") {
+    roomName = await db
+      .select({
+        roomName: enrollmentTable.roomName,
+      })
+      .from(enrollmentTable)
+      .where(eq(enrollmentTable.coachee, user.id))
+      .then((rows) => {
+        console.log(rows);
+        return getFirstRow(rows);
+      })
+      .then(({ roomName }) => roomName);
+  }
+
+  if (meeting.role === "coach") {
+    roomName = await db
+      .select({ roomName: enrollmentTable.roomName })
+      .from(meetingParticipantTable)
+      .innerJoin(
+        enrollmentTable,
+        eq(meetingParticipantTable.user, enrollmentTable.coachee)
+      )
+      .where(
+        and(
+          eq(meetingParticipantTable.meeting, meetingId),
+          eq(meetingParticipantTable.role, "coachee")
+        )
+      )
+      .then((rows) => {
+        console.log(rows);
+        return getFirstRow(rows);
+      })
+      .then(({ roomName }) => roomName);
+  }
+
+  if (!roomName) return <Text>No room created</Text>;
 
   const userProfile = await db
     .select()
@@ -81,17 +100,11 @@ export default async function Page({
 
   const token = await daily.createMeetingToken({
     autoStartTranscription: true,
-    roomName: meeting.roomName,
+    roomName,
     isOwner,
     userId: user.id,
     userName,
   });
 
-  return (
-    <DailyComponent
-      roomName={meeting.roomName}
-      token={token}
-      isOwner={isOwner}
-    />
-  );
+  return <DailyComponent roomName={roomName} token={token} isOwner={isOwner} />;
 }

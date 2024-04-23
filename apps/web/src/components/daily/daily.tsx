@@ -12,9 +12,11 @@ import { CallState } from "./types";
 export const Daily = ({
   roomName,
   token,
+  isOwner,
 }: {
   roomName: Room["name"];
   token: string;
+  isOwner: boolean;
 }) => {
   const mkUrl = (roomName: string) => `https://octocoach.daily.co/${roomName}`;
 
@@ -63,7 +65,7 @@ export const Daily = ({
       case "joined":
         return (
           <>
-            <Call leaveCall={leaveCall} />
+            <Call leaveCall={leaveCall} isOwner={isOwner} />
             <DailyAudio />
           </>
         );

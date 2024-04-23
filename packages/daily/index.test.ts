@@ -21,6 +21,7 @@ describe("Testing Daily...", () => {
     const room = await daily.createRoom({
       name: testRoomName,
       privacy: "private",
+      autoTranscription: true,
     });
 
     expect(room.name).toEqual(testRoomName);
@@ -34,14 +35,19 @@ describe("Testing Daily...", () => {
   });
 
   it("Can create a meeting token", async () => {
+    const autoStartTranscription = true;
     const roomName = `test-${daily.createRoomName()}`;
     const userName = "Test User";
     const userId = "test-user";
     const isOwner = false;
 
-    await daily.createRoom({ name: roomName, privacy: "private" });
+    await daily.createRoom({
+      name: roomName,
+      privacy: "private",
+    });
 
     const token = await daily.createMeetingToken({
+      autoStartTranscription,
       roomName,
       isOwner,
       userName,

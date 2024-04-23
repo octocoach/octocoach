@@ -2,6 +2,7 @@ import { Daily as DailyComponent } from "@components/daily/daily";
 import { authOrRedirect } from "@helpers/auth";
 import { Daily } from "@octocoach/daily";
 import { orgDb } from "@octocoach/db/connection";
+import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
@@ -24,7 +25,6 @@ export default async function Page({
 
   const meeting = await db
     .select({
-      roomName: enrollmentTable.roomName,
       startTime: meetingTable.startTime,
       endTime: meetingTable.endTime,
       role: meetingParticipantTable.role,
@@ -37,16 +37,43 @@ export default async function Page({
         eq(meetingParticipantTable.user, user.id)
       )
     )
-    .innerJoin(
-      enrollmentTable,
-      and(eq(meetingTable.measure, enrollmentTable.measure))
-    )
     .where(eq(meetingTable.id, meetingId))
     .then((rows) => rows[0] ?? null);
 
   if (!meeting) notFound();
 
-  if (!meeting.roomName) return <Text>No room created</Text>;
+  let roomName: string | null = null;
+
+  if (meeting.role === "coachee") {
+    roomName = await db
+      .select({
+        roomName: enrollmentTable.roomName,
+      })
+      .from(enrollmentTable)
+      .where(eq(enrollmentTable.coachee, user.id))
+      .then((rows) => getFirstRow(rows))
+      .then(({ roomName }) => roomName);
+  }
+
+  if (meeting.role === "coach") {
+    roomName = await db
+      .select({ roomName: enrollmentTable.roomName })
+      .from(meetingParticipantTable)
+      .innerJoin(
+        enrollmentTable,
+        eq(meetingParticipantTable.user, enrollmentTable.coachee)
+      )
+      .where(
+        and(
+          eq(meetingParticipantTable.meeting, meetingId),
+          eq(meetingParticipantTable.role, "coachee")
+        )
+      )
+      .then((rows) => getFirstRow(rows))
+      .then(({ roomName }) => roomName);
+  }
+
+  if (!roomName) return <Text>No room created</Text>;
 
   const userProfile = await db
     .select()
@@ -60,12 +87,15 @@ export default async function Page({
 
   const daily = new Daily();
 
+  const isOwner = meeting.role === "coach";
+
   const token = await daily.createMeetingToken({
-    roomName: meeting.roomName,
-    isOwner: meeting.role === "coach",
+    autoStartTranscription: true,
+    roomName,
+    isOwner,
     userId: user.id,
     userName,
   });
 
-  return <DailyComponent roomName={meeting.roomName} token={token} />;
+  return <DailyComponent roomName={roomName} token={token} isOwner={isOwner} />;
 }

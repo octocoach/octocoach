@@ -51,7 +51,11 @@ export const createRoom = async (
     throw new Error("User is not the owner of the measure");
   }
 
-  const room = await daily.createRoom({ privacy: "private", name: roomName });
+  const room = await daily.createRoom({
+    privacy: "private",
+    name: roomName,
+    autoTranscription: true,
+  });
 
   await db
     .update(enrollmentTable)

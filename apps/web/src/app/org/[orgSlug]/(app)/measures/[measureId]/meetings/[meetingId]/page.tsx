@@ -2,7 +2,7 @@ import { Daily as DailyComponent } from "@components/daily/daily";
 import { authOrRedirect } from "@helpers/auth";
 import { Daily } from "@octocoach/daily";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
+import { and, eq, or } from "@octocoach/db/operators";
 import { Meeting } from "@octocoach/db/schemas/org/meeting";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
@@ -39,7 +39,13 @@ export default async function Page({
     )
     .innerJoin(
       enrollmentTable,
-      eq(meetingTable.measure, enrollmentTable.measure)
+      and(
+        eq(meetingTable.measure, enrollmentTable.measure),
+        or(
+          eq(enrollmentTable.coach, user.id),
+          eq(enrollmentTable.coachee, user.id)
+        )
+      )
     )
     .where(eq(meetingTable.id, meetingId))
     .then((rows) => {

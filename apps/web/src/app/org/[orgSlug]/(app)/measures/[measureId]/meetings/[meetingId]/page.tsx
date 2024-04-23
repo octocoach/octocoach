@@ -44,8 +44,14 @@ export default async function Page({
       and(
         eq(meetingTable.measure, enrollmentTable.measure),
         or(
-          eq(enrollmentTable.coach, user.id),
-          eq(enrollmentTable.coachee, user.id)
+          and(
+            eq(meetingParticipantTable.role, "coach"),
+            eq(enrollmentTable.coach, meetingParticipantTable.user)
+          ),
+          and(
+            eq(meetingParticipantTable.role, "coachee"),
+            eq(enrollmentTable.coachee, meetingParticipantTable.user)
+          )
         )
       )
     )

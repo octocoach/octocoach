@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "daily": "tsx -r dotenv/config util",
+    "transcripts": "tsx -r dotenv/config transcripts",
     "lint": "eslint .",
     "test": "vitest"
   },

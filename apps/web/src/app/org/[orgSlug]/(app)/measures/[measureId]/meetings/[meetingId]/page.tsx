@@ -38,10 +38,7 @@ export default async function Page({
       )
     )
     .where(eq(meetingTable.id, meetingId))
-    .then((rows) => {
-      console.log(rows);
-      return rows[0] ?? null;
-    });
+    .then((rows) => rows[0] ?? null);
 
   if (!meeting) notFound();
 
@@ -54,10 +51,7 @@ export default async function Page({
       })
       .from(enrollmentTable)
       .where(eq(enrollmentTable.coachee, user.id))
-      .then((rows) => {
-        console.log(rows);
-        return getFirstRow(rows);
-      })
+      .then((rows) => getFirstRow(rows))
       .then(({ roomName }) => roomName);
   }
 
@@ -75,10 +69,7 @@ export default async function Page({
           eq(meetingParticipantTable.role, "coachee")
         )
       )
-      .then((rows) => {
-        console.log(rows);
-        return getFirstRow(rows);
-      })
+      .then((rows) => getFirstRow(rows))
       .then(({ roomName }) => roomName);
   }
 

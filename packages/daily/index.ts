@@ -8,6 +8,8 @@ import type {
   Room,
   RoomOptions,
   RoomProperties,
+  Transcript,
+  TranscriptAccessLink,
 } from "./types";
 
 export class Daily {
@@ -52,6 +54,10 @@ export class Daily {
     return data;
   }
 
+  async getRoom(roomName: Room["name"]) {
+    return await this.fetch<Room>(`/rooms/${roomName}`);
+  }
+
   async deleteRoom(roomName: Room["name"]) {
     await this.fetch(`rooms/${roomName}`, { method: "DELETE" });
   }
@@ -76,5 +82,24 @@ export class Daily {
   createRoomName() {
     const nameSlice = customAlphabet(lowercase, 3);
     return `${nameSlice()}-${nameSlice()}-${nameSlice()}`;
+  }
+
+  async listTranscripts({ roomName }: { roomName: string }) {
+    const room = await this.getRoom(roomName);
+
+    if (!room) throw new Error(`Room ${roomName} not found`);
+
+    const { data } = await this.fetch<{
+      data: Transcript[];
+    }>("/transcript", { params: { roomId: room.id } });
+
+    return data;
+  }
+
+  async getTranscriptLink(id: string) {
+    const { link } = await this.fetch<TranscriptAccessLink>(
+      `/transcript/${id}/access-link`
+    );
+    return link;
   }
 }

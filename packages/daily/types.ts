@@ -38,3 +38,24 @@ export interface MeetingTokenOptions {
 export interface MeetingToken {
   token: string;
 }
+
+// Transcripts
+
+export interface Transcript {
+  transcriptId: string;
+  domainId: string;
+  roomId: string;
+  mtgSessionId: string;
+  duration: number;
+  status: "t_finished" | "t_in-progress" | "t_error";
+}
+
+export interface TranscriptAccessLink {
+  transcriptId: string;
+  link: string;
+  s3: {
+    key: string;
+    bucket: string;
+    region: string;
+  };
+}

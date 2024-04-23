@@ -24,6 +24,8 @@ export default async function Page({
 
   const meeting = await db
     .select({
+      coach: enrollmentTable.coach,
+      coachee: enrollmentTable.coachee,
       roomName: enrollmentTable.roomName,
       startTime: meetingTable.startTime,
       endTime: meetingTable.endTime,

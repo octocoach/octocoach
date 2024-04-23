@@ -53,6 +53,9 @@ export default async function Page({
 
   if (!measure) notFound();
 
+  console.log("Measure");
+  console.log(measure);
+
   if (!measure.roomName) {
     return <Text>The enrollment is still pending approval</Text>;
   }

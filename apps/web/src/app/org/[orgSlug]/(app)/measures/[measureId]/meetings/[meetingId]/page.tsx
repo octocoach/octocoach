@@ -39,10 +39,13 @@ export default async function Page({
     )
     .innerJoin(
       enrollmentTable,
-      and(eq(meetingTable.measure, enrollmentTable.measure))
+      eq(meetingTable.measure, enrollmentTable.measure)
     )
     .where(eq(meetingTable.id, meetingId))
-    .then((rows) => rows[0] ?? null);
+    .then((rows) => {
+      console.log(rows);
+      return rows[0] ?? null;
+    });
 
   if (!meeting) notFound();
 

@@ -37,10 +37,6 @@ export class Daily {
     if (options.autoTranscription) {
       body.properties = {
         enable_transcription_storage: true,
-        auto_transcription_settings: {
-          model: "nova-2",
-          extra: { detect_language: true },
-        },
       };
     }
 

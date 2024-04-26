@@ -25,6 +25,19 @@ export interface Room {
   privacy: Privacy;
 }
 
+// Meetings
+
+export interface Meeting {
+  id: string;
+  room: string;
+  start_time: number;
+  end_time: number;
+  duration: number;
+  ongoing: boolean;
+  max_participants: number;
+  participant_minutes: number;
+}
+
 // Meeting Tokens
 
 export interface MeetingTokenOptions {

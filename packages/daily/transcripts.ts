@@ -1,5 +1,4 @@
 import { Daily } from ".";
-import { WebVTT } from "./webvtt";
 
 const daily = new Daily();
 
@@ -8,13 +7,12 @@ const transcripts = await daily.listTranscripts({ roomName: "gfa-amq-rlg" });
 console.log(transcripts);
 
 for (const transcript of transcripts) {
-  const link = await daily.getTranscriptLink(transcript.transcriptId);
+  const meeting = await daily.getMeeting(transcript.mtgSessionId);
+  console.log(meeting);
 
-  const res = await fetch(link);
+  const start = new Date(meeting.start_time * 1000);
+  const end = new Date(meeting.end_time * 1000);
 
-  const text = await res.text();
-
-  const webVTT = new WebVTT(text);
-
-  console.log(webVTT.clean());
+  console.log("start", start);
+  console.log("end", end);
 }

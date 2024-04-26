@@ -1,8 +1,10 @@
 import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
-import { $Fetch, ofetch } from "ofetch";
+import { type $Fetch, ofetch } from "ofetch";
 
+import { cleanWebVTT } from "./helpers/webvtt";
 import type {
+  Meeting,
   MeetingToken,
   MeetingTokenOptions,
   Room,
@@ -62,6 +64,10 @@ export class Daily {
     await this.fetch(`rooms/${roomName}`, { method: "DELETE" });
   }
 
+  async getMeeting(id: string) {
+    return this.fetch<Meeting>(`meetings/${id}`);
+  }
+
   async createMeetingToken(options: MeetingTokenOptions) {
     const { token } = await this.fetch<MeetingToken>("/meeting-tokens", {
       method: "POST",
@@ -101,5 +107,14 @@ export class Daily {
       `/transcript/${id}/access-link`
     );
     return link;
+  }
+
+  async getTranscriptContent(id: string) {
+    const link = await this.getTranscriptLink(id);
+    const text = await ofetch<string>(link, { retryDelay: 500, retry: 3 });
+
+    const cleaned = cleanWebVTT(text);
+
+    return cleaned;
   }
 }

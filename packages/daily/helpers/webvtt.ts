@@ -34,7 +34,7 @@ export const cleanWebVTT = (raw: string) => {
   for (const { speaker, content } of parsed) {
     if (speaker !== currentSpeaker) {
       if (currentSpeaker) {
-        result += `${currentSpeaker}: ${currentContent.trim()}\n`;
+        result += `**${currentSpeaker}:** ${currentContent.trim()}\n\n`;
       }
       currentSpeaker = speaker;
       currentContent = content;

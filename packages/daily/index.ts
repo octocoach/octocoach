@@ -64,6 +64,13 @@ export class Daily {
     await this.fetch(`rooms/${roomName}`, { method: "DELETE" });
   }
 
+  async listMeetings({ roomName }: { roomName: string }) {
+    const { data } = await this.fetch<{ data: Meeting[] }>("meetings", {
+      params: { room: roomName },
+    });
+    return data;
+  }
+
   async getMeeting(id: string) {
     return this.fetch<Meeting>(`meetings/${id}`);
   }
@@ -90,14 +97,30 @@ export class Daily {
     return `${nameSlice()}-${nameSlice()}-${nameSlice()}`;
   }
 
-  async listTranscripts({ roomName }: { roomName: string }) {
-    const room = await this.getRoom(roomName);
+  async listTranscripts({
+    roomName,
+    meetingId,
+  }: {
+    roomName?: string;
+    meetingId?: string;
+  }) {
+    const params: Record<string, string> = {};
 
-    if (!room) throw new Error(`Room ${roomName} not found`);
+    if (roomName) {
+      const room = await this.getRoom(roomName);
+
+      if (!room) throw new Error(`Room ${roomName} not found`);
+
+      params.roomId = room.id;
+    }
+
+    if (meetingId) {
+      params.mtgSessionId = meetingId;
+    }
 
     const { data } = await this.fetch<{
       data: Transcript[];
-    }>("/transcript", { params: { roomId: room.id } });
+    }>("/transcript", { params });
 
     return data;
   }

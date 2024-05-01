@@ -1,10 +1,11 @@
 import { getLocale } from "@helpers/locale";
-import { Daily } from "@octocoach/daily";
 import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Box, Card, Text } from "@octocoach/ui";
+import { Box, Text } from "@octocoach/ui";
+
+import Meetings from "./meetings";
 
 export default async function Page({
   params: { orgSlug, userId, measureId },
@@ -40,30 +41,17 @@ export default async function Page({
     )
     .then((rows) => getFirstRow(rows));
 
-  let transcriptContent = "";
-
-  if (enrollment.roomName) {
-    const daily = new Daily();
-
-    const transcripts = await daily.listTranscripts({
-      roomName: enrollment.roomName,
-    });
-
-    console.log(transcripts);
-
-    for (const transcript of transcripts) {
-      const content = await daily.getTranscriptContent(transcript.transcriptId);
-      transcriptContent += content;
-    }
-  }
-
   return (
     <Box>
       <Text size="l">{enrollment.title}</Text>
       <Text>Status: {enrollment.status}</Text>
-      <Card>
-        <pre>{transcriptContent}</pre>
-      </Card>
+      {enrollment.roomName && (
+        <Meetings
+          roomName={enrollment.roomName}
+          userId={userId}
+          measureId={measureId}
+        />
+      )}
     </Box>
   );
 }

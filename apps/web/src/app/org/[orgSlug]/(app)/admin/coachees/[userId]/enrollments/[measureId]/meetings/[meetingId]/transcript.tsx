@@ -13,8 +13,6 @@ export const Transcript = async ({ id }: { id: string }) => {
 
   const openai = new OpenAI();
 
-  let fixedTranscript: string | undefined = undefined;
-
   const fixed = render({
     model: "gpt-4-turbo-preview",
     provider: openai,
@@ -26,10 +24,12 @@ export const Transcript = async ({ id }: { id: string }) => {
       { role: "user", content: transcript },
     ],
     text: ({ content, done }) => {
-      if (done) {
-        fixedTranscript = content;
-      }
-      return <Markdown>{content}</Markdown>;
+      return (
+        <>
+          <Markdown>{content}</Markdown>
+          {done && <Summary transcript={content} />}
+        </>
+      );
     },
   });
 
@@ -49,7 +49,6 @@ export const Transcript = async ({ id }: { id: string }) => {
           {fixed}
         </Box>
       </Stack>
-      {fixedTranscript && <Summary transcript={fixedTranscript} />}
     </Stack>
   );
 };

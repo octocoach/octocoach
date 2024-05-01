@@ -1,5 +1,5 @@
 import { Daily } from "@octocoach/daily";
-import { Markdown, Stack } from "@octocoach/ui";
+import { Box, Markdown, Stack, Text } from "@octocoach/ui";
 import { render } from "ai/rsc";
 import OpenAI from "openai";
 
@@ -26,8 +26,19 @@ export const Transcript = async ({ id }: { id: string }) => {
   });
 
   return (
-    <Stack>
-      <Markdown>{transcript}</Markdown>;{fixed}
+    <Stack direction="horizontal" fullWidth>
+      <Box>
+        <Text size="l" weight="bold">
+          Original
+        </Text>
+        <Markdown>{transcript}</Markdown>
+      </Box>
+      <Box>
+        <Text size="l" weight="bold">
+          Fixed
+        </Text>
+        {fixed}
+      </Box>
     </Stack>
   );
 };

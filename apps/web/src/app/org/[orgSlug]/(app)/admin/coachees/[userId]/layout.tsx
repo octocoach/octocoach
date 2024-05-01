@@ -49,7 +49,7 @@ async function getSummary({
   const openai = new OpenAI();
 
   const summary = render({
-    model: "gpt-4-turbo-preview",
+    model: "gpt-4-turbo",
     provider: openai,
     messages: [
       { role: "system", content: summarySystemPrompt(user.name || "unknown") },

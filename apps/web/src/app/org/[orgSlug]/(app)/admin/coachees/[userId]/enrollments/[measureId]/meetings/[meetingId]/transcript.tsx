@@ -1,5 +1,8 @@
 import { Daily } from "@octocoach/daily";
-import { Box, Markdown, Stack, Text } from "@octocoach/ui";
+import { Card } from "@octocoach/ui/Card/Card";
+import { Markdown } from "@octocoach/ui/Markdown/Markdown";
+import { Stack } from "@octocoach/ui/Stack/Stack";
+import { Text } from "@octocoach/ui/Text/Text";
 import { render } from "ai/rsc";
 import OpenAI from "openai";
 
@@ -14,7 +17,7 @@ export const Transcript = async ({ id }: { id: string }) => {
   const openai = new OpenAI();
 
   const fixed = render({
-    model: "gpt-4-turbo-preview",
+    model: "gpt-4-turbo",
     provider: openai,
     messages: [
       {
@@ -25,30 +28,25 @@ export const Transcript = async ({ id }: { id: string }) => {
     ],
     text: ({ content, done }) => {
       return (
-        <>
-          <Markdown>{content}</Markdown>
-          {done && <Summary transcript={content} />}
-        </>
+        <Stack>
+          <Card>
+            <Text size="l" weight="bold">
+              Conversation
+            </Text>
+            <Markdown>{content}</Markdown>
+          </Card>
+          {done && (
+            <Card>
+              <Text size="l" weight="bold">
+                Summary
+              </Text>
+              <Summary transcript={content} />
+            </Card>
+          )}
+        </Stack>
       );
     },
   });
 
-  return (
-    <Stack>
-      <Stack direction="horizontal" fullWidth>
-        <Box>
-          <Text size="l" weight="bold">
-            Original
-          </Text>
-          <Markdown>{transcript}</Markdown>
-        </Box>
-        <Box>
-          <Text size="l" weight="bold">
-            Fixed
-          </Text>
-          {fixed}
-        </Box>
-      </Stack>
-    </Stack>
-  );
+  return <>{fixed}</>;
 };

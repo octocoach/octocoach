@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.9",
-    "@bsmnt/scrollytelling": "^0.3.3",
     "@daily-co/daily-js": "^0.61.1",
     "@daily-co/daily-react": "^0.18.0",
     "@formatjs/intl-localematcher": "^0.4.0",
@@ -29,7 +28,6 @@
     "clsx": "^2.0.0",
     "date-fns": "^3.3.1",
     "date-fns-timezone": "^0.1.4",
-    "gsap": "^3.12.5",
     "just-shuffle": "^4.2.0",
     "nanoid": "^4.0.2",
     "negotiator": "^0.6.3",

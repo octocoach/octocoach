@@ -32,6 +32,18 @@ export type OrganizationDetails = Pick<
   | "taxNumber"
 >;
 
+async function authorize(slug: string) {
+  const { user } = await authOrRedirect(slug);
+
+  const organization = await db
+    .select()
+    .from(organizationTable)
+    .where(eq(organizationTable.slug, slug))
+    .then((rows) => getFirstRow(rows));
+
+  if (!(organization.owner === user.id)) throw new Error("Unauthorized");
+}
+
 export async function createOrganization({
   displayName,
   legalName,
@@ -78,6 +90,8 @@ export async function createOrganization({
 }
 
 export async function deleteOrgAction({ slug, id }: Organization) {
+  await authorize(slug);
+
   await db.execute(sql.raw(`DROP SCHEMA org_${slug} CASCADE`));
   await db.delete(organizationTable).where(eq(organizationTable.id, id));
 
@@ -86,6 +100,8 @@ export async function deleteOrgAction({ slug, id }: Organization) {
 
 export async function onSubmit(organizationDetails: OrganizationDetails) {
   const { slug, ...organization } = organizationDetails;
+
+  await authorize(slug);
 
   await db
     .update(organizationTable)
@@ -103,6 +119,7 @@ export async function saveDomain(
   slug: string,
   { domain, githubId, githubSecret }: DomainDetails
 ) {
+  await authorize(slug);
   if (!githubSecret) {
     throw new Error("Github secret is required");
   }

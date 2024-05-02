@@ -1,8 +1,10 @@
 import { customAlphabet } from "nanoid";
 import { lowercase } from "nanoid-dictionary";
-import { $Fetch, ofetch } from "ofetch";
+import { type $Fetch, ofetch } from "ofetch";
 
+import { cleanWebVTT } from "./helpers/webvtt";
 import type {
+  Meeting,
   MeetingToken,
   MeetingTokenOptions,
   Room,
@@ -62,6 +64,17 @@ export class Daily {
     await this.fetch(`rooms/${roomName}`, { method: "DELETE" });
   }
 
+  async listMeetings({ roomName }: { roomName: string }) {
+    const { data } = await this.fetch<{ data: Meeting[] }>("meetings", {
+      params: { room: roomName },
+    });
+    return data;
+  }
+
+  async getMeeting(id: string) {
+    return this.fetch<Meeting>(`meetings/${id}`);
+  }
+
   async createMeetingToken(options: MeetingTokenOptions) {
     const { token } = await this.fetch<MeetingToken>("/meeting-tokens", {
       method: "POST",
@@ -84,14 +97,30 @@ export class Daily {
     return `${nameSlice()}-${nameSlice()}-${nameSlice()}`;
   }
 
-  async listTranscripts({ roomName }: { roomName: string }) {
-    const room = await this.getRoom(roomName);
+  async listTranscripts({
+    roomName,
+    meetingId,
+  }: {
+    roomName?: string;
+    meetingId?: string;
+  }) {
+    const params: Record<string, string> = {};
 
-    if (!room) throw new Error(`Room ${roomName} not found`);
+    if (roomName) {
+      const room = await this.getRoom(roomName);
+
+      if (!room) throw new Error(`Room ${roomName} not found`);
+
+      params.roomId = room.id;
+    }
+
+    if (meetingId) {
+      params.mtgSessionId = meetingId;
+    }
 
     const { data } = await this.fetch<{
       data: Transcript[];
-    }>("/transcript", { params: { roomId: room.id } });
+    }>("/transcript", { params });
 
     return data;
   }
@@ -101,5 +130,14 @@ export class Daily {
       `/transcript/${id}/access-link`
     );
     return link;
+  }
+
+  async getTranscriptContent(id: string) {
+    const link = await this.getTranscriptLink(id);
+    const text = await ofetch<string>(link, { retryDelay: 500, retry: 3 });
+
+    const cleaned = cleanWebVTT(text);
+
+    return cleaned;
   }
 }

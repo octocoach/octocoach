@@ -72,6 +72,15 @@ describe("Testing Daily...", () => {
     expect(decoded.iat).toBeGreaterThan(0);
   });
 
+  it("Can list meetings for a given room", async () => {
+    const roomName = `test-${daily.createRoomName()}`;
+    await daily.createRoom({ name: roomName, privacy: "private" });
+
+    const meetings = await daily.listMeetings({ roomName });
+
+    expect(meetings).toHaveLength(0);
+  });
+
   afterAll(async () => {
     console.log("🧹 Cleaning Up!");
     const rooms = await daily.listRooms();

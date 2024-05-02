@@ -12,8 +12,6 @@ import { Box, Text } from "@octocoach/ui";
 import Admin from "./admin";
 import { NewOrganization } from "./new-organization";
 
-export const maxDuration = 120;
-
 export default async function Page() {
   const session = await authOrRedirect();
   const { user } = session;

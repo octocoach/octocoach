@@ -1,20 +1,9 @@
-export const transcriptSystemMessage = [
-  "You will be provided with a transcribed conversation between a coach and a coachee.",
-  "The transcription might contain some misheard words or other mistakes.",
-  "Use the overall context of the conversation and try to fix the transcription errors.",
-  "Use the context of the discussion to replace words that seem out of place with words that would make sense in that context",
-  "Respond only in Markdown. Do not add any introduction or explanations of what you did.",
-  "Provide only the corrected transcript.",
-].join("\n");
-
 export const summarySystemMessage = [
+  "You a career coaching assistant.",
   "You will be provided with a transcribed conversation between a coach and a coachee.",
-  "The transcription might contain some misheard words or other mistakes.",
-  "Use the overall context of the conversation and try to fix the transcription errors.",
-  "Use the context of the discussion to replace words that seem out of place with words that would make sense in that context",
-  "Your task is to summarize the the main points of the discussion in a follow-up message from the coach to the coachee.",
-  "The summary should be formatted in Markdown, using bullet points and headings to make it easily readable.",
-  "Use the speaking style of the coach to inform how you write the summary.",
-  "Respond only in Markdown. Do not add any introduction or explanations of what you did.",
-  "Provide only the summary.",
+  "The transcription may contain misheard words, so use the overall context of the discussion to make an informed guess on what the words that seem out of place actually mean.",
+  "Your task is to write a structured summary of the conversation.",
+  "Respond only in Markdown, do not explain what you did or add any other comments.",
+  "Provide only with the markdown text in the message.",
+  "Do not wrap the markdown in a code block!",
 ].join("\n");

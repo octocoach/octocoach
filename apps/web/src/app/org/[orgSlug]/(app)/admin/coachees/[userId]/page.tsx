@@ -4,7 +4,7 @@ import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
-import { Stack, Text } from "@octocoach/ui";
+import { ButtonLink, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 export default async function Page({
@@ -50,18 +50,20 @@ export default async function Page({
 
   return (
     <Stack>
-      <Text>
+      <Text size="xl" weight="light" variation="casual">
         {user.firstName} {user.lastName}
       </Text>
-      <Link href={`${thisPath}/skills`}>Skills</Link>
-      <Link href={`${thisPath}/tasks`}>Tasks</Link>
-      <Text>Enrollments</Text>
+      <Stack direction="horizontal">
+        <ButtonLink href={`${thisPath}/skills`} Element={Link} text="Skills" />
+        <ButtonLink href={`${thisPath}/tasks`} Element={Link} text="Tasks" />
+      </Stack>
+      <Text size="l" weight="semiBold">
+        Enrollments
+      </Text>
       <Stack>
         {enrollments.map(({ enrollment, measure_info, measure }) => (
           <Link key={measure.id} href={`${thisPath}/enrollments/${measure.id}`}>
-            <Text>
-              {measure_info.title} ({enrollment.status})
-            </Text>
+            {measure_info.title} ({enrollment.status})
           </Link>
         ))}
       </Stack>

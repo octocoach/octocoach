@@ -24,11 +24,19 @@ export default async function Page({
 
   return (
     <div>
-      <Text>{format(startTime, "HH:mm:ss")}</Text>
-      <Text>{format(endTime, "HH:mm:ss")}</Text>
-      {transcripts.map(({ transcriptId }) => (
-        <Transcript key={transcriptId} id={transcriptId} />
-      ))}
+      <Text size="l" weight="semiBold" variation="casual">
+        Meeting on {format(startTime, "yyyy.MM.dd")}
+      </Text>
+      <Text>
+        {format(startTime, "HH:mm:ss")} to {format(endTime, "HH:mm:ss")}
+      </Text>
+      {transcripts.length ? (
+        transcripts.map(({ transcriptId }) => (
+          <Transcript key={transcriptId} id={transcriptId} />
+        ))
+      ) : (
+        <Text size="s">No transcripts available</Text>
+      )}
     </div>
   );
 }

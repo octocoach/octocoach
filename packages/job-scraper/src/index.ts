@@ -26,7 +26,7 @@ const locations = [...locationSet];
 
 console.log("Locations", locations);
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: false });
 const indeedScraper = new IndeedScraper(browser, db);
 
 await indeedScraper.scrape({

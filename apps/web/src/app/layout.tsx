@@ -13,6 +13,8 @@ import { Recursive } from "next/font/google";
 import { cookies } from "next/headers";
 import React from "react";
 
+import { CSPostHogProvider } from "./providers";
+
 const SetSystemTheme = dynamic(() => import("@octocoach/ui/SetSystemTheme"), {
   ssr: false,
 });
@@ -46,13 +48,15 @@ export default async function RootLayout({
         flavor ? themeClass[flavor] : themeClass.latte
       )}
     >
-      <body>
-        {!flavor && <SetSystemTheme />}
-        <I18nProvider dictionary={dictionary} locale={locale}>
-          {children}
-        </I18nProvider>
-        <Analytics />
-      </body>
+      <CSPostHogProvider>
+        <body>
+          {!flavor && <SetSystemTheme />}
+          <I18nProvider dictionary={dictionary} locale={locale}>
+            {children}
+          </I18nProvider>
+          <Analytics />
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }

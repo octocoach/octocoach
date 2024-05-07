@@ -1,0 +1,22 @@
+{
+  "name": "@octocoach/webcorevitals-scraper",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "start": "tsx -r dotenv/config main.ts"
+  },
+  "devDependencies": {
+    "@octocoach/typescript-config": "workspace:^",
+    "lighthouse": "^12.0.0",
+    "playwright": "^1.40.1",
+    "playwright-lighthouse": "^4.0.0",
+    "tsx": "^3.12.7"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "googleapis": "^136.0.0",
+    "ofetch": "^1.3.4",
+    "web-vitals": "^3.5.2"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "extends": "@octocoach/typescript-config/react-library.json",
+  "include": ["."]
+}

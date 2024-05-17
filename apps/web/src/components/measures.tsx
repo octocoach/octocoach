@@ -28,14 +28,12 @@ export const Measures = ({
           return (
             <Card key={measure.id}>
               <Grid columns="auto" gap="large">
-                <Link href={href}>
-                  <FillImage
-                    src={measure.imageSrc}
-                    alt={measure.imageAlt}
-                    minHeight={200}
-                    roundedCorners
-                  />
-                </Link>
+                <FillImage
+                  src={measure.imageSrc}
+                  alt={measure.imageAlt}
+                  minHeight={200}
+                  roundedCorners
+                />
                 <Stack>
                   {measure.accredited && (
                     <Stack

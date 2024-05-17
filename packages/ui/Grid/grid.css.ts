@@ -5,6 +5,7 @@ import { sprinkles } from "../sprinkles.css";
 export const grid = recipe({
   base: {
     display: "grid",
+    overflow: "hidden",
   },
   variants: {
     columns: {

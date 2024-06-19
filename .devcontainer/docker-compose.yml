@@ -8,6 +8,7 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
+      - global-pnpm-store:/.pnpm-store:volume
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -41,3 +42,5 @@ services:
 
 volumes:
   postgres-data:
+  global-pnpm-store:
+    name: global-pnpm-store

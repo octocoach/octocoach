@@ -25,10 +25,10 @@
         "YoavBls.pretty-ts-errors"
       ]
     }
-  }
+  },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
+  "postCreateCommand": "pnpm config set store-dir /.pnpm-store && pnpm install"
 
   // Configure tool-specific properties.
   // "customizations": {},

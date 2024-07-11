@@ -1,6 +1,6 @@
 export const meta = {
-  version: 14,
-  when: 1712232172285,
+  version: 15,
+  when: 1720699478737,
 };
 
 export const rawSql = `
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_module" (
 	"module" text NOT NULL,
 	"order" integer NOT NULL,
 	CONSTRAINT measure_module_measure_module_pk PRIMARY KEY("measure","module"),
-	CONSTRAINT "measure_module_order_unique" UNIQUE("order")
+	CONSTRAINT "measure_module_measure_order_unique" UNIQUE("measure","order")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "org_{slug}"."measure" (

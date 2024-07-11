@@ -1,0 +1,2 @@
+ALTER TABLE "org_{slug}"."measure_module" DROP CONSTRAINT "measure_module_order_unique";--> statement-breakpoint
+ALTER TABLE "org_{slug}"."measure_module" ADD CONSTRAINT "measure_module_measure_order_unique" UNIQUE("measure","order");

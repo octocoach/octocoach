@@ -67,14 +67,14 @@ const LocaleField = ({
 export function EditMeasure({
   measure,
   measureInfo,
-  saveMeasure,
-  onDone,
+  saveMeasureAction,
+  onDoneAction,
   orgSlug,
 }: {
   measure: SaveMeasureData["measure"];
   measureInfo: SaveMeasureData["measureInfo"];
-  saveMeasure: (data: SaveMeasureData) => SaveMeasureRetype;
-  onDone: () => void;
+  saveMeasureAction: (data: SaveMeasureData) => SaveMeasureRetype;
+  onDoneAction: () => void;
   orgSlug: string;
 }) {
   const mappedMeasureInfo = mapMeasureInfo(measureInfo);
@@ -110,10 +110,10 @@ export function EditMeasure({
     );
 
     startTransition(() => {
-      void saveMeasure({ measure, measureInfo }).then((result) => {
+      void saveMeasureAction({ measure, measureInfo }).then((result) => {
         if (result.success === true) {
           store.reset();
-          onDone();
+          onDoneAction();
           router.refresh();
         } else if (result.errors) {
           if (result.errors.measure?.issues?.length) {
@@ -150,7 +150,7 @@ export function EditMeasure({
 
   const onCancel = () => {
     startTransition(() => {
-      onDone();
+      onDoneAction();
     });
   };
 

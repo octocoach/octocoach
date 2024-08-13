@@ -36,8 +36,8 @@ export default async function Page({
       module={mod}
       moduleInfo={info}
       orgSlug={orgSlug}
-      saveModule={saveModuleWithSlug}
-      onDone={onDone}
+      saveModuleAction={saveModuleWithSlug}
+      onDoneAction={onDone}
     />
   );
 }

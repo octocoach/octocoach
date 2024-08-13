@@ -61,7 +61,10 @@ export default async function Page({
           )
         )}
       </Stack>
-      <AddModule saveModule={saveModuleWithSlug} orgSlug={params.orgSlug} />
+      <AddModule
+        saveModuleAction={saveModuleWithSlug}
+        orgSlug={params.orgSlug}
+      />
     </Stack>
   );
 }

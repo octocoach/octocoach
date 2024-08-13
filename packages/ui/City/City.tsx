@@ -24,7 +24,7 @@ export const City = ({
     const s = store.getState();
     const hit = s.items.find((item) => item.value === city.trim());
 
-    setValue(hit?.value || "");
+    setValue(hit?.value || city.trim());
 
     const cities = await autocomplete(city);
     setSuggestions(cities);

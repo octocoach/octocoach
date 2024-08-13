@@ -158,17 +158,17 @@ const EditModuleLocale = ({
 };
 
 export function EditModule({
-  saveModule,
-  orgSlug,
   module,
   moduleInfo,
-  onDone,
+  onDoneAction,
+  orgSlug,
+  saveModuleAction,
 }: {
   module: SaveModuleData["module"];
   moduleInfo: SaveModuleData["moduleInfo"];
+  onDoneAction: () => void;
   orgSlug: string;
-  saveModule: (data: SaveModuleData) => SaveModuleRetype;
-  onDone: () => void;
+  saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
 }) {
   const defaultValues: SaveModuleData = {
     module,
@@ -208,11 +208,17 @@ export function EditModule({
   const onSubmit = () => {
     startTransition(() => {
       const values = store.getState().values;
-      // const units = parseInt(values.module.units as unknown as string);
-      void saveModule(values).then((result) => {
+      const units =
+        typeof values.module.units !== "number"
+          ? parseInt(values.module.units as unknown as string)
+          : values.module.units;
+      void saveModuleAction({
+        ...values,
+        module: { ...values.module, units },
+      }).then((result) => {
         if (result.success === true) {
           store.reset();
-          onDone();
+          onDoneAction();
           router.refresh();
         } else if (result.errors) {
           if (result.errors.module?.issues.length) {
@@ -241,7 +247,7 @@ export function EditModule({
 
   const onCancel = () => {
     startTransition(() => {
-      onDone();
+      onDoneAction();
     });
   };
 

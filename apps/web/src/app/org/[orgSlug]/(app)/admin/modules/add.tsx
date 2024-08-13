@@ -9,11 +9,11 @@ import { SaveModuleData, SaveModuleRetype } from "./actions";
 import { EditModule } from "./edit";
 
 export function AddModule({
-  saveModule,
+  saveModuleAction,
   orgSlug,
 }: {
   orgSlug: string;
-  saveModule: (data: SaveModuleData) => SaveModuleRetype;
+  saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
 }) {
   const blankModule: SaveModuleData["module"] = {
     id: "",
@@ -41,10 +41,10 @@ export function AddModule({
   return (
     <EditModule
       orgSlug={orgSlug}
-      saveModule={saveModule}
+      saveModuleAction={saveModuleAction}
       module={blankModule}
       moduleInfo={blankModuleInfo}
-      onDone={onDone}
+      onDoneAction={onDone}
     />
   );
 }

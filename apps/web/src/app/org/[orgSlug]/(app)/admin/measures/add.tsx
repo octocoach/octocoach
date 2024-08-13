@@ -12,10 +12,10 @@ import { EditMeasure } from "./edit";
 type MeasureInfoLocale = SaveMeasureData["measureInfo"][Locales];
 
 export function AddMeasure({
-  saveMeasure,
+  saveMeasureAction,
   orgSlug,
 }: {
-  saveMeasure: (data: SaveMeasureData) => SaveMeasureRetype;
+  saveMeasureAction: (data: SaveMeasureData) => SaveMeasureRetype;
   orgSlug: string;
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
@@ -49,10 +49,10 @@ export function AddMeasure({
   return (
     <EditMeasure
       orgSlug={orgSlug}
-      saveMeasure={saveMeasure}
+      saveMeasureAction={saveMeasureAction}
       measure={blankMeasure}
       measureInfo={defaultValuesMeasureInfo}
-      onDone={onDone}
+      onDoneAction={onDone}
     />
   );
 }

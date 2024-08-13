@@ -58,7 +58,10 @@ export default async function Page({
           </Link>
         ))}
       </Stack>
-      <AddMeasure saveMeasure={saveMeasureWithSlug} orgSlug={params.orgSlug} />
+      <AddMeasure
+        saveMeasureAction={saveMeasureWithSlug}
+        orgSlug={params.orgSlug}
+      />
     </Stack>
   );
 }

@@ -35,8 +35,8 @@ export default async function Page({
       measure={measure}
       measureInfo={info}
       orgSlug={params.orgSlug}
-      saveMeasure={saveMeasureWithSlug}
-      onDone={onDone}
+      saveMeasureAction={saveMeasureWithSlug}
+      onDoneAction={onDone}
     />
   );
 }

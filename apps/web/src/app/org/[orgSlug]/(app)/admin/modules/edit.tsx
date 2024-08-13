@@ -158,17 +158,17 @@ const EditModuleLocale = ({
 };
 
 export function EditModule({
-  saveModule,
-  orgSlug,
   module,
   moduleInfo,
-  onDone,
+  onDoneAction,
+  orgSlug,
+  saveModuleAction,
 }: {
   module: SaveModuleData["module"];
   moduleInfo: SaveModuleData["moduleInfo"];
+  onDoneAction: () => void;
   orgSlug: string;
-  saveModule: (data: SaveModuleData) => SaveModuleRetype;
-  onDone: () => void;
+  saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
 }) {
   const defaultValues: SaveModuleData = {
     module,
@@ -212,33 +212,34 @@ export function EditModule({
         typeof values.module.units !== "number"
           ? parseInt(values.module.units as unknown as string)
           : values.module.units;
-      void saveModule({ ...values, module: { ...values.module, units } }).then(
-        (result) => {
-          if (result.success === true) {
-            store.reset();
-            onDone();
-            router.refresh();
-          } else if (result.errors) {
-            if (result.errors.module?.issues.length) {
-              for (const issue of result.errors.module.issues) {
-                const path = issue.path.join(".");
-                store.setFieldTouched(path, true);
-                store.setError(path, issue.message);
-              }
+      void saveModuleAction({
+        ...values,
+        module: { ...values.module, units },
+      }).then((result) => {
+        if (result.success === true) {
+          store.reset();
+          onDoneAction();
+          router.refresh();
+        } else if (result.errors) {
+          if (result.errors.module?.issues.length) {
+            for (const issue of result.errors.module.issues) {
+              const path = issue.path.join(".");
+              store.setFieldTouched(path, true);
+              store.setError(path, issue.message);
             }
-            if (result.errors.moduleInfo) {
-              for (const [locale, errors] of getEntries(
-                result.errors.moduleInfo
-              )) {
-                setModuleInfoErrors((cur) => ({
-                  ...cur,
-                  [locale]: errors,
-                }));
-              }
+          }
+          if (result.errors.moduleInfo) {
+            for (const [locale, errors] of getEntries(
+              result.errors.moduleInfo
+            )) {
+              setModuleInfoErrors((cur) => ({
+                ...cur,
+                [locale]: errors,
+              }));
             }
           }
         }
-      );
+      });
     });
   };
 
@@ -246,7 +247,7 @@ export function EditModule({
 
   const onCancel = () => {
     startTransition(() => {
-      onDone();
+      onDoneAction();
     });
   };
 

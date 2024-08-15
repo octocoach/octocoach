@@ -30,10 +30,6 @@ export function AddModule({
 
   const [show, setShow] = useState(false);
 
-  const onDone = () => {
-    setShow(false);
-  };
-
   if (!show) {
     return <Button onClick={() => setShow(true)}>Add a Module</Button>;
   }
@@ -44,7 +40,6 @@ export function AddModule({
       saveModuleAction={saveModuleAction}
       module={blankModule}
       moduleInfo={blankModuleInfo}
-      onDoneAction={onDone}
     />
   );
 }

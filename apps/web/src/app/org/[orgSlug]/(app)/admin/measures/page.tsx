@@ -10,7 +10,7 @@ import {
 import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
 
-import { saveMeasure } from "./actions";
+import { saveMeasureAction } from "./actions";
 import { AddMeasure } from "./add";
 
 export default async function Page({
@@ -37,8 +37,6 @@ export default async function Page({
       )
     );
 
-  const saveMeasureWithSlug = saveMeasure.bind(null, params.orgSlug);
-
   const baseUrl = getBaseUrl();
 
   return (
@@ -62,7 +60,7 @@ export default async function Page({
         )}
       </Stack>
       <AddMeasure
-        saveMeasureAction={saveMeasureWithSlug}
+        saveMeasureAction={saveMeasureAction.bind(null, params.orgSlug)}
         orgSlug={params.orgSlug}
       />
     </Stack>

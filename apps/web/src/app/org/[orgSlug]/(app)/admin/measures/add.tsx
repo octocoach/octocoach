@@ -43,17 +43,12 @@ export function AddMeasure({
     return <Button onClick={() => setShow(true)}>Add a Measure</Button>;
   }
 
-  const onDone = () => {
-    setShow(false);
-  };
-
   return (
     <EditMeasure
       orgSlug={orgSlug}
       saveMeasureAction={saveMeasureAction}
       measure={blankMeasure}
       measureInfo={defaultValuesMeasureInfo}
-      onDoneAction={onDone}
     />
   );
 }

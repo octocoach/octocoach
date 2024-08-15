@@ -160,13 +160,11 @@ const EditModuleLocale = ({
 export function EditModule({
   module,
   moduleInfo,
-  onDoneAction,
   orgSlug,
   saveModuleAction,
 }: {
   module: SaveModuleData["module"];
   moduleInfo: SaveModuleData["moduleInfo"];
-  onDoneAction: () => void;
   orgSlug: string;
   saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
 }) {
@@ -218,8 +216,7 @@ export function EditModule({
       }).then((result) => {
         if (result.success === true) {
           store.reset();
-          onDoneAction();
-          router.refresh();
+          router.push(`/org/${orgSlug}/admin/modules/${module.id}`);
         } else if (result.errors) {
           if (result.errors.module?.issues.length) {
             for (const issue of result.errors.module.issues) {
@@ -246,9 +243,7 @@ export function EditModule({
   const imageSrc = store.useValue<string>($.module.imageSrc);
 
   const onCancel = () => {
-    startTransition(() => {
-      onDoneAction();
-    });
+    router.push(`/org/${orgSlug}/admin/modules/${module.id}`);
   };
 
   return (

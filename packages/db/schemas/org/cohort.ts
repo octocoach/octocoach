@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { date, text } from "drizzle-orm/pg-core";
+import { nanoid } from "nanoid";
 
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { mkMeasureTable } from "./measure";
@@ -11,14 +12,16 @@ export const mkCohortTable = (slug: string) => {
   const measureTable = mkMeasureTable(slug);
 
   return mkOrgPgSchema(slug).table("cohort", {
-    id: text("id").primaryKey(),
+    id: text("id")
+      .primaryKey()
+      .$default(() => nanoid()),
     measure: text("measure")
       .notNull()
       .references(() => measureTable.id, {
         onDelete: "restrict",
         onUpdate: "cascade",
       }),
-    startDate: date("start_date").notNull(),
+    startDate: date("start_date", { mode: "date" }).notNull(),
   });
 };
 

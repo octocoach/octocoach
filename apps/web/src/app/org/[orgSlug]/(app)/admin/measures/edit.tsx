@@ -70,13 +70,11 @@ export function EditMeasure({
   measure,
   measureInfo,
   saveMeasureAction,
-  onDoneAction,
   orgSlug,
 }: {
   measure: SaveMeasureData["measure"];
   measureInfo: SaveMeasureData["measureInfo"];
   saveMeasureAction: (data: SaveMeasureData) => SaveMeasureRetype;
-  onDoneAction: () => void;
   orgSlug: string;
 }) {
   const mappedMeasureInfo = mapMeasureInfo(measureInfo);
@@ -115,8 +113,7 @@ export function EditMeasure({
       void saveMeasureAction({ measure, measureInfo }).then((result) => {
         if (result.success === true) {
           store.reset();
-          onDoneAction();
-          router.refresh();
+          router.push(`/org/${orgSlug}/admin/measures/${measure.id}`);
         } else if (result.errors) {
           if (result.errors.measure?.issues?.length) {
             for (const issue of result.errors.measure.issues) {
@@ -152,7 +149,7 @@ export function EditMeasure({
 
   const onCancel = () => {
     startTransition(() => {
-      onDoneAction();
+      router.push(`/org/${orgSlug}/admin/measures/${measure.id}`);
     });
   };
 

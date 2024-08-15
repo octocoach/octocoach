@@ -2,7 +2,7 @@
 
 import { authOrRedirect } from "@helpers/auth";
 import { serialize } from "@helpers/index";
-import { getBaseUrl, orgRedirect } from "@helpers/navigation";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
@@ -25,9 +25,12 @@ export type SaveModuleData = {
   moduleInfo: Record<Locales, Omit<NewModuleInfo, "locale" | "id">>;
 };
 
-export type SaveModuleRetype = ReturnType<typeof saveModule>;
+export type SaveModuleRetype = ReturnType<typeof saveModuleAction>;
 
-export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
+export const saveModuleAction = async (
+  orgSlug: string,
+  data: SaveModuleData
+) => {
   const { user } = await authOrRedirect(orgSlug);
 
   if (!user.isCoach) {
@@ -111,7 +114,7 @@ export const saveModule = async (orgSlug: string, data: SaveModuleData) => {
   return { success: true };
 };
 
-export const deleteModule = async (orgSlug: string, id: Module["id"]) => {
+export const deleteModuleAction = async (orgSlug: string, id: Module["id"]) => {
   const { user } = await authOrRedirect(orgSlug);
 
   const baseUrl = getBaseUrl();
@@ -140,8 +143,4 @@ export const deleteModule = async (orgSlug: string, id: Module["id"]) => {
   });
 
   redirect(`${baseUrl}/modules`);
-};
-
-export const redirectToModule = (moduleId: Module["id"]) => {
-  orgRedirect(`admin/modules/${moduleId}`);
 };

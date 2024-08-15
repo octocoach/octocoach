@@ -8,7 +8,7 @@ import { startTransition } from "react";
 
 import { removeMeasureFromModule } from "./actions";
 
-export const ModulesCompoent = ({
+export const ModulesComponent = ({
   measureId,
   modules,
   orgSlug,
@@ -18,7 +18,7 @@ export const ModulesCompoent = ({
   orgSlug: string;
 }) => {
   const removeMeasureFromModuleWithSlug = removeMeasureFromModule.bind(
-    "orgSlug",
+    null,
     orgSlug
   );
 
@@ -40,26 +40,29 @@ export const ModulesCompoent = ({
   };
 
   return (
-    <Stack>
-      {modules.map((mod) => (
-        <Card key={mod.id}>
-          <Stack direction="horizontal" justify="between">
-            <Box>
-              <Text size="l">{mod.title}</Text>
-              <Text>{mod.description}</Text>
-            </Box>
-            <Box>
-              <Button
-                size="small"
-                onClick={() => onRemove(mod)}
-                color="warning"
-              >
-                Remove
-              </Button>
-            </Box>
-          </Stack>
-        </Card>
-      ))}
+    <Stack spacing="loose">
+      <Text size="l">Modules</Text>
+      <Stack>
+        {modules.map((mod) => (
+          <Card key={mod.id}>
+            <Stack direction="horizontal" justify="between">
+              <Box>
+                <Text size="l">{mod.title}</Text>
+                <Text>{mod.description}</Text>
+              </Box>
+              <Box>
+                <Button
+                  size="small"
+                  onClick={() => onRemove(mod)}
+                  color="warning"
+                >
+                  Remove
+                </Button>
+              </Box>
+            </Stack>
+          </Card>
+        ))}
+      </Stack>
     </Stack>
   );
 };

@@ -19,10 +19,7 @@ export const AddModuleToMeasure = ({
 }) => {
   const router = useRouter();
 
-  const addMeasureToModuleWithSlug = addMeasureToModule.bind(
-    "orgSlug",
-    orgSlug
-  );
+  const addMeasureToModuleWithSlug = addMeasureToModule.bind(null, orgSlug);
 
   const onAdd = (mod: ModuleWithInfo) =>
     startTransition(() => {

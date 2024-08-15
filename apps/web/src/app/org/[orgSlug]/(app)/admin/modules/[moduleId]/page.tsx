@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { deleteModule } from "../actions";
+import { deleteModuleAction } from "../actions";
 import { Delete } from "./delete";
 
 export default async function Page({
@@ -47,8 +47,6 @@ export default async function Page({
 
   if (!mod) notFound();
 
-  const deleteActionWithSlug = deleteModule.bind("orgSlug", params.orgSlug);
-
   const baseUrl = getBaseUrl();
 
   return (
@@ -71,7 +69,10 @@ export default async function Page({
         >
           Edit
         </ButtonLink>
-        <Delete deleteAction={deleteActionWithSlug} id={mod.id} />
+        <Delete
+          deleteAction={deleteModuleAction.bind(null, params.orgSlug)}
+          id={mod.id}
+        />
       </Stack>
     </Stack>
   );

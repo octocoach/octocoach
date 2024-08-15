@@ -62,12 +62,12 @@ export default async function Page({
     .then((row) => (row.length > 0 ? row[0] : null));
 
   if (skill) {
-    const boundAddUserSkillLevel = addUserSkillLevel.bind(
-      "orgSlug",
-      params.orgSlug
+    return (
+      <SkillCheck
+        skill={skill}
+        submitAnswer={addUserSkillLevel.bind(null, params.orgSlug)}
+      />
     );
-
-    return <SkillCheck skill={skill} submitAnswer={boundAddUserSkillLevel} />;
   }
 
   const task = await db
@@ -95,14 +95,12 @@ export default async function Page({
     orgRedirect("/discover/jobs");
   }
 
-  const boundAddUserTaskInterest = addUserTaskInterest.bind(
-    "orgSlug",
-    params.orgSlug
-  );
-
   return (
     <Stack justify="center">
-      <TaskCheck task={task!} submitAnswer={boundAddUserTaskInterest} />
+      <TaskCheck
+        task={task!}
+        submitAnswer={addUserTaskInterest.bind(null, params.orgSlug)}
+      />
       <Text textAlign="center">
         <Link href={`${baseUrl}discover/jobs`}>
           {jobs.length} possible jobs

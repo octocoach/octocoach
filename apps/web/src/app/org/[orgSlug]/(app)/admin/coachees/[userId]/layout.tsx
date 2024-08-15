@@ -1,11 +1,6 @@
 import { orgDb } from "@octocoach/db/connection";
-import { mkUserProfileTable } from "@octocoach/db/schemas/org/user-profile";
 import { Card, Container, Markdown, Stack, Text } from "@octocoach/ui";
-import { render } from "ai/rsc";
-import OpenAI from "openai";
 import { ReactNode } from "react";
-
-import { summarySystemPrompt, summaryUserPrompt } from "./messages";
 
 async function getSummary({
   orgSlug,
@@ -40,54 +35,57 @@ async function getSummary({
     return <Markdown>{user.userProfile.summary}</Markdown>;
   }
 
-  const getQuestions = (answer: "yes" | "no" | "maybe") => {
-    const i = answer === "yes" ? 1 : answer === "no" ? -1 : 0;
-    if (!user) throw Error("No User!");
-    return user.usersTaskInterest.filter((d) => d.interest === i);
-  };
+  // const getQuestions = (answer: "yes" | "no" | "maybe") => {
+  //   const i = answer === "yes" ? 1 : answer === "no" ? -1 : 0;
+  //   if (!user) throw Error("No User!");
+  //   return user.usersTaskInterest.filter((d) => d.interest === i);
+  // };
 
-  const openai = new OpenAI();
+  // const openai = new OpenAI();
 
-  const summary = render({
-    model: "gpt-4-turbo",
-    provider: openai,
-    messages: [
-      { role: "system", content: summarySystemPrompt(user.name || "unknown") },
-      {
-        role: "user",
-        content: summaryUserPrompt({
-          yes: getQuestions("yes")
-            .map((q) => `- ${q.task.question}`)
-            .join("\n"),
-          no: getQuestions("no")
-            .map((q) => `- ${q.task.question}`)
-            .join("\n"),
-          maybe: getQuestions("maybe")
-            .map((q) => `- ${q.task.question}`)
-            .join("\n"),
-        }),
-      },
-    ],
-    text: async ({ content, done }) => {
-      if (done) {
-        const userProfileTable = mkUserProfileTable(orgSlug);
+  // const summary = render({
+  //   model: "gpt-4-turbo",
+  //   provider: openai,
+  //   messages: [
+  //     { role: "system", content: summarySystemPrompt(user.name || "unknown") },
+  //     {
+  //       role: "user",
+  //       content: summaryUserPrompt({
+  //         yes: getQuestions("yes")
+  //           .map((q) => `- ${q.task.question}`)
+  //           .join("\n"),
+  //         no: getQuestions("no")
+  //           .map((q) => `- ${q.task.question}`)
+  //           .join("\n"),
+  //         maybe: getQuestions("maybe")
+  //           .map((q) => `- ${q.task.question}`)
+  //           .join("\n"),
+  //       }),
+  //     },
+  //   ],
+  //   text: async ({ content, done }) => {
+  //     if (done) {
+  //       const userProfileTable = mkUserProfileTable(orgSlug);
 
-        await db
-          .insert(userProfileTable)
-          .values({
-            userId,
-            summary: content,
-            summaryHash: hash,
-          })
-          .onConflictDoUpdate({
-            target: userProfileTable.userId,
-            set: { summary: content, summaryHash: hash },
-          });
-      }
+  //       await db
+  //         .insert(userProfileTable)
+  //         .values({
+  //           userId,
+  //           summary: content,
+  //           summaryHash: hash,
+  //         })
+  //         .onConflictDoUpdate({
+  //           target: userProfileTable.userId,
+  //           set: { summary: content, summaryHash: hash },
+  //         });
+  //     }
 
-      return <Markdown>{content}</Markdown>;
-    },
-  });
+  //     return <Markdown>{content}</Markdown>;
+  //   },
+  // });
+
+  // TODO: Implement AI User Summary
+  const summary = "Not Implemented";
 
   return <>{summary}</>;
 }

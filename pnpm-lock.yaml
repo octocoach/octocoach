@@ -202,8 +202,8 @@ importers:
         specifier: workspace:^
         version: link:../db
       drizzle-orm:
-        specifier: ^0.29.1
-        version: 0.29.1(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(postgres@3.3.5)
+        specifier: ^0.33.0
+        version: 0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.2.48)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1)
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
@@ -5205,68 +5205,6 @@ packages:
   drizzle-kit@0.24.0:
     resolution: {integrity: sha512-rUl5Rf5HLOVkAwHEVEi8xgulIRWzoys0q77RHGCxv5e9v8AI3JGFg7Ug5K1kn513RwNZbuNJMUKOXo0j8kPRgg==}
     hasBin: true
-
-  drizzle-orm@0.29.1:
-    resolution: {integrity: sha512-yItc4unfHnk8XkDD3/bdC63vdboTY7e7I03lCF1OJYABXSIfQYU9BFTQJXMMovVeb3T1/OJWwfW/70T1XPnuUA==}
-    peerDependencies:
-      '@aws-sdk/client-rds-data': '>=3'
-      '@cloudflare/workers-types': '>=3'
-      '@libsql/client': '*'
-      '@neondatabase/serverless': '>=0.1'
-      '@opentelemetry/api': ^1.4.1
-      '@planetscale/database': '>=1'
-      '@types/better-sqlite3': '*'
-      '@types/pg': '*'
-      '@types/sql.js': '*'
-      '@vercel/postgres': '*'
-      better-sqlite3: '>=7'
-      bun-types: '*'
-      knex: '*'
-      kysely: '*'
-      mysql2: '>=2'
-      pg: '>=8'
-      postgres: '>=3'
-      sql.js: '>=1'
-      sqlite3: '>=5'
-    peerDependenciesMeta:
-      '@aws-sdk/client-rds-data':
-        optional: true
-      '@cloudflare/workers-types':
-        optional: true
-      '@libsql/client':
-        optional: true
-      '@neondatabase/serverless':
-        optional: true
-      '@opentelemetry/api':
-        optional: true
-      '@planetscale/database':
-        optional: true
-      '@types/better-sqlite3':
-        optional: true
-      '@types/pg':
-        optional: true
-      '@types/sql.js':
-        optional: true
-      '@vercel/postgres':
-        optional: true
-      better-sqlite3:
-        optional: true
-      bun-types:
-        optional: true
-      knex:
-        optional: true
-      kysely:
-        optional: true
-      mysql2:
-        optional: true
-      pg:
-        optional: true
-      postgres:
-        optional: true
-      sql.js:
-        optional: true
-      sqlite3:
-        optional: true
 
   drizzle-orm@0.33.0:
     resolution: {integrity: sha512-SHy72R2Rdkz0LEq0PSG/IdvnT3nGiWuRk+2tXZQ90GVq/XQhpCzu/EFT3V2rox+w8MlkBQxifF8pCStNYnERfA==}
@@ -15789,13 +15727,6 @@ snapshots:
       esbuild-register: 3.6.0(esbuild@0.19.12)
     transitivePeerDependencies:
       - supports-color
-
-  drizzle-orm@0.29.1(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(postgres@3.3.5):
-    optionalDependencies:
-      '@neondatabase/serverless': 0.9.4
-      '@types/pg': 8.11.6
-      '@vercel/postgres': 0.9.0
-      postgres: 3.3.5
 
   drizzle-orm@0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.2.48)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1):
     optionalDependencies:

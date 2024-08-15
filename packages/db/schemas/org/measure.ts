@@ -5,7 +5,9 @@ import { z } from "zod";
 
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
+import { measureTypeEnum } from "../data-types/measure";
 import { mkCoachTable } from "./coach";
+import { mkCohortTable } from "./cohort";
 import { mkMeasureModuleTable } from "./measure-module";
 import { ModuleWithInfo } from "./module";
 
@@ -34,6 +36,7 @@ export const mkMeasureTable = (slug: string) => {
       }),
     imageSrc: text("image_src").notNull(),
     accredited: boolean("accredited").notNull().default(false),
+    type: measureTypeEnum("type").notNull().default("cohort"),
   });
 };
 
@@ -98,12 +101,14 @@ export const mkMeasureInfoTable = (slug: string) => {
 export const mkMeasureInfoRelations = (slug: string) => {
   const measureTable = mkMeasureTable(slug);
   const measureInfo = mkMeasureInfoTable(slug);
+  const cohortTable = mkCohortTable(slug);
 
-  return relations(measureInfo, ({ one }) => ({
+  return relations(measureInfo, ({ one, many }) => ({
     measure: one(measureTable, {
       fields: [measureInfo.id],
       references: [measureTable.id],
     }),
+    cohorts: many(cohortTable),
   }));
 };
 

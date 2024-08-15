@@ -13,6 +13,8 @@ import {
   FormCheckbox,
   FormField,
   FormInput,
+  FormSelect,
+  SelectItem,
   Stack,
   Text,
   useFormStore,
@@ -187,6 +189,12 @@ export function EditMeasure({
       <Stack>
         <FormField name={$.measure.id} label="Slug">
           <FormInput name={$.measure.id} />
+        </FormField>
+        <FormField name={$.measure.type} label="Type">
+          <FormSelect name={$.measure.type}>
+            <SelectItem value="individual">Individual</SelectItem>
+            <SelectItem value="cohort">Cohort</SelectItem>
+          </FormSelect>
         </FormField>
         <Upload
           onUploaded={(src) => store.setValue($.measure.imageSrc, src)}

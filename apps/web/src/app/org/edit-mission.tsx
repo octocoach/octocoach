@@ -10,7 +10,7 @@ export const EditMission = ({
   slug: string;
 }) => {
   const missionSectionId: SectionId = "mission";
-  const saveContentWithSlug = saveContent.bind("slug", slug);
+  const saveContentWithSlug = saveContent.bind(null, slug);
 
   return (
     <Container>

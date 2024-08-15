@@ -113,6 +113,13 @@
       "when": 1720699478737,
       "tag": "0015_open_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1723718061463,
+      "tag": "0016_daily_talos",
+      "breakpoints": true
     }
   ]
 }

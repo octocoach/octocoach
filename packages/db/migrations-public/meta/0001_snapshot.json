@@ -1,10 +1,8 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "0aefb512-5279-4ccd-b7e6-a142447f2b5b",
-  "prevId": "80809733-04c6-4c27-8885-6052c43477d8",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "public.account": {
       "name": "account",
       "schema": "",
       "columns": {
@@ -80,15 +78,15 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -102,7 +100,7 @@
       },
       "uniqueConstraints": {}
     },
-    "address": {
+    "public.address": {
       "name": "address",
       "schema": "",
       "columns": {
@@ -154,7 +152,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "employer": {
+    "public.employer": {
       "name": "employer",
       "schema": "",
       "columns": {
@@ -200,7 +198,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "job": {
+    "public.job": {
       "name": "job",
       "schema": "",
       "columns": {
@@ -271,21 +269,21 @@
         "job_employer_id_employer_id_fk": {
           "name": "job_employer_id_employer_id_fk",
           "tableFrom": "job",
-          "tableTo": "employer",
           "columnsFrom": [
             "employer_id"
           ],
+          "tableTo": "employer",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "organization": {
+    "public.organization": {
       "name": "organization",
       "schema": "",
       "columns": {
@@ -383,34 +381,34 @@
         "organization_user_id_user_id_fk": {
           "name": "organization_user_id_user_id_fk",
           "tableFrom": "organization",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "organization_address_id_address_id_fk": {
           "name": "organization_address_id_address_id_fk",
           "tableFrom": "organization",
-          "tableTo": "address",
           "columnsFrom": [
             "address_id"
           ],
+          "tableTo": "address",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "set null"
+          "onUpdate": "set null",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -438,21 +436,21 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skill_category": {
+    "public.skill_category": {
       "name": "skill_category",
       "schema": "",
       "columns": {
@@ -474,7 +472,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skill_missing": {
+    "public.skill_missing": {
       "name": "skill_missing",
       "schema": "",
       "columns": {
@@ -509,7 +507,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skill_subcategory": {
+    "public.skill_subcategory": {
       "name": "skill_subcategory",
       "schema": "",
       "columns": {
@@ -537,21 +535,21 @@
         "skill_subcategory_category_id_skill_category_id_fk": {
           "name": "skill_subcategory_category_id_skill_category_id_fk",
           "tableFrom": "skill_subcategory",
-          "tableTo": "skill_category",
           "columnsFrom": [
             "category_id"
           ],
+          "tableTo": "skill_category",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skill": {
+    "public.skill": {
       "name": "skill",
       "schema": "",
       "columns": {
@@ -627,34 +625,34 @@
         "skill_subcategory_id_skill_subcategory_id_fk": {
           "name": "skill_subcategory_id_skill_subcategory_id_fk",
           "tableFrom": "skill",
-          "tableTo": "skill_subcategory",
           "columnsFrom": [
             "subcategory_id"
           ],
+          "tableTo": "skill_subcategory",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "skill_type_id_skill_type_id_fk": {
           "name": "skill_type_id_skill_type_id_fk",
           "tableFrom": "skill",
-          "tableTo": "skill_type",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "skill_type",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skill_type": {
+    "public.skill_type": {
       "name": "skill_type",
       "schema": "",
       "columns": {
@@ -676,7 +674,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "skills_missing_tasks": {
+    "public.skills_missing_tasks": {
       "name": "skills_missing_tasks",
       "schema": "",
       "columns": {
@@ -698,28 +696,28 @@
         "skills_missing_tasks_skill_missing_id_skill_missing_id_fk": {
           "name": "skills_missing_tasks_skill_missing_id_skill_missing_id_fk",
           "tableFrom": "skills_missing_tasks",
-          "tableTo": "skill_missing",
           "columnsFrom": [
             "skill_missing_id"
           ],
+          "tableTo": "skill_missing",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "skills_missing_tasks_task_id_task_id_fk": {
           "name": "skills_missing_tasks_task_id_task_id_fk",
           "tableFrom": "skills_missing_tasks",
-          "tableTo": "task",
           "columnsFrom": [
             "task_id"
           ],
+          "tableTo": "task",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -733,7 +731,7 @@
       },
       "uniqueConstraints": {}
     },
-    "skills_tasks": {
+    "public.skills_tasks": {
       "name": "skills_tasks",
       "schema": "",
       "columns": {
@@ -755,28 +753,28 @@
         "skills_tasks_skill_id_skill_id_fk": {
           "name": "skills_tasks_skill_id_skill_id_fk",
           "tableFrom": "skills_tasks",
-          "tableTo": "skill",
           "columnsFrom": [
             "skill_id"
           ],
+          "tableTo": "skill",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "skills_tasks_task_id_task_id_fk": {
           "name": "skills_tasks_task_id_task_id_fk",
           "tableFrom": "skills_tasks",
-          "tableTo": "task",
           "columnsFrom": [
             "task_id"
           ],
+          "tableTo": "task",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -790,7 +788,7 @@
       },
       "uniqueConstraints": {}
     },
-    "task": {
+    "public.task": {
       "name": "task",
       "schema": "",
       "columns": {
@@ -830,21 +828,21 @@
         "task_job_id_job_id_fk": {
           "name": "task_job_id_job_id_fk",
           "tableFrom": "task",
-          "tableTo": "job",
           "columnsFrom": [
             "job_id"
           ],
+          "tableTo": "job",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -890,7 +888,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "verification_token": {
+    "public.verification_token": {
       "name": "verification_token",
       "schema": "",
       "columns": {
@@ -928,49 +926,53 @@
     }
   },
   "enums": {
-    "country": {
+    "public.country": {
       "name": "country",
-      "values": {
-        "de": "de"
-      }
+      "schema": "public",
+      "values": [
+        "de"
+      ]
     },
-    "job_source": {
+    "public.job_source": {
       "name": "job_source",
-      "values": {
-        "indeed": "indeed",
-        "stepstone": "stepstone",
-        "linkedin": "linkedin"
-      }
+      "schema": "public",
+      "values": [
+        "indeed",
+        "stepstone",
+        "linkedin"
+      ]
     },
-    "organization_type": {
+    "public.organization_type": {
       "name": "organization_type",
-      "values": {
-        "EU": "EU",
-        "GbR": "GbR",
-        "OHG": "OHG",
-        "KG": "KG",
-        "GmbH": "GmbH",
-        "UG": "UG",
-        "AG": "AG",
-        "eG": "eG",
-        "gAG": "gAG",
-        "gGmbH": "gGmbH",
-        "PartG": "PartG",
-        "KGaA": "KGaA",
-        "Verein": "Verein",
-        "GmbHCoKG": "GmbHCoKG",
-        "GmbHCoOHG": "GmbHCoOHG"
-      }
+      "schema": "public",
+      "values": [
+        "EU",
+        "GbR",
+        "OHG",
+        "KG",
+        "GmbH",
+        "UG",
+        "AG",
+        "eG",
+        "gAG",
+        "gGmbH",
+        "PartG",
+        "KGaA",
+        "Verein",
+        "GmbHCoKG",
+        "GmbHCoOHG"
+      ]
     },
-    "skill_level": {
+    "public.skill_level": {
       "name": "skill_level",
-      "values": {
-        "novice": "novice",
-        "advanced_beginner": "advanced_beginner",
-        "competent": "competent",
-        "proficient": "proficient",
-        "expert": "expert"
-      }
+      "schema": "public",
+      "values": [
+        "novice",
+        "advanced_beginner",
+        "competent",
+        "proficient",
+        "expert"
+      ]
     }
   },
   "schemas": {},
@@ -980,5 +982,8 @@
     "columns": {
       "\"organization\".\"name\"": "\"organization\".\"display_name\""
     }
-  }
+  },
+  "id": "0aefb512-5279-4ccd-b7e6-a142447f2b5b",
+  "prevId": "80809733-04c6-4c27-8885-6052c43477d8",
+  "sequences": {}
 }

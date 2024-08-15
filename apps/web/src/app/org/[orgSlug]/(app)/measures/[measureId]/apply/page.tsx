@@ -35,17 +35,17 @@ export default async function Page({
   const baseUrl = getBaseUrl();
 
   const {
-    userProfileTable,
-    measureTable,
+    coachTable,
+    individualEnrollmentTable,
     measureInfoTable,
     measureModuleTable,
-    moduleTable,
-    moduleInfoTable,
-    enrollmentTable,
-    meetingTable,
+    measureTable,
     meetingParticipantTable,
+    meetingTable,
+    moduleInfoTable,
+    moduleTable,
+    userProfileTable,
     userTable,
-    coachTable,
   } = mkOrgSchema(orgSlug);
 
   const profile = await db
@@ -95,20 +95,20 @@ export default async function Page({
 
   if (!coach) throw new Error("Coach not found");
 
-  const enrollment = await db
+  const individualEnrollment = await db
     .select()
-    .from(enrollmentTable)
+    .from(individualEnrollmentTable)
     .where(
       and(
-        eq(enrollmentTable.measure, measure.id),
-        eq(enrollmentTable.coachee, user.id)
+        eq(individualEnrollmentTable.measure, measure.id),
+        eq(individualEnrollmentTable.coachee, user.id)
       )
     )
     .then((rows) => rows[0] ?? null);
 
   const createEnrollmentWithSlug = createEnrollment.bind(null, orgSlug);
 
-  if (!enrollment)
+  if (!individualEnrollment)
     return (
       <Box marginY="medium">
         <EnrollmentApplication
@@ -120,11 +120,11 @@ export default async function Page({
       </Box>
     );
 
-  if (enrollment.status === "active")
+  if (individualEnrollment.status === "active")
     orgRedirect(`measures/${measureId}/meetings`);
 
-  if (enrollment.status === "pending") {
-    if (enrollment.roomName) {
+  if (individualEnrollment.status === "pending") {
+    if (individualEnrollment.roomName) {
       const now = new Date();
 
       const existingMeeting = await db

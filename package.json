@@ -31,8 +31,6 @@
   },
   "packageManager": "pnpm@7.15.0",
   "pnpm": {
-    "patchedDependencies": {
-      "drizzle-kit@0.20.6": "patches/drizzle-kit@0.20.6.patch"
-    }
+    "patchedDependencies": {}
   }
 }

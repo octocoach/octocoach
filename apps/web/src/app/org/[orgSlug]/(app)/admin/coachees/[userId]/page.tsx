@@ -14,7 +14,7 @@ export default async function Page({
 }) {
   const db = orgDb(orgSlug);
   const {
-    enrollmentTable,
+    individualEnrollmentTable,
     measureTable,
     measureInfoTable,
     userTable,
@@ -35,10 +35,13 @@ export default async function Page({
     .where(eq(userTable.id, userId))
     .then((rows) => getFirstRow(rows));
 
-  const enrollments = await db
+  const individualEnrollments = await db
     .select()
-    .from(enrollmentTable)
-    .innerJoin(measureTable, eq(measureTable.id, enrollmentTable.measure))
+    .from(individualEnrollmentTable)
+    .innerJoin(
+      measureTable,
+      eq(measureTable.id, individualEnrollmentTable.measure)
+    )
     .innerJoin(
       measureInfoTable,
       and(
@@ -46,7 +49,7 @@ export default async function Page({
         eq(measureInfoTable.locale, locale)
       )
     )
-    .where(eq(enrollmentTable.coachee, userId));
+    .where(eq(individualEnrollmentTable.coachee, userId));
 
   return (
     <Stack>
@@ -61,11 +64,16 @@ export default async function Page({
         Enrollments
       </Text>
       <Stack>
-        {enrollments.map(({ enrollment, measure_info, measure }) => (
-          <Link key={measure.id} href={`${thisPath}/enrollments/${measure.id}`}>
-            {measure_info.title} ({enrollment.status})
-          </Link>
-        ))}
+        {individualEnrollments.map(
+          ({ individual_enrollment, measure_info, measure }) => (
+            <Link
+              key={measure.id}
+              href={`${thisPath}/enrollments/${measure.id}`}
+            >
+              {measure_info.title} ({individual_enrollment.status})
+            </Link>
+          )
+        )}
       </Stack>
     </Stack>
   );

@@ -1,10 +1,8 @@
 {
-  "id": "37fcfc22-0b11-4b2a-aa2a-6cab59140d6d",
-  "prevId": "df536c58-9709-4a15-9f72-863679e7682a",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "org_{slug}.account": {
       "name": "account",
       "schema": "org_{slug}",
       "columns": {
@@ -80,16 +78,16 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -103,7 +101,7 @@
       },
       "uniqueConstraints": {}
     },
-    "coach": {
+    "org_{slug}.coach": {
       "name": "coach",
       "schema": "org_{slug}",
       "columns": {
@@ -119,22 +117,22 @@
         "coach_user_id_user_id_fk": {
           "name": "coach_user_id_user_id_fk",
           "tableFrom": "coach",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "content_locale": {
+    "org_{slug}.content_locale": {
       "name": "content_locale",
       "schema": "org_{slug}",
       "columns": {
@@ -162,16 +160,16 @@
         "content_locale_id_content_id_fk": {
           "name": "content_locale_id_content_id_fk",
           "tableFrom": "content_locale",
-          "schemaTo": "org_{slug}",
-          "tableTo": "content",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "content",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -185,7 +183,7 @@
       },
       "uniqueConstraints": {}
     },
-    "content": {
+    "org_{slug}.content": {
       "name": "content",
       "schema": "org_{slug}",
       "columns": {
@@ -201,7 +199,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "measure_info": {
+    "org_{slug}.measure_info": {
       "name": "measure_info",
       "schema": "org_{slug}",
       "columns": {
@@ -253,16 +251,16 @@
         "measure_info_id_measure_id_fk": {
           "name": "measure_info_id_measure_id_fk",
           "tableFrom": "measure_info",
-          "schemaTo": "org_{slug}",
-          "tableTo": "measure",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -277,14 +275,14 @@
       "uniqueConstraints": {
         "measure_info_slug_unique": {
           "name": "measure_info_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "measure_module": {
+    "org_{slug}.measure_module": {
       "name": "measure_module",
       "schema": "org_{slug}",
       "columns": {
@@ -312,30 +310,30 @@
         "measure_module_measure_measure_id_fk": {
           "name": "measure_module_measure_measure_id_fk",
           "tableFrom": "measure_module",
-          "schemaTo": "org_{slug}",
-          "tableTo": "measure",
           "columnsFrom": [
             "measure"
           ],
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "measure_module_module_module_id_fk": {
           "name": "measure_module_module_module_id_fk",
           "tableFrom": "measure_module",
-          "schemaTo": "org_{slug}",
-          "tableTo": "module",
           "columnsFrom": [
             "module"
           ],
+          "tableTo": "module",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {
@@ -350,14 +348,14 @@
       "uniqueConstraints": {
         "measure_module_order_unique": {
           "name": "measure_module_order_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "order"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "measure": {
+    "org_{slug}.measure": {
       "name": "measure",
       "schema": "org_{slug}",
       "columns": {
@@ -385,22 +383,22 @@
         "measure_owner_coach_user_id_fk": {
           "name": "measure_owner_coach_user_id_fk",
           "tableFrom": "measure",
-          "schemaTo": "org_{slug}",
-          "tableTo": "coach",
           "columnsFrom": [
             "owner"
           ],
+          "tableTo": "coach",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "user_id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "module_info": {
+    "org_{slug}.module_info": {
       "name": "module_info",
       "schema": "org_{slug}",
       "columns": {
@@ -440,16 +438,16 @@
         "module_info_id_module_id_fk": {
           "name": "module_info_id_module_id_fk",
           "tableFrom": "module_info",
-          "schemaTo": "org_{slug}",
-          "tableTo": "module",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "module",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -463,7 +461,7 @@
       },
       "uniqueConstraints": {}
     },
-    "module": {
+    "org_{slug}.module": {
       "name": "module",
       "schema": "org_{slug}",
       "columns": {
@@ -497,22 +495,22 @@
         "module_owner_coach_user_id_fk": {
           "name": "module_owner_coach_user_id_fk",
           "tableFrom": "module",
-          "schemaTo": "org_{slug}",
-          "tableTo": "coach",
           "columnsFrom": [
             "owner"
           ],
+          "tableTo": "coach",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "user_id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "org_{slug}.session": {
       "name": "session",
       "schema": "org_{slug}",
       "columns": {
@@ -540,22 +538,22 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user_profile": {
+    "org_{slug}.user_profile": {
       "name": "user_profile",
       "schema": "org_{slug}",
       "columns": {
@@ -607,22 +605,22 @@
         "user_profile_user_id_user_id_fk": {
           "name": "user_profile_user_id_user_id_fk",
           "tableFrom": "user_profile",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "org_{slug}.user": {
       "name": "user",
       "schema": "org_{slug}",
       "columns": {
@@ -668,7 +666,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users_skill_levels": {
+    "org_{slug}.users_skill_levels": {
       "name": "users_skill_levels",
       "schema": "org_{slug}",
       "columns": {
@@ -703,29 +701,29 @@
         "users_skill_levels_user_id_user_id_fk": {
           "name": "users_skill_levels_user_id_user_id_fk",
           "tableFrom": "users_skill_levels",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_skill_levels_skill_id_skill_id_fk": {
           "name": "users_skill_levels_skill_id_skill_id_fk",
           "tableFrom": "users_skill_levels",
-          "tableTo": "skill",
           "columnsFrom": [
             "skill_id"
           ],
+          "tableTo": "skill",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -739,7 +737,7 @@
       },
       "uniqueConstraints": {}
     },
-    "users_task_interest": {
+    "org_{slug}.users_task_interest": {
       "name": "users_task_interest",
       "schema": "org_{slug}",
       "columns": {
@@ -767,29 +765,29 @@
         "users_task_interest_user_id_user_id_fk": {
           "name": "users_task_interest_user_id_user_id_fk",
           "tableFrom": "users_task_interest",
-          "schemaTo": "org_{slug}",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_task_interest_task_id_task_id_fk": {
           "name": "users_task_interest_task_id_task_id_fk",
           "tableFrom": "users_task_interest",
-          "tableTo": "task",
           "columnsFrom": [
             "task_id"
           ],
+          "tableTo": "task",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -803,7 +801,7 @@
       },
       "uniqueConstraints": {}
     },
-    "verification_token": {
+    "org_{slug}.verification_token": {
       "name": "verification_token",
       "schema": "org_{slug}",
       "columns": {
@@ -841,12 +839,13 @@
     }
   },
   "enums": {
-    "locale": {
+    "public.locale": {
       "name": "locale",
-      "values": {
-        "en": "en",
-        "de": "de"
-      }
+      "schema": "public",
+      "values": [
+        "en",
+        "de"
+      ]
     }
   },
   "schemas": {
@@ -858,5 +857,8 @@
     "columns": {
       "\"org_{slug}\".\"measure_info\".\"image\"": "\"org_{slug}\".\"measure_info\".\"image_alt\""
     }
-  }
+  },
+  "id": "37fcfc22-0b11-4b2a-aa2a-6cab59140d6d",
+  "prevId": "df536c58-9709-4a15-9f72-863679e7682a",
+  "sequences": {}
 }

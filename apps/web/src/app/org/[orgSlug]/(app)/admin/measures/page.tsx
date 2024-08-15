@@ -7,7 +7,7 @@ import {
   mkMeasureInfoTable,
   mkMeasureTable,
 } from "@octocoach/db/schemas/org/measure";
-import { Card, Stack, Text } from "@octocoach/ui";
+import { Card, Stack, Tag, Text } from "@octocoach/ui";
 import Link from "next/link";
 
 import { saveMeasure } from "./actions";
@@ -37,7 +37,7 @@ export default async function Page({
       )
     );
 
-  const saveMeasureWithSlug = saveMeasure.bind("orgSlug", params.orgSlug);
+  const saveMeasureWithSlug = saveMeasure.bind(null, params.orgSlug);
 
   const baseUrl = getBaseUrl();
 
@@ -47,16 +47,19 @@ export default async function Page({
         Measures
       </Text>
       <Stack>
-        {measures.map(({ measure_info: { id, title, description } }) => (
-          <Link href={`${baseUrl}/admin/measures/${id}`} key={id}>
-            <Card>
-              <Text size="l" variation="casual">
-                {title}
-              </Text>
-              <Text>{description}</Text>
-            </Card>
-          </Link>
-        ))}
+        {measures.map(
+          ({ measure: { type }, measure_info: { id, title, description } }) => (
+            <Link href={`${baseUrl}/admin/measures/${id}`} key={id}>
+              <Card>
+                <Text size="l" variation="casual">
+                  {title}
+                </Text>
+                <Tag>{type}</Tag>
+                <Text>{description}</Text>
+              </Card>
+            </Link>
+          )
+        )}
       </Stack>
       <AddMeasure
         saveMeasureAction={saveMeasureWithSlug}

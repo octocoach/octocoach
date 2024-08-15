@@ -24,7 +24,7 @@ export const EditDomain = ({
     },
   });
 
-  const onSubmit = saveDomain.bind("slug", organization.slug);
+  const onSubmit = saveDomain.bind(null, organization.slug);
 
   const $ = store.names;
 

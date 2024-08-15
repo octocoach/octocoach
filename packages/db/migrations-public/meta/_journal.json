@@ -57,6 +57,13 @@
       "when": 1701957206814,
       "tag": "0007_tough_forge",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1723716361721,
+      "tag": "0008_same_eddie_brock",
+      "breakpoints": true
     }
   ]
 }

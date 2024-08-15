@@ -1,10 +1,8 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "aca30e33-e305-47da-bd15-bfe76ff37e13",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "org_{slug}.account": {
       "name": "account",
       "schema": "org_{slug}",
       "columns": {
@@ -80,16 +78,16 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -103,7 +101,7 @@
       },
       "uniqueConstraints": {}
     },
-    "coach": {
+    "org_{slug}.coach": {
       "name": "coach",
       "schema": "org_{slug}",
       "columns": {
@@ -119,22 +117,22 @@
         "coach_user_id_user_id_fk": {
           "name": "coach_user_id_user_id_fk",
           "tableFrom": "coach",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "content_locale": {
+    "org_{slug}.content_locale": {
       "name": "content_locale",
       "schema": "org_{slug}",
       "columns": {
@@ -162,16 +160,16 @@
         "content_locale_id_content_id_fk": {
           "name": "content_locale_id_content_id_fk",
           "tableFrom": "content_locale",
-          "tableTo": "content",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "content",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -185,7 +183,7 @@
       },
       "uniqueConstraints": {}
     },
-    "content": {
+    "org_{slug}.content": {
       "name": "content",
       "schema": "org_{slug}",
       "columns": {
@@ -201,7 +199,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "org_{slug}.session": {
       "name": "session",
       "schema": "org_{slug}",
       "columns": {
@@ -229,22 +227,22 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user_profile": {
+    "org_{slug}.user_profile": {
       "name": "user_profile",
       "schema": "org_{slug}",
       "columns": {
@@ -296,22 +294,22 @@
         "user_profile_user_id_user_id_fk": {
           "name": "user_profile_user_id_user_id_fk",
           "tableFrom": "user_profile",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "org_{slug}.user": {
       "name": "user",
       "schema": "org_{slug}",
       "columns": {
@@ -357,7 +355,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users_skill_levels": {
+    "org_{slug}.users_skill_levels": {
       "name": "users_skill_levels",
       "schema": "org_{slug}",
       "columns": {
@@ -392,29 +390,29 @@
         "users_skill_levels_user_id_user_id_fk": {
           "name": "users_skill_levels_user_id_user_id_fk",
           "tableFrom": "users_skill_levels",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_skill_levels_skill_id_skill_id_fk": {
           "name": "users_skill_levels_skill_id_skill_id_fk",
           "tableFrom": "users_skill_levels",
-          "tableTo": "skill",
           "columnsFrom": [
             "skill_id"
           ],
+          "tableTo": "skill",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -428,7 +426,7 @@
       },
       "uniqueConstraints": {}
     },
-    "users_task_interest": {
+    "org_{slug}.users_task_interest": {
       "name": "users_task_interest",
       "schema": "org_{slug}",
       "columns": {
@@ -456,29 +454,29 @@
         "users_task_interest_user_id_user_id_fk": {
           "name": "users_task_interest_user_id_user_id_fk",
           "tableFrom": "users_task_interest",
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_task_interest_task_id_task_id_fk": {
           "name": "users_task_interest_task_id_task_id_fk",
           "tableFrom": "users_task_interest",
-          "tableTo": "task",
           "columnsFrom": [
             "task_id"
           ],
+          "tableTo": "task",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -492,7 +490,7 @@
       },
       "uniqueConstraints": {}
     },
-    "verification_token": {
+    "org_{slug}.verification_token": {
       "name": "verification_token",
       "schema": "org_{slug}",
       "columns": {
@@ -530,12 +528,13 @@
     }
   },
   "enums": {
-    "locale": {
+    "public.locale": {
       "name": "locale",
-      "values": {
-        "en": "en",
-        "de": "de"
-      }
+      "schema": "public",
+      "values": [
+        "en",
+        "de"
+      ]
     }
   },
   "schemas": {
@@ -545,5 +544,8 @@
     "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "aca30e33-e305-47da-bd15-bfe76ff37e13",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "sequences": {}
 }

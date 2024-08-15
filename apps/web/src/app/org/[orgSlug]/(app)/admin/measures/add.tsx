@@ -20,6 +20,7 @@ export function AddMeasure({
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
     id: "",
+    type: "cohort",
     imageSrc: "",
     accredited: false,
   };

@@ -1,5 +1,6 @@
 "use client";
 
+import { safeParseInt } from "@helpers/index";
 import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
 import { ScreeningQuestion } from "@octocoach/db/schemas/org/measure";
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
@@ -110,7 +111,13 @@ export function EditMeasure({
     );
 
     startTransition(() => {
-      void saveMeasureAction({ measure, measureInfo }).then((result) => {
+      const duration = safeParseInt(measure.duration);
+      const maxParticipants = safeParseInt(measure.maxParticipants);
+
+      void saveMeasureAction({
+        measure: { ...measure, duration, maxParticipants },
+        measureInfo,
+      }).then((result) => {
         if (result.success === true) {
           store.reset();
           router.push(`/org/${orgSlug}/admin/measures/${measure.id}`);
@@ -192,6 +199,15 @@ export function EditMeasure({
             <SelectItem value="individual">Individual</SelectItem>
             <SelectItem value="cohort">Cohort</SelectItem>
           </FormSelect>
+        </FormField>
+        <FormField name={$.measure.duration} label="Duration (weeks)">
+          <FormInput name={$.measure.duration} type="number" />
+        </FormField>
+        <FormField name={$.measure.maxParticipants} label="Max Participants">
+          <FormInput name={$.measure.maxParticipants} type="number" />
+        </FormField>
+        <FormField name={$.measure.rate} label="Rate">
+          <FormInput name={$.measure.rate} type="number" />
         </FormField>
         <Upload
           onUploaded={(src) => store.setValue($.measure.imageSrc, src)}

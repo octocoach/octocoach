@@ -1,5 +1,6 @@
 "use client";
 
+import { safeParseInt } from "@helpers/index";
 import { dbLocales } from "@octocoach/db/schemas/data-types/locale";
 import type { ModuleContent } from "@octocoach/db/schemas/org/module";
 import { NewModuleInfo } from "@octocoach/db/schemas/org/module";
@@ -13,6 +14,8 @@ import {
   Form,
   FormField,
   FormInput,
+  FormSelect,
+  SelectItem,
   Stack,
   Text,
   useFormStore,
@@ -206,10 +209,7 @@ export function EditModule({
   const onSubmit = () => {
     startTransition(() => {
       const values = store.getState().values;
-      const units =
-        typeof values.module.units !== "number"
-          ? parseInt(values.module.units as unknown as string)
-          : values.module.units;
+      const units = safeParseInt(values.module.units);
       void saveModuleAction({
         ...values,
         module: { ...values.module, units },
@@ -255,6 +255,12 @@ export function EditModule({
           </FormField>
           <FormField name={$.module.units} label="Units">
             <FormInput name={$.module.units} type="number" />
+          </FormField>
+          <FormField name={$.module.type} label="Type">
+            <FormSelect name={$.module.type}>
+              <SelectItem value="occupational">Occupational</SelectItem>
+              <SelectItem value="general">General</SelectItem>
+            </FormSelect>
           </FormField>
         </Form>
 

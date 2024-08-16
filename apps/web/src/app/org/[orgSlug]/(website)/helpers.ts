@@ -129,6 +129,9 @@ export const getMeasuresWithInfo = async (slug: string) => {
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
       screeningQuestions: measureInfoTable.screeningQuestions,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
     })
     .from(measureTable)
     .innerJoin(
@@ -164,6 +167,9 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
       screeningQuestions: measureInfoTable.screeningQuestions,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(
@@ -239,6 +245,9 @@ export const getMeasureWithInfoAndModules = async (
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(

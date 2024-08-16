@@ -23,6 +23,9 @@ export function AddMeasure({
     type: "cohort",
     imageSrc: "",
     accredited: false,
+    duration: 0,
+    maxParticipants: 1,
+    rate: "0.00",
   };
 
   const blankMeasureInfo: MeasureInfoLocale = {

@@ -53,6 +53,7 @@ import {
   mkModuleInfoRelations,
   mkModuleInfoTable,
   mkModuleTable,
+  moduleTypeEnum,
 } from "./module";
 import { mkOrgSessionTable } from "./session";
 import { mkSkillRelations, skillTable } from "./skill";
@@ -131,6 +132,7 @@ export const mkOrgSchema = (slug: string) => ({
   measureRelations: mkMeasureRelations(slug),
   measureInfoTable: mkMeasureInfoTable(slug),
   measureInfoRelations: mkMeasureInfoRelations(slug),
+  moduleTypeEnum,
   moduleTable: mkModuleTable(slug),
   moduleRelations: mkMeasureRelations(slug),
   moduleInfoTable: mkModuleInfoTable(slug),

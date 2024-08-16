@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { boolean, json, primaryKey, text } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  json,
+  numeric,
+  primaryKey,
+  text,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -37,6 +44,9 @@ export const mkMeasureTable = (slug: string) => {
     imageSrc: text("image_src").notNull(),
     accredited: boolean("accredited").notNull().default(false),
     type: measureTypeEnum("type").notNull().default("cohort"),
+    duration: integer("duration").notNull().default(0),
+    maxParticipants: integer("max_participants").notNull().default(1),
+    rate: numeric("rate", { precision: 5, scale: 2 }).notNull().default("0.00"),
   });
 };
 

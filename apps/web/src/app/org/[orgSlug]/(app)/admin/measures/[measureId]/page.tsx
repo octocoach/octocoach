@@ -70,6 +70,7 @@ export default async function Page({
   const addedModules = await db
     .select({
       id: moduleTable.id,
+      type: moduleTable.type,
       title: moduleInfoTable.title,
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,
@@ -92,6 +93,7 @@ export default async function Page({
   const availableModules = await db
     .select({
       id: moduleTable.id,
+      type: moduleTable.type,
       title: moduleInfoTable.title,
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,

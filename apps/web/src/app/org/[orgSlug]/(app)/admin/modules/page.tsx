@@ -46,12 +46,14 @@ export default async function Page({
         {modules.map(
           ({
             module_info: { id, title, description, imageAlt },
-            module: { units, imageSrc },
+            module: { units, imageSrc, type },
           }) => (
             <Link href={`${baseUrl}/admin/modules/${id}`} key={id}>
               <Card>
                 <Image src={imageSrc} height={100} width={100} alt={imageAlt} />
-                <Text>{title}</Text>
+                <Text>
+                  {title} ({type})
+                </Text>
                 <Text>{description}</Text>
                 <Text>{units} units</Text>
               </Card>

@@ -31,6 +31,7 @@ export default async function Page({
       id: moduleTable.id,
       units: moduleTable.units,
       title: moduleInfoTable.title,
+      type: moduleTable.type,
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,
       imageAlt: moduleInfoTable.imageAlt,
@@ -52,6 +53,7 @@ export default async function Page({
   return (
     <Stack>
       <Text size="xl">{mod.title}</Text>
+      <Text size="l">{mod.type}</Text>
       <Image
         src={mod.imageSrc}
         height={200}

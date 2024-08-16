@@ -21,7 +21,7 @@ import { redirect } from "next/navigation";
 import { SafeParseSuccess, ZodError } from "zod";
 
 export type SaveModuleData = {
-  module: Omit<NewModule, "owner">;
+  module: Omit<Module, "owner">;
   moduleInfo: Record<Locales, Omit<NewModuleInfo, "locale" | "id">>;
 };
 

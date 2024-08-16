@@ -1,11 +1,11 @@
 "use client";
 
-import { ScreeningAnswers } from "@octocoach/db/schemas/org/enrollment";
 import {
   Measure,
   MeasureInfo,
   ScreeningQuestion,
 } from "@octocoach/db/schemas/org/measure";
+import { ScreeningAnswers } from "@octocoach/db/schemas/org/screening-questions";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
 import {

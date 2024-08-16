@@ -2,6 +2,7 @@ import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq, isNull } from "@octocoach/db/operators";
+import { mkCohortTable } from "@octocoach/db/schemas/org/cohort";
 import {
   mkMeasureInfoTable,
   mkMeasureTable,
@@ -15,10 +16,12 @@ import { ButtonLink, Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { deleteMeasure } from "../actions";
+import { deleteMeasureAction } from "../actions";
+import { createCohortAction, deleteCohortAction } from "./actions";
 import { AddModuleToMeasure } from "./add-module";
+import { CohortsComponent } from "./cohorts";
 import { Delete } from "./delete";
-import { ModulesCompoent } from "./modules";
+import { ModulesComponent } from "./modules";
 
 export default async function Page({
   params,
@@ -32,12 +35,14 @@ export default async function Page({
   const measureModuleTable = mkMeasureModuleTable(params.orgSlug);
   const moduleTable = mkModuleTable(params.orgSlug);
   const moduleInfoTable = mkModuleInfoTable(params.orgSlug);
+  const cohortTable = mkCohortTable(params.orgSlug);
 
   const locale = getLocale();
 
   const measure = await db
     .select({
       id: measureTable.id,
+      type: measureTable.type,
       title: measureInfoTable.title,
       description: measureInfoTable.description,
     })
@@ -54,9 +59,18 @@ export default async function Page({
 
   if (!measure) notFound();
 
+  const cohorts =
+    measure.type === "cohort"
+      ? await db
+          .select()
+          .from(cohortTable)
+          .where(eq(cohortTable.measure, params.measureId))
+      : null;
+
   const addedModules = await db
     .select({
       id: moduleTable.id,
+      type: moduleTable.type,
       title: moduleInfoTable.title,
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,
@@ -79,6 +93,7 @@ export default async function Page({
   const availableModules = await db
     .select({
       id: moduleTable.id,
+      type: moduleTable.type,
       title: moduleInfoTable.title,
       description: moduleInfoTable.description,
       imageSrc: moduleTable.imageSrc,
@@ -97,14 +112,27 @@ export default async function Page({
       )
     );
 
-  const deleteActionWithSlug = deleteMeasure.bind("orgSlug", params.orgSlug);
+  const deleteMeasureActionWithSlug = deleteMeasureAction.bind(
+    null,
+    params.orgSlug
+  );
+  const createCohortWithSlug = createCohortAction.bind(null, params.orgSlug);
+  const deleteCohortWithSlug = deleteCohortAction.bind(null, params.orgSlug);
 
   const baseUrl = getBaseUrl();
   return (
     <Stack>
       <Text size="l">{measure.title}</Text>
       <Text>{measure.description}</Text>
-      <ModulesCompoent
+      {cohorts && (
+        <CohortsComponent
+          cohorts={cohorts}
+          measureId={measure.id}
+          createAction={createCohortWithSlug}
+          deleteAction={deleteCohortWithSlug}
+        />
+      )}
+      <ModulesComponent
         measureId={measure.id}
         modules={addedModules}
         orgSlug={params.orgSlug}
@@ -121,7 +149,7 @@ export default async function Page({
         >
           Edit
         </ButtonLink>
-        <Delete deleteAction={deleteActionWithSlug} id={measure.id} />
+        <Delete deleteAction={deleteMeasureActionWithSlug} id={measure.id} />
       </Stack>
     </Stack>
   );

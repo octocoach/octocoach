@@ -4,7 +4,7 @@ import { authOrRedirect } from "@helpers/auth";
 import { Daily } from "@octocoach/daily";
 import { db as octoDb, orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
-import { Enrollment } from "@octocoach/db/schemas/org/enrollment";
+import { IndividualEnrollment } from "@octocoach/db/schemas/org/individual-enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
 import { Resend } from "resend";
@@ -13,14 +13,14 @@ import { EnrollmentTemplate } from "./email-templates";
 
 export const createRoom = async (
   orgSlug: string,
-  enrollment: Pick<Enrollment, "measure" | "coachee">
+  enrollment: Pick<IndividualEnrollment, "measure" | "coachee">
 ) => {
   const { user } = await authOrRedirect(orgSlug);
   const daily = new Daily();
   const roomName = daily.createRoomName();
   const db = orgDb(orgSlug);
   const {
-    enrollmentTable,
+    individualEnrollmentTable,
     measureTable,
     userProfileTable,
     userTable,
@@ -58,12 +58,12 @@ export const createRoom = async (
   });
 
   await db
-    .update(enrollmentTable)
+    .update(individualEnrollmentTable)
     .set({ roomName: room.name, coach: user.id })
     .where(
       and(
-        eq(enrollmentTable.measure, enrollment.measure),
-        eq(enrollmentTable.coachee, enrollment.coachee)
+        eq(individualEnrollmentTable.measure, enrollment.measure),
+        eq(individualEnrollmentTable.coachee, enrollment.coachee)
       )
     );
 

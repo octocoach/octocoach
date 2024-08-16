@@ -9,7 +9,7 @@ export const mkOrgAccountTable = (slug: string) =>
     "account",
     mkAccountCols(mkUserTable(slug)),
     (table) => ({
-      pk: primaryKey(table.provider, table.providerAccountId),
+      pk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
     })
   );
 

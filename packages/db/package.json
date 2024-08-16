@@ -4,8 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "generate": "drizzle-kit generate:pg",
-    "generate:org": "drizzle-kit generate:pg --config=./org.drizzle.config.ts",
+    "generate:public": "drizzle-kit generate",
+    "update:public": "drizzle-kit up",
+    "generate:org": "drizzle-kit generate --config=./org.drizzle.config.ts",
+    "update:org": "drizzle-kit up --config=./org.drizzle.config.ts",
     "migrate": "tsx -r dotenv/config ./migrate.ts",
     "seed": "tsx -r dotenv/config seed.ts",
     "read": "tsx -r dotenv/config src/read.ts",
@@ -18,11 +20,11 @@
     "test:connection": "tsx -r dotenv/config ./test-connection.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.6.0",
+    "@neondatabase/serverless": "^0.9.4",
     "@types/cli-progress": "^3.11.0",
-    "@vercel/postgres": "^0.5.1",
+    "@vercel/postgres": "^0.9.0",
     "cli-progress": "^3.12.0",
-    "drizzle-orm": "^0.29.1",
+    "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
     "langchain": "^0.0.180",
     "minimist": "^1.2.8",
@@ -44,7 +46,7 @@
     "@types/node": "^20.3.2",
     "@types/ws": "^8.5.10",
     "dotenv": "^16.0.3",
-    "drizzle-kit": "^0.20.6",
+    "drizzle-kit": "^0.24.0",
     "tsx": "^3.12.7",
     "typescript": "^5.4.5"
   },

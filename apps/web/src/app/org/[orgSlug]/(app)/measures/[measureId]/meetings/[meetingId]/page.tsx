@@ -19,7 +19,7 @@ export default async function Page({
   const {
     meetingTable,
     meetingParticipantTable,
-    enrollmentTable,
+    individualEnrollmentTable,
     userProfileTable,
   } = mkOrgSchema(orgSlug);
 
@@ -47,21 +47,21 @@ export default async function Page({
   if (meeting.role === "coachee") {
     roomName = await db
       .select({
-        roomName: enrollmentTable.roomName,
+        roomName: individualEnrollmentTable.roomName,
       })
-      .from(enrollmentTable)
-      .where(eq(enrollmentTable.coachee, user.id))
+      .from(individualEnrollmentTable)
+      .where(eq(individualEnrollmentTable.coachee, user.id))
       .then((rows) => getFirstRow(rows))
       .then(({ roomName }) => roomName);
   }
 
   if (meeting.role === "coach") {
     roomName = await db
-      .select({ roomName: enrollmentTable.roomName })
+      .select({ roomName: individualEnrollmentTable.roomName })
       .from(meetingParticipantTable)
       .innerJoin(
-        enrollmentTable,
-        eq(meetingParticipantTable.user, enrollmentTable.coachee)
+        individualEnrollmentTable,
+        eq(meetingParticipantTable.user, individualEnrollmentTable.coachee)
       )
       .where(
         and(

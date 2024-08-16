@@ -11,7 +11,7 @@ import { Card, Stack, Text } from "@octocoach/ui";
 import Image from "next/image";
 import Link from "next/link";
 
-import { saveModule } from "./actions";
+import { saveModuleAction } from "./actions";
 import { AddModule } from "./add";
 
 export default async function Page({
@@ -38,8 +38,6 @@ export default async function Page({
       )
     );
 
-  const saveModuleWithSlug = saveModule.bind("orgSlug", params.orgSlug);
-
   const baseUrl = getBaseUrl();
   return (
     <Stack>
@@ -48,12 +46,14 @@ export default async function Page({
         {modules.map(
           ({
             module_info: { id, title, description, imageAlt },
-            module: { units, imageSrc },
+            module: { units, imageSrc, type },
           }) => (
             <Link href={`${baseUrl}/admin/modules/${id}`} key={id}>
               <Card>
                 <Image src={imageSrc} height={100} width={100} alt={imageAlt} />
-                <Text>{title}</Text>
+                <Text>
+                  {title} ({type})
+                </Text>
                 <Text>{description}</Text>
                 <Text>{units} units</Text>
               </Card>
@@ -62,7 +62,7 @@ export default async function Page({
         )}
       </Stack>
       <AddModule
-        saveModuleAction={saveModuleWithSlug}
+        saveModuleAction={saveModuleAction.bind(null, params.orgSlug)}
         orgSlug={params.orgSlug}
       />
     </Stack>

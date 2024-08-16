@@ -14,7 +14,7 @@ export default async function Page({
 }) {
   const db = orgDb(orgSlug);
   const {
-    enrollmentTable,
+    individualEnrollmentTable,
     userTable,
     userProfileTable,
     measureTable,
@@ -23,22 +23,25 @@ export default async function Page({
 
   const locale = getLocale();
 
-  const enrollments = await db
+  const individualEnrollments = await db
     .select({
-      measure: enrollmentTable.measure,
-      coachee: enrollmentTable.coachee,
-      screeningAnswers: enrollmentTable.screeningAnswers,
+      measure: individualEnrollmentTable.measure,
+      coachee: individualEnrollmentTable.coachee,
+      screeningAnswers: individualEnrollmentTable.screeningAnswers,
       firstName: userProfileTable.firstName,
       lastName: userProfileTable.lastName,
       title: measureInfoTable.title,
-      status: enrollmentTable.status,
-      startDate: enrollmentTable.startDate,
-      roomName: enrollmentTable.roomName,
+      status: individualEnrollmentTable.status,
+      startDate: individualEnrollmentTable.startDate,
+      roomName: individualEnrollmentTable.roomName,
     })
-    .from(enrollmentTable)
-    .innerJoin(userTable, eq(enrollmentTable.coachee, userTable.id))
+    .from(individualEnrollmentTable)
+    .innerJoin(userTable, eq(individualEnrollmentTable.coachee, userTable.id))
     .innerJoin(userProfileTable, eq(userProfileTable.userId, userTable.id))
-    .innerJoin(measureTable, eq(measureTable.id, enrollmentTable.measure))
+    .innerJoin(
+      measureTable,
+      eq(measureTable.id, individualEnrollmentTable.measure)
+    )
     .innerJoin(
       measureInfoTable,
       and(
@@ -51,7 +54,7 @@ export default async function Page({
 
   return (
     <Stack>
-      {enrollments.map((enrollment) => (
+      {individualEnrollments.map((enrollment) => (
         <EnrollmentRow
           key={`${enrollment.measure}.${enrollment.coachee}`}
           enrollment={enrollment}

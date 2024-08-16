@@ -1,11 +1,20 @@
 import { relations } from "drizzle-orm";
-import { boolean, json, primaryKey, text } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  json,
+  numeric,
+  primaryKey,
+  text,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
+import { measureTypeEnum } from "../data-types/measure";
 import { mkCoachTable } from "./coach";
+import { mkCohortTable } from "./cohort";
 import { mkMeasureModuleTable } from "./measure-module";
 import { ModuleWithInfo } from "./module";
 
@@ -34,6 +43,10 @@ export const mkMeasureTable = (slug: string) => {
       }),
     imageSrc: text("image_src").notNull(),
     accredited: boolean("accredited").notNull().default(false),
+    type: measureTypeEnum("type").notNull().default("cohort"),
+    duration: integer("duration").notNull().default(0),
+    maxParticipants: integer("max_participants").notNull().default(1),
+    rate: numeric("rate", { precision: 5, scale: 2 }).notNull().default("0.00"),
   });
 };
 
@@ -98,12 +111,14 @@ export const mkMeasureInfoTable = (slug: string) => {
 export const mkMeasureInfoRelations = (slug: string) => {
   const measureTable = mkMeasureTable(slug);
   const measureInfo = mkMeasureInfoTable(slug);
+  const cohortTable = mkCohortTable(slug);
 
-  return relations(measureInfo, ({ one }) => ({
+  return relations(measureInfo, ({ one, many }) => ({
     measure: one(measureTable, {
       fields: [measureInfo.id],
       references: [measureTable.id],
     }),
+    cohorts: many(cohortTable),
   }));
 };
 

@@ -15,17 +15,20 @@ export default async function Page({
   const locale = getLocale();
 
   const db = orgDb(orgSlug);
-  const { enrollmentTable, measureTable, measureInfoTable } =
+  const { individualEnrollmentTable, measureTable, measureInfoTable } =
     mkOrgSchema(orgSlug);
 
-  const enrollment = await db
+  const individualEnrollment = await db
     .select({
-      status: enrollmentTable.status,
+      status: individualEnrollmentTable.status,
       title: measureInfoTable.title,
-      roomName: enrollmentTable.roomName,
+      roomName: individualEnrollmentTable.roomName,
     })
-    .from(enrollmentTable)
-    .innerJoin(measureTable, eq(measureTable.id, enrollmentTable.measure))
+    .from(individualEnrollmentTable)
+    .innerJoin(
+      measureTable,
+      eq(measureTable.id, individualEnrollmentTable.measure)
+    )
     .innerJoin(
       measureInfoTable,
       and(
@@ -35,19 +38,19 @@ export default async function Page({
     )
     .where(
       and(
-        eq(enrollmentTable.coachee, userId),
-        eq(enrollmentTable.measure, measureId)
+        eq(individualEnrollmentTable.coachee, userId),
+        eq(individualEnrollmentTable.measure, measureId)
       )
     )
     .then((rows) => getFirstRow(rows));
 
   return (
     <Box>
-      <Text size="l">{enrollment.title}</Text>
-      <Text>Status: {enrollment.status}</Text>
-      {enrollment.roomName && (
+      <Text size="l">{individualEnrollment.title}</Text>
+      <Text>Status: {individualEnrollment.status}</Text>
+      {individualEnrollment.roomName && (
         <Meetings
-          roomName={enrollment.roomName}
+          roomName={individualEnrollment.roomName}
           userId={userId}
           measureId={measureId}
         />

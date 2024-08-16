@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, jsonb, primaryKey, text } from "drizzle-orm/pg-core";
+import { integer, jsonb, pgEnum, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -20,6 +20,11 @@ export type ModuleWithInfo = Omit<Module & ModuleInfo, "locale">;
 
 export type ModuleContent = z.infer<typeof moduleContentSchema>;
 
+export const moduleTypeEnum = pgEnum("module_type", [
+  "occupational",
+  "general",
+]);
+
 export const mkModuleTable = (slug: string) => {
   const coachTable = mkCoachTable(slug);
 
@@ -31,6 +36,7 @@ export const mkModuleTable = (slug: string) => {
         onDelete: "restrict",
         onUpdate: "cascade",
       }),
+    type: moduleTypeEnum("type").notNull().default("occupational"),
     units: integer("units").notNull(),
     imageSrc: text("image_src").notNull(),
   });

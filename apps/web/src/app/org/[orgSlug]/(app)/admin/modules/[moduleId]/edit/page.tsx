@@ -3,7 +3,7 @@ import { Module } from "@octocoach/db/schemas/org/module";
 import { fromEntries } from "@octocoach/tshelpers";
 import { notFound } from "next/navigation";
 
-import { redirectToModule, saveModule } from "../../actions";
+import { saveModuleAction } from "../../actions";
 import { EditModule } from "../../edit";
 
 export default async function Page({
@@ -27,17 +27,12 @@ export default async function Page({
     moduleInfo.map(({ locale, ...info }) => [locale, info])
   );
 
-  const saveModuleWithSlug = saveModule.bind(null, orgSlug);
-
-  const onDone = redirectToModule.bind(null, mod.id);
-
   return (
     <EditModule
       module={mod}
       moduleInfo={info}
       orgSlug={orgSlug}
-      saveModuleAction={saveModuleWithSlug}
-      onDoneAction={onDone}
+      saveModuleAction={saveModuleAction.bind(null, orgSlug)}
     />
   );
 }

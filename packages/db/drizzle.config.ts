@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import type { Config } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit";
 
 const host = process.env.POSTGRES_HOST;
 const port = process.env.POSTGRES_PORT;
@@ -13,10 +13,10 @@ if (!host || !port || !user || !password || !database) {
   throw new Error("POSTGRES vars is not set");
 }
 
-export default {
+export default defineConfig({
   schema: "./schemas/public/schema.ts",
   out: "./migrations-public",
-  driver: "pg",
+  dialect: "postgresql",
   dbCredentials: {
     database,
     host,
@@ -25,4 +25,4 @@ export default {
     password,
     ssl,
   },
-} satisfies Config;
+});

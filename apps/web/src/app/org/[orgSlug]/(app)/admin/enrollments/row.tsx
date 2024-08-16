@@ -1,7 +1,7 @@
 "use client";
 
 import { Room } from "@octocoach/daily/types";
-import { ScreeningAnswers } from "@octocoach/db/schemas/org/enrollment";
+import { ScreeningAnswers } from "@octocoach/db/schemas/org/screening-questions";
 import { Box, Button, Card, Markdown, Stack, Tag, Text } from "@octocoach/ui";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -17,6 +17,7 @@ type Enrollment = {
     | "active"
     | "pending"
     | "declined"
+    | "rejected"
     | "completed"
     | "dropped-out";
   startDate: Date | null;

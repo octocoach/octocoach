@@ -120,6 +120,7 @@ export const getMeasuresWithInfo = async (slug: string) => {
   return await db
     .select({
       id: measureTable.id,
+      type: measureTable.type,
       title: measureInfoTable.title,
       accredited: measureTable.accredited,
       description: measureInfoTable.description,
@@ -128,6 +129,9 @@ export const getMeasuresWithInfo = async (slug: string) => {
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
       screeningQuestions: measureInfoTable.screeningQuestions,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
     })
     .from(measureTable)
     .innerJoin(
@@ -154,6 +158,7 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
   return await db
     .select({
       id: measureTable.id,
+      type: measureTable.type,
       title: measureInfoTable.title,
       accredited: measureTable.accredited,
       description: measureInfoTable.description,
@@ -162,6 +167,9 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
       screeningQuestions: measureInfoTable.screeningQuestions,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(
@@ -230,12 +238,16 @@ export const getMeasureWithInfoAndModules = async (
     .select({
       id: measureTable.id,
       title: measureInfoTable.title,
+      type: measureTable.type,
       accredited: measureTable.accredited,
       description: measureInfoTable.description,
       imageSrc: measureTable.imageSrc,
       imageAlt: measureInfoTable.imageAlt,
       owner: measureTable.owner,
       requirements: measureInfoTable.requirements,
+      duration: measureTable.duration,
+      maxParticipants: measureTable.maxParticipants,
+      rate: measureTable.rate,
       modules: sql<ModuleWithInfo[]>`
       json_agg(
         json_build_object(

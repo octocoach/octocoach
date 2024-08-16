@@ -5,14 +5,14 @@ import { getFreeBusy } from "@helpers/calendars/google";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, lt } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
-import { NewEnrollment } from "@octocoach/db/schemas/org/enrollment";
+import { NewIndividualEnrollment } from "@octocoach/db/schemas/org/individual-enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { addHours, endOfDay, Interval, startOfDay } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
 export type CreateEnrollmentParams = Pick<
-  NewEnrollment,
+  NewIndividualEnrollment,
   "measure" | "screeningAnswers"
 >;
 
@@ -23,7 +23,8 @@ export const createEnrollment = async (
   const db = orgDb(orgSlug);
 
   const { user } = await authOrRedirect(orgSlug);
-  const { enrollmentTable, measureTable, userTable } = mkOrgSchema(orgSlug);
+  const { individualEnrollmentTable, measureTable, userTable } =
+    mkOrgSchema(orgSlug);
 
   const ownerEmail = await db
     .select({ email: userTable.email })
@@ -32,7 +33,9 @@ export const createEnrollment = async (
     .where(eq(measureTable.id, enrollment.measure))
     .then((rows) => rows[0]?.email ?? null);
 
-  await db.insert(enrollmentTable).values({ ...enrollment, coachee: user.id });
+  await db
+    .insert(individualEnrollmentTable)
+    .values({ ...enrollment, coachee: user.id });
 
   if (ownerEmail && user.email) {
     const key = process.env.RESEND_KEY;

@@ -2,7 +2,6 @@
 
 import { authOrRedirect } from "@helpers/auth";
 import { serialize } from "@helpers/index";
-import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
@@ -26,9 +25,9 @@ export type SaveMeasureData = {
   measureInfo: Record<Locales, Omit<NewMeasureInfo, "locale" | "id">>;
 };
 
-export type SaveMeasureRetype = ReturnType<typeof saveMeasure>;
+export type SaveMeasureRetype = ReturnType<typeof saveMeasureAction>;
 
-export const saveMeasure = async (
+export const saveMeasureAction = async (
   orgSlug: Organization["slug"],
   data: SaveMeasureData
 ) => {
@@ -112,7 +111,7 @@ export const saveMeasure = async (
   return { success: true };
 };
 
-export const deleteMeasure = async (
+export const deleteMeasureAction = async (
   orgSlug: Organization["slug"],
   id: Measure["id"]
 ) => {
@@ -140,8 +139,4 @@ export const deleteMeasure = async (
   await db.delete(measureTable).where(eq(measureTable.id, id));
 
   redirect(`/org/${orgSlug}/admin/measures`);
-};
-
-export const redirectToMeasure = (id: Measure["id"]) => {
-  orgRedirect(`/admin/measures/${id}`);
 };

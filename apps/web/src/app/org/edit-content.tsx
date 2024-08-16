@@ -24,7 +24,7 @@ export const EditContent = ({
   content: ContentLocale[];
   slug: string;
 }) => {
-  const saveContentWithSlug = saveContent.bind("data", slug);
+  const saveContentWithSlug = saveContent.bind(null, slug);
 
   return (
     <Container>

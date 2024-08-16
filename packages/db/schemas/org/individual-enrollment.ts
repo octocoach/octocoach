@@ -1,37 +1,26 @@
 import { date, json, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
-import { z } from "zod";
 
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { enrollmentStatusEnum } from "../data-types/enrollment";
-import { dbLocales } from "../data-types/locale";
 import { mkCoachTable } from "./coach";
 import { mkMeasureTable } from "./measure";
+import { ScreeningAnswers } from "./screening-questions";
 import { mkUserTable } from "./user";
 
-export type ScreeningAnswers = z.infer<typeof screeningAnswersSchema>;
-
-export const screeningAnswersSchema = z.object({
-  locale: z.enum(dbLocales),
-  questions: z.array(
-    z.object({
-      question: z.string(),
-      answer: z.string().or(z.array(z.string())),
-    })
-  ),
-});
-
-export type Enrollment = ReturnType<typeof mkEnrollmentTable>["$inferSelect"];
-export type NewEnrollment = ReturnType<
-  typeof mkEnrollmentTable
+export type IndividualEnrollment = ReturnType<
+  typeof mkIndividualEnrollmentTable
+>["$inferSelect"];
+export type NewIndividualEnrollment = ReturnType<
+  typeof mkIndividualEnrollmentTable
 >["$inferInsert"];
 
-export const mkEnrollmentTable = (slug: string) => {
+export const mkIndividualEnrollmentTable = (slug: string) => {
   const measureTable = mkMeasureTable(slug);
   const userTable = mkUserTable(slug);
   const coachTable = mkCoachTable(slug);
 
   return mkOrgPgSchema(slug).table(
-    "enrollment",
+    "individual_enrollment",
     {
       measure: text("measure")
         .notNull()

@@ -2,7 +2,7 @@ import { orgDb } from "@octocoach/db/connection";
 import { fromEntries } from "@octocoach/tshelpers";
 import { notFound } from "next/navigation";
 
-import { redirectToMeasure, saveMeasure } from "../../actions";
+import { saveMeasureAction } from "../../actions";
 import { EditMeasure } from "../../edit";
 
 export default async function Page({
@@ -26,17 +26,12 @@ export default async function Page({
     measureInfo.map(({ locale, ...info }) => [locale, { ...info }])
   );
 
-  const saveMeasureWithSlug = saveMeasure.bind("orgSlug", params.orgSlug);
-
-  const onDone = redirectToMeasure.bind(null, measure.id);
-
   return (
     <EditMeasure
       measure={measure}
       measureInfo={info}
       orgSlug={params.orgSlug}
-      saveMeasureAction={saveMeasureWithSlug}
-      onDoneAction={onDone}
+      saveMeasureAction={saveMeasureAction.bind(null, params.orgSlug)}
     />
   );
 }

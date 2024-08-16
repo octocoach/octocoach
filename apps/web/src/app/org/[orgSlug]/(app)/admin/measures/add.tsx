@@ -20,8 +20,12 @@ export function AddMeasure({
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
     id: "",
+    type: "cohort",
     imageSrc: "",
     accredited: false,
+    duration: 0,
+    maxParticipants: 1,
+    rate: "0.00",
   };
 
   const blankMeasureInfo: MeasureInfoLocale = {
@@ -42,17 +46,12 @@ export function AddMeasure({
     return <Button onClick={() => setShow(true)}>Add a Measure</Button>;
   }
 
-  const onDone = () => {
-    setShow(false);
-  };
-
   return (
     <EditMeasure
       orgSlug={orgSlug}
       saveMeasureAction={saveMeasureAction}
       measure={blankMeasure}
       measureInfo={defaultValuesMeasureInfo}
-      onDoneAction={onDone}
     />
   );
 }

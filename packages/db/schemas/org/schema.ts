@@ -25,6 +25,7 @@ import {
 import { skillsTasksRelations, skillsTasksTable } from "../common/skills-tasks";
 import { enrollmentStatusEnum } from "../data-types/enrollment";
 import { localeEnum } from "../data-types/locale";
+import { measureTypeEnum } from "../data-types/measure";
 import {
   meetingAttendanceEnum,
   meetingRoleEnum,
@@ -32,8 +33,10 @@ import {
 } from "../data-types/meeting";
 import { mkOrgAccountTable } from "./account";
 import { mkCoachTable, mkCoachTableRelations } from "./coach";
+import { mkCohortRelations, mkCohortTable } from "./cohort";
+import { mkCohortEnrollmentTable } from "./cohort-enrollment";
 import { mkContentLocaleTable, mkContentTable } from "./content";
-import { mkEnrollmentTable } from "./enrollment";
+import { mkIndividualEnrollmentTable } from "./individual-enrollment";
 import {
   mkMeasureInfoRelations,
   mkMeasureInfoTable,
@@ -50,6 +53,7 @@ import {
   mkModuleInfoRelations,
   mkModuleInfoTable,
   mkModuleTable,
+  moduleTypeEnum,
 } from "./module";
 import { mkOrgSessionTable } from "./session";
 import { mkSkillRelations, skillTable } from "./skill";
@@ -124,17 +128,22 @@ export const mkOrgSchema = (slug: string) => ({
   contentLocaleTable: mkContentLocaleTable(slug),
 
   measureTable: mkMeasureTable(slug),
+  measureTypeEnum,
   measureRelations: mkMeasureRelations(slug),
   measureInfoTable: mkMeasureInfoTable(slug),
   measureInfoRelations: mkMeasureInfoRelations(slug),
+  moduleTypeEnum,
   moduleTable: mkModuleTable(slug),
   moduleRelations: mkMeasureRelations(slug),
   moduleInfoTable: mkModuleInfoTable(slug),
   moduleInfoRelations: mkModuleInfoRelations(slug),
   measureModuleTable: mkMeasureModuleTable(slug),
   measureModuleRelations: mkMeasureModuleRelations(slug),
-  enrollmentTable: mkEnrollmentTable(slug),
   enrollmentStatusEnum,
+  cohortTable: mkCohortTable(slug),
+  cohortRelations: mkCohortRelations(slug),
+  cohortEnrollmentTable: mkCohortEnrollmentTable(slug),
+  individualEnrollmentTable: mkIndividualEnrollmentTable(slug),
 
   // meeting
   meetingAttendanceEnum,

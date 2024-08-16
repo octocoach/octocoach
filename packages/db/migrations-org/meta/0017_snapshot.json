@@ -1,4 +1,6 @@
 {
+  "id": "385e8ea5-c476-4dd5-8422-59e937c15588",
+  "prevId": "c38dded2-879f-4bbf-b274-815da4a1a464",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -78,16 +80,16 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -123,6 +125,12 @@
           "type": "json",
           "primaryKey": false,
           "notNull": false
+        },
+        "external_calendars": {
+          "name": "external_calendars",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -130,16 +138,152 @@
         "coach_user_id_user_id_fk": {
           "name": "coach_user_id_user_id_fk",
           "tableFrom": "coach",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "org_{slug}.cohort_enrollment": {
+      "name": "cohort_enrollment",
+      "schema": "org_{slug}",
+      "columns": {
+        "cohort": {
+          "name": "cohort",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "enrollment_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "comments": {
+          "name": "comments",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "screening_answers": {
+          "name": "screening_answers",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cohort_enrollment_cohort_cohort_id_fk": {
+          "name": "cohort_enrollment_cohort_cohort_id_fk",
+          "tableFrom": "cohort_enrollment",
+          "tableTo": "cohort",
+          "schemaTo": "org_{slug}",
+          "columnsFrom": [
+            "cohort"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "cohort_enrollment_user_user_id_fk": {
+          "name": "cohort_enrollment_user_user_id_fk",
+          "tableFrom": "cohort_enrollment",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
+          "columnsFrom": [
+            "user"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "cohort_enrollment_cohort_user_pk": {
+          "name": "cohort_enrollment_cohort_user_pk",
+          "columns": [
+            "cohort",
+            "user"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "org_{slug}.cohort": {
+      "name": "cohort",
+      "schema": "org_{slug}",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "measure": {
+          "name": "measure",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cohort_measure_measure_id_fk": {
+          "name": "cohort_measure_measure_id_fk",
+          "tableFrom": "cohort",
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
+          "columnsFrom": [
+            "measure"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -158,6 +302,7 @@
         "locale": {
           "name": "locale",
           "type": "locale",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -173,16 +318,16 @@
         "content_locale_id_content_id_fk": {
           "name": "content_locale_id_content_id_fk",
           "tableFrom": "content_locale",
+          "tableTo": "content",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "id"
           ],
-          "tableTo": "content",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -212,8 +357,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "org_{slug}.enrollment": {
-      "name": "enrollment",
+    "org_{slug}.individual_enrollment": {
+      "name": "individual_enrollment",
       "schema": "org_{slug}",
       "columns": {
         "measure": {
@@ -237,6 +382,7 @@
         "status": {
           "name": "status",
           "type": "enrollment_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'pending'"
@@ -288,52 +434,52 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "enrollment_measure_measure_id_fk": {
-          "name": "enrollment_measure_measure_id_fk",
-          "tableFrom": "enrollment",
+        "individual_enrollment_measure_measure_id_fk": {
+          "name": "individual_enrollment_measure_measure_id_fk",
+          "tableFrom": "individual_enrollment",
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "measure"
           ],
-          "tableTo": "measure",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         },
-        "enrollment_coachee_user_id_fk": {
-          "name": "enrollment_coachee_user_id_fk",
-          "tableFrom": "enrollment",
+        "individual_enrollment_coachee_user_id_fk": {
+          "name": "individual_enrollment_coachee_user_id_fk",
+          "tableFrom": "individual_enrollment",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "coachee"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         },
-        "enrollment_coach_coach_user_id_fk": {
-          "name": "enrollment_coach_coach_user_id_fk",
-          "tableFrom": "enrollment",
+        "individual_enrollment_coach_coach_user_id_fk": {
+          "name": "individual_enrollment_coach_coach_user_id_fk",
+          "tableFrom": "individual_enrollment",
+          "tableTo": "coach",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "coach"
           ],
-          "tableTo": "coach",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "user_id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
-        "enrollment_measure_coachee_pk": {
-          "name": "enrollment_measure_coachee_pk",
+        "individual_enrollment_measure_coachee_pk": {
+          "name": "individual_enrollment_measure_coachee_pk",
           "columns": [
             "measure",
             "coachee"
@@ -355,6 +501,7 @@
         "locale": {
           "name": "locale",
           "type": "locale",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -394,16 +541,16 @@
         "measure_info_id_measure_id_fk": {
           "name": "measure_info_id_measure_id_fk",
           "tableFrom": "measure_info",
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "id"
           ],
-          "tableTo": "measure",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -445,30 +592,30 @@
         "measure_module_measure_measure_id_fk": {
           "name": "measure_module_measure_measure_id_fk",
           "tableFrom": "measure_module",
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "measure"
           ],
-          "tableTo": "measure",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         },
         "measure_module_module_module_id_fk": {
           "name": "measure_module_module_module_id_fk",
           "tableFrom": "measure_module",
+          "tableTo": "module",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "module"
           ],
-          "tableTo": "module",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -481,12 +628,13 @@
         }
       },
       "uniqueConstraints": {
-        "measure_module_order_unique": {
-          "name": "measure_module_order_unique",
+        "measure_module_measure_order_unique": {
+          "name": "measure_module_measure_order_unique",
+          "nullsNotDistinct": false,
           "columns": [
+            "measure",
             "order"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       }
     },
@@ -511,6 +659,42 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "accredited": {
+          "name": "accredited",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "type": {
+          "name": "type",
+          "type": "measure_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'cohort'"
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "max_participants": {
+          "name": "max_participants",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "rate": {
+          "name": "rate",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0.00'"
         }
       },
       "indexes": {},
@@ -518,16 +702,16 @@
         "measure_owner_coach_user_id_fk": {
           "name": "measure_owner_coach_user_id_fk",
           "tableFrom": "measure",
+          "tableTo": "coach",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "owner"
           ],
-          "tableTo": "coach",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "user_id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -552,6 +736,7 @@
         "role": {
           "name": "role",
           "type": "meeting_role",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'coachee'"
@@ -566,6 +751,7 @@
         "attendance": {
           "name": "attendance",
           "type": "meeting_attendance",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -595,30 +781,30 @@
         "meeting_participant_meeting_meeting_id_fk": {
           "name": "meeting_participant_meeting_meeting_id_fk",
           "tableFrom": "meeting_participant",
+          "tableTo": "meeting",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "meeting"
           ],
-          "tableTo": "meeting",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         },
         "meeting_participant_user_user_id_fk": {
           "name": "meeting_participant_user_user_id_fk",
           "tableFrom": "meeting_participant",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -651,6 +837,7 @@
         "type": {
           "name": "type",
           "type": "meeting_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -672,16 +859,16 @@
         "meeting_measure_measure_id_fk": {
           "name": "meeting_measure_measure_id_fk",
           "tableFrom": "meeting",
+          "tableTo": "measure",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "measure"
           ],
-          "tableTo": "measure",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -700,6 +887,7 @@
         "locale": {
           "name": "locale",
           "type": "locale",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -720,6 +908,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -727,16 +921,16 @@
         "module_info_id_module_id_fk": {
           "name": "module_info_id_module_id_fk",
           "tableFrom": "module_info",
+          "tableTo": "module",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "id"
           ],
-          "tableTo": "module",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -766,6 +960,14 @@
           "primaryKey": false,
           "notNull": true
         },
+        "type": {
+          "name": "type",
+          "type": "module_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'occupational'"
+        },
         "units": {
           "name": "units",
           "type": "integer",
@@ -784,16 +986,16 @@
         "module_owner_coach_user_id_fk": {
           "name": "module_owner_coach_user_id_fk",
           "tableFrom": "module",
+          "tableTo": "coach",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "owner"
           ],
-          "tableTo": "coach",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "user_id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -827,16 +1029,16 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -900,16 +1102,16 @@
         "user_profile_user_id_user_id_fk": {
           "name": "user_profile_user_id_user_id_fk",
           "tableFrom": "user_profile",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -980,6 +1182,7 @@
         "skill_level": {
           "name": "skill_level",
           "type": "skill_level",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -996,29 +1199,29 @@
         "users_skill_levels_user_id_user_id_fk": {
           "name": "users_skill_levels_user_id_user_id_fk",
           "tableFrom": "users_skill_levels",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "users_skill_levels_skill_id_skill_id_fk": {
           "name": "users_skill_levels_skill_id_skill_id_fk",
           "tableFrom": "users_skill_levels",
+          "tableTo": "skill",
           "columnsFrom": [
             "skill_id"
           ],
-          "tableTo": "skill",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -1060,29 +1263,29 @@
         "users_task_interest_user_id_user_id_fk": {
           "name": "users_task_interest_user_id_user_id_fk",
           "tableFrom": "users_task_interest",
+          "tableTo": "user",
+          "schemaTo": "org_{slug}",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "org_{slug}",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "users_task_interest_task_id_task_id_fk": {
           "name": "users_task_interest_task_id_task_id_fk",
           "tableFrom": "users_task_interest",
+          "tableTo": "task",
           "columnsFrom": [
             "task_id"
           ],
-          "tableTo": "task",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -1140,6 +1343,7 @@
       "values": [
         "pending",
         "declined",
+        "rejected",
         "active",
         "paused",
         "completed",
@@ -1152,6 +1356,14 @@
       "values": [
         "en",
         "de"
+      ]
+    },
+    "public.measure_type": {
+      "name": "measure_type",
+      "schema": "public",
+      "values": [
+        "cohort",
+        "individual"
       ]
     },
     "public.meeting_attendance": {
@@ -1178,17 +1390,23 @@
         "consultation",
         "coaching"
       ]
+    },
+    "public.module_type": {
+      "name": "module_type",
+      "schema": "public",
+      "values": [
+        "occupational",
+        "general"
+      ]
     }
   },
   "schemas": {
     "org_{slug}": "org_{slug}"
   },
+  "sequences": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "0f4b8b3f-f4ad-464d-8c7d-f225d9eecdba",
-  "prevId": "7e8db4ec-a4b2-4ac8-8a92-b1f00df9580a",
-  "sequences": {}
+    "tables": {}
+  }
 }

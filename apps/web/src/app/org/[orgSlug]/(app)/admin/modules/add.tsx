@@ -19,6 +19,7 @@ export function AddModule({
     id: "",
     units: 1,
     imageSrc: "",
+    type: "occupational",
   };
 
   const blankModuleInfo = fromEntries(

@@ -111,7 +111,10 @@ const createCohortEnrollment = async (
     .insert(cohortEnrollmentTable)
     .values({ ...enrollment, user: user.id });
 
-  revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
+  revalidatePath(
+    "/org/[orgSlug]/(app)/measures/[measureId]/apply/cohort/[cohortId]",
+    "page"
+  );
 };
 
 export const getBusyIntervals = async (

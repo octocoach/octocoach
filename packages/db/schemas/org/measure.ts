@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   integer,
-  json,
+  jsonb,
   numeric,
   primaryKey,
   text,
@@ -98,7 +98,7 @@ export const mkMeasureInfoTable = (slug: string) => {
       description: text("description").notNull(),
       requirements: text("requirements").notNull(),
       imageAlt: text("image_alt").notNull(),
-      screeningQuestions: json("screening_questions").$type<
+      screeningQuestions: jsonb("screening_questions").$type<
         ScreeningQuestion[]
       >(),
     },

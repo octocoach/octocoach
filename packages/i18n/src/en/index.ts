@@ -45,6 +45,7 @@ const en = {
   enrollment: {
     applyNow: "Apply now",
     modules: "Modules",
+    cohorts: "Cohorts",
     requirements: "Requirements",
     status: {
       pending: "Your enrollment is pending. We will be in touch shortly.",

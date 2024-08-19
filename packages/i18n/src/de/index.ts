@@ -45,6 +45,7 @@ const de = {
   enrollment: {
     applyNow: "Jetzt bewerben!",
     modules: "Bausteine",
+    cohorts: "Kohorten",
     requirements: "Anforderungen",
     status: {
       pending:

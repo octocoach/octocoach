@@ -13,10 +13,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { createMeeting } from "../../actions";
+import { MeasureWithInfoParam } from "../types";
 import { createEnrollmentAction, getBusyIntervals } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
 import { JoinButton } from "./join-button";
-import { MeasureWithInfoParam } from "./page";
 
 const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,

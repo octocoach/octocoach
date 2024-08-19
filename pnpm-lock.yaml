@@ -152,6 +152,9 @@ importers:
       resend:
         specifier: ^3.2.0
         version: 3.2.0
+      yaml:
+        specifier: ^2.5.0
+        version: 2.5.0
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -9787,6 +9790,11 @@ packages:
   yaml@2.3.4:
     resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
     engines: {node: '>= 14'}
+
+  yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
+    engines: {node: '>= 14'}
+    hasBin: true
 
   yargs-parser@20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
@@ -21093,6 +21101,8 @@ snapshots:
   yaml@1.10.2: {}
 
   yaml@2.3.4: {}
+
+  yaml@2.5.0: {}
 
   yargs-parser@20.2.9: {}
 

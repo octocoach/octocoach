@@ -21,3 +21,7 @@ export const getValues = <T extends object>(obj: T) =>
 
 export const fromEntries = <T extends object>(entries: Entries<T>) =>
   entries.reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {} as T);
+
+export const exhaustiveCheck = (_: never): never => {
+  throw new Error(`Yikes! This should never happen!`);
+};

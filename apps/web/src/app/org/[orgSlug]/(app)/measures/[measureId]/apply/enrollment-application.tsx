@@ -1,5 +1,6 @@
 "use client";
 
+import { Cohort } from "@octocoach/db/schemas/org/cohort";
 import {
   Measure,
   MeasureInfo,
@@ -8,6 +9,7 @@ import {
 import { ScreeningAnswers } from "@octocoach/db/schemas/org/screening-questions";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
 import Message from "@octocoach/i18n/src/react-message";
+import { exhaustiveCheck } from "@octocoach/tshelpers";
 import {
   Button,
   ButtonLink,
@@ -26,18 +28,23 @@ import {
 import Link from "next/link";
 import { useTransition } from "react";
 
-import { CreateEnrollmentParams } from "./actions";
+import { CreateEnrollmentActionParams } from "./actions";
 
 export const EnrollmentApplication = ({
   measure,
   locale,
-  createEnrollment,
+  createEnrollmentAction,
   measureUrl,
+  cohortId,
 }: {
-  measure: Pick<Measure, "id"> & Pick<MeasureInfo, "screeningQuestions">;
+  measure: Pick<Measure, "id" | "type"> &
+    Pick<MeasureInfo, "screeningQuestions">;
   locale: Locales;
-  createEnrollment: (enrollment: CreateEnrollmentParams) => Promise<void>;
+  createEnrollmentAction: (
+    params: CreateEnrollmentActionParams
+  ) => Promise<void>;
   measureUrl: string;
+  cohortId?: Cohort["id"];
 }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -57,7 +64,21 @@ export const EnrollmentApplication = ({
   const onSubmit = () => {
     startTransition(() => {
       const screeningAnswers = store.getState().values;
-      void createEnrollment({ measure: measure.id, screeningAnswers });
+      switch (measure.type) {
+        case "individual":
+          return void createEnrollmentAction({
+            type: measure.type,
+            enrollment: { measure: measure.id, screeningAnswers },
+          });
+        case "cohort":
+          if (!cohortId) throw new Error("Missing Cohort ID");
+          return void createEnrollmentAction({
+            type: measure.type,
+            enrollment: { cohort: cohortId, screeningAnswers },
+          });
+        default:
+          return exhaustiveCheck(measure.type);
+      }
     });
   };
 

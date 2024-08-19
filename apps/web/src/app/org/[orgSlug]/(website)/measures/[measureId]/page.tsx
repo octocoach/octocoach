@@ -87,11 +87,10 @@ const ApplyButton = ({ baseUrl, id }: { baseUrl: string; id: string }) => (
   </Box>
 );
 
-export default async function Page({ params }: PageParams) {
-  const measure = await getMeasureWithInfoAndModules(
-    params.orgSlug,
-    params.measureId
-  );
+export default async function Page({
+  params: { orgSlug, measureId },
+}: PageParams) {
+  const measure = await getMeasureWithInfoAndModules(orgSlug, measureId);
 
   if (!measure) notFound();
 

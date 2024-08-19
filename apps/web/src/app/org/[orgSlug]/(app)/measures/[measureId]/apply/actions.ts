@@ -5,20 +5,49 @@ import { getFreeBusy } from "@helpers/calendars/google";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, lt } from "@octocoach/db/operators";
 import { Organization } from "@octocoach/db/schemas/common/organization";
+import { NewCohortEnrollment } from "@octocoach/db/schemas/org/cohort-enrollment";
 import { NewIndividualEnrollment } from "@octocoach/db/schemas/org/individual-enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
+import { exhaustiveCheck } from "@octocoach/tshelpers";
 import { addHours, endOfDay, Interval, startOfDay } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
+import { stringify } from "yaml";
 
-export type CreateEnrollmentParams = Pick<
+export type CreateEnrollmentActionParams =
+  | {
+      type: "individual";
+      enrollment: CreateIndividualEnrollmentParams;
+    }
+  | {
+      type: "cohort";
+      enrollment: CreateCohortEnrollmentParams;
+    };
+
+export type CreateIndividualEnrollmentParams = Pick<
   NewIndividualEnrollment,
   "measure" | "screeningAnswers"
 >;
 
-export const createEnrollment = async (
+export type CreateCohortEnrollmentParams = Omit<NewCohortEnrollment, "user">;
+
+export const createEnrollmentAction = async (
   orgSlug: string,
-  enrollment: CreateEnrollmentParams
+  { type, enrollment }: CreateEnrollmentActionParams
+) => {
+  switch (type) {
+    case "individual":
+      return await createIndividualEnrollment(orgSlug, { enrollment });
+    case "cohort":
+      return await createCohortEnrollment(orgSlug, { enrollment });
+    default:
+      return exhaustiveCheck(type);
+  }
+};
+
+const createIndividualEnrollment = async (
+  orgSlug: string,
+  { enrollment }: { enrollment: CreateIndividualEnrollmentParams }
 ) => {
   const db = orgDb(orgSlug);
 
@@ -50,7 +79,10 @@ export const createEnrollment = async (
             enrollment.measure
           }
 
-          ${JSON.stringify(enrollment.screeningAnswers?.questions)}
+          ${
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            stringify(enrollment.screeningAnswers?.questions)
+          }
           `,
         });
 
@@ -62,6 +94,22 @@ export const createEnrollment = async (
       console.warn("No resend API Key!");
     }
   }
+
+  revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
+};
+
+const createCohortEnrollment = async (
+  orgSlug: string,
+  { enrollment }: { enrollment: CreateCohortEnrollmentParams }
+) => {
+  const { user } = await authOrRedirect(orgSlug);
+
+  const db = orgDb(orgSlug);
+  const { cohortEnrollmentTable } = mkOrgSchema(orgSlug);
+
+  await db
+    .insert(cohortEnrollmentTable)
+    .values({ ...enrollment, user: user.id });
 
   revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
 };

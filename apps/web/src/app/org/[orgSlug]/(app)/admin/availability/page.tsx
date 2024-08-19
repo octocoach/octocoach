@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
@@ -10,11 +11,7 @@ import { notFound } from "next/navigation";
 import { CoachPreferences } from "./coach-preferences";
 import { LinkAccount } from "./link-account";
 
-export default async function Page({
-  params: { orgSlug },
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params: { orgSlug } }: Params) {
   const locale = getLocale();
   const { user } = await authOrRedirect(orgSlug);
 

@@ -13,23 +13,20 @@ import {
 import { Stack, Text } from "@octocoach/ui";
 import Link from "next/link";
 
+import type { Params } from "../../types";
 import { addUserSkillLevel, addUserTaskInterest } from "./actions";
 import { getMatchingJobs } from "./helpers";
 import { SkillCheck } from "./skill-check";
 import { TaskCheck } from "./task-check";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
-  const session = await authOrRedirect(params.orgSlug);
+export default async function Page({ params: { orgSlug } }: Params) {
+  const session = await authOrRedirect(orgSlug);
 
-  const db = orgDb(params.orgSlug);
-  const usersTaskInterestTable = mkUsersTaskInterestTable(params.orgSlug);
-  const usersSkillLevelsTable = mkUsersSkillLevelsTable(params.orgSlug);
+  const db = orgDb(orgSlug);
+  const usersTaskInterestTable = mkUsersTaskInterestTable(orgSlug);
+  const usersSkillLevelsTable = mkUsersSkillLevelsTable(orgSlug);
 
-  const jobs = await getMatchingJobs(params.orgSlug);
+  const jobs = await getMatchingJobs(orgSlug);
 
   const skill = await db
     .select({
@@ -65,7 +62,7 @@ export default async function Page({
     return (
       <SkillCheck
         skill={skill}
-        submitAnswer={addUserSkillLevel.bind(null, params.orgSlug)}
+        submitAnswer={addUserSkillLevel.bind(null, orgSlug)}
       />
     );
   }
@@ -99,7 +96,7 @@ export default async function Page({
     <Stack justify="center">
       <TaskCheck
         task={task!}
-        submitAnswer={addUserTaskInterest.bind(null, params.orgSlug)}
+        submitAnswer={addUserTaskInterest.bind(null, orgSlug)}
       />
       <Text textAlign="center">
         <Link href={`${baseUrl}discover/jobs`}>

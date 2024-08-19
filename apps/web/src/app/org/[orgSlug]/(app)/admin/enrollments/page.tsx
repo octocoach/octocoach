@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
@@ -7,11 +8,7 @@ import { Stack } from "@octocoach/ui/Stack/Stack";
 import { createRoom } from "./actions";
 import { EnrollmentRow } from "./row";
 
-export default async function Page({
-  params: { orgSlug },
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params: { orgSlug } }: Params) {
   const db = orgDb(orgSlug);
   const {
     individualEnrollmentTable,

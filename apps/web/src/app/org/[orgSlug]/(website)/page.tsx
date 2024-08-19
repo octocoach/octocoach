@@ -8,15 +8,12 @@ import {
   TestimonialsSection,
 } from "@sections/index";
 
+import type { Params } from "../types";
 import { getContent, getMeasuresWithInfo } from "./helpers";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
-  const content = await getContent(params.orgSlug);
-  const measures = await getMeasuresWithInfo(params.orgSlug);
+export default async function Page({ params: { orgSlug } }: Params) {
+  const content = await getContent(orgSlug);
+  const measures = await getMeasuresWithInfo(orgSlug);
 
   const baseUrl = getBaseUrl();
 

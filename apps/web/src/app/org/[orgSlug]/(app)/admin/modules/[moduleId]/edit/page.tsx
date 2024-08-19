@@ -1,16 +1,12 @@
 import { orgDb } from "@octocoach/db/connection";
-import { Module } from "@octocoach/db/schemas/org/module";
 import { fromEntries } from "@octocoach/tshelpers";
 import { notFound } from "next/navigation";
 
 import { saveModuleAction } from "../../actions";
 import { EditModule } from "../../edit";
+import type { Params } from "../page";
 
-export default async function Page({
-  params: { orgSlug, moduleId },
-}: {
-  params: { orgSlug: string; moduleId: Module["id"] };
-}) {
+export default async function Page({ params: { orgSlug, moduleId } }: Params) {
   const db = orgDb(orgSlug);
 
   const mod = await db.query.moduleTable.findFirst({

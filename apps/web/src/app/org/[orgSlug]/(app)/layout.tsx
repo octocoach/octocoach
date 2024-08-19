@@ -7,15 +7,16 @@ import { Container, Nav } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import type { Params } from "../types";
+
 export default async function AppLayout({
   children,
-  params,
-}: {
+  params: { orgSlug },
+}: Params & {
   children: ReactNode;
-  params: { orgSlug: string };
 }) {
   const organization = await db.query.organizationTable.findFirst({
-    where: (table, { eq }) => eq(table.slug, params.orgSlug),
+    where: (table, { eq }) => eq(table.slug, orgSlug),
   });
 
   if (!organization) notFound();

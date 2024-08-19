@@ -1,11 +1,8 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { orgDb } from "@octocoach/db/connection";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 
-export default async function Page({
-  params: { orgSlug },
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params: { orgSlug } }: Params) {
   const db = orgDb(orgSlug);
 
   const { meetingTable } = mkOrgSchema(orgSlug);

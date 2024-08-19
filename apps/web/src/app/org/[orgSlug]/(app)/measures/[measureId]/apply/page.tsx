@@ -16,6 +16,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { createMeeting } from "../../actions";
+import type { Params } from "../types";
 import { createEnrollment, getBusyIntervals } from "./actions";
 import { EnrollmentApplication } from "./enrollment-application";
 import { JoinButton } from "./join-button";
@@ -24,11 +25,7 @@ const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,
 });
 
-export default async function Page({
-  params: { orgSlug, measureId },
-}: {
-  params: { orgSlug: string; measureId: string };
-}) {
+export default async function Page({ params: { orgSlug, measureId } }: Params) {
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
   const locale = getLocale();

@@ -17,22 +17,21 @@ import {
 import { Card, Markdown, Stack, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 
+import type { Params as ParentParams } from "../../../../types";
 import { Skill } from "./skill";
 import { Task, type TaskSkill } from "./task";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string; jobId: number };
-}) {
-  const session = await authOrRedirect(params.orgSlug);
+export type Params = ParentParams & { params: { jobId: number } };
+
+export default async function Page({ params: { orgSlug, jobId } }: Params) {
+  const session = await authOrRedirect(orgSlug);
 
   const baseUrl = getBaseUrl();
 
-  const db = orgDb(params.orgSlug);
+  const db = orgDb(orgSlug);
 
-  const usersTaskInterestTable = mkUsersTaskInterestTable(params.orgSlug);
-  const usersSkillLevelsTable = mkUsersSkillLevelsTable(params.orgSlug);
+  const usersTaskInterestTable = mkUsersTaskInterestTable(orgSlug);
+  const usersSkillLevelsTable = mkUsersSkillLevelsTable(orgSlug);
 
   const job = await db
     .select({
@@ -43,7 +42,7 @@ export default async function Page({
     })
     .from(jobTable)
     .innerJoin(employerTable, eq(employerTable.id, jobTable.employerId))
-    .where(eq(jobTable.id, params.jobId))
+    .where(eq(jobTable.id, jobId))
     .then((rows) => rows[0]);
 
   const tasks = await db
@@ -75,7 +74,7 @@ export default async function Page({
         eq(usersSkillLevelsTable.skillId, skillTable.id)
       )
     )
-    .where(and(eq(taskTable.jobId, params.jobId)))
+    .where(and(eq(taskTable.jobId, jobId)))
     .groupBy(({ interest, id }) => [id, interest])
     .orderBy(({ interest }) => desc(interest));
 
@@ -105,7 +104,7 @@ export default async function Page({
         eq(usersSkillLevelsTable.skillId, skillTable.id)
       )
     )
-    .where(eq(taskTable.jobId, params.jobId))
+    .where(eq(taskTable.jobId, jobId))
     .orderBy(({ name }) => asc(name));
 
   if (!job) notFound();

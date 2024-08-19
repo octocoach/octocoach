@@ -6,19 +6,17 @@ import { Container, Nav } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import type { Params } from "../types";
 import Footer from "./footer";
 import { getOrganizationWithAddressAndOwnerName } from "./helpers";
 
 export default async function Layout({
   children,
-  params,
-}: {
+  params: { orgSlug },
+}: Params & {
   children: ReactNode;
-  params: { orgSlug: string };
 }) {
-  const organization = await getOrganizationWithAddressAndOwnerName(
-    params.orgSlug
-  );
+  const organization = await getOrganizationWithAddressAndOwnerName(orgSlug);
 
   if (!organization) {
     notFound();

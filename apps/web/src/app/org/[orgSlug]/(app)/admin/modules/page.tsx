@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
@@ -14,18 +15,14 @@ import Link from "next/link";
 import { saveModuleAction } from "./actions";
 import { AddModule } from "./add";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
-  await authOrRedirect(params.orgSlug);
+export default async function Page({ params: { orgSlug } }: Params) {
+  await authOrRedirect(orgSlug);
 
-  const db = orgDb(params.orgSlug);
+  const db = orgDb(orgSlug);
   const locale = getLocale();
 
-  const moduleTable = mkModuleTable(params.orgSlug);
-  const moduleInfoTable = mkModuleInfoTable(params.orgSlug);
+  const moduleTable = mkModuleTable(orgSlug);
+  const moduleInfoTable = mkModuleInfoTable(orgSlug);
 
   const modules = await db
     .select()
@@ -62,8 +59,8 @@ export default async function Page({
         )}
       </Stack>
       <AddModule
-        saveModuleAction={saveModuleAction.bind(null, params.orgSlug)}
-        orgSlug={params.orgSlug}
+        saveModuleAction={saveModuleAction.bind(null, orgSlug)}
+        orgSlug={orgSlug}
       />
     </Stack>
   );

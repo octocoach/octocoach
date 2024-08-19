@@ -4,24 +4,21 @@ import Message from "@octocoach/i18n/src/react-message";
 import { Box, Grid, Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 
+import type { Params } from "../../types";
 import { Profile } from "./profile";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
-  const session = await authOrRedirect(params.orgSlug);
+export default async function Page({ params: { orgSlug } }: Params) {
+  const session = await authOrRedirect(orgSlug);
   const userId = session.user.id;
 
-  const db = orgDb(params.orgSlug);
+  const db = orgDb(orgSlug);
 
   const profile = await db.query.userProfileTable.findFirst({
     where: (table, { eq }) => eq(table.userId, userId),
   });
 
   const organization = await db.query.organizationTable.findFirst({
-    where: (table, { eq }) => eq(table.slug, params.orgSlug),
+    where: (table, { eq }) => eq(table.slug, orgSlug),
   });
 
   if (!organization) notFound();
@@ -40,7 +37,7 @@ export default async function Page({
             <Message id="signup.subTitle" />
           </Text>
         </Box>
-        <Profile orgSlug={params.orgSlug} profile={profile} />
+        <Profile orgSlug={orgSlug} profile={profile} />
       </Grid>
     </Box>
   );

@@ -4,14 +4,16 @@ import { authOrRedirect } from "@helpers/auth";
 import { Daily } from "@octocoach/daily";
 import { db as octoDb, orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
+import { CohortEnrollment } from "@octocoach/db/schemas/org/cohort-enrollment";
 import { IndividualEnrollment } from "@octocoach/db/schemas/org/individual-enrollment";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { organizationTable } from "@octocoach/db/schemas/public/schema";
+import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 
 import { EnrollmentTemplate } from "./email-templates";
 
-export const createRoom = async (
+export const createRoomAction = async (
   orgSlug: string,
   enrollment: Pick<IndividualEnrollment, "measure" | "coachee">
 ) => {
@@ -113,4 +115,30 @@ export const createRoom = async (
   }
 
   return room;
+};
+
+export const setCohortEnrollmentStatusAction = async (
+  orgSlug: string,
+  enrollment: Pick<CohortEnrollment, "user" | "cohort">,
+  status: CohortEnrollment["status"]
+) => {
+  const { user } = await authOrRedirect(orgSlug);
+
+  if (!user.isCoach) throw new Error("User is not a coach");
+
+  const db = orgDb(orgSlug);
+
+  const { cohortEnrollmentTable } = mkOrgSchema(orgSlug);
+
+  await db
+    .update(cohortEnrollmentTable)
+    .set({ status })
+    .where(
+      and(
+        eq(cohortEnrollmentTable.user, enrollment.user),
+        eq(cohortEnrollmentTable.cohort, enrollment.cohort)
+      )
+    );
+
+  revalidatePath(`/org/${orgSlug}/admin/enrollments`);
 };

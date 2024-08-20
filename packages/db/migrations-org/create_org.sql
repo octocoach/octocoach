@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_info" (
 	"description" text NOT NULL,
 	"requirements" text NOT NULL,
 	"image_alt" text NOT NULL,
-	"screening_questions" json,
+	"screening_questions" jsonb,
 	CONSTRAINT "measure_info_id_locale_pk" PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint

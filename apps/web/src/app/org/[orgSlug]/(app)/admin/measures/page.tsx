@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { authOrRedirect } from "@helpers/auth";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
@@ -13,11 +14,7 @@ import Link from "next/link";
 import { saveMeasureAction } from "./actions";
 import { AddMeasure } from "./add";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params }: Params) {
   await authOrRedirect(params.orgSlug);
 
   const db = orgDb(params.orgSlug);

@@ -5,11 +5,11 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import type { Params } from "./types";
+
 export async function generateMetadata({
   params: { orgSlug },
-}: {
-  params: { orgSlug: string };
-}): Promise<Metadata> {
+}: Params): Promise<Metadata> {
   const organization = await db.query.organizationTable.findFirst({
     where: (table, { eq }) => eq(table.slug, orgSlug),
   });
@@ -31,9 +31,8 @@ export async function generateMetadata({
 export default async function Layout({
   children,
   params,
-}: {
+}: Params & {
   children: ReactNode;
-  params: { orgSlug: string };
 }) {
   const organization = await db.query.organizationTable.findFirst({
     where: (organizations, { eq }) => eq(organizations.slug, params.orgSlug),

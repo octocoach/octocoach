@@ -1,6 +1,7 @@
 "use client";
 
 import { LocalizedString } from "typesafe-i18n";
+
 import { useI18nContext } from "./i18n-react";
 import { TranslationFunctions, Translations } from "./i18n-types";
 
@@ -15,6 +16,7 @@ const hasKey = (
     | TranslationFunctions
     | (() => LocalizedString)
     | Record<string, () => LocalizedString>,
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   curr: string | keyof typeof acc
 ): curr is keyof typeof acc => curr in acc;
 

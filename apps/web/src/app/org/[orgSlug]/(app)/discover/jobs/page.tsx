@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { Breadcrumbs } from "@components/breadcrumbs";
 import { getBaseUrl } from "@helpers/navigation";
 import { Card, Stack, Text } from "@octocoach/ui";
@@ -5,12 +6,8 @@ import Link from "next/link";
 
 import { getMatchingJobs } from "../helpers";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
-  const jobs = await getMatchingJobs(params.orgSlug);
+export default async function Page({ params: { orgSlug } }: Params) {
+  const jobs = await getMatchingJobs(orgSlug);
 
   const baseUrl = getBaseUrl();
 

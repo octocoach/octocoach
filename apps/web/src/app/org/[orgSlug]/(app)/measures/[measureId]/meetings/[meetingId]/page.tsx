@@ -9,11 +9,11 @@ import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { Text } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 
-export default async function Page({
-  params: { orgSlug, meetingId },
-}: {
-  params: { orgSlug: string; meetingId: Meeting["id"] };
-}) {
+import type { Params as ParentParams } from "../../types";
+
+export type Params = ParentParams & { params: { meetingId: Meeting["id"] } };
+
+export default async function Page({ params: { orgSlug, meetingId } }: Params) {
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);
   const {

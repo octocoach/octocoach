@@ -2,14 +2,15 @@ import { authOrRedirect } from "@helpers/auth";
 import { Text } from "@octocoach/ui";
 import type { ReactNode } from "react";
 
+import type { Params } from "../../types";
+
 export default async function Layout({
   children,
-  params,
-}: {
+  params: { orgSlug },
+}: Params & {
   children: ReactNode;
-  params: { orgSlug: string };
 }) {
-  const { user } = await authOrRedirect(params.orgSlug);
+  const { user } = await authOrRedirect(orgSlug);
 
   if (!user.isCoach)
     return <Text>You are not authorized to view this page</Text>;

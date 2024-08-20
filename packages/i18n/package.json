@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "typesafe-i18n",
     "build": "typesafe-i18n --no-watch",
-    "translate": "tsx -r dotenv/config src/translate.ts"
+    "translate": "tsx -r dotenv/config src/translate.ts",
+    "lint": "eslint . --fix --no-warn-ignored",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {
     "deepl-node": "^1.10.2",

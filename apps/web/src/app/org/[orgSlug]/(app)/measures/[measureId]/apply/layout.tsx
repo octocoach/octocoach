@@ -12,12 +12,13 @@ import { Text } from "@octocoach/ui/Text/Text";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import type { Params } from "../types";
+
 export default async function Layout({
   children,
   params: { orgSlug, measureId },
-}: {
+}: Params & {
   children: ReactNode;
-  params: { orgSlug: string; measureId: string };
 }) {
   const locale = getLocale();
   const db = orgDb(orgSlug);

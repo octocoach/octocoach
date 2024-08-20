@@ -11,18 +11,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import type { Params as ParentParams } from "../../../../types";
 import { deleteModuleAction } from "../actions";
 import { Delete } from "./delete";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string; moduleId: string };
-}) {
-  const db = orgDb(params.orgSlug);
+export type Params = ParentParams & { params: { moduleId: string } };
 
-  const moduleTable = mkModuleTable(params.orgSlug);
-  const moduleInfoTable = mkModuleInfoTable(params.orgSlug);
+export default async function Page({ params: { orgSlug, moduleId } }: Params) {
+  const db = orgDb(orgSlug);
+
+  const moduleTable = mkModuleTable(orgSlug);
+  const moduleInfoTable = mkModuleInfoTable(orgSlug);
 
   const locale = getLocale();
 
@@ -39,10 +38,7 @@ export default async function Page({
     .from(moduleTable)
     .innerJoin(
       moduleInfoTable,
-      and(
-        eq(moduleTable.id, params.moduleId),
-        eq(moduleInfoTable.locale, locale)
-      )
+      and(eq(moduleTable.id, moduleId), eq(moduleInfoTable.locale, locale))
     )
     .then((rows) => rows[0] ?? null);
 
@@ -72,7 +68,7 @@ export default async function Page({
           Edit
         </ButtonLink>
         <Delete
-          deleteAction={deleteModuleAction.bind(null, params.orgSlug)}
+          deleteAction={deleteModuleAction.bind(null, orgSlug)}
           id={mod.id}
         />
       </Stack>

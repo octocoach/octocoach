@@ -5,9 +5,15 @@ import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
-import { MeasureWithInfo } from "@octocoach/db/schemas/org/measure";
+import { Cohort } from "@octocoach/db/schemas/org/cohort";
+import {
+  Measure,
+  MeasureWithInfo,
+  MeasureWithInfoAndModules,
+} from "@octocoach/db/schemas/org/measure";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import Message from "@octocoach/i18n/src/react-message";
+import { exhaustiveCheck } from "@octocoach/tshelpers";
 import {
   Box,
   ButtonLink,
@@ -17,6 +23,8 @@ import {
   Stack,
   Text,
 } from "@octocoach/ui";
+import { formatDate } from "date-fns";
+import { de, enUS } from "date-fns/locale";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -72,26 +80,109 @@ export async function generateMetadata({
   };
 }
 
-const ApplyButton = ({ baseUrl, id }: { baseUrl: string; id: string }) => (
-  <Box paddingY="medium">
-    <Stack fullWidth align="center">
-      <ButtonLink
-        Element={Link}
-        href={`${baseUrl}measures/${id}/apply`}
-        glow
-        size="large"
-      >
-        <Message id="enrollment.applyNow" />
-      </ButtonLink>
-    </Stack>
-  </Box>
-);
+type ApplyButtonProps = {
+  baseUrl: string;
+  measureId: Measure["id"];
+  cohortId?: Cohort["id"];
+};
 
-export default async function Page({ params }: PageParams) {
-  const measure = await getMeasureWithInfoAndModules(
-    params.orgSlug,
-    params.measureId
+const ApplyButton = ({ baseUrl, measureId, cohortId }: ApplyButtonProps) => {
+  const href = cohortId
+    ? `${baseUrl}/measures/${measureId}/apply/cohort/${cohortId}`
+    : `${baseUrl}/measures/${measureId}/apply`;
+
+  return (
+    <Box paddingY="medium">
+      <Stack fullWidth align="center">
+        <ButtonLink Element={Link} href={href} glow size="large">
+          <Message id="enrollment.applyNow" />
+        </ButtonLink>
+      </Stack>
+    </Box>
   );
+};
+
+const CohortsSection = async ({
+  orgSlug,
+  baseUrl,
+  measure,
+}: {
+  orgSlug: string;
+  baseUrl: string;
+  measure: MeasureWithInfoAndModules;
+}) => {
+  const locales = {
+    en: enUS,
+    de: de,
+  };
+  const locale = getLocale();
+
+  const db = orgDb(orgSlug);
+
+  const { cohortTable } = mkOrgSchema(orgSlug);
+
+  const cohorts = await db
+    .select()
+    .from(cohortTable)
+    .where(eq(cohortTable.measure, measure.id));
+
+  return (
+    <>
+      <Text size="l" weight="light" element="h2">
+        <Message id="enrollment.cohorts" />
+      </Text>
+      <Stack>
+        {cohorts.map((cohort) => (
+          <Card key={cohort.id}>
+            <Stack
+              spacing="tight"
+              direction="horizontal"
+              justify="between"
+              align="center"
+            >
+              <Text size="l" variation="casual">
+                {formatDate(cohort.startDate, "PPPP", {
+                  locale: locales[locale],
+                })}
+              </Text>
+              <ApplyButton
+                baseUrl={baseUrl}
+                measureId={measure.id}
+                cohortId={cohort.id}
+              />
+            </Stack>
+          </Card>
+        ))}
+      </Stack>
+    </>
+  );
+};
+
+const ApplySection = ({
+  orgSlug,
+  baseUrl,
+  measure,
+}: {
+  orgSlug: string;
+  baseUrl: string;
+  measure: MeasureWithInfoAndModules;
+}) => {
+  switch (measure.type) {
+    case "individual":
+      return <ApplyButton baseUrl={baseUrl} measureId={measure.id} />;
+    case "cohort":
+      return (
+        <CohortsSection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
+      );
+    default:
+      return exhaustiveCheck(measure.type);
+  }
+};
+
+export default async function Page({
+  params: { orgSlug, measureId },
+}: PageParams) {
+  const measure = await getMeasureWithInfoAndModules(orgSlug, measureId);
 
   if (!measure) notFound();
 
@@ -128,7 +219,7 @@ export default async function Page({ params }: PageParams) {
             </Stack>
           </Box>
         )}
-        <ApplyButton baseUrl={baseUrl} id={measure.id} />
+        <ApplySection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.modules" />
         </Text>
@@ -158,7 +249,7 @@ export default async function Page({ params }: PageParams) {
         <Card>
           <Markdown>{measure.requirements}</Markdown>
         </Card>
-        <ApplyButton baseUrl={baseUrl} id={measure.id} />
+        <ApplySection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
       </Stack>
     </Box>
   );

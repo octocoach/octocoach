@@ -125,6 +125,10 @@ type RootTranslation = {
      */
     modules: string;
     /**
+     * C​o​h​o​r​t​s
+     */
+    cohorts: string;
+    /**
      * R​e​q​u​i​r​e​m​e​n​t​s
      */
     requirements: string;
@@ -496,6 +500,10 @@ export type TranslationFunctions = {
      * Modules
      */
     modules: () => LocalizedString;
+    /**
+     * Cohorts
+     */
+    cohorts: () => LocalizedString;
     /**
      * Requirements
      */

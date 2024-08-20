@@ -3,18 +3,27 @@ import { getLocale } from "@helpers/locale";
 import { orgRedirect } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { and, eq } from "@octocoach/db/operators";
+import type { Cohort } from "@octocoach/db/schemas/org/cohort";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { notFound } from "next/navigation";
 
-import type { MeasureWithInfoParam, Params } from "../types";
-import IndividualEnrollment from "./individual-enrollment";
+import type {
+  MeasureWithInfoParam,
+  Params as ParentParams,
+} from "../../../types";
+import CohortEnrollment from "./cohort-enrollment";
 
-export default async function Page({ params: { orgSlug, measureId } }: Params) {
+type Params = ParentParams & { params: { cohortId: Cohort["id"] } };
+
+export default async function Page({
+  params: { orgSlug, measureId, cohortId },
+}: Params) {
   const { user } = await authOrRedirect(orgSlug);
+
   const db = orgDb(orgSlug);
   const locale = getLocale();
 
-  const { measureInfoTable, measureTable, userProfileTable } =
+  const { userProfileTable, measureTable, measureInfoTable } =
     mkOrgSchema(orgSlug);
 
   const profile = await db
@@ -25,7 +34,7 @@ export default async function Page({ params: { orgSlug, measureId } }: Params) {
 
   if (!profile) {
     const search = new URLSearchParams();
-    search.set("origin", `/measures/${measureId}/apply`);
+    search.set("origin", `/measures/${measureId}/cohorts/${cohortId}/apply`);
     orgRedirect(`signup?${search.toString()}`);
   }
 
@@ -50,14 +59,15 @@ export default async function Page({ params: { orgSlug, measureId } }: Params) {
 
   if (!measure) notFound();
 
-  if (measure.type !== "individual")
-    throw new Error("This is not an individual measure");
+  if (measure.type !== "cohort")
+    throw new Error("This is not a cohort measure");
 
   return (
-    <IndividualEnrollment
+    <CohortEnrollment
       orgSlug={orgSlug}
       locale={locale}
       measure={measure}
+      cohortId={cohortId}
       user={user}
     />
   );

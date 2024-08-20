@@ -1,3 +1,4 @@
+import type { Params } from "@app/org/[orgSlug]/types";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
@@ -14,11 +15,7 @@ type CoacheeEnrollment = {
   status: IndividualEnrollment["status"];
 };
 
-export default async function Page({
-  params: { orgSlug },
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params: { orgSlug } }: Params) {
   const locale = getLocale();
 
   const db = orgDb(orgSlug);

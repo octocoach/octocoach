@@ -10,15 +10,13 @@ import { Stack } from "@octocoach/ui/Stack/Stack";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
+import type { Params } from "../types";
+
 const LocalTime = dynamic(() => import("@octocoach/ui/LocalTime/LocalTime"), {
   ssr: false,
 });
 
-export default async function Page({
-  params: { orgSlug, measureId },
-}: {
-  params: { orgSlug: string; measureId: string };
-}) {
+export default async function Page({ params: { orgSlug, measureId } }: Params) {
   const locale = getLocale();
   const { user } = await authOrRedirect(orgSlug);
   const db = orgDb(orgSlug);

@@ -171,16 +171,20 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       maxParticipants: measureTable.maxParticipants,
       rate: measureTable.rate,
       modules: sql<ModuleWithInfo[]>`
-      json_agg(
-        json_build_object(
-          'id', ${moduleTable.id},
-          'owner', ${moduleTable.owner},
-          'units', ${moduleTable.units},
-          'imageSrc', ${moduleTable.imageSrc},
-          'imageAlt', ${moduleInfoTable.imageAlt},
-          'title', ${moduleInfoTable.title},
-          'description', ${moduleInfoTable.description}
-        ) ORDER BY ${measureModuleTable.order}
+      COALESCE(
+        jsonb_agg(
+          jsonb_build_object(
+            'id', ${moduleTable.id},
+            'owner', ${moduleTable.owner},
+            'units', ${moduleTable.units},
+            'imageSrc', ${moduleTable.imageSrc},
+            'imageAlt', ${moduleInfoTable.imageAlt},
+            'title', ${moduleInfoTable.title},
+            'description', ${moduleInfoTable.description}
+          )
+          ORDER BY ${measureModuleTable.order}
+        ) FILTER (WHERE ${moduleTable.id} IS NOT NULL),
+        '[]'
       )`,
     })
     .from(measureTable)
@@ -248,17 +252,22 @@ export const getMeasureWithInfoAndModules = async (
       duration: measureTable.duration,
       maxParticipants: measureTable.maxParticipants,
       rate: measureTable.rate,
+      screeningQuestions: measureInfoTable.screeningQuestions,
       modules: sql<ModuleWithInfo[]>`
-      json_agg(
-        json_build_object(
-          'id', ${moduleTable.id},
-          'owner', ${moduleTable.owner},
-          'units', ${moduleTable.units},
-          'imageSrc', ${moduleTable.imageSrc},
-          'imageAlt', ${moduleInfoTable.imageAlt},
-          'title', ${moduleInfoTable.title},
-          'description', ${moduleInfoTable.description}
-        ) ORDER BY ${measureModuleTable.order}
+      COALESCE(
+        jsonb_agg(
+          jsonb_build_object(
+            'id', ${moduleTable.id},
+            'owner', ${moduleTable.owner},
+            'units', ${moduleTable.units},
+            'imageSrc', ${moduleTable.imageSrc},
+            'imageAlt', ${moduleInfoTable.imageAlt},
+            'title', ${moduleInfoTable.title},
+            'description', ${moduleInfoTable.description}
+          )
+          ORDER BY ${measureModuleTable.order}
+        ) FILTER (WHERE ${moduleTable.id} IS NOT NULL),
+        '[]'
       )`,
     })
     .from(measureTable)
@@ -269,12 +278,12 @@ export const getMeasureWithInfoAndModules = async (
         eq(measureInfoTable.locale, locale)
       )
     )
-    .innerJoin(
+    .leftJoin(
       measureModuleTable,
       eq(measureModuleTable.measure, measureTable.id)
     )
-    .innerJoin(moduleTable, eq(moduleTable.id, measureModuleTable.module))
-    .innerJoin(
+    .leftJoin(moduleTable, eq(moduleTable.id, measureModuleTable.module))
+    .leftJoin(
       moduleInfoTable,
       and(
         eq(moduleTable.id, moduleInfoTable.id),
@@ -290,6 +299,7 @@ export const getMeasureWithInfoAndModules = async (
       table.imageAlt,
       table.owner,
       table.requirements,
+      table.screeningQuestions,
     ])
     .then((rows) => rows[0] ?? null);
 

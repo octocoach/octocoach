@@ -8,15 +8,12 @@ import {
 } from "@octocoach/ui";
 import { notFound } from "next/navigation";
 
+import type { Params } from "../../types";
 import { getContentById } from "../helpers";
 
-export default async function Page({
-  params,
-}: {
-  params: { orgSlug: string };
-}) {
+export default async function Page({ params: { orgSlug } }: Params) {
   const missionContent = await getContentById<SectionContentSimple>(
-    params.orgSlug,
+    orgSlug,
     "mission"
   );
 

@@ -1,0 +1,1 @@
+ALTER TABLE "org_{slug}"."measure_info" ALTER COLUMN "screening_questions" SET DATA TYPE jsonb;

@@ -142,5 +142,5 @@ export const deleteModuleAction = async (orgSlug: string, id: Module["id"]) => {
     await trx.delete(moduleTable).where(eq(moduleTable.id, id));
   });
 
-  redirect(`${baseUrl}/modules`);
+  redirect(`${baseUrl}modules`);
 };

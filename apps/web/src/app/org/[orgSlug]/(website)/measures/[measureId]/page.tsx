@@ -87,9 +87,9 @@ type ApplyButtonProps = {
 };
 
 const ApplyButton = ({ baseUrl, measureId, cohortId }: ApplyButtonProps) => {
-  const href = cohortId
-    ? `${baseUrl}/measures/${measureId}/apply/cohort/${cohortId}`
-    : `${baseUrl}/measures/${measureId}/apply`;
+  let href = `${baseUrl}measures/${measureId}/apply`;
+
+  if (cohortId) href = `${href}/cohort/${cohortId}`;
 
   return (
     <Box paddingY="medium">

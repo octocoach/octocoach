@@ -1,12 +1,13 @@
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq, sql } from "@octocoach/db/operators";
+import { and, eq, inArray, sql } from "@octocoach/db/operators";
 import {
   mkContentLocaleTable,
   mkContentTable,
   SectionContent,
   SectionContentSimple,
   SectionId,
+  websiteSections,
 } from "@octocoach/db/schemas/org/content";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
@@ -72,6 +73,7 @@ export const getContent = async (slug: string): Promise<ContentMap> => {
         eq(contentLocaleTable.locale, locale)
       )
     )
+    .where(inArray(contentTable.id, [...websiteSections]))
     .then((res) =>
       res.reduce(
         (acc, curr) => ({

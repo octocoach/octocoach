@@ -164,11 +164,13 @@ export function EditModule({
   module,
   moduleInfo,
   orgSlug,
+  baseUrl,
   saveModuleAction,
 }: {
   module: SaveModuleData["module"];
   moduleInfo: SaveModuleData["moduleInfo"];
   orgSlug: string;
+  baseUrl: string;
   saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
 }) {
   const defaultValues: SaveModuleData = {
@@ -216,7 +218,7 @@ export function EditModule({
       }).then((result) => {
         if (result.success === true) {
           store.reset();
-          router.push(`/org/${orgSlug}/admin/modules/${module.id}`);
+          router.push(`${baseUrl}admin/modules/${module.id}`);
         } else if (result.errors) {
           if (result.errors.module?.issues.length) {
             for (const issue of result.errors.module.issues) {
@@ -243,7 +245,7 @@ export function EditModule({
   const imageSrc = store.useValue<string>($.module.imageSrc);
 
   const onCancel = () => {
-    router.push(`/org/${orgSlug}/admin/modules/${module.id}`);
+    router.push(`${baseUrl}admin/modules/${module.id}`);
   };
 
   return (

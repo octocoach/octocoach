@@ -30,7 +30,6 @@ export const Measures = ({
             <Text variation="casual" weight="light" size="l">
               <Message id="measures.intro" />
             </Text>
-
             <CertquaOrgSeal />
           </Grid>
         </Stack>
@@ -51,7 +50,13 @@ export const Measures = ({
                       <Link href={href}>{measure.title}</Link>
                     </Text>
                     <Markdown>{measure.description}</Markdown>
-                    <Stack direction="horizontal" justify="right">
+                    <Stack
+                      direction="horizontal"
+                      justify="right"
+                      align="center"
+                      spacing="loose"
+                      wrap
+                    >
                       {measure.accredited && <FundedByBA />}
                       <ButtonLink
                         href={href}

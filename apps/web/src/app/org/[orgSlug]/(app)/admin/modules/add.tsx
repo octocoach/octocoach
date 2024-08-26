@@ -11,9 +11,11 @@ import { EditModule } from "./edit";
 export function AddModule({
   saveModuleAction,
   orgSlug,
+  baseUrl,
 }: {
   orgSlug: string;
   saveModuleAction: (data: SaveModuleData) => SaveModuleRetype;
+  baseUrl: string;
 }) {
   const blankModule: SaveModuleData["module"] = {
     id: "",
@@ -41,6 +43,7 @@ export function AddModule({
       saveModuleAction={saveModuleAction}
       module={blankModule}
       moduleInfo={blankModuleInfo}
+      baseUrl={baseUrl}
     />
   );
 }

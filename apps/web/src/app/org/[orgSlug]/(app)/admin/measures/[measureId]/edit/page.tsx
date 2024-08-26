@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { fromEntries } from "@octocoach/tshelpers";
 import { notFound } from "next/navigation";
@@ -11,6 +12,7 @@ export default async function Page({
   params: { orgSlug: string; measureId: string };
 }) {
   const db = orgDb(params.orgSlug);
+  const baseUrl = getBaseUrl();
 
   const measure = await db.query.measureTable.findFirst({
     where: ({ id }, { eq }) => eq(id, params.measureId),
@@ -31,6 +33,7 @@ export default async function Page({
       measure={measure}
       measureInfo={info}
       orgSlug={params.orgSlug}
+      baseUrl={baseUrl}
       saveMeasureAction={saveMeasureAction.bind(null, params.orgSlug)}
     />
   );

@@ -111,9 +111,17 @@ type RootTranslation = {
   };
   measures: {
     /**
-     * R​e​a​d​ ​m​o​r​e
+     * O​u​r​ ​c​o​u​r​s​e​s
+     */
+    heading: string;
+    /**
+     * L​e​a​r​n​ ​m​o​r​e
      */
     readMore: string;
+    /**
+     * A​s​ ​a​n​ ​A​Z​A​V​ ​c​e​r​t​i​f​i​e​d​ ​e​d​u​c​a​t​i​o​n​a​l​ ​i​n​s​t​i​t​u​t​i​o​n​,​ ​w​e​ ​o​f​f​e​r​ ​f​u​l​l​y​ ​a​c​c​r​e​d​i​t​e​d​ ​c​o​u​r​s​e​s​ ​d​e​s​i​g​n​e​d​ ​t​o​ ​m​e​e​t​ ​t​h​e​ ​h​i​g​h​e​s​t​ ​s​t​a​n​d​a​r​d​s​ ​o​f​ ​q​u​a​l​i​t​y​ ​a​n​d​ ​e​f​f​e​c​t​i​v​e​n​e​s​s​.
+     */
+    intro: string;
   };
   enrollment: {
     /**
@@ -121,17 +129,47 @@ type RootTranslation = {
      */
     applyNow: string;
     /**
-     * M​o​d​u​l​e​s
+     * C​u​r​r​i​c​u​l​u​m
      */
     modules: string;
     /**
-     * C​o​h​o​r​t​s
+     * S​t​a​r​t​i​n​g​ ​d​a​t​e​s
      */
     cohorts: string;
     /**
-     * R​e​q​u​i​r​e​m​e​n​t​s
+     * E​n​t​r​y​ ​R​e​q​u​i​r​e​m​e​n​t​s
      */
     requirements: string;
+    /**
+     * A​t​ ​a​ ​g​l​a​n​c​e
+     */
+    atAGlance: string;
+    /**
+     * D​u​r​a​t​i​o​n
+     */
+    duration: string;
+    /**
+     * {​w​e​e​k​s​}​ ​w​e​e​k​s
+     * @param {number} weeks
+     */
+    weeks: RequiredParams<"weeks">;
+    /**
+     * (​~​{​h​o​u​r​s​P​e​r​W​e​e​k​}​ ​h​o​u​r​s​ ​p​e​r​ ​w​e​e​k​)
+     * @param {number} hoursPerWeek
+     */
+    hoursPerWeek: RequiredParams<"hoursPerWeek">;
+    /**
+     * M​a​x​.​ ​p​a​r​t​i​c​i​p​a​n​t​s
+     */
+    maxParticipants: string;
+    /**
+     * C​o​s​t
+     */
+    cost: string;
+    /**
+     * 1​0​0​%​ ​f​u​n​d​e​d​ ​b​y​ ​t​h​e​ ​B​u​n​d​e​s​a​g​e​n​t​u​r​ ​f​ü​r​ ​A​r​b​e​i​t
+     */
+    funded: string;
     status: {
       /**
        * Y​o​u​r​ ​e​n​r​o​l​l​m​e​n​t​ ​i​s​ ​p​e​n​d​i​n​g​.​ ​W​e​ ​w​i​l​l​ ​b​e​ ​i​n​ ​t​o​u​c​h​ ​s​h​o​r​t​l​y​.
@@ -487,9 +525,17 @@ export type TranslationFunctions = {
   };
   measures: {
     /**
-     * Read more
+     * Our courses
+     */
+    heading: () => LocalizedString;
+    /**
+     * Learn more
      */
     readMore: () => LocalizedString;
+    /**
+     * As an AZAV certified educational institution, we offer fully accredited courses designed to meet the highest standards of quality and effectiveness.
+     */
+    intro: () => LocalizedString;
   };
   enrollment: {
     /**
@@ -497,17 +543,45 @@ export type TranslationFunctions = {
      */
     applyNow: () => LocalizedString;
     /**
-     * Modules
+     * Curriculum
      */
     modules: () => LocalizedString;
     /**
-     * Cohorts
+     * Starting dates
      */
     cohorts: () => LocalizedString;
     /**
-     * Requirements
+     * Entry Requirements
      */
     requirements: () => LocalizedString;
+    /**
+     * At a glance
+     */
+    atAGlance: () => LocalizedString;
+    /**
+     * Duration
+     */
+    duration: () => LocalizedString;
+    /**
+     * {weeks} weeks
+     */
+    weeks: (arg: { weeks: number }) => LocalizedString;
+    /**
+     * (~{hoursPerWeek} hours per week)
+     */
+    hoursPerWeek: (arg: { hoursPerWeek: number }) => LocalizedString;
+    /**
+     * Max. participants
+     */
+    maxParticipants: () => LocalizedString;
+    /**
+     * Cost
+     */
+    cost: () => LocalizedString;
+    /**
+     * 100% funded by the Bundesagentur für Arbeit
+     */
+    funded: () => LocalizedString;
     status: {
       /**
        * Your enrollment is pending. We will be in touch shortly.

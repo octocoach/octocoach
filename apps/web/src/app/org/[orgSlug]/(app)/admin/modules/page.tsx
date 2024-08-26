@@ -61,6 +61,7 @@ export default async function Page({ params: { orgSlug } }: Params) {
       <AddModule
         saveModuleAction={saveModuleAction.bind(null, orgSlug)}
         orgSlug={orgSlug}
+        baseUrl={baseUrl}
       />
     </Stack>
   );

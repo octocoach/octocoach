@@ -1,12 +1,13 @@
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
-import { and, eq, sql } from "@octocoach/db/operators";
+import { and, eq, inArray, sql } from "@octocoach/db/operators";
 import {
   mkContentLocaleTable,
   mkContentTable,
   SectionContent,
   SectionContentSimple,
   SectionId,
+  websiteSections,
 } from "@octocoach/db/schemas/org/content";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
@@ -17,7 +18,6 @@ import { notFound } from "next/navigation";
 
 import {
   AboutSectionContent,
-  CoachSectionContent,
   FaqSectionContent,
   HeroSectionContent,
   TestimonialsSectionContent,
@@ -36,10 +36,8 @@ const getValue = ({
       return value as HeroSectionContent;
     case "about":
       return value as AboutSectionContent;
-    case "coach":
-      return value as CoachSectionContent;
     case "faq":
-      return value as CoachSectionContent;
+      return value as FaqSectionContent;
     case "mission":
       return value as SectionContentSimple;
     case "testimonials":
@@ -53,7 +51,6 @@ const getValue = ({
 type ContentMap = {
   hero: HeroSectionContent;
   about: AboutSectionContent;
-  coach: CoachSectionContent;
   faq: FaqSectionContent;
   mission: SectionContentSimple;
   testimonials: TestimonialsSectionContent;
@@ -76,6 +73,7 @@ export const getContent = async (slug: string): Promise<ContentMap> => {
         eq(contentLocaleTable.locale, locale)
       )
     )
+    .where(inArray(contentTable.id, [...websiteSections]))
     .then((res) =>
       res.reduce(
         (acc, curr) => ({

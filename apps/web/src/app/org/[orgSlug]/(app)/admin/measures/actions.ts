@@ -2,6 +2,7 @@
 
 import { authOrRedirect } from "@helpers/auth";
 import { serialize } from "@helpers/index";
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { getFirstRow } from "@octocoach/db/helpers/rows";
 import { and, eq } from "@octocoach/db/operators";
@@ -117,6 +118,8 @@ export const deleteMeasureAction = async (
 ) => {
   const { user } = await authOrRedirect(orgSlug);
 
+  const baseUrl = getBaseUrl();
+
   const db = orgDb(orgSlug);
   const measureTable = mkMeasureTable(orgSlug);
   const measureInfoTable = mkMeasureInfoTable(orgSlug);
@@ -138,5 +141,5 @@ export const deleteMeasureAction = async (
   await db.delete(measureInfoTable).where(eq(measureInfoTable.id, id));
   await db.delete(measureTable).where(eq(measureTable.id, id));
 
-  redirect(`/org/${orgSlug}/admin/measures`);
+  redirect(`${baseUrl}admin/measures`);
 };

@@ -1,11 +1,12 @@
 import { authOrRedirect } from "@helpers/auth";
 import { db, orgDb } from "@octocoach/db/connection";
-import { eq } from "@octocoach/db/operators";
+import { eq, inArray } from "@octocoach/db/operators";
 import { whitelistedUsers } from "@octocoach/db/schemas/common/organization";
 import {
   ContentLocale,
   mkContentLocaleTable,
   mkContentTable,
+  websiteSections,
 } from "@octocoach/db/schemas/org/content";
 import { Box, Text } from "@octocoach/ui";
 
@@ -33,10 +34,8 @@ export default async function Page() {
         value: contentLocaleTable.value,
       })
       .from(contentTable)
-      .innerJoin(
-        contentLocaleTable,
-        eq(contentTable.id, contentLocaleTable.id)
-      );
+      .innerJoin(contentLocaleTable, eq(contentTable.id, contentLocaleTable.id))
+      .where(inArray(contentTable.id, [...websiteSections]));
 
     return <Admin organization={organization} content={content} />;
   }

@@ -40,13 +40,23 @@ const en = {
     de: "Deutsch",
   },
   measures: {
-    readMore: "Read more",
+    heading: "Our courses",
+    readMore: "Learn more",
+    intro:
+      "As an AZAV certified educational institution, we offer fully accredited courses designed to meet the highest standards of quality and effectiveness.",
   },
   enrollment: {
     applyNow: "Apply now",
-    modules: "Modules",
-    cohorts: "Cohorts",
-    requirements: "Requirements",
+    modules: "Curriculum",
+    cohorts: "Starting dates",
+    requirements: "Entry Requirements",
+    atAGlance: "At a glance",
+    duration: "Duration",
+    weeks: "{weeks: number} weeks",
+    hoursPerWeek: "(~{hoursPerWeek: number} hours per week)",
+    maxParticipants: "Max. participants",
+    cost: "Cost",
+    funded: "100% funded by the Bundesagentur für Arbeit",
     status: {
       pending: "Your enrollment is pending. We will be in touch shortly.",
     },

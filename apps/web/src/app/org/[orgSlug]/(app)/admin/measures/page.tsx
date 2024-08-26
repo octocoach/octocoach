@@ -59,6 +59,7 @@ export default async function Page({ params }: Params) {
       <AddMeasure
         saveMeasureAction={saveMeasureAction.bind(null, params.orgSlug)}
         orgSlug={params.orgSlug}
+        baseUrl={baseUrl}
       />
     </Stack>
   );

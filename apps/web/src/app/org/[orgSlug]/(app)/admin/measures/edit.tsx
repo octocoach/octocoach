@@ -72,11 +72,13 @@ export function EditMeasure({
   measureInfo,
   saveMeasureAction,
   orgSlug,
+  baseUrl,
 }: {
   measure: SaveMeasureData["measure"];
   measureInfo: SaveMeasureData["measureInfo"];
   saveMeasureAction: (data: SaveMeasureData) => SaveMeasureRetype;
   orgSlug: string;
+  baseUrl: string;
 }) {
   const mappedMeasureInfo = mapMeasureInfo(measureInfo);
 
@@ -120,7 +122,7 @@ export function EditMeasure({
       }).then((result) => {
         if (result.success === true) {
           store.reset();
-          router.push(`/org/${orgSlug}/admin/measures/${measure.id}`);
+          router.push(`${baseUrl}admin/measures/${measure.id}`);
         } else if (result.errors) {
           if (result.errors.measure?.issues?.length) {
             for (const issue of result.errors.measure.issues) {
@@ -156,7 +158,7 @@ export function EditMeasure({
 
   const onCancel = () => {
     startTransition(() => {
-      router.push(`/org/${orgSlug}/admin/measures/${measure.id}`);
+      router.push(`${baseUrl}admin/measures/${measure.id}`);
     });
   };
 

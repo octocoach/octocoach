@@ -14,9 +14,11 @@ type MeasureInfoLocale = SaveMeasureData["measureInfo"][Locales];
 export function AddMeasure({
   saveMeasureAction,
   orgSlug,
+  baseUrl,
 }: {
   saveMeasureAction: (data: SaveMeasureData) => SaveMeasureRetype;
   orgSlug: string;
+  baseUrl: string;
 }) {
   const blankMeasure: SaveMeasureData["measure"] = {
     id: "",
@@ -52,6 +54,7 @@ export function AddMeasure({
       saveMeasureAction={saveMeasureAction}
       measure={blankMeasure}
       measureInfo={defaultValuesMeasureInfo}
+      baseUrl={baseUrl}
     />
   );
 }

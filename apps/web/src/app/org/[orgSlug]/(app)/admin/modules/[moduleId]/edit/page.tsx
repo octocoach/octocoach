@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@helpers/navigation";
 import { orgDb } from "@octocoach/db/connection";
 import { fromEntries } from "@octocoach/tshelpers";
 import { notFound } from "next/navigation";
@@ -8,6 +9,7 @@ import type { Params } from "../page";
 
 export default async function Page({ params: { orgSlug, moduleId } }: Params) {
   const db = orgDb(orgSlug);
+  const baseUrl = getBaseUrl();
 
   const mod = await db.query.moduleTable.findFirst({
     where: ({ id }, { eq }) => eq(id, moduleId),
@@ -29,6 +31,7 @@ export default async function Page({ params: { orgSlug, moduleId } }: Params) {
       moduleInfo={info}
       orgSlug={orgSlug}
       saveModuleAction={saveModuleAction.bind(null, orgSlug)}
+      baseUrl={baseUrl}
     />
   );
 }

@@ -12,14 +12,16 @@ export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
   value: T;
 };
 
-export type SectionId =
-  | "about"
-  | "coach"
-  | "faq"
-  | "hero"
-  | "method"
-  | "mission"
-  | "testimonials";
+export const websiteSections = [
+  "about",
+  "faq",
+  "hero",
+  "method",
+  "mission",
+  "testimonials",
+] as const;
+
+export type SectionId = (typeof websiteSections)[number];
 
 export type SectionContent =
   | SectionContentSimple

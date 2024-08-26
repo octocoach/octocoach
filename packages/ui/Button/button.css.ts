@@ -1,6 +1,20 @@
+import { keyframes } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
 import { vars } from "../theme.css";
+
+const pulseAnimation = keyframes({
+  "0%": {
+    boxShadow: `
+    -10px 0px 20px ${vars.color.brand[20]},
+    10px 0px 20px ${vars.color.accent[20]};`,
+  },
+  "100%": {
+    boxShadow: `
+    -10px 0px 20px ${vars.color.brand.normal},
+    10px 0px 20px ${vars.color.accent.normal};`,
+  },
+});
 
 export const button = recipe({
   base: {
@@ -12,6 +26,8 @@ export const button = recipe({
     fontFamily: vars.fonts.base,
     fontVariationSettings: '"CASL" 0',
     fontWeight: 400,
+    textAlign: "center",
+    lineHeight: 1,
     transition: "all 1s",
     width: "fit-content",
     ":hover": {
@@ -104,10 +120,21 @@ export const button = recipe({
         borderRadius: 8,
       },
     },
+    animation: {
+      none: {},
+      pulse: {
+        margin: "15px 25px",
+        animationName: pulseAnimation,
+        animationDirection: "alternate",
+        animationDuration: "1s",
+        animationIterationCount: "infinite",
+      },
+    },
   },
   defaultVariants: {
     color: "brand",
     size: "medium",
+    animation: "none",
   },
 });
 

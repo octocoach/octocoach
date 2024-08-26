@@ -25,11 +25,6 @@ const defaultContent: Record<SectionId, SectionContent> = {
     title: "",
     text: "",
   },
-  coach: {
-    title: "",
-    text: "",
-    image,
-  },
   method: {
     title: "",
     subSections: [],

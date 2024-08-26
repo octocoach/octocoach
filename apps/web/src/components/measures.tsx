@@ -6,10 +6,9 @@ import { Grid } from "@octocoach/ui/Grid/Grid";
 import { Stack } from "@octocoach/ui/Stack/Stack";
 import Link from "next/link";
 
-import { CertquaMeasureSeal } from "./certqua-seal/measure";
+import { CertquaOrgSeal } from "./certqua-seal/organization";
 import { FillImage } from "./fill-image";
 import { FundedByBA } from "./funded-by-ba";
-import { jiggleClass } from "./measures.css";
 
 export const Measures = ({
   measures,
@@ -22,46 +21,53 @@ export const Measures = ({
 
   return (
     <Box paddingY="medium">
-      <Stack>
-        {measures.map((measure) => {
-          const href = `${baseUrl}measures/${measure.id}`;
-          return (
-            <Card key={measure.id}>
-              <Grid columns="auto" gap="large">
-                <FillImage
-                  src={measure.imageSrc}
-                  alt={measure.imageAlt}
-                  minHeight={200}
-                  roundedCorners
-                />
-                <Stack>
-                  {measure.accredited && (
-                    <Stack
-                      direction="horizontal"
-                      justify="between"
-                      wrap
-                      align="left"
-                    >
-                      <CertquaMeasureSeal />
-                      <FundedByBA />
-                    </Stack>
-                  )}
-                  <Text size="xl" variation="casual">
-                    <Link href={href}>{measure.title}</Link>
-                  </Text>
-                  <Markdown>{measure.description}</Markdown>
-                  <Stack direction="horizontal" justify="right">
-                    <div className={jiggleClass}>
-                      <ButtonLink href={href} Element={Link} glow size="large">
+      <Stack spacing="loose">
+        <Stack>
+          <Text element="h2" size="l" weight="bold">
+            <Message id="measures.heading" />
+          </Text>
+          <Grid columns="auto" gap="large" placeItems="center">
+            <Text variation="casual" weight="light" size="l">
+              <Message id="measures.intro" />
+            </Text>
+
+            <CertquaOrgSeal />
+          </Grid>
+        </Stack>
+        <Stack>
+          {measures.map((measure) => {
+            const href = `${baseUrl}measures/${measure.id}`;
+            return (
+              <Card key={measure.id}>
+                <Grid columns="auto" gap="large">
+                  <FillImage
+                    src={measure.imageSrc}
+                    alt={measure.imageAlt}
+                    minHeight={200}
+                    roundedCorners
+                  />
+                  <Stack>
+                    <Text size="xl" variation="casual">
+                      <Link href={href}>{measure.title}</Link>
+                    </Text>
+                    <Markdown>{measure.description}</Markdown>
+                    <Stack direction="horizontal" justify="right">
+                      {measure.accredited && <FundedByBA />}
+                      <ButtonLink
+                        href={href}
+                        Element={Link}
+                        size="large"
+                        animation="pulse"
+                      >
                         <Message id="measures.readMore" />
                       </ButtonLink>
-                    </div>
+                    </Stack>
                   </Stack>
-                </Stack>
-              </Grid>
-            </Card>
-          );
-        })}
+                </Grid>
+              </Card>
+            );
+          })}
+        </Stack>
       </Stack>
     </Box>
   );

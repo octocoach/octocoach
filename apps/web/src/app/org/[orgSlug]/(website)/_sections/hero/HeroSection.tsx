@@ -20,12 +20,13 @@ export interface HeroSectionProps {
 export const HeroSection = ({ content }: HeroSectionProps) => {
   return (
     <Box paddingX="small" paddingY="medium">
-      <Grid placeItems="center" gap="medium">
+      <Grid placeItems="center" gap="extraLarge">
         <FillImage
           src={content.image.src}
           alt={content.image.alt}
           minHeight={300}
-          objectFit="contain"
+          objectFit="cover"
+          roundedCorners
         />
 
         <Stack spacing="tight">

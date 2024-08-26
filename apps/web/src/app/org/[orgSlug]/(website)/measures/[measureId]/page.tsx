@@ -92,7 +92,7 @@ const ApplyButton = ({ baseUrl, measureId, cohortId }: ApplyButtonProps) => {
   if (cohortId) href = `${href}/cohort/${cohortId}`;
 
   return (
-    <Box paddingY="medium">
+    <Box paddingY={cohortId ? "none" : "medium"}>
       <Stack fullWidth align="center">
         <ButtonLink Element={Link} href={href} glow size="large">
           <Message id="enrollment.applyNow" />
@@ -131,29 +131,31 @@ const CohortsSection = async ({
       <Text size="l" weight="light" element="h2">
         <Message id="enrollment.cohorts" />
       </Text>
-      <Stack>
-        {cohorts.map((cohort) => (
-          <Card key={cohort.id}>
-            <Stack
-              spacing="tight"
-              direction="horizontal"
-              justify="between"
-              align="center"
-            >
-              <Text size="l" variation="casual">
-                {formatDate(cohort.startDate, "PPPP", {
-                  locale: locales[locale],
-                })}
-              </Text>
-              <ApplyButton
-                baseUrl={baseUrl}
-                measureId={measure.id}
-                cohortId={cohort.id}
-              />
-            </Stack>
-          </Card>
-        ))}
-      </Stack>
+      <Card>
+        <Stack>
+          {cohorts.map((cohort) => (
+            <Card key={cohort.id} surface="mantle">
+              <Stack
+                spacing="tight"
+                direction="horizontal"
+                justify="between"
+                align="center"
+              >
+                <Text size="l" variation="casual">
+                  {formatDate(cohort.startDate, "PPPP", {
+                    locale: locales[locale],
+                  })}
+                </Text>
+                <ApplyButton
+                  baseUrl={baseUrl}
+                  measureId={measure.id}
+                  cohortId={cohort.id}
+                />
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
+      </Card>
     </>
   );
 };
@@ -188,6 +190,12 @@ export default async function Page({
 
   const baseUrl = getBaseUrl();
 
+  const totalUE = measure.modules.reduce((acc, curr) => acc + curr.units, 0);
+  const rate = parseFloat(measure.rate);
+  const cost = totalUE * rate;
+  const weeks = measure.duration;
+  const hoursPerWeek = Math.round((totalUE / weeks) * 0.75);
+
   return (
     <Box marginY="medium">
       <Stack>
@@ -219,6 +227,56 @@ export default async function Page({
             </Stack>
           </Box>
         )}
+
+        <Text size="l" weight="light" element="h2">
+          <Message id="enrollment.atAGlance" />
+        </Text>
+        <Card>
+          <Stack spacing="tight">
+            <Box>
+              <Text element="span" weight="bold">
+                <Message id="enrollment.maxParticipants" />:{" "}
+              </Text>
+              <Text element="span" variation="casual">
+                {measure.maxParticipants}
+              </Text>
+            </Box>
+            <Box>
+              <Text element="span" weight="bold">
+                <Message id="enrollment.duration" />:{" "}
+              </Text>
+              <Text element="span" variation="casual">
+                <Message id="enrollment.weeks" params={{ weeks }} />
+              </Text>{" "}
+              <Text element="span" size="s" weight="light">
+                <Message
+                  id="enrollment.hoursPerWeek"
+                  params={{ hoursPerWeek }}
+                />
+              </Text>
+            </Box>
+
+            <Box>
+              <Text element="span" weight="bold">
+                <Message id="enrollment.cost" />:{" "}
+              </Text>
+              <Text element="span" variation="casual">
+                {cost.toFixed(2)} €{" "}
+                {measure.accredited ? (
+                  <Text element="span" weight="light" size="s">
+                    (<Message id="enrollment.funded" />)
+                  </Text>
+                ) : null}
+              </Text>
+            </Box>
+          </Stack>
+        </Card>
+        <Text size="l" weight="light" element="h2">
+          <Message id="enrollment.requirements" />
+        </Text>
+        <Card>
+          <Markdown>{measure.requirements}</Markdown>
+        </Card>
         <ApplySection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.modules" />
@@ -243,13 +301,6 @@ export default async function Page({
             </Card>
           ))}
         </Stack>
-        <Text size="l" weight="light" element="h2">
-          <Message id="enrollment.requirements" />
-        </Text>
-        <Card>
-          <Markdown>{measure.requirements}</Markdown>
-        </Card>
-        <ApplySection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
       </Stack>
     </Box>
   );

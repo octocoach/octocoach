@@ -17,7 +17,6 @@ import { notFound } from "next/navigation";
 
 import {
   AboutSectionContent,
-  CoachSectionContent,
   FaqSectionContent,
   HeroSectionContent,
   TestimonialsSectionContent,
@@ -36,10 +35,8 @@ const getValue = ({
       return value as HeroSectionContent;
     case "about":
       return value as AboutSectionContent;
-    case "coach":
-      return value as CoachSectionContent;
     case "faq":
-      return value as CoachSectionContent;
+      return value as FaqSectionContent;
     case "mission":
       return value as SectionContentSimple;
     case "testimonials":
@@ -53,7 +50,6 @@ const getValue = ({
 type ContentMap = {
   hero: HeroSectionContent;
   about: AboutSectionContent;
-  coach: CoachSectionContent;
   faq: FaqSectionContent;
   mission: SectionContentSimple;
   testimonials: TestimonialsSectionContent;

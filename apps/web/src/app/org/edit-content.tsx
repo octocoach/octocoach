@@ -10,7 +10,6 @@ import {
 } from "@octocoach/ui";
 import {
   aboutSectionId,
-  coachSectionId,
   faqSectionId,
   heroSectionId,
   testimonialsSectionId,
@@ -47,12 +46,6 @@ export const EditContent = ({
           content={content}
           name="About"
           id={aboutSectionId}
-          saveContent={saveContentWithSlug}
-        />
-        <EditSectionContentWithImage
-          content={content}
-          name="Coach"
-          id={coachSectionId}
           saveContent={saveContentWithSlug}
         />
         <EditFaqSection

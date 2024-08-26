@@ -40,13 +40,23 @@ const de = {
     de: "Deutsch",
   },
   measures: {
+    heading: "Unsere Kurse",
     readMore: "Mehr erfahren",
+    intro:
+      "Als AZAV-zertifizierte Bildungsträger bieten wir vollständig anerkannte Kurse an, die den höchsten Qualitäts- und Wirksamkeitsstandards entsprechen.",
   },
   enrollment: {
     applyNow: "Jetzt bewerben!",
-    modules: "Bausteine",
-    cohorts: "Kohorten",
-    requirements: "Anforderungen",
+    modules: "Curriculum",
+    cohorts: "Starttermine",
+    requirements: "Zugangsvoraussetzungen",
+    atAGlance: "Auf einen Blick",
+    duration: "Dauer",
+    weeks: "{weeks} Wochen",
+    hoursPerWeek: "(~{hoursPerWeek} Stunden pro Woche)",
+    maxParticipants: "Max. Teilnehmer",
+    cost: "Kosten",
+    funded: "100% finanziert von der Bundesagentur für Arbeit",
     status: {
       pending:
         "Deine Anmeldung wird bearbeitet. Wir werden uns in Kürze bei dir melden.",

@@ -2,7 +2,6 @@ import { Measures } from "@components/measures";
 import { getBaseUrl } from "@helpers/navigation";
 import {
   AboutSection,
-  CoachSection,
   FAQSection,
   HeroSection,
   TestimonialsSection,
@@ -21,9 +20,8 @@ export default async function Page({ params: { orgSlug } }: Params) {
     <>
       <HeroSection content={content.hero} />
       <Measures measures={measures} baseUrl={baseUrl} />
-      <AboutSection content={content.about} />
       <TestimonialsSection content={content.testimonials} />
-      <CoachSection content={content.coach} />
+      <AboutSection content={content.about} />
       <FAQSection content={content.faq} />
     </>
   );

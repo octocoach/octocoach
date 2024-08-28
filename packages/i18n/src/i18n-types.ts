@@ -137,6 +137,10 @@ type RootTranslation = {
      */
     cohorts: string;
     /**
+     * E​n​d​s​ ​o​n
+     */
+    endsOn: string;
+    /**
      * E​n​t​r​y​ ​R​e​q​u​i​r​e​m​e​n​t​s
      */
     requirements: string;
@@ -550,6 +554,10 @@ export type TranslationFunctions = {
      * Starting dates
      */
     cohorts: () => LocalizedString;
+    /**
+     * Ends on
+     */
+    endsOn: () => LocalizedString;
     /**
      * Entry Requirements
      */

@@ -14,6 +14,8 @@ import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
 import { mkOrgSchema } from "@octocoach/db/schemas/org/schema";
 import { userTable } from "@octocoach/db/schemas/public/schema";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
+import { addBusinessDays } from "date-fns";
+import Holidays from "date-holidays";
 import { notFound } from "next/navigation";
 
 import {
@@ -329,4 +331,36 @@ export const getOrganizationWithAddressAndOwnerName = async (slug: string) => {
         ownerName: row.user.name!,
       };
     });
+};
+
+export const getEndDate = (startDate: Date, duration: number) => {
+  const holidays = new Holidays("DE", "nw");
+
+  const durationInDays = duration * 5;
+  const businessDays: Date[] = [];
+
+  let day = 0;
+  let numberOfHolidays = 0;
+
+  while (day < durationInDays) {
+    const date = addBusinessDays(startDate, day + numberOfHolidays);
+    const dateHolidays = holidays.isHoliday(date);
+
+    if (
+      !(
+        dateHolidays &&
+        dateHolidays.some((h) => h.type === "bank" || h.type === "public")
+      )
+    ) {
+      businessDays.push(date);
+      day += 1;
+    } else {
+      numberOfHolidays += 1;
+    }
+  }
+
+  const endDate = businessDays.at(-1);
+  if (!endDate) throw new Error("No last date");
+
+  return endDate;
 };

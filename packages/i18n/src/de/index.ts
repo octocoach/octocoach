@@ -49,6 +49,7 @@ const de = {
     applyNow: "Jetzt bewerben!",
     modules: "Curriculum",
     cohorts: "Starttermine",
+    endsOn: "Endet am",
     requirements: "Zugangsvoraussetzungen",
     atAGlance: "Auf einen Blick",
     duration: "Dauer",

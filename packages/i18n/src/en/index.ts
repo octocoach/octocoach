@@ -49,6 +49,7 @@ const en = {
     applyNow: "Apply now",
     modules: "Curriculum",
     cohorts: "Starting dates",
+    endsOn: "Ends on",
     requirements: "Entry Requirements",
     atAGlance: "At a glance",
     duration: "Duration",

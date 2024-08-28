@@ -4,7 +4,7 @@ import { FundedByBA } from "@components/funded-by-ba";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
-import { and, eq } from "@octocoach/db/operators";
+import { and, asc, eq } from "@octocoach/db/operators";
 import { Cohort } from "@octocoach/db/schemas/org/cohort";
 import {
   Measure,
@@ -29,7 +29,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getMeasureWithInfoAndModules } from "../../helpers";
+import { getEndDate, getMeasureWithInfoAndModules } from "../../helpers";
 
 type PageParams = {
   params: { orgSlug: string; measureId: MeasureWithInfo["id"] };
@@ -94,7 +94,7 @@ const ApplyButton = ({ baseUrl, measureId, cohortId }: ApplyButtonProps) => {
   return (
     <Box paddingY={cohortId ? "none" : "medium"}>
       <Stack fullWidth align="center">
-        <ButtonLink Element={Link} href={href} glow size="large">
+        <ButtonLink Element={Link} href={href} glow size="medium">
           <Message id="enrollment.applyNow" />
         </ButtonLink>
       </Stack>
@@ -124,7 +124,8 @@ const CohortsSection = async ({
   const cohorts = await db
     .select()
     .from(cohortTable)
-    .where(eq(cohortTable.measure, measure.id));
+    .where(eq(cohortTable.measure, measure.id))
+    .orderBy(asc(cohortTable.startDate));
 
   return (
     <>
@@ -133,27 +134,38 @@ const CohortsSection = async ({
       </Text>
       <Card>
         <Stack>
-          {cohorts.map((cohort) => (
-            <Card key={cohort.id} surface="mantle">
-              <Stack
-                spacing="tight"
-                direction="horizontal"
-                justify="between"
-                align="center"
-              >
-                <Text size="l" variation="casual">
-                  {formatDate(cohort.startDate, "PPPP", {
-                    locale: locales[locale],
-                  })}
-                </Text>
-                <ApplyButton
-                  baseUrl={baseUrl}
-                  measureId={measure.id}
-                  cohortId={cohort.id}
-                />
-              </Stack>
-            </Card>
-          ))}
+          {cohorts.map((cohort) => {
+            const endDate = getEndDate(cohort.startDate, measure.duration);
+
+            return (
+              <Card key={cohort.id} surface="mantle">
+                <Stack
+                  spacing="tight"
+                  direction="horizontal"
+                  justify="between"
+                  align="center"
+                >
+                  <Box>
+                    <Text size="m" variation="casual">
+                      {formatDate(cohort.startDate, "PP", {
+                        locale: locales[locale],
+                      })}
+                    </Text>
+                    <Text variation="casual" size="s" weight="light">
+                      <Message id="enrollment.endsOn" />{" "}
+                      {formatDate(endDate, "PP", { locale: locales[locale] })}
+                    </Text>
+                  </Box>
+
+                  <ApplyButton
+                    baseUrl={baseUrl}
+                    measureId={measure.id}
+                    cohortId={cohort.id}
+                  />
+                </Stack>
+              </Card>
+            );
+          })}
         </Stack>
       </Card>
     </>

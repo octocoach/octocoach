@@ -1,6 +1,6 @@
 export const meta = {
-  version: 18,
-  when: 1724074285465,
+  version: 19,
+  when: 1725283056381,
 };
 
 export const rawSql = `
@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS "org_{slug}"."measure_info" (
 	"requirements" text NOT NULL,
 	"image_alt" text NOT NULL,
 	"screening_questions" jsonb,
+	"curriculum_intro" text,
 	CONSTRAINT "measure_info_id_locale_pk" PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint

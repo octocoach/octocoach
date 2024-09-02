@@ -101,6 +101,7 @@ export const mkMeasureInfoTable = (slug: string) => {
       screeningQuestions: jsonb("screening_questions").$type<
         ScreeningQuestion[]
       >(),
+      curriculumIntro: text("curriculum_intro"),
     },
     (table) => ({
       pk: primaryKey({ columns: [table.id, table.locale] }),

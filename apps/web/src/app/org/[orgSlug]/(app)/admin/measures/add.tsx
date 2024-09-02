@@ -33,6 +33,7 @@ export function AddMeasure({
   const blankMeasureInfo: MeasureInfoLocale = {
     title: "",
     description: "",
+    curriculumIntro: "",
     requirements: "",
     imageAlt: "",
     screeningQuestions: [],

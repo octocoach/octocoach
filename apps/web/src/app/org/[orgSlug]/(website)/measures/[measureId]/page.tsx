@@ -293,26 +293,31 @@ export default async function Page({
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.modules" />
         </Text>
-        <Stack>
-          {measure.modules.map((mod) => (
-            <Card key={mod.id}>
-              <Grid gap="large" columns="auto" justifyItems="center">
-                <FillImage
-                  src={mod.imageSrc}
-                  alt={mod.imageAlt}
-                  minHeight={200}
-                  roundedCorners
-                />
-                <Box>
-                  <Text size="l" weight="heavy">
-                    {mod.title}
-                  </Text>
-                  <Markdown>{mod.description}</Markdown>
-                </Box>
-              </Grid>
-            </Card>
-          ))}
-        </Stack>
+        <Card>
+          {measure.curriculumIntro && (
+            <Markdown>{measure.curriculumIntro}</Markdown>
+          )}
+          <Stack>
+            {measure.modules.map((mod) => (
+              <Card key={mod.id} surface="mantle">
+                <Grid gap="large" columns="auto" justifyItems="center">
+                  <FillImage
+                    src={mod.imageSrc}
+                    alt={mod.imageAlt}
+                    minHeight={200}
+                    roundedCorners
+                  />
+                  <Box>
+                    <Text size="l" weight="heavy">
+                      {mod.title}
+                    </Text>
+                    <Markdown>{mod.description}</Markdown>
+                  </Box>
+                </Grid>
+              </Card>
+            ))}
+          </Stack>
+        </Card>
       </Stack>
     </Box>
   );

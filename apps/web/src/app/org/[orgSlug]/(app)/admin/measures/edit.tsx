@@ -227,6 +227,7 @@ export function EditMeasure({
         <LocaleField fieldName="title" />
         <FormCheckbox name={$.measure.accredited} label="Accredited" />
         <LocaleField fieldName="description" type="textarea" />
+        <LocaleField fieldName="curriculumIntro" type="textarea" />
         <LocaleField fieldName="requirements" type="textarea" />
         <LocaleField fieldName="imageAlt" />
 

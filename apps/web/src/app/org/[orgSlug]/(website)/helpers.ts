@@ -132,6 +132,7 @@ export const getMeasuresWithInfo = async (slug: string) => {
       duration: measureTable.duration,
       maxParticipants: measureTable.maxParticipants,
       rate: measureTable.rate,
+      curriculumIntro: measureInfoTable.curriculumIntro,
     })
     .from(measureTable)
     .innerJoin(
@@ -170,6 +171,7 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       duration: measureTable.duration,
       maxParticipants: measureTable.maxParticipants,
       rate: measureTable.rate,
+      curriculumIntro: measureInfoTable.curriculumIntro,
       modules: sql<ModuleWithInfo[]>`
       COALESCE(
         jsonb_agg(
@@ -216,6 +218,7 @@ export const getMeasuresWithInfoAndModules = async (slug: string) => {
       table.owner,
       table.requirements,
       table.screeningQuestions,
+      table.curriculumIntro,
     ])
     .orderBy(measureInfoTable.title);
 };
@@ -253,6 +256,7 @@ export const getMeasureWithInfoAndModules = async (
       maxParticipants: measureTable.maxParticipants,
       rate: measureTable.rate,
       screeningQuestions: measureInfoTable.screeningQuestions,
+      curriculumIntro: measureInfoTable.curriculumIntro,
       modules: sql<ModuleWithInfo[]>`
       COALESCE(
         jsonb_agg(
@@ -300,6 +304,7 @@ export const getMeasureWithInfoAndModules = async (
       table.owner,
       table.requirements,
       table.screeningQuestions,
+      table.curriculumIntro,
     ])
     .then((rows) => rows[0] ?? null);
 

@@ -9,6 +9,10 @@ export const mapMeasureInfo = (measureInfo: SaveMeasureData["measureInfo"]) => {
       en: measureInfo.en.description,
       de: measureInfo.de.description,
     },
+    curriculumIntro: {
+      en: measureInfo.en.curriculumIntro,
+      de: measureInfo.de.curriculumIntro,
+    },
     requirements: {
       en: measureInfo.en.requirements,
       de: measureInfo.de.requirements,
@@ -41,6 +45,7 @@ export const unmapMeasureInfo = (
     en: {
       title: m.title.en,
       description: m.description.en,
+      curriculumIntro: m.curriculumIntro.en,
       imageAlt: m.imageAlt.en,
       requirements: m.requirements.en,
       screeningQuestions: m.screeningQuestions.map((q) => q.en),
@@ -48,6 +53,7 @@ export const unmapMeasureInfo = (
     de: {
       title: m.title.de,
       description: m.description.de,
+      curriculumIntro: m.curriculumIntro.de,
       imageAlt: m.imageAlt.de,
       requirements: m.requirements.de,
       screeningQuestions: m.screeningQuestions.map((q) => q.de),

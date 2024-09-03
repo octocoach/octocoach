@@ -131,7 +131,11 @@ type RootTranslation = {
     /**
      * C​u​r​r​i​c​u​l​u​m
      */
-    modules: string;
+    curriculum: string;
+    /**
+     * W​h​a​t​ ​y​o​u​'​l​l​ ​l​e​a​r​n
+     */
+    whatYoullLearn: string;
     /**
      * S​t​a​r​t​i​n​g​ ​d​a​t​e​s
      */
@@ -141,7 +145,7 @@ type RootTranslation = {
      */
     endsOn: string;
     /**
-     * E​n​t​r​y​ ​R​e​q​u​i​r​e​m​e​n​t​s
+     * E​n​t​r​y​ ​r​e​q​u​i​r​e​m​e​n​t​s
      */
     requirements: string;
     /**
@@ -549,7 +553,11 @@ export type TranslationFunctions = {
     /**
      * Curriculum
      */
-    modules: () => LocalizedString;
+    curriculum: () => LocalizedString;
+    /**
+     * What you'll learn
+     */
+    whatYoullLearn: () => LocalizedString;
     /**
      * Starting dates
      */
@@ -559,7 +567,7 @@ export type TranslationFunctions = {
      */
     endsOn: () => LocalizedString;
     /**
-     * Entry Requirements
+     * Entry requirements
      */
     requirements: () => LocalizedString;
     /**

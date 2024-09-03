@@ -47,7 +47,8 @@ const de = {
   },
   enrollment: {
     applyNow: "Jetzt bewerben!",
-    modules: "Curriculum",
+    curriculum: "Curriculum",
+    whatYoullLearn: "Was du lernen wirst",
     cohorts: "Starttermine",
     endsOn: "Endet am",
     requirements: "Zugangsvoraussetzungen",

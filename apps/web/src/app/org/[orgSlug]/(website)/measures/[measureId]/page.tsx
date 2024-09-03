@@ -291,31 +291,38 @@ export default async function Page({
         </Card>
         <ApplySection baseUrl={baseUrl} measure={measure} orgSlug={orgSlug} />
         <Text size="l" weight="light" element="h2">
-          <Message id="enrollment.modules" />
+          <Message id="enrollment.curriculum" />
         </Text>
         <Card>
-          {measure.curriculumIntro && (
-            <Markdown>{measure.curriculumIntro}</Markdown>
-          )}
-          <Stack>
-            {measure.modules.map((mod) => (
-              <Card key={mod.id} surface="mantle">
-                <Grid gap="large" columns="auto" justifyItems="center">
-                  <FillImage
-                    src={mod.imageSrc}
-                    alt={mod.imageAlt}
-                    minHeight={200}
-                    roundedCorners
-                  />
-                  <Box>
-                    <Text size="l" weight="heavy">
-                      {mod.title}
-                    </Text>
-                    <Markdown>{mod.description}</Markdown>
-                  </Box>
-                </Grid>
-              </Card>
-            ))}
+          <Stack spacing="loose">
+            {measure.curriculumIntro && (
+              <Markdown>{measure.curriculumIntro}</Markdown>
+            )}
+            <Stack>
+              <Text size="l" weight="semiBold" element="h2" variation="casual">
+                <Message id="enrollment.whatYoullLearn" />
+              </Text>
+              <Stack spacing="tight">
+                {measure.modules.map((mod) => (
+                  <Card key={mod.id} surface="mantle">
+                    <Grid gap="large" columns="auto" justifyItems="center">
+                      <FillImage
+                        src={mod.imageSrc}
+                        alt={mod.imageAlt}
+                        minHeight={200}
+                        roundedCorners
+                      />
+                      <Box>
+                        <Text size="l" weight="heavy">
+                          {mod.title}
+                        </Text>
+                        <Markdown>{mod.description}</Markdown>
+                      </Box>
+                    </Grid>
+                  </Card>
+                ))}
+              </Stack>
+            </Stack>
           </Stack>
         </Card>
       </Stack>

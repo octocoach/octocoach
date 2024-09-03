@@ -47,10 +47,11 @@ const en = {
   },
   enrollment: {
     applyNow: "Apply now",
-    modules: "Curriculum",
+    curriculum: "Curriculum",
+    whatYoullLearn: "What you'll learn",
     cohorts: "Starting dates",
     endsOn: "Ends on",
-    requirements: "Entry Requirements",
+    requirements: "Entry requirements",
     atAGlance: "At a glance",
     duration: "Duration",
     weeks: "{weeks: number} weeks",

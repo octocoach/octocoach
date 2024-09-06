@@ -1,0 +1,28 @@
+{
+  "name": "@octocoach/video",
+  "version": "1.0.0",
+  "description": "Video Generation",
+  "repository": {},
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.209",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "4.0.209"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config": "4.0.209",
+    "@types/react": "^18.0.26",
+    "@types/web": "^0.0.143",
+    "eslint": "^8.43.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render MyComp out/video.mp4",
+    "upgrade": "remotion upgrade",
+    "test": "eslint src --ext ts,tsx,js,jsx && tsc"
+  },
+  "packageManager": "pnpm@9.7.1"
+}

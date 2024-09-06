@@ -74,6 +74,9 @@ importers:
       '@remotion/cli':
         specifier: 4.0.209
         version: 4.0.209(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)
+      '@remotion/layout-utils':
+        specifier: ^4.0.209
+        version: 4.0.209
       react:
         specifier: ^18.0.0
         version: 18.3.1
@@ -2957,6 +2960,9 @@ packages:
     resolution: {integrity: sha512-gD5t8b8egs60Rru6jUrDYX/hFvP+PWyUfWXYYFkj1LBIHvJC8xH16RFvK86xWmsF8YE/z9yqXBQ7HeNzEByBrA==}
     peerDependencies:
       eslint: '>=7.0.0'
+
+  '@remotion/layout-utils@4.0.209':
+    resolution: {integrity: sha512-OS01cyZf0UNi32Ug92g3W7fTbWF1rs/1avqexbW0u+u9iacMHlrh9CFj+CmKA/XvjlqkNRhtKentyiI2jdpfXw==}
 
   '@remotion/media-utils@4.0.209':
     resolution: {integrity: sha512-JQKMlaXHm71mLktycqGW4utcZIM+CnLSV+xaCi9EAyQY9mg/juDpjd35J+8d8IyRi4zwG2HcQ6NXxTKl0RcDkg==}
@@ -12999,6 +13005,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  '@remotion/layout-utils@4.0.209': {}
 
   '@remotion/media-utils@4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:

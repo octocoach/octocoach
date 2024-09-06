@@ -6,6 +6,7 @@ import { Json } from "./Json";
 import { Logo } from "./Logo";
 import { Numeronym } from "./Numeronym";
 import { SideBySide } from "./SideBySide";
+import { Title } from "./Title";
 
 export const compSchema = z.object({
   text: z.string(),
@@ -35,6 +36,7 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
           <Logo durationInFrames={120} size={200} />
           <Numeronym text={text} progress={progress} />
         </div>
+        <Title text={"AI Web App Development"} />
         <Json
           data={{
             type: "Course",

@@ -10,11 +10,11 @@ export const grid = recipe({
   variants: {
     columns: {
       equal: {
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
         gridAutoFlow: "row",
       },
       auto: {
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, auto))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, auto))",
         gridAutoFlow: "row",
       },
     },

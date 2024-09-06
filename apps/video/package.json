@@ -5,10 +5,12 @@
   "repository": {},
   "license": "UNLICENSED",
   "dependencies": {
+    "@catppuccin/palette": "^1.1.1",
     "@remotion/cli": "4.0.209",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "remotion": "4.0.209"
+    "remotion": "4.0.209",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@remotion/eslint-config": "4.0.209",

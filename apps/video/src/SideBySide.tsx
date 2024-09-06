@@ -29,7 +29,7 @@ export const SideBySide = ({ children }: { children: ReactNode }) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            placeContent: "center",
+            justifyContent: "space-evenly",
             alignItems: "center",
           }}
         >

@@ -65,6 +65,12 @@ importers:
       '@catppuccin/palette':
         specifier: ^1.1.1
         version: 1.1.1
+      '@catppuccin/vscode':
+        specifier: ^3.15.2
+        version: 3.15.2
+      '@code-hike/lighter':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@remotion/cli':
         specifier: 4.0.209
         version: 4.0.209(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)
@@ -1647,6 +1653,12 @@ packages:
 
   '@catppuccin/palette@1.1.1':
     resolution: {integrity: sha512-wgITbl3OEIUnv8WPTdG2BGjepSMZtJW9V4XpxNDJjCvel0Q5+BxRmKH3XYN0vVjohHR+APCyZCpzSnO+GdsTLg==}
+
+  '@catppuccin/vscode@3.15.2':
+    resolution: {integrity: sha512-ZHuMaJ4SRFmwDTaLPi3ckh/qSt8YngRlwUxMTMgtnsCQZGkEoWtMkG6Egx/0fWnJnLk+xsLzwmFI0uU8+ilY8w==}
+
+  '@code-hike/lighter@1.0.0':
+    resolution: {integrity: sha512-GVd0NveUTZ2jgeUh4lrLBZr2zSQT1ws32H747qK6AxSOMas4lXfp5KvkgmsHVg8WLdWwhtaaU9IXpyHEjfeDBw==}
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -4504,6 +4516,9 @@ packages:
   ansi-regex@6.0.1:
     resolution: {integrity: sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==}
     engines: {node: '>=12'}
+
+  ansi-sequence-parser@1.1.1:
+    resolution: {integrity: sha512-vJXt3yiaUL4UU546s3rPXlsry/RnM730G1+HkpKE012AN0sx1eOrxSu95oKDIonskeLTijMgqWZ3uDEe3NFvyg==}
 
   ansi-styles@3.2.1:
     resolution: {integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==}
@@ -11891,6 +11906,14 @@ snapshots:
 
   '@catppuccin/palette@1.1.1': {}
 
+  '@catppuccin/vscode@3.15.2':
+    dependencies:
+      '@catppuccin/palette': 1.1.1
+
+  '@code-hike/lighter@1.0.0':
+    dependencies:
+      ansi-sequence-parser: 1.1.1
+
   '@colors/colors@1.5.0':
     optional: true
 
@@ -15846,6 +15869,8 @@ snapshots:
   ansi-regex@5.0.1: {}
 
   ansi-regex@6.0.1: {}
+
+  ansi-sequence-parser@1.1.1: {}
 
   ansi-styles@3.2.1:
     dependencies:

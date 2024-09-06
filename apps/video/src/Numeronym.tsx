@@ -14,10 +14,12 @@ export const Numeronym = ({
   const hiddenLetters = rest.length - showLetters;
 
   return (
-    <span>
-      {firstLetter}
-      {rest.slice(0, showLetters)}
-      {hiddenLetters > 0 ? hiddenLetters : ""}
-    </span>
+    <div style={{ fontSize: 80 }}>
+      <span>
+        {firstLetter}
+        {rest.slice(0, showLetters)}
+        {hiddenLetters > 0 ? hiddenLetters : ""}
+      </span>
+    </div>
   );
 };

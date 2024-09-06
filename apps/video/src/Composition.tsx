@@ -1,11 +1,11 @@
-import { ColorName, flavors } from "@catppuccin/palette";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
+import { c } from "./helpers";
+import { Json } from "./Json";
+import { Logo } from "./Logo";
 import { Numeronym } from "./Numeronym";
 import { SideBySide } from "./SideBySide";
-
-const c = (colorName: ColorName) => flavors.mocha.colors[colorName].hex;
 
 export const compSchema = z.object({
   text: z.string(),
@@ -31,13 +31,18 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
       }}
     >
       <SideBySide>
-        <div
-          style={{
-            fontSize: 80,
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <Logo durationInFrames={120} size={200} />
           <Numeronym text={text} progress={progress} />
         </div>
+        <Json
+          data={{
+            type: "Course",
+            mode: "Full-time",
+            start: "2024-11-04",
+            end: "2025-02-26",
+          }}
+        />
       </SideBySide>
     </AbsoluteFill>
   );

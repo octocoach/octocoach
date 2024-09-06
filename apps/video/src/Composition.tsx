@@ -1,6 +1,7 @@
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
+import { Footer } from "./Footer";
 import { c } from "./helpers";
 import { Json } from "./Json";
 import { Logo } from "./Logo";
@@ -15,7 +16,7 @@ export const compSchema = z.object({
 export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
   const frame = useCurrentFrame();
 
-  const progress = interpolate(frame, [30, 90], [0, 1], {
+  const progress = interpolate(frame, [5, 30], [0, 1], {
     easing: Easing.inOut(Easing.ease.bind(Easing)),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -33,7 +34,7 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
     >
       <SideBySide>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <Logo durationInFrames={120} size={200} />
+          <Logo durationInFrames={30} size={200} />
           <Numeronym text={text} progress={progress} />
         </div>
         <Title text={"AI Web App Development"} />
@@ -45,6 +46,7 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
             end: "2025-02-26",
           }}
         />
+        <Footer />
       </SideBySide>
     </AbsoluteFill>
   );

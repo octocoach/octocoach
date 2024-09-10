@@ -1,3 +1,6 @@
+import TypesafeI18n from "@octocoach/i18n/src/i18n-react";
+import { loadAllLocalesAsync } from "@octocoach/i18n/src/i18n-util.async";
+import { useEffect, useState } from "react";
 import {
   AbsoluteFill,
   Easing,
@@ -12,14 +15,19 @@ import { c } from "./helpers";
 import { Json } from "./Json";
 import { Logo } from "./Logo";
 import { Numeronym } from "./Numeronym";
-import { SideBySide } from "./SideBySide";
-import { Title } from "./Title";
+import { Layout } from "./SideBySide";
 
 export const compSchema = z.object({
   text: z.string(),
+  layout: z.enum(["square", "portrait"]),
+  locale: z.enum(["en", "de"]),
 });
 
-export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
+export const MyComposition = ({
+  text,
+  layout,
+  locale,
+}: z.infer<typeof compSchema>) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -29,35 +37,46 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
     extrapolateRight: "clamp",
   });
 
+  const [localesLoaded, setLocalesLoaded] = useState(false);
+
+  useEffect(() => {
+    void (async () => {
+      await loadAllLocalesAsync();
+      setLocalesLoaded(true);
+    })();
+  }, [locale]);
+
   return (
-    <AbsoluteFill
-      style={{
-        fontFamily: `var(--font-recursive)`,
-        backgroundColor: c("crust"),
-        color: c("text"),
-        placeContent: "center",
-        placeItems: "center",
-      }}
-    >
-      <SideBySide image="3.jpg" panDuration={durationInFrames}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Logo durationInFrames={30} size={200} />
-          <Numeronym text={text} progress={progress} />
-        </div>
-
-        <Title text={"AI Web App Development"} />
-
-        <Json
-          data={{
-            type: "Course",
-            mode: "Full-time",
-            start: "2024-11-04",
-            end: "2025-02-26",
+    localesLoaded && (
+      <TypesafeI18n locale={locale}>
+        <AbsoluteFill
+          style={{
+            fontFamily: `var(--font-recursive)`,
+            backgroundColor: c("crust"),
+            color: c("text"),
+            placeContent: "center",
+            placeItems: "center",
           }}
-        />
+        >
+          <Layout layout={layout} image="3.jpg" panDuration={durationInFrames}>
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              <Logo durationInFrames={30} size={100} />
+              <Numeronym text={text} progress={progress} />
+            </div>
 
-        <Footer />
-      </SideBySide>
-    </AbsoluteFill>
+            <Json
+              data={{
+                type: "Course",
+                mode: "Full-time",
+                start: "2024-11-04",
+                end: "2025-02-26",
+              }}
+            />
+
+            <Footer />
+          </Layout>
+        </AbsoluteFill>
+      </TypesafeI18n>
+    )
   );
 };

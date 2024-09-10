@@ -11,7 +11,7 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="MyComp"
+        id="Square"
         component={MyComposition}
         durationInFrames={durationInSeconds * fps}
         fps={fps}
@@ -20,6 +20,22 @@ export const RemotionRoot: React.FC = () => {
         schema={compSchema}
         defaultProps={{
           text: "Quietscheentchen",
+          layout: "square",
+          locale: "de",
+        }}
+      />
+      <Composition
+        id="Portrait"
+        component={MyComposition}
+        durationInFrames={durationInSeconds * fps}
+        fps={fps}
+        width={1080}
+        height={1920}
+        schema={compSchema}
+        defaultProps={{
+          text: "Quietscheentchen",
+          layout: "portrait",
+          locale: "en",
         }}
       />
     </>

@@ -17,7 +17,7 @@ export const Numeronym = ({
   const fontWeight = interpolate(progress, [0, 1], [300, 900]);
 
   return (
-    <div style={{ fontSize: 100, fontWeight }}>
+    <div style={{ fontSize: 60, fontWeight }}>
       <span>
         {firstLetter}
         {rest.slice(0, showLetters)}

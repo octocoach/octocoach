@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
+import { ReactNode, useEffect } from "react";
 import {
   AbsoluteFill,
   Easing,
@@ -8,22 +9,36 @@ import {
   useCurrentFrame,
 } from "remotion";
 
-export const SideBySide = ({
+export const Layout = ({
   children,
   image,
   panDuration,
+  layout,
 }: {
   children: ReactNode;
   image: string;
   panDuration: number;
+  layout: "square" | "portrait";
 }) => {
   const frame = useCurrentFrame();
 
-  const xPos = interpolate(frame, [0, panDuration], [0, 100], {
-    easing: Easing.inOut(Easing.ease.bind(Easing)),
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const pos = interpolate(
+    frame,
+    [0, panDuration],
+    [0, layout === "square" ? 100 : 50],
+    {
+      easing: Easing.inOut(Easing.ease.bind(Easing)),
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
+
+  const { LL } = useI18nContext();
+
+  useEffect(() => {
+    console.log("hello");
+    console.log(LL.measures.heading());
+  }, [LL]);
 
   return (
     <AbsoluteFill>
@@ -32,7 +47,8 @@ export const SideBySide = ({
           width: "100%",
           height: "100%",
           display: "grid",
-          gridTemplateColumns: "1fr 40%",
+          gridTemplateColumns: layout === "square" ? "1fr 40%" : "1fr",
+          gridTemplateRows: layout === "portrait" ? "1fr 20%" : "1fr",
         }}
       >
         <div
@@ -48,7 +64,8 @@ export const SideBySide = ({
         <div
           style={{
             borderTopLeftRadius: 80,
-            borderBottomLeftRadius: 80,
+            borderBottomLeftRadius: layout === "square" ? 80 : 0,
+            borderTopRightRadius: layout === "portrait" ? 80 : 0,
             overflow: "hidden",
           }}
         >
@@ -58,7 +75,8 @@ export const SideBySide = ({
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              objectPosition: `${xPos}% 50%`,
+              objectPosition:
+                layout === "square" ? `${pos}% 50%` : `50% ${pos}%`,
             }}
           />
         </div>

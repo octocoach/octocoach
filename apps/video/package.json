@@ -15,7 +15,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "remotion": "4.0.209",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@octocoach/i18n": "workspace:^"
   },
   "devDependencies": {
     "@remotion/eslint-config": "4.0.209",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "start": "remotion studio",
-    "build": "remotion render MyComp out/video.mp4",
+    "build": "remotion render",
     "upgrade": "remotion upgrade",
     "test": "eslint src --ext ts,tsx,js,jsx && tsc"
   },

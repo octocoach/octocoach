@@ -17,7 +17,7 @@ export const Footer = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const pos = interpolate(frame, [0, 3 * fps], [500, 0], {
+  const pos = interpolate(frame, [0, 3 * fps], [1000, 0], {
     easing: Easing.elastic(3),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",

@@ -71,6 +71,9 @@ importers:
       '@code-hike/lighter':
         specifier: ^1.0.0
         version: 1.0.0
+      '@octocoach/i18n':
+        specifier: workspace:^
+        version: link:../../packages/i18n
       '@remotion/animated-emoji':
         specifier: ^4.0.209
         version: 4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -21690,7 +21693,7 @@ snapshots:
       type-fest: 0.16.0
       unique-string: 2.0.0
 
-  terser-webpack-plugin@5.3.10(esbuild@0.18.6)(webpack@5.94.0(esbuild@0.18.6)):
+  terser-webpack-plugin@5.3.10(esbuild@0.18.6)(webpack@5.94.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -22423,7 +22426,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.18.6)(webpack@5.94.0(esbuild@0.18.6))
+      terser-webpack-plugin: 5.3.10(esbuild@0.18.6)(webpack@5.94.0)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:

@@ -1,6 +1,4 @@
 import TypesafeI18n from "@octocoach/i18n/src/i18n-react";
-import { loadAllLocalesAsync } from "@octocoach/i18n/src/i18n-util.async";
-import { useEffect, useState } from "react";
 import {
   AbsoluteFill,
   Easing,
@@ -37,46 +35,35 @@ export const MyComposition = ({
     extrapolateRight: "clamp",
   });
 
-  const [localesLoaded, setLocalesLoaded] = useState(false);
-
-  useEffect(() => {
-    void (async () => {
-      await loadAllLocalesAsync();
-      setLocalesLoaded(true);
-    })();
-  }, [locale]);
-
   return (
-    localesLoaded && (
-      <TypesafeI18n locale={locale}>
-        <AbsoluteFill
-          style={{
-            fontFamily: `var(--font-recursive)`,
-            backgroundColor: c("crust"),
-            color: c("text"),
-            placeContent: "center",
-            placeItems: "center",
-          }}
-        >
-          <Layout layout={layout} image="3.jpg" panDuration={durationInFrames}>
-            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-              <Logo durationInFrames={30} size={100} />
-              <Numeronym text={text} progress={progress} />
-            </div>
+    <TypesafeI18n locale={locale}>
+      <AbsoluteFill
+        style={{
+          fontFamily: `var(--font-recursive)`,
+          backgroundColor: c("crust"),
+          color: c("text"),
+          placeContent: "center",
+          placeItems: "center",
+        }}
+      >
+        <Layout layout={layout} image="3.jpg" panDuration={durationInFrames}>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <Logo durationInFrames={30} size={100} />
+            <Numeronym text={text} progress={progress} />
+          </div>
 
-            <Json
-              data={{
-                type: "Course",
-                mode: "Full-time",
-                start: "2024-11-04",
-                end: "2025-02-26",
-              }}
-            />
+          <Json
+            data={{
+              type: "Course",
+              mode: "Full-time",
+              start: "2024-11-04",
+              end: "2025-02-26",
+            }}
+          />
 
-            <Footer />
-          </Layout>
-        </AbsoluteFill>
-      </TypesafeI18n>
-    )
+          <Footer />
+        </Layout>
+      </AbsoluteFill>
+    </TypesafeI18n>
   );
 };

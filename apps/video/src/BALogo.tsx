@@ -1,3 +1,4 @@
+import Message from "@octocoach/i18n/src/react-message";
 import { fitText } from "@remotion/layout-utils";
 import React from "react";
 import {
@@ -43,7 +44,7 @@ export const BaLogo = ({ width }: { width: number }) => {
   return (
     <div>
       <div style={{ fontSize, transform: `scale(${scale})`, color }}>
-        {text}
+        <Message id="measure.fundedBy" />
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"

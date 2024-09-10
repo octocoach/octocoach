@@ -71,6 +71,12 @@ importers:
       '@code-hike/lighter':
         specifier: ^1.0.0
         version: 1.0.0
+      '@remotion/animated-emoji':
+        specifier: ^4.0.209
+        version: 4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@remotion/animation-utils':
+        specifier: ^4.0.209
+        version: 4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remotion/cli':
         specifier: 4.0.209
         version: 4.0.209(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)
@@ -2902,6 +2908,15 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@remotion/animated-emoji@4.0.209':
+    resolution: {integrity: sha512-jKnlejkHPA9EZy+PpHVFEu5lSj/YaB6twPcIsRo5ciuHPfgC0WD01oUHm0sgl8B1Q15agNVzvEWfXIblAnmfOw==}
+
+  '@remotion/animation-utils@4.0.209':
+    resolution: {integrity: sha512-ysDxl3iN1sjnlxkXyTxTYn1bVxjjVN7zR4HbhjSk3Uj2TpaJVqx2ve/TARWfZqrNM2yhFa81Rbc6NFgK90+HZQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   '@remotion/bundler@4.0.209':
     resolution: {integrity: sha512-7Dm/XH7ulztzWlxejO2NWVMYa9GNMe/5iIhNQke3KEa3O6zFwuSUqwWrRSo1erBUCRc5Wju1yOKgRQ/5TDUv3A==}
@@ -12919,6 +12934,19 @@ snapshots:
       '@react-spring/types': 9.7.4
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  '@remotion/animated-emoji@4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      remotion: 4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
+  '@remotion/animation-utils@4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      remotion: 4.0.209(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@remotion/bundler@4.0.209(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)':
     dependencies:

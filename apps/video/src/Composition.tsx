@@ -1,4 +1,10 @@
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import {
+  AbsoluteFill,
+  Easing,
+  interpolate,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { z } from "zod";
 
 import { Footer } from "./Footer";
@@ -14,6 +20,7 @@ export const compSchema = z.object({
 });
 
 export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
+  const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
   const progress = interpolate(frame, [5, 30], [0, 1], {
@@ -32,12 +39,14 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
         placeItems: "center",
       }}
     >
-      <SideBySide>
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+      <SideBySide image="3.jpg" panDuration={durationInFrames}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Logo durationInFrames={30} size={200} />
           <Numeronym text={text} progress={progress} />
         </div>
+
         <Title text={"AI Web App Development"} />
+
         <Json
           data={{
             type: "Course",
@@ -46,6 +55,7 @@ export const MyComposition = ({ text }: z.infer<typeof compSchema>) => {
             end: "2025-02-26",
           }}
         />
+
         <Footer />
       </SideBySide>
     </AbsoluteFill>

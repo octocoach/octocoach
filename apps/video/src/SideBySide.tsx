@@ -1,16 +1,26 @@
 import { ReactNode } from "react";
 import {
   AbsoluteFill,
+  Easing,
   Img,
   interpolate,
   staticFile,
   useCurrentFrame,
 } from "remotion";
 
-export const SideBySide = ({ children }: { children: ReactNode }) => {
+export const SideBySide = ({
+  children,
+  image,
+  panDuration,
+}: {
+  children: ReactNode;
+  image: string;
+  panDuration: number;
+}) => {
   const frame = useCurrentFrame();
 
-  const xPos = interpolate(frame, [0, 30], [0, 50], {
+  const xPos = interpolate(frame, [0, panDuration], [0, 100], {
+    easing: Easing.inOut(Easing.ease.bind(Easing)),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -43,7 +53,7 @@ export const SideBySide = ({ children }: { children: ReactNode }) => {
           }}
         >
           <Img
-            src={staticFile("image.jpg")}
+            src={staticFile(`images/${image}`)}
             style={{
               width: "100%",
               height: "100%",

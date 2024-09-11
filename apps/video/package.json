@@ -30,6 +30,7 @@
   "scripts": {
     "start": "remotion studio",
     "build": "remotion render",
+    "still": "remotion still --frame=615",
     "upgrade": "remotion upgrade",
     "test": "eslint src --ext ts,tsx,js,jsx && tsc"
   },

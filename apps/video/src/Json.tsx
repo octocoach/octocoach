@@ -8,7 +8,7 @@ import { CourseData } from "./Composition";
 const start = 90;
 const duration = 120;
 
-export const Json = ({ data }: { data: CourseData }) => {
+export const Json = ({ data }: { data: CourseData["data"] }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -29,8 +29,7 @@ export const Json = ({ data }: { data: CourseData }) => {
   );
 
   useEffect(() => {
-    const { locale: _, ...dataWithoutLocale } = data;
-    const dataStr = JSON.stringify(dataWithoutLocale, null, 2);
+    const dataStr = JSON.stringify(data, null, 2);
     void highlight(dataStr, "json", mocha as Theme).then((highlighted) =>
       setHighlighted(highlighted),
     );

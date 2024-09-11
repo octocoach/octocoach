@@ -10,18 +10,20 @@ const fps = 30;
 const durationInSeconds = 30;
 
 const courseData: CourseData = {
-  locale: "en",
-  type: "Course",
-  mode: "Full-time",
-  fullyRemote: true,
-  dates: {
-    start: "2024-11-04",
-    end: "2025-02-26",
+  locale: "de",
+  data: {
+    type: "Kurs",
+    modus: "Vollzeit",
+    remote: true,
+    termine: {
+      beginn: "2024-11-04",
+      ende: "2025-02-26",
+    },
   },
 };
 
 const title = "AI Web App Development";
-const animatedLogo = true;
+const animatedLogo = false;
 
 export const RemotionRoot: React.FC = () => {
   const [localesLoaded, setLocalesLoaded] = useState(false);

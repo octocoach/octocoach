@@ -19,23 +19,43 @@ import { Title } from "./Title";
 const CourseData = z.discriminatedUnion("locale", [
   z.object({
     locale: z.literal("en"),
-    type: z.enum(["Course", "Workshop"]),
-    mode: z.enum(["Full-time", "Part-time"]),
-    fullyRemote: z.boolean(),
-    dates: z.object({
-      start: z.string(),
-      end: z.string(),
-    }),
+    data: z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("Course"),
+        mode: z.enum(["Full-time", "Part-time"]),
+        fullyRemote: z.boolean(),
+        dates: z.object({
+          start: z.string(),
+          end: z.string(),
+        }),
+      }),
+      z.object({
+        type: z.literal("Workshop"),
+        mode: z.enum(["Online", "In-person"]),
+        start: z.string(),
+        duration: z.string(),
+      }),
+    ]),
   }),
   z.object({
     locale: z.literal("de"),
-    type: z.enum(["Kurs", "Workshop"]),
-    modus: z.enum(["Vollzeit", "Teilzeit"]),
-    fullyRemote: z.boolean(),
-    termine: z.object({
-      beginn: z.string(),
-      ende: z.string(),
-    }),
+    data: z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("Kurs"),
+        modus: z.enum(["Vollzeit", "Teilzeit"]),
+        remote: z.boolean(),
+        termine: z.object({
+          beginn: z.string(),
+          ende: z.string(),
+        }),
+      }),
+      z.object({
+        type: z.literal("Workshop"),
+        modus: z.enum(["Online", "Persönlich"]),
+        beginn: z.string(),
+        dauer: z.string(),
+      }),
+    ]),
   }),
 ]);
 
@@ -86,7 +106,7 @@ export const MyComposition = ({
 
           <Title text={title} />
 
-          <Json data={courseData} />
+          <Json data={courseData.data} />
 
           <Footer />
         </Layout>

@@ -1,12 +1,14 @@
 import mocha from "@catppuccin/vscode/themes/mocha.json";
 import { highlight, LighterResult, Theme } from "@code-hike/lighter";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+
+import { CourseData } from "./Composition";
 
 const start = 90;
 const duration = 120;
 
-export const Json = ({ data }: { data: object }) => {
+export const Json = ({ data }: { data: CourseData }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -27,7 +29,8 @@ export const Json = ({ data }: { data: object }) => {
   );
 
   useEffect(() => {
-    const dataStr = JSON.stringify(data, null, 2);
+    const { locale: _, ...dataWithoutLocale } = data;
+    const dataStr = JSON.stringify(dataWithoutLocale, null, 2);
     void highlight(dataStr, "json", mocha as Theme).then((highlighted) =>
       setHighlighted(highlighted),
     );

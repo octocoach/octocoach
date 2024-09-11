@@ -1,6 +1,5 @@
-import Message from "@octocoach/i18n/src/react-message";
+import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { fitText } from "@remotion/layout-utils";
-import React from "react";
 import {
   Easing,
   interpolate,
@@ -15,7 +14,8 @@ export const BaLogo = ({ width }: { width: number }) => {
   const textFill = c("text");
   const red = "#ec1c23";
 
-  const text = "100% funded by";
+  const { LL } = useI18nContext();
+  const text = LL.measure.fundedBy();
 
   const { fontSize } = fitText({
     text,
@@ -44,7 +44,7 @@ export const BaLogo = ({ width }: { width: number }) => {
   return (
     <div>
       <div style={{ fontSize, transform: `scale(${scale})`, color }}>
-        <Message id="measure.fundedBy" />
+        {text}
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"

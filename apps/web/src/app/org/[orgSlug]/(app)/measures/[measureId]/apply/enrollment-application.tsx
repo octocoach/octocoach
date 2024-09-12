@@ -26,6 +26,7 @@ import {
   useFormStore,
 } from "@octocoach/ui";
 import Link from "next/link";
+import { linkedInTrack } from "nextjs-linkedin-insight-tag";
 import { useTransition } from "react";
 
 import { CreateEnrollmentActionParams } from "./actions";
@@ -63,6 +64,7 @@ export const EnrollmentApplication = ({
 
   const onSubmit = () => {
     startTransition(() => {
+      linkedInTrack(18653042);
       const screeningAnswers = store.getState().values;
       switch (measure.type) {
         case "individual":

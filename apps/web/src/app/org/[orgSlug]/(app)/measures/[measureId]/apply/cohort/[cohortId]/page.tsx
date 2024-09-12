@@ -34,7 +34,7 @@ export default async function Page({
 
   if (!profile) {
     const search = new URLSearchParams();
-    search.set("origin", `/measures/${measureId}/cohort/${cohortId}/apply`);
+    search.set("origin", `/measures/${measureId}/apply/cohort/${cohortId}`);
     orgRedirect(`signup?${search.toString()}`);
   }
 

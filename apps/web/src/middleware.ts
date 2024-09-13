@@ -87,8 +87,10 @@ export default async function middleware(request: NextRequest) {
     },
   };
 
+  const orgApiRoutes = ["content", "measures"].map((route) => `/api/${route}`);
+
   const response =
-    isVanityUrl && !pathname.startsWith("/api")
+    isVanityUrl && !orgApiRoutes.some((route) => pathname.startsWith(route))
       ? NextResponse.rewrite(
           new URL(`/org/${orgSlug}${pathname}`, request.url),
           responseInit

@@ -1,15 +1,8 @@
-import TypesafeI18n from "@octocoach/i18n/src/i18n-react";
-import {
-  AbsoluteFill,
-  Easing,
-  interpolate,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
+import { Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { z } from "zod";
 
 import { Footer } from "./Footer";
-import { c } from "./helpers";
+import { ImagePanLayout } from "./ImagePanLayout";
 import { Json } from "./Json";
 import { Layout } from "./Layout";
 import { Logo } from "./Logo";
@@ -88,29 +81,23 @@ export const MyComposition = ({
     : 1;
 
   return (
-    <TypesafeI18n locale={courseData.locale}>
-      <AbsoluteFill
-        style={{
-          fontFamily: `var(--font-recursive)`,
-          backgroundColor: c("crust"),
-          color: c("text"),
-          placeContent: "center",
-          placeItems: "center",
-        }}
+    <Layout locale={courseData.locale}>
+      <ImagePanLayout
+        layout={layout}
+        image="3.jpg"
+        panDuration={durationInFrames}
       >
-        <Layout layout={layout} image="3.jpg" panDuration={durationInFrames}>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <Logo durationInFrames={30} size={100} />
-            <Numeronym text={companyName} progress={progress} />
-          </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <Logo durationInFrames={30} size={100} />
+          <Numeronym text={companyName} progress={progress} />
+        </div>
 
-          <Title text={title} />
+        <Title text={title} />
 
-          <Json data={courseData.data} />
+        <Json data={courseData.data} />
 
-          <Footer />
-        </Layout>
-      </AbsoluteFill>
-    </TypesafeI18n>
+        <Footer />
+      </ImagePanLayout>
+    </Layout>
   );
 };

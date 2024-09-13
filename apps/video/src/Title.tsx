@@ -1,7 +1,7 @@
 import { AccentName } from "@catppuccin/palette";
 import { scale } from "@remotion/animation-utils";
 import { fitText } from "@remotion/layout-utils";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   continueRender,
   delayRender,

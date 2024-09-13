@@ -87,10 +87,13 @@ export default async function middleware(request: NextRequest) {
     },
   };
 
-  const orgApiRoutes = ["content", "measures"].map((route) => `/api/${route}`);
+  const baseApiRoutes = ["auth", "blob"].map((route) => `/api/${route}`);
+
+  const isBaseApiRoute = (pathname: string) =>
+    baseApiRoutes.some((route) => pathname.startsWith(route));
 
   const response =
-    isVanityUrl && !orgApiRoutes.some((route) => pathname.startsWith(route))
+    isVanityUrl && !isBaseApiRoute(pathname)
       ? NextResponse.rewrite(
           new URL(`/org/${orgSlug}${pathname}`, request.url),
           responseInit
@@ -99,7 +102,7 @@ export default async function middleware(request: NextRequest) {
 
   if (orgSlug) {
     response.cookies.set(cookieNames.org, orgSlug);
-  } else if (!pathname.startsWith("/api")) {
+  } else if (!isBaseApiRoute(pathname)) {
     response.cookies.delete(cookieNames.org);
   }
 

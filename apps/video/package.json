@@ -1,0 +1,38 @@
+{
+  "name": "@octocoach/video",
+  "version": "1.0.0",
+  "description": "Video Generation",
+  "repository": {},
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@catppuccin/palette": "^1.1.1",
+    "@catppuccin/vscode": "^3.15.2",
+    "@code-hike/lighter": "^1.0.0",
+    "@octocoach/i18n": "workspace:^",
+    "@remotion/animated-emoji": "^4.0.210",
+    "@remotion/animation-utils": "^4.0.210",
+    "@remotion/cli": "4.0.210",
+    "@remotion/layout-utils": "^4.0.210",
+    "date-fns": "^3.3.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "4.0.210",
+    "zod": "3.22.3"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config": "4.0.210",
+    "@types/react": "^18.0.26",
+    "@types/web": "^0.0.143",
+    "eslint": "^8.43.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render",
+    "still": "remotion still --frame=615",
+    "upgrade": "remotion upgrade",
+    "test": "eslint src --ext ts,tsx,js,jsx && tsc"
+  },
+  "packageManager": "pnpm@9.7.1"
+}

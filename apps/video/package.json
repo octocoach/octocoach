@@ -1,6 +1,7 @@
 {
   "name": "@octocoach/video",
   "version": "1.0.0",
+  "type": "module",
   "description": "Video Generation",
   "repository": {},
   "license": "UNLICENSED",
@@ -8,16 +9,18 @@
     "@catppuccin/palette": "^1.1.1",
     "@catppuccin/vscode": "^3.15.2",
     "@code-hike/lighter": "^1.0.0",
-    "@octocoach/i18n": "workspace:^",
     "@octocoach/db": "workspace:^",
+    "@octocoach/i18n": "workspace:^",
     "@remotion/animated-emoji": "^4.0.210",
     "@remotion/animation-utils": "^4.0.210",
     "@remotion/cli": "4.0.210",
+    "@remotion/install-whisper-cpp": "^4.0.212",
     "@remotion/layout-utils": "^4.0.210",
     "date-fns": "^3.3.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "remotion": "4.0.210",
+    "tsx": "^3.12.7",
     "zod": "3.22.3"
   },
   "devDependencies": {
@@ -33,7 +36,8 @@
     "build": "remotion render",
     "still": "remotion still --frame=615",
     "upgrade": "remotion upgrade",
-    "test": "eslint src --ext ts,tsx,js,jsx && tsc"
+    "test": "eslint src --ext ts,tsx,js,jsx && tsc",
+    "generate:subs": "tsx --env-file=.env src/generate-subs.ts"
   },
   "packageManager": "pnpm@9.7.1"
 }

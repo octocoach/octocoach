@@ -86,6 +86,9 @@ importers:
       '@remotion/cli':
         specifier: 4.0.210
         version: 4.0.210(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)
+      '@remotion/install-whisper-cpp':
+        specifier: ^4.0.212
+        version: 4.0.212(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remotion/layout-utils':
         specifier: ^4.0.210
         version: 4.0.210
@@ -101,6 +104,9 @@ importers:
       remotion:
         specifier: 4.0.210
         version: 4.0.210(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
       zod:
         specifier: 3.22.3
         version: 3.22.3
@@ -2984,6 +2990,12 @@ packages:
     resolution: {integrity: sha512-amp+hNZpp9ofHhtarlOpyXdAF3WBwsC7KfHHJ14jWnplJfwFuw4wZEVX+ZZHMIJYP5vSCxIzCj0cY5MI9uegSg==}
     peerDependencies:
       eslint: '>=7.0.0'
+
+  '@remotion/install-whisper-cpp@4.0.212':
+    resolution: {integrity: sha512-cW5bVEffHZowZ4rP12xB2X+Y7kgSzdyr+tXhAU2TLbFuwUYHJR65lN3qC2cKSi6l1OJIMn1axKdwEarp36q8xQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   '@remotion/layout-utils@4.0.210':
     resolution: {integrity: sha512-HWkkJ+5RWhTzEeYoFWphqOnUkfKICVJYXvigkMQlvzHMlD4bgxcs+O82xUQZmgCZrNFlXMcJhJylmCn7kAws7g==}
@@ -12961,14 +12973,14 @@ snapshots:
     dependencies:
       '@remotion/studio': 4.0.210(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@6.0.4)
       '@remotion/studio-shared': 4.0.210(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      css-loader: 5.2.7(webpack@5.94.0(esbuild@0.18.6))
+      css-loader: 5.2.7(webpack@5.94.0)
       esbuild: 0.18.6
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-refresh: 0.9.0
       remotion: 4.0.210(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       source-map: 0.7.3
-      style-loader: 2.0.0(webpack@5.94.0(esbuild@0.18.6))
+      style-loader: 2.0.0(webpack@5.94.0)
       webpack: 5.94.0(esbuild@0.18.6)
     transitivePeerDependencies:
       - '@swc/core'
@@ -13042,6 +13054,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  '@remotion/install-whisper-cpp@4.0.212(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@remotion/layout-utils@4.0.210': {}
 
@@ -16648,7 +16665,7 @@ snapshots:
 
   csp_evaluator@1.1.1: {}
 
-  css-loader@5.2.7(webpack@5.94.0(esbuild@0.18.6)):
+  css-loader@5.2.7(webpack@5.94.0):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.41)
       loader-utils: 2.0.4
@@ -21572,7 +21589,7 @@ snapshots:
     dependencies:
       acorn: 8.11.3
 
-  style-loader@2.0.0(webpack@5.94.0(esbuild@0.18.6)):
+  style-loader@2.0.0(webpack@5.94.0):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0

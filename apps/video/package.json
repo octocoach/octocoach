@@ -9,6 +9,7 @@
     "@catppuccin/vscode": "^3.15.2",
     "@code-hike/lighter": "^1.0.0",
     "@octocoach/i18n": "workspace:^",
+    "@octocoach/db": "workspace:^",
     "@remotion/animated-emoji": "^4.0.210",
     "@remotion/animation-utils": "^4.0.210",
     "@remotion/cli": "4.0.210",

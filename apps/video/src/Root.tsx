@@ -5,8 +5,13 @@ import { useEffect, useState } from "react";
 import { Composition, continueRender, delayRender } from "remotion";
 
 import { compSchema, CourseData, MyComposition } from "./Composition";
+import {
+  calculateTestimonialsMetadata,
+  Testimonials,
+  testimonialsSchema,
+} from "./Testimonials";
 
-const fps = 30;
+export const fps = 30;
 const durationInSeconds = 30;
 
 const courseData: CourseData = {
@@ -67,6 +72,17 @@ export const RemotionRoot: React.FC = () => {
           animatedLogo,
           courseData,
         }}
+      />
+      <Composition
+        id="Testimonials"
+        component={Testimonials}
+        fps={fps}
+        durationInFrames={0}
+        width={1080}
+        height={1080}
+        schema={testimonialsSchema}
+        defaultProps={{ title: "Testimonials", subSections: [] }}
+        calculateMetadata={calculateTestimonialsMetadata}
       />
     </>
   );

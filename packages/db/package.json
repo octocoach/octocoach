@@ -35,7 +35,7 @@
     "superjson": "^1.13.1",
     "undici": "^5.27.2",
     "ws": "^8.15.0",
-    "zod": "^3.22.2"
+    "zod": "3.22.3"
   },
   "devDependencies": {
     "@octocoach/i18n": "workspace:^",

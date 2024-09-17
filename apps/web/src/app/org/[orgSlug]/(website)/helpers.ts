@@ -7,7 +7,7 @@ import {
   SectionContent,
   SectionContentSimple,
   SectionId,
-  websiteSections,
+  websiteSectionsEnum,
 } from "@octocoach/db/schemas/org/content";
 import { Measure } from "@octocoach/db/schemas/org/measure";
 import { ModuleWithInfo } from "@octocoach/db/schemas/org/module";
@@ -75,7 +75,7 @@ export const getContent = async (slug: string): Promise<ContentMap> => {
         eq(contentLocaleTable.locale, locale)
       )
     )
-    .where(inArray(contentTable.id, [...websiteSections]))
+    .where(inArray(contentTable.id, websiteSectionsEnum.options))
     .then((res) =>
       res.reduce(
         (acc, curr) => ({

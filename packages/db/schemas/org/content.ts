@@ -1,62 +1,118 @@
 import { json, primaryKey, text } from "drizzle-orm/pg-core";
+import { z } from "zod";
 
 import { mkOrgPgSchema } from "../common/pg-schema";
 import { localeEnum } from "../data-types/locale";
 
-export type Content = typeof _contentTable.$inferSelect;
-export type NewContent = typeof _contentTable.$inferInsert;
-export type ContentLocale = typeof _contentLocaleTable.$inferSelect;
-export type NewContentLocale = typeof _contentLocaleTable.$inferInsert;
+export type Content = ReturnType<typeof mkContentTable>["$inferSelect"];
+export type NewContent = ReturnType<typeof mkContentTable>["$inferInsert"];
+export type ContentLocale = ReturnType<
+  typeof mkContentLocaleTable
+>["$inferSelect"];
+export type NewContentLocale = ReturnType<
+  typeof mkContentLocaleTable
+>["$inferInsert"];
 
 export type ContentLocaleTypeOf<T> = Omit<ContentLocale, "value"> & {
   value: T;
 };
 
-export const websiteSections = [
+export const websiteSectionsEnum = z.enum([
   "about",
   "faq",
   "hero",
   "method",
   "mission",
   "testimonials",
-] as const;
+]);
 
-export type SectionId = (typeof websiteSections)[number];
+export type SectionId = z.infer<typeof websiteSectionsEnum>;
 
-export type SectionContent =
-  | SectionContentSimple
-  | SectionContentWithImage
-  | SectionContentWithSubSections
-  | SectionContentFAQ;
+const contentImageSchema = z.object({
+  src: z.string(),
+  alt: z.string(),
+});
+export type ContentImage = z.infer<typeof contentImageSchema>;
 
-export interface ContentImage {
-  src: string;
-  alt: string;
-}
+export const sectionContentSimpleSchema = z.object({
+  title: z.string(),
+  text: z.string(),
+});
+export type SectionContentSimple = z.infer<typeof sectionContentSimpleSchema>;
 
-export type SectionContentSimple = {
-  title: string;
-  text: string;
-};
+export const sectionContentWithImageSchema = z
+  .object({
+    image: contentImageSchema,
+  })
+  .merge(sectionContentSimpleSchema);
+export type SectionContentWithImage = z.infer<
+  typeof sectionContentWithImageSchema
+>;
 
-export type SectionContentWithImage = SectionContentSimple & {
-  image: ContentImage;
-};
+export const sectionContentWithSubSectionsSchema = z.object({
+  title: z.string(),
+  subSections: z.array(sectionContentWithImageSchema),
+});
+export type SectionContentWithSubSections = z.infer<
+  typeof sectionContentWithSubSectionsSchema
+>;
 
-export type SectionContentWithSubSections = {
-  title: string;
-  subSections: SectionContentWithImage[];
-};
+export const faqQuestionSchema = z.object({
+  question: z.string(),
+  answer: z.string(),
+});
+export type FAQQuestion = z.infer<typeof faqQuestionSchema>;
 
-export type FAQQuestion = {
-  question: string;
-  answer: string;
-};
+export const sectionContentFAQSchema = z.object({
+  title: z.string(),
+  questions: z.array(faqQuestionSchema),
+});
+export type SectionContentFAQ = z.infer<typeof sectionContentFAQSchema>;
 
-export type SectionContentFAQ = {
-  title: string;
-  questions: FAQQuestion[];
-};
+const sectionContentSchema = z.union([
+  sectionContentSimpleSchema,
+  sectionContentWithImageSchema,
+  sectionContentWithSubSectionsSchema,
+  sectionContentFAQSchema,
+]);
+
+export type SectionContent = z.infer<typeof sectionContentSchema>;
+
+const localeEnumSchema = z.object({
+  locale: z.enum(localeEnum.enumValues),
+});
+
+export const sectionContentLocaleSchema = z.intersection(
+  z.discriminatedUnion("id", [
+    z.object({
+      id: z.literal("about"),
+      value: sectionContentSimpleSchema,
+    }),
+
+    z.object({
+      id: z.literal("faq"),
+      value: sectionContentFAQSchema,
+    }),
+
+    z.object({
+      id: z.literal("hero"),
+      value: sectionContentWithImageSchema,
+    }),
+
+    z.object({
+      id: z.literal("testimonials"),
+      value: sectionContentWithSubSectionsSchema,
+    }),
+
+    z.object({
+      id: z.literal("mission"),
+      value: sectionContentSimpleSchema,
+    }),
+  ]),
+  localeEnumSchema
+);
+
+export type SectionContentLocale = z.infer<typeof sectionContentLocaleSchema>;
 
 export const mkContentTable = (slug: string) => {
   return mkOrgPgSchema(slug).table("content", {
@@ -81,10 +137,7 @@ export const mkContentLocaleTable = (slug: string) => {
       value: json("value").$type<SectionContent>(),
     },
     (table) => ({
-      pk: primaryKey(table.id, table.locale),
+      pk: primaryKey({ columns: [table.id, table.locale] }),
     })
   );
 };
-
-const _contentTable = mkContentTable("org");
-const _contentLocaleTable = mkContentLocaleTable("org");

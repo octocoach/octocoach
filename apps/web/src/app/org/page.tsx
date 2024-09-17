@@ -6,7 +6,7 @@ import {
   ContentLocale,
   mkContentLocaleTable,
   mkContentTable,
-  websiteSections,
+  websiteSectionsEnum,
 } from "@octocoach/db/schemas/org/content";
 import { Box, Text } from "@octocoach/ui";
 
@@ -35,7 +35,7 @@ export default async function Page() {
       })
       .from(contentTable)
       .innerJoin(contentLocaleTable, eq(contentTable.id, contentLocaleTable.id))
-      .where(inArray(contentTable.id, [...websiteSections]));
+      .where(inArray(contentTable.id, websiteSectionsEnum.options));
 
     return <Admin organization={organization} content={content} />;
   }

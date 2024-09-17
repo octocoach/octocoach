@@ -71,6 +71,9 @@ importers:
       '@code-hike/lighter':
         specifier: ^1.0.0
         version: 1.0.0
+      '@octocoach/db':
+        specifier: workspace:^
+        version: link:../../packages/db
       '@octocoach/i18n':
         specifier: workspace:^
         version: link:../../packages/i18n
@@ -423,7 +426,7 @@ importers:
         version: 0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1))(zod@3.22.2)
+        version: 0.5.1(drizzle-orm@0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1))(zod@3.22.3)
       langchain:
         specifier: ^0.0.180
         version: 0.0.180(@vercel/postgres@0.9.0)(axios@1.5.0)(encoding@0.1.13)(html-to-text@9.0.5)(ignore@5.3.1)(jsdom@20.0.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(lodash@4.17.21)(playwright@1.40.1)(ws@8.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
@@ -452,8 +455,8 @@ importers:
         specifier: ^8.15.0
         version: 8.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       zod:
-        specifier: ^3.22.2
-        version: 3.22.2
+        specifier: 3.22.3
+        version: 3.22.3
     devDependencies:
       '@octocoach/i18n':
         specifier: workspace:^
@@ -10403,9 +10406,6 @@ packages:
     peerDependencies:
       zod: ^3.22.4
 
-  zod@3.22.2:
-    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
-
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
@@ -17070,10 +17070,10 @@ snapshots:
       postgres: 3.3.5
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1))(zod@3.22.2):
+  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1))(zod@3.22.3):
     dependencies:
       drizzle-orm: 0.33.0(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(@vercel/postgres@0.9.0)(postgres@3.3.5)(react@18.3.1)
-      zod: 3.22.2
+      zod: 3.22.3
 
   duplexer@0.1.2: {}
 
@@ -22622,8 +22622,6 @@ snapshots:
   zod-to-json-schema@3.22.5(zod@3.22.4):
     dependencies:
       zod: 3.22.4
-
-  zod@3.22.2: {}
 
   zod@3.22.3: {}
 

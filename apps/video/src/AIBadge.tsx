@@ -30,7 +30,6 @@ export const AIBadge = ({
   width: number;
   height: number;
 }) => {
-  console.log({ colors1, colors2 });
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -61,8 +60,6 @@ export const AIBadge = ({
     colors2b.map((_, i) => i / (colors2b.length - 1)),
     colors2b,
   );
-
-  console.log({ color1a, color1b, color2a, color2b });
 
   return (
     <div

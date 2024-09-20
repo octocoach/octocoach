@@ -1,6 +1,8 @@
 import TypesafeI18n from "@octocoach/i18n/src/i18n-react";
 import { Locales } from "@octocoach/i18n/src/i18n-types";
-import { AbsoluteFill } from "remotion";
+import { loadAllLocalesAsync } from "@octocoach/i18n/src/i18n-util.async";
+import { useEffect, useState } from "react";
+import { AbsoluteFill, continueRender, delayRender } from "remotion";
 
 import { c } from "./helpers";
 
@@ -11,6 +13,20 @@ export const Layout = ({
   children: React.ReactNode;
   locale: Locales;
 }) => {
+  const [delayRenderId] = useState(() => delayRender());
+  const [localesLoaded, setLocalesLoaded] = useState(false);
+
+  useEffect(() => {
+    if (delayRenderId) {
+      void loadAllLocalesAsync().then(() => {
+        setLocalesLoaded(true);
+        continueRender(delayRenderId);
+      });
+    }
+  }, [delayRenderId]);
+
+  if (!localesLoaded) return null;
+
   return (
     <TypesafeI18n locale={locale}>
       <AbsoluteFill

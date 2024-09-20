@@ -1,5 +1,4 @@
-import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import {
   AbsoluteFill,
   Easing,
@@ -8,18 +7,24 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
+import { z } from "zod";
+
+export const imagePanLayoutSchema = z.object({
+  image: z.string(),
+  panDuration: z.number(),
+  layout: z.enum(["square", "portrait"]),
+  imagePercentage: z.number(),
+});
 
 export const ImagePanLayout = ({
   children,
   image,
   panDuration,
   layout,
+  imagePercentage,
 }: {
   children: ReactNode;
-  image: string;
-  panDuration: number;
-  layout: "square" | "portrait";
-}) => {
+} & z.infer<typeof imagePanLayoutSchema>) => {
   const frame = useCurrentFrame();
 
   const pos = interpolate(
@@ -33,13 +38,6 @@ export const ImagePanLayout = ({
     },
   );
 
-  const { LL } = useI18nContext();
-
-  useEffect(() => {
-    console.log("hello");
-    console.log(LL.measures.heading());
-  }, [LL]);
-
   return (
     <AbsoluteFill>
       <div
@@ -47,8 +45,10 @@ export const ImagePanLayout = ({
           width: "100%",
           height: "100%",
           display: "grid",
-          gridTemplateColumns: layout === "square" ? "1fr 40%" : "1fr",
-          gridTemplateRows: layout === "portrait" ? "1fr 20%" : "1fr",
+          gridTemplateColumns:
+            layout === "square" ? `1fr ${imagePercentage}%` : "1fr",
+          gridTemplateRows:
+            layout === "portrait" ? `1fr ${imagePercentage}%` : "1fr",
         }}
       >
         <div

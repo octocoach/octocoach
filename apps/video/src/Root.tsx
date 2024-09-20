@@ -1,10 +1,9 @@
 import "./global.css";
 
-import { loadAllLocalesAsync } from "@octocoach/i18n/src/i18n-util.async";
-import { useEffect, useState } from "react";
-import { Composition, continueRender, delayRender } from "remotion";
+import { Composition } from "remotion";
 
-import { compSchema, CourseData, MyComposition } from "./Composition";
+import { Advert, advertDefaultProps, advertSchema } from "./Advert";
+import { CourseData, CourseTile, courseTileCompSchema } from "./CourseTile";
 import {
   calculateTestimonialsMetadata,
   Testimonials,
@@ -31,26 +30,16 @@ const title = "AI Web App Development";
 const animatedLogo = false;
 
 export const RemotionRoot: React.FC = () => {
-  const [delayRenderId] = useState(() => delayRender());
-
-  useEffect(() => {
-    if (delayRenderId) {
-      void loadAllLocalesAsync().then(() => {
-        continueRender(delayRenderId);
-      });
-    }
-  }, [delayRenderId]);
-
   return (
     <>
       <Composition
         id="Square"
-        component={MyComposition}
+        component={CourseTile}
         durationInFrames={durationInSeconds * fps}
         fps={fps}
         width={1920}
         height={1920}
-        schema={compSchema}
+        schema={courseTileCompSchema}
         defaultProps={{
           layout: "square",
           title,
@@ -60,12 +49,12 @@ export const RemotionRoot: React.FC = () => {
       />
       <Composition
         id="Portrait"
-        component={MyComposition}
+        component={CourseTile}
         durationInFrames={durationInSeconds * fps}
         fps={fps}
         width={1080}
         height={1920}
-        schema={compSchema}
+        schema={courseTileCompSchema}
         defaultProps={{
           layout: "portrait",
           title,
@@ -83,6 +72,16 @@ export const RemotionRoot: React.FC = () => {
         schema={testimonialsSchema}
         defaultProps={{ title: "Testimonials", subSections: [] }}
         calculateMetadata={calculateTestimonialsMetadata}
+      />
+      <Composition
+        id="Advert"
+        component={Advert}
+        fps={fps}
+        durationInFrames={30 * fps}
+        width={1080}
+        height={1920}
+        schema={advertSchema}
+        defaultProps={advertDefaultProps}
       />
     </>
   );

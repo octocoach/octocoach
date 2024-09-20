@@ -12,10 +12,12 @@ import {
 import { BaLogo } from "./BALogo";
 import { Cursor } from "./Cursor";
 import { c } from "./helpers";
+import { useIsPortrait } from "./hooks";
 
 export const Footer = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const isPortrait = useIsPortrait();
 
   const pos = interpolate(frame, [0, 3 * fps], [1000, 0], {
     easing: Easing.elastic(3),
@@ -38,11 +40,14 @@ export const Footer = () => {
         }}
       >
         <div>
-          <BaLogo width={300} />
+          <BaLogo width={isPortrait ? 300 : 150} />
         </div>
-        <Img src={staticFile("images/certqua_measure_l.png")} width={250} />
+        <Img
+          src={staticFile("images/certqua_measure_l.png")}
+          width={isPortrait ? 250 : 150}
+        />
         <div style={{ position: "relative" }}>
-          <h1 style={{ fontSize: 60 }}>
+          <h1 style={{ fontSize: isPortrait ? 60 : 30 }}>
             <a href="#" style={{ color: c("blue") }}>
               q15.co
             </a>
@@ -54,7 +59,7 @@ export const Footer = () => {
             from={120}
             durationInFrames={200}
           >
-            <Cursor size={100} />
+            <Cursor size={isPortrait ? 100 : 50} />
           </Sequence>
         </div>
       </div>

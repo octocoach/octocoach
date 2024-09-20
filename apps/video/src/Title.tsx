@@ -13,6 +13,7 @@ import {
 
 import { AIBadge } from "./AIBadge";
 import { c } from "./helpers";
+import { useIsPortrait } from "./hooks";
 
 const colors: AccentName[] = ["mauve", "sapphire", "sky", "teal"];
 
@@ -55,10 +56,7 @@ const TitleInner = ({
             withinWidth: width,
           });
 
-          const lineHeight = interpolate(fontSize, [50, 100], [2.5, 0.8], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          });
+          const lineHeight = 0.8;
 
           const start = i * wordDuration;
 
@@ -93,8 +91,9 @@ const TitleInner = ({
 };
 
 export const Title = ({ text }: { text: string }) => {
-  const lines = text.trim().split(" ");
-  const width = 400;
+  const isPortrait = useIsPortrait();
+  const lines = text.toUpperCase().trim().split(" ");
+  const width = isPortrait ? 400 : 150;
   const loopDuration = 10;
 
   const { fps } = useVideoConfig();

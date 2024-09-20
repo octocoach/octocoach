@@ -19,8 +19,10 @@ export const Layout = ({
   useEffect(() => {
     if (delayRenderId) {
       void loadAllLocalesAsync().then(() => {
-        setLocalesLoaded(true);
-        continueRender(delayRenderId);
+        setTimeout(() => {
+          setLocalesLoaded(true);
+          continueRender(delayRenderId);
+        }, 1000);
       });
     }
   }, [delayRenderId]);

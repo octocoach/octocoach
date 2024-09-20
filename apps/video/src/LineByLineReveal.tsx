@@ -1,14 +1,11 @@
-import { flavors } from "@catppuccin/palette";
 import { fitText } from "@remotion/layout-utils";
 import { useState } from "react";
 import { interpolate, random, Sequence, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
 import { AnimatedEmoji, animatedEmojiSchema } from "./AnimatedEmoji";
-
-const accentColors = flavors.mocha.colorEntries
-  .filter(([_name, { accent }]) => accent)
-  .map(([_name, { hex }]) => hex);
+import { accentColors } from "./helpers";
+import { useIsPortrait } from "./hooks";
 
 const lineSchema = z.object({
   progress: z.number(),
@@ -43,7 +40,10 @@ const Line = ({
   lineIndex,
   progress,
 }: z.infer<typeof lineSchema>) => {
-  const fontWeight = active ? interpolate(progress, [0, 1], [300, 900]) : 300;
+  const fontWeight = active
+    ? interpolate(progress, [0, 0.5, 1], [300, 900, 300])
+    : 300;
+
   const { fontSize } = fitText({
     text,
     fontFamily: "Recursive",
@@ -57,6 +57,7 @@ const Line = ({
         fontSize,
         fontWeight,
         lineHeight: 1,
+        textWrap: "nowrap",
       }}
     >
       {text.split(" ").map((word, wordIndex) => (
@@ -84,6 +85,7 @@ export const LineByLineReveal = ({
   width,
 }: z.infer<typeof lineByLineRevealSchema>) => {
   const frame = useCurrentFrame();
+  const isPortrait = useIsPortrait();
 
   const progress = frame / durationInFrames;
   const lines = text.split(" ").reduce((acc, curr, i) => {
@@ -92,7 +94,7 @@ export const LineByLineReveal = ({
     acc[chunkIndex].push(curr);
     return acc;
   }, [] as string[][]);
-  const currentWord = Math.floor(progress * lines.length);
+  const currentLine = Math.floor(progress * lines.length);
 
   const lineProgress = (progress * lines.length) % 1;
 
@@ -100,22 +102,24 @@ export const LineByLineReveal = ({
     <Sequence
       durationInFrames={durationInFrames}
       style={{
+        flexDirection: isPortrait ? "column" : "row",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         gap: 20,
-        flexDirection: "column",
       }}
     >
-      {lines.map((t, i) => (
-        <Line
-          progress={lineProgress}
-          key={i}
-          lineIndex={i}
-          text={t.join(" ")}
-          width={width}
-          active={currentWord == i}
-        />
-      ))}
+      <div style={{ textAlign: "center" }}>
+        {lines.map((t, i) => (
+          <Line
+            progress={lineProgress}
+            key={i}
+            lineIndex={i}
+            text={t.join(" ")}
+            width={width}
+            active={currentLine == i}
+          />
+        ))}
+      </div>
       {animatedEmoji && (
         <AnimatedEmoji emoji={animatedEmoji.emoji} width={width} />
       )}

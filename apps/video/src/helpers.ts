@@ -2,6 +2,10 @@ import { ColorName, flavors } from "@catppuccin/palette";
 
 export const c = (colorName: ColorName) => flavors.mocha.colors[colorName].hex;
 
+export const accentColors = flavors.mocha.colorEntries
+  .filter(([_name, { accent }]) => accent)
+  .map(([_name, { hex }]) => hex);
+
 export const makePulse = ({
   frame,
   fps,

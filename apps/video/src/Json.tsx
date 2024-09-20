@@ -8,7 +8,13 @@ import { CourseData } from "./CourseTile";
 const start = 90;
 const duration = 120;
 
-export const Json = ({ data }: { data: CourseData["data"] }) => {
+export const Json = ({
+  data,
+  fontSize,
+}: {
+  data: CourseData["data"];
+  fontSize: number;
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -40,7 +46,7 @@ export const Json = ({ data }: { data: CourseData["data"] }) => {
       <div
         style={{
           ...highlighted.style,
-          fontSize: 40,
+          fontSize,
           whiteSpace: "pre-wrap",
           padding: 20,
           borderRadius: 10,

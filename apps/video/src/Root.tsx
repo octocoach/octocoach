@@ -2,13 +2,14 @@ import "./global.css";
 
 import { Composition } from "remotion";
 
-import { Advert, advertDefaultProps, advertSchema } from "./Advert";
+import { Advert, advertSchema } from "./Advert";
 import { CourseData, CourseTile, courseTileCompSchema } from "./CourseTile";
 import {
   calculateTestimonialsMetadata,
   Testimonials,
   testimonialsSchema,
 } from "./Testimonials";
+import { data } from "./videoData/advert";
 
 export const fps = 30;
 const durationInSeconds = 30;
@@ -81,7 +82,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={advertSchema}
-        defaultProps={advertDefaultProps}
+        defaultProps={data[1]}
       />
     </>
   );

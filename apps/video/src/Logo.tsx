@@ -64,8 +64,6 @@ export const Logo = ({
     }),
   );
 
-  console.log({ displayLetters });
-
   return (
     <>
       <Audio

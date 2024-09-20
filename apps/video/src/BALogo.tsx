@@ -17,12 +17,14 @@ export const BaLogo = ({ width }: { width: number }) => {
   const { LL } = useI18nContext();
   const text = LL.measure.fundedBy();
 
-  const { fontSize } = fitText({
+  let { fontSize } = fitText({
     text,
     fontFamily: "Recursive",
     fontWeight: 400,
     withinWidth: width,
   });
+
+  if (fontSize === Infinity) fontSize = 100;
 
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -43,8 +45,14 @@ export const BaLogo = ({ width }: { width: number }) => {
 
   return (
     <div>
-      <div style={{ fontSize, transform: `scale(${scale})`, color }}>
-        {text}
+      <div
+        style={{
+          fontSize: fontSize || 10,
+          transform: `scale(${scale})`,
+          color,
+        }}
+      >
+        {LL.measure.fundedBy()}
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -54,7 +54,7 @@ const CourseData = z.discriminatedUnion("locale", [
 
 export type CourseData = z.infer<typeof CourseData>;
 
-export const compSchema = z.object({
+export const courseTileCompSchema = z.object({
   layout: z.enum(["square", "portrait"]),
   title: z.string().min(3),
   animatedLogo: z.boolean(),
@@ -63,12 +63,12 @@ export const compSchema = z.object({
 
 const companyName = "Quietscheentchen";
 
-export const MyComposition = ({
+export const CourseTile = ({
   layout,
   title,
   animatedLogo,
   courseData,
-}: z.infer<typeof compSchema>) => {
+}: z.infer<typeof courseTileCompSchema>) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -86,6 +86,7 @@ export const MyComposition = ({
         layout={layout}
         image="3.jpg"
         panDuration={durationInFrames}
+        imagePercentage={layout === "square" ? 40 : 20}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <Logo durationInFrames={30} size={100} />

@@ -3,7 +3,7 @@ import { highlight, LighterResult, Theme } from "@code-hike/lighter";
 import { useEffect, useState } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
-import { CourseData } from "./Composition";
+import { CourseData } from "./CourseTile";
 
 const start = 90;
 const duration = 120;

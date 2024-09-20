@@ -74,6 +74,7 @@ const TitleInner = ({
 
           return (
             <div
+              key={i}
               style={{
                 color: c(colors[i % colors.length]),
                 fontSize,

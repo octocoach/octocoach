@@ -154,9 +154,13 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
               <BaLogo width={isLandscape ? width * 0.3 : width * 0.6} />
             </div>
             <AnimatedEmoji
-              emoji="moneyFace"
-              width={isLandscape ? width * 0.3 : width * 0.6}
-              playbackRate={3}
+              type="animatedEmoji"
+              value={{
+                emoji: "moneyFace",
+                durationInSeconds: 2,
+                width: isLandscape ? width * 0.3 : width * 0.6,
+                playbackRate: 3,
+              }}
             />
           </div>
         </TransitionSeries.Sequence>

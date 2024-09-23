@@ -15,6 +15,7 @@
     "@remotion/animation-utils": "^4.0.212",
     "@remotion/bundler": "^4.0.212",
     "@remotion/cli": "4.0.212",
+    "@remotion/gif": "^4.0.212",
     "@remotion/layout-utils": "^4.0.212",
     "@remotion/lottie": "^4.0.212",
     "@remotion/renderer": "^4.0.212",

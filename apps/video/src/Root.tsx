@@ -5,6 +5,11 @@ import { Composition } from "remotion";
 import { Advert, advertSchema } from "./Advert";
 import { CourseData, CourseTile, courseTileCompSchema } from "./CourseTile";
 import {
+  calculateSequenceMetadata,
+  Sequence as Seq,
+  sequenceSchema,
+} from "./Sequence";
+import {
   calculateTestimonialsMetadata,
   Testimonials,
   testimonialsSchema,
@@ -48,21 +53,7 @@ export const RemotionRoot: React.FC = () => {
           courseData,
         }}
       />
-      <Composition
-        id="Portrait"
-        component={CourseTile}
-        durationInFrames={durationInSeconds * fps}
-        fps={fps}
-        width={1080}
-        height={1920}
-        schema={courseTileCompSchema}
-        defaultProps={{
-          layout: "portrait",
-          title,
-          animatedLogo,
-          courseData,
-        }}
-      />
+
       <Composition
         id="Testimonials"
         component={Testimonials}
@@ -74,6 +65,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ title: "Testimonials", subSections: [] }}
         calculateMetadata={calculateTestimonialsMetadata}
       />
+
       <Composition
         id="Advert"
         component={Advert}
@@ -83,6 +75,34 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={advertSchema}
         defaultProps={data[1]}
+      />
+
+      <Composition
+        id="Sequence"
+        component={Seq}
+        fps={fps}
+        width={1080}
+        height={1080}
+        durationInFrames={30 * fps}
+        schema={sequenceSchema}
+        calculateMetadata={calculateSequenceMetadata}
+        defaultProps={{
+          items: [
+            {
+              type: "animatedEmoji" as const,
+              value: {
+                emoji: "mechanicalArm" as const,
+                durationInSeconds: 2,
+                width: 500,
+                playbackRate: 1,
+              },
+            },
+            {
+              type: "words" as const,
+              value: { text: "The goose is loose!", wpm: 200 },
+            },
+          ],
+        }}
       />
     </>
   );

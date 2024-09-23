@@ -15,3 +15,7 @@ export const makePulse = ({
   fps: number;
   speed: number;
 }) => Math.abs(Math.sin((Math.PI * frame) / (fps * speed)));
+
+export const exhaustiveCheck = (_: never): never => {
+  throw new Error("Not all cases are handled");
+};

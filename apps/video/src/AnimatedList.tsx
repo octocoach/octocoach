@@ -21,7 +21,7 @@ import {
 import { z } from "zod";
 
 import { AnimatedEmoji, animatedEmojiSchema } from "./AnimatedEmoji";
-import { c } from "./helpers";
+import { c, exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
 
@@ -36,10 +36,6 @@ const logoEnum = z.enum([
   "anthropic",
   "astro",
 ]);
-
-const exhaustiveCheck = (_: never): never => {
-  throw new Error("Not all cases are handled");
-};
 
 const getLogoIcon = (logo: z.infer<typeof logoEnum>, size = 200) => {
   switch (logo) {

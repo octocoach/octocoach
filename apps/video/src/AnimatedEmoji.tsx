@@ -26,16 +26,34 @@ const emojiLotties = {
   moneyFace,
 } as const;
 
-export const animatedEmojiSchema = z.object({
+const animatedEmojiValueSchema = z.object({
   emoji: emojiEnum,
   width: z.number(),
   playbackRate: z.number().optional(),
+  durationInSeconds: z.number(),
 });
 
+export const animatedEmojiSchema = z.object({
+  type: z.literal("animatedEmoji"),
+  value: animatedEmojiValueSchema,
+});
+
+export const calculateAnimatedEmojiDuration = (
+  { durationInSeconds }: z.infer<typeof animatedEmojiValueSchema>,
+  fps: number,
+) => {
+  if (
+    durationInSeconds === 0 ||
+    isNaN(durationInSeconds) ||
+    durationInSeconds === Infinity
+  )
+    return 1;
+
+  return Math.round(durationInSeconds * fps);
+};
+
 export const AnimatedEmoji = ({
-  emoji,
-  width,
-  playbackRate,
+  value: { emoji, width, playbackRate },
 }: z.infer<typeof animatedEmojiSchema>) => {
   return (
     <Lottie

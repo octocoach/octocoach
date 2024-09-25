@@ -20,25 +20,8 @@ export const sceneSchema = z.discriminatedUnion("type", [
 ]);
 
 export const sequenceSchema = z.object({
-  items: z.array(sceneSchema),
+  scenes: z.array(sceneSchema),
 });
-
-const getComponent = ({ type, props }: z.infer<typeof sceneSchema>) => {
-  switch (type) {
-    case "words":
-      console.log(type);
-      return <Words {...props} />;
-    case "animatedEmoji":
-      console.log(type);
-      return <AnimatedEmoji {...props} />;
-    case "gif":
-      console.log(type);
-      return <GifReaction {...props} />;
-    default:
-      console.log(type);
-      return exhaustiveCheck(type);
-  }
-};
 
 const calculateSceneDuration = (
   { type, props: value }: z.infer<typeof sceneSchema>,
@@ -61,7 +44,7 @@ export const calculateSequenceMetadata: CalculateMetadataFunction<
 > = ({ props }) => {
   let durationInFrames = 0;
 
-  for (const scene of props.items) {
+  for (const scene of props.scenes) {
     durationInFrames += calculateSceneDuration(scene, fps);
   }
 
@@ -75,10 +58,23 @@ export const calculateSequenceMetadata: CalculateMetadataFunction<
   return { props, durationInFrames };
 };
 
-export const Sequence = ({ items }: z.infer<typeof sequenceSchema>) => {
+export const Scene = ({ type, props }: z.infer<typeof sceneSchema>) => {
+  switch (type) {
+    case "words":
+      return <Words {...props} />;
+    case "animatedEmoji":
+      return <AnimatedEmoji {...props} />;
+    case "gif":
+      return <GifReaction {...props} />;
+    default:
+      return exhaustiveCheck(type);
+  }
+};
+
+export const Sequence = ({ scenes }: z.infer<typeof sequenceSchema>) => {
   const { fps } = useVideoConfig();
 
-  if (items.length === 0) return null;
+  if (scenes.length === 0) return null;
 
   return (
     <Layout locale="en">
@@ -89,13 +85,13 @@ export const Sequence = ({ items }: z.infer<typeof sequenceSchema>) => {
           alignItems: "center",
         }}
       >
-        {items.map((scene, idx) => (
+        {scenes.map((scene, idx) => (
           <TransitionSeries.Sequence
             key={idx}
             durationInFrames={calculateSceneDuration(scene, fps)}
             layout="none"
           >
-            {getComponent(scene)}
+            <Scene {...scene} />
           </TransitionSeries.Sequence>
         ))}
       </TransitionSeries>

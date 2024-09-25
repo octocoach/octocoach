@@ -87,7 +87,7 @@ export const RemotionRoot: React.FC = () => {
         schema={sequenceSchema}
         calculateMetadata={calculateSequenceMetadata}
         defaultProps={{
-          items: [
+          scenes: [
             {
               type: "animatedEmoji" as const,
               props: {

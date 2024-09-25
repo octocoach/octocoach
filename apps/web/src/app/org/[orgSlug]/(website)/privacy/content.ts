@@ -113,6 +113,7 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   - **Email**: We may send a hashed version of your email address to Facebook for ad tracking purposes.
   - **First Name**: We may send a hashed version of your first name to Facebook for ad tracking purposes.
   - **Last Name**: We may send a hashed version of your last name to Facebook for ad tracking purposes.
+  - **City**: We may send a hashed version of your city to Facebook for ad tracking purposes.
 
   This information is sent directly to Facebook's Conversions API. We use it to track the effectiveness of our ads and to improve our ad targeting. We do not store this data on our own servers and do not process it further beyond sending it to Facebook for ad tracking purposes.
 
@@ -312,6 +313,7 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   - **E-Mail**: Wir können eine gehashte Version Ihrer E-Mail-Adresse an Facebook für Tracking-Zwecke senden.
   - **Vorname**: Wir können eine gehashte Version Ihres Vornamens an Facebook für Tracking-Zwecke senden.
   - **Nachname**: Wir können eine gehashte Version Ihres Nachnamens an Facebook für Tracking-Zwecke senden.
+  - **Stadt**: Wir können eine gehashte Version Ihrer Stadt an Facebook für Tracking-Zwecke senden.
 
   Diese Informationen werden direkt an die Facebook Conversions API gesendet. Wir nutzen sie, um die Wirksamkeit unserer Anzeigen zu verfolgen und unsere Anzeigen gezielter zu schalten. Wir speichern diese Daten nicht auf unseren eigenen Servern und verarbeiten sie nicht weiter, außer um sie an Facebook für Werbezwecke zu senden.
 

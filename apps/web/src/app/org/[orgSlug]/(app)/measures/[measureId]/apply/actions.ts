@@ -2,6 +2,7 @@
 
 import { authOrRedirect } from "@helpers/auth";
 import { getFreeBusy } from "@helpers/calendars/google";
+import { sendFacebookConversionEvent } from "@helpers/facebook";
 import { getLocale } from "@helpers/locale";
 import { orgDb } from "@octocoach/db/connection";
 import { and, asc, eq, gte, lt } from "@octocoach/db/operators";
@@ -53,8 +54,12 @@ const createIndividualEnrollment = async (
   const db = orgDb(orgSlug);
 
   const { user } = await authOrRedirect(orgSlug);
-  const { individualEnrollmentTable, measureTable, userTable } =
-    mkOrgSchema(orgSlug);
+  const {
+    individualEnrollmentTable,
+    measureTable,
+    userTable,
+    userProfileTable,
+  } = mkOrgSchema(orgSlug);
 
   const ownerEmail = await db
     .select({ email: userTable.email })
@@ -67,7 +72,21 @@ const createIndividualEnrollment = async (
     .insert(individualEnrollmentTable)
     .values({ ...enrollment, coachee: user.id });
 
-  if (ownerEmail && user.email) {
+  const userProfile = await db
+    .select({
+      firstName: userProfileTable.firstName,
+      lastName: userProfileTable.lastName,
+      email: userTable.email,
+      city: userProfileTable.city,
+    })
+    .from(userTable)
+    .innerJoin(userProfileTable, eq(userProfileTable.userId, userTable.id))
+    .where(eq(userTable.id, user.id))
+    .then((rows) => rows[0] ?? null);
+
+  if (!userProfile) throw new Error(`Can't find user ${user.id}`);
+
+  if (ownerEmail && userProfile.firstName && userProfile.lastName) {
     const key = process.env.RESEND_KEY;
     if (key) {
       const resend = new Resend(key);
@@ -76,9 +95,9 @@ const createIndividualEnrollment = async (
           from: "OctoCoach <no-reply@notifications.octo.coach>",
           to: [ownerEmail],
           subject: "New Enrollment",
-          text: `The user ${user.name} has applied for measure ${
-            enrollment.measure
-          }
+          text: `The user ${userProfile.firstName} ${
+            userProfile.lastName
+          } has applied for measure ${enrollment.measure}
 
           ${stringify(enrollment.screeningAnswers?.questions)}
           `,
@@ -92,6 +111,11 @@ const createIndividualEnrollment = async (
       console.warn("No resend API Key!");
     }
   }
+
+  await sendFacebookConversionEvent({
+    eventName: "SubmitApplication",
+    user: userProfile,
+  });
 
   revalidatePath("/org/[orgSlug]/(app)/measures/[measureId]/apply", "page");
 };
@@ -186,6 +210,11 @@ const createCohortEnrollment = async (
   } catch (error) {
     console.error(error);
   }
+
+  await sendFacebookConversionEvent({
+    eventName: "SubmitApplication",
+    user: userProfile,
+  });
 
   revalidatePath(
     "/org/[orgSlug]/(app)/measures/[measureId]/apply/cohort/[cohortId]",

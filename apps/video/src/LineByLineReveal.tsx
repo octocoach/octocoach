@@ -120,9 +120,7 @@ export const LineByLineReveal = ({
           />
         ))}
       </div>
-      {animatedEmoji && (
-        <AnimatedEmoji emoji={animatedEmoji.emoji} width={width} />
-      )}
+      {animatedEmoji && <AnimatedEmoji {...animatedEmoji} />}
     </Sequence>
   );
 };

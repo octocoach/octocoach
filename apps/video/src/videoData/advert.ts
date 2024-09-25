@@ -10,7 +10,10 @@ export const data: z.infer<typeof advertSchema>[] = [
         layout: "portrait",
         durationInFrames: 4 * 30,
         content: {
-          animatedEmoji: { emoji: "muscle", width: 300 },
+          animatedEmoji: {
+            type: "animatedEmoji",
+            value: { emoji: "muscle", width: 300, durationInSeconds: 2 },
+          },
           title: "You already know",
           items: [
             { text: "HTML", logo: "html" },
@@ -23,14 +26,20 @@ export const data: z.infer<typeof advertSchema>[] = [
       2: {
         text: "Don't just use AI",
         durationInFrames: 3 * 30,
-        animatedEmoji: { emoji: "goose", width: 300 },
+        animatedEmoji: {
+          type: "animatedEmoji",
+          value: { emoji: "goose", width: 300, durationInSeconds: 2 },
+        },
         wordsPerLine: 1,
         width: 1080 * 0.3,
       },
       3: {
         text: "Build with it!",
         durationInFrames: 2 * 30,
-        animatedEmoji: { emoji: "peacock", width: 300 },
+        animatedEmoji: {
+          type: "animatedEmoji",
+          value: { emoji: "peacock", width: 300, durationInSeconds: 2 },
+        },
         wordsPerLine: 1,
         width: 1080 * 0.3,
       },
@@ -38,7 +47,10 @@ export const data: z.infer<typeof advertSchema>[] = [
         durationInFrames: 3 * 30,
         layout: "portrait",
         content: {
-          animatedEmoji: { emoji: "mechanicalArm", width: 300 },
+          animatedEmoji: {
+            type: "animatedEmoji",
+            value: { emoji: "mechanicalArm", width: 300, durationInSeconds: 2 },
+          },
           title: "Become a NextGen Full-Stack Developer",
           items: [
             { text: "TypeScript", logo: "typescript" },
@@ -72,7 +84,10 @@ export const data: z.infer<typeof advertSchema>[] = [
         layout: "portrait",
         durationInFrames: 4 * 30,
         content: {
-          animatedEmoji: { emoji: "muscle", width: 300 },
+          animatedEmoji: {
+            type: "animatedEmoji",
+            value: { emoji: "muscle", width: 300, durationInSeconds: 2 },
+          },
           title: "Du kennst schon",
           items: [
             { text: "HTML", logo: "html" },
@@ -85,14 +100,20 @@ export const data: z.infer<typeof advertSchema>[] = [
       2: {
         text: "Benutze nicht nur KI",
         durationInFrames: 3 * 30,
-        animatedEmoji: { emoji: "goose", width: 300 },
+        animatedEmoji: {
+          type: "animatedEmoji",
+          value: { emoji: "goose", width: 300, durationInSeconds: 2 },
+        },
         wordsPerLine: 1,
         width: 1080 * 0.3,
       },
       3: {
         text: "Baue auch damit!",
         durationInFrames: 2 * 30,
-        animatedEmoji: { emoji: "peacock", width: 300 },
+        animatedEmoji: {
+          type: "animatedEmoji",
+          value: { emoji: "peacock", width: 300, durationInSeconds: 2 },
+        },
         wordsPerLine: 1,
         width: 1080 * 0.3,
       },
@@ -100,7 +121,10 @@ export const data: z.infer<typeof advertSchema>[] = [
         durationInFrames: 3 * 30,
         layout: "portrait",
         content: {
-          animatedEmoji: { emoji: "mechanicalArm", width: 300 },
+          animatedEmoji: {
+            type: "animatedEmoji",
+            value: { emoji: "mechanicalArm", width: 300, durationInSeconds: 2 },
+          },
           title: "Werde NextGen Full-Stack-Entwickler",
           items: [
             { text: "TypeScript", logo: "typescript" },

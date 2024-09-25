@@ -6,7 +6,7 @@ import {
   AnimatedEmoji,
   animatedEmojiSchema,
   calculateAnimatedEmojiDuration,
-} from "./AnimatedEmoji";
+} from "./components/AnimatedEmoji";
 import { GifReaction, gifSchema } from "./components/GifReaction";
 import { calculateWordsDuration, Words, wordsSchema } from "./components/Words";
 import { exhaustiveCheck } from "./helpers";
@@ -23,18 +23,17 @@ export const sequenceSchema = z.object({
   items: z.array(sceneSchema),
 });
 
-const getComponent = (scene: z.infer<typeof sceneSchema>) => {
-  const { type } = scene;
+const getComponent = ({ type, props }: z.infer<typeof sceneSchema>) => {
   switch (type) {
     case "words":
       console.log(type);
-      return <Words {...scene} />;
+      return <Words {...props} />;
     case "animatedEmoji":
       console.log(type);
-      return <AnimatedEmoji {...scene} />;
+      return <AnimatedEmoji {...props} />;
     case "gif":
       console.log(type);
-      return <GifReaction {...scene} />;
+      return <GifReaction {...props} />;
     default:
       console.log(type);
       return exhaustiveCheck(type);
@@ -42,7 +41,7 @@ const getComponent = (scene: z.infer<typeof sceneSchema>) => {
 };
 
 const calculateSceneDuration = (
-  { type, value }: z.infer<typeof sceneSchema>,
+  { type, props: value }: z.infer<typeof sceneSchema>,
   fps: number,
 ) => {
   switch (type) {

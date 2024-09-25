@@ -1,17 +1,17 @@
 import { Gif } from "@remotion/gif";
 import { z } from "zod";
 
-const gifValueSchema = z.object({
+const gifPropsSchema = z.object({
   searchTerm: z.string(),
   src: z.string().optional(),
 });
 
 export const gifSchema = z.object({
   type: z.literal("gif"),
-  value: gifValueSchema,
+  props: gifPropsSchema,
 });
 
-export const GifReaction = ({ value }: z.infer<typeof gifSchema>) => {
-  if (!value.src) return null;
-  return <Gif src={value.src} style={{ width: "100%" }} />;
+export const GifReaction = ({ src }: z.infer<typeof gifPropsSchema>) => {
+  if (!src) return null;
+  return <Gif src={src} style={{ width: "100%" }} />;
 };

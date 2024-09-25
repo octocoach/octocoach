@@ -1,12 +1,12 @@
 import { Lottie } from "@remotion/lottie";
 import { z } from "zod";
 
-import goose from "./lottie/goose.json";
-import mechanicalArm from "./lottie/mechanical-arm.json";
-import moneyFace from "./lottie/money-face.json";
-import muscle from "./lottie/muscle.json";
-import peacock from "./lottie/peacock.json";
-import rocket from "./lottie/rocket.json";
+import goose from "../lottie/goose.json";
+import mechanicalArm from "../lottie/mechanical-arm.json";
+import moneyFace from "../lottie/money-face.json";
+import muscle from "../lottie/muscle.json";
+import peacock from "../lottie/peacock.json";
+import rocket from "../lottie/rocket.json";
 
 export const emojiEnum = z.enum([
   "peacock",
@@ -26,7 +26,7 @@ const emojiLotties = {
   moneyFace,
 } as const;
 
-const animatedEmojiValueSchema = z.object({
+export const animatedEmojiPropsSchema = z.object({
   emoji: emojiEnum,
   width: z.number(),
   playbackRate: z.number().optional(),
@@ -35,11 +35,11 @@ const animatedEmojiValueSchema = z.object({
 
 export const animatedEmojiSchema = z.object({
   type: z.literal("animatedEmoji"),
-  value: animatedEmojiValueSchema,
+  props: animatedEmojiPropsSchema,
 });
 
 export const calculateAnimatedEmojiDuration = (
-  { durationInSeconds }: z.infer<typeof animatedEmojiValueSchema>,
+  { durationInSeconds }: z.infer<typeof animatedEmojiPropsSchema>,
   fps: number,
 ) => {
   if (
@@ -53,13 +53,15 @@ export const calculateAnimatedEmojiDuration = (
 };
 
 export const AnimatedEmoji = ({
-  value: { emoji, width, playbackRate },
-}: z.infer<typeof animatedEmojiSchema>) => {
+  emoji,
+  width,
+  playbackRate,
+}: z.infer<typeof animatedEmojiPropsSchema>) => {
   return (
     <Lottie
       animationData={emojiLotties[emoji]}
       style={{ width }}
-      playbackRate={playbackRate}
+      playbackRate={playbackRate && playbackRate < 1 ? 1 : playbackRate}
       loop
     />
   );

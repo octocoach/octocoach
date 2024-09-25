@@ -3,7 +3,10 @@ import { useState } from "react";
 import { interpolate, random, Sequence, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji, animatedEmojiSchema } from "./AnimatedEmoji";
+import {
+  AnimatedEmoji,
+  animatedEmojiPropsSchema,
+} from "./components/AnimatedEmoji";
 import { accentColors } from "./helpers";
 import { useIsPortrait } from "./hooks";
 
@@ -73,7 +76,7 @@ export const lineByLineRevealSchema = z.object({
   text: z.string(),
   wordsPerLine: z.number(),
   durationInFrames: z.number(),
-  animatedEmoji: animatedEmojiSchema.optional(),
+  animatedEmoji: animatedEmojiPropsSchema.optional(),
   width: z.number(),
 });
 

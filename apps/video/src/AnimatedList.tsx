@@ -20,7 +20,10 @@ import {
 } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji, animatedEmojiSchema } from "./AnimatedEmoji";
+import {
+  AnimatedEmoji,
+  animatedEmojiPropsSchema,
+} from "./components/AnimatedEmoji";
 import { c, exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
@@ -68,7 +71,7 @@ export const animatedListContenItemSchema = z.object({
 });
 
 export const animatedListContentSchema = z.object({
-  animatedEmoji: animatedEmojiSchema,
+  animatedEmoji: animatedEmojiPropsSchema,
   title: z.string(),
   items: z.array(animatedListContenItemSchema),
 });

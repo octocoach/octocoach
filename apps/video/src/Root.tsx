@@ -90,7 +90,7 @@ export const RemotionRoot: React.FC = () => {
           items: [
             {
               type: "animatedEmoji" as const,
-              value: {
+              props: {
                 emoji: "mechanicalArm" as const,
                 durationInSeconds: 2,
                 width: 500,
@@ -99,7 +99,7 @@ export const RemotionRoot: React.FC = () => {
             },
             {
               type: "words" as const,
-              value: { text: "The goose is loose!", wpm: 200 },
+              props: { text: "The goose is loose!", wpm: 200 },
             },
           ],
         }}

@@ -3,9 +3,9 @@ import { slide } from "@remotion/transitions/slide";
 import { Audio, staticFile, useVideoConfig } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji } from "./AnimatedEmoji";
 import { AnimatedList, animatedListSchema } from "./AnimatedList";
 import { BaLogo } from "./BALogo";
+import { AnimatedEmoji } from "./components/AnimatedEmoji";
 import { CourseData, CourseTile } from "./CourseTile";
 import { useIsLandscape, useIsPortrait } from "./hooks";
 import { ImagePanLayout, imagePanLayoutSchema } from "./ImagePanLayout";
@@ -154,13 +154,10 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
               <BaLogo width={isLandscape ? width * 0.3 : width * 0.6} />
             </div>
             <AnimatedEmoji
-              type="animatedEmoji"
-              value={{
-                emoji: "moneyFace",
-                durationInSeconds: 2,
-                width: isLandscape ? width * 0.3 : width * 0.6,
-                playbackRate: 3,
-              }}
+              emoji="moneyFace"
+              durationInSeconds={2}
+              width={isLandscape ? width * 0.3 : width * 0.6}
+              playbackRate={3}
             />
           </div>
         </TransitionSeries.Sequence>

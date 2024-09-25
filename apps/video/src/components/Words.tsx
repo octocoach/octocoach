@@ -5,14 +5,14 @@ import { z } from "zod";
 
 import { accentColors } from "../helpers";
 
-const wordsValueSchema = z.object({
+const wordsPropsSchema = z.object({
   text: z.string(),
   wpm: z.number(),
 });
 
 export const wordsSchema = z.object({
   type: z.literal("words"),
-  value: wordsValueSchema,
+  props: wordsPropsSchema,
 });
 
 const splitAndFilterEmpty = (text: string) =>
@@ -22,7 +22,7 @@ const splitAndFilterEmpty = (text: string) =>
     .filter((word) => word.length > 0);
 
 export const calculateWordsDuration = (
-  { text, wpm }: z.infer<typeof wordsValueSchema>,
+  { text, wpm }: z.infer<typeof wordsPropsSchema>,
   fps: number,
 ) => {
   const words = splitAndFilterEmpty(text).length;
@@ -64,10 +64,10 @@ const Word = ({
   return <h1 style={{ ...style, color }}>{children}</h1>;
 };
 
-export const Words = ({ value }: z.infer<typeof wordsSchema>) => {
+export const Words = (props: z.infer<typeof wordsPropsSchema>) => {
   const { fps } = useVideoConfig();
-  const words = useMemo(() => splitAndFilterEmpty(value.text), [value.text]);
-  const durationInFrames = calculateWordsDuration(value, fps);
+  const words = useMemo(() => splitAndFilterEmpty(props.text), [props.text]);
+  const durationInFrames = calculateWordsDuration(props, fps);
   const wordDuration = durationInFrames / words.length;
 
   return (

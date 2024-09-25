@@ -1,6 +1,7 @@
 import { CertquaMeasureSeal } from "@components/certqua-seal/measure";
 import { FillImage } from "@components/fill-image";
 import { FundedByBA } from "@components/funded-by-ba";
+import { sendFacebookConversionEvent } from "@helpers/facebook";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
@@ -33,6 +34,7 @@ import { getEndDate, getMeasureWithInfoAndModules } from "../../helpers";
 
 type PageParams = {
   params: { orgSlug: string; measureId: MeasureWithInfo["id"] };
+  searchParams: { fbclid?: string };
 };
 
 export async function generateMetadata({
@@ -195,6 +197,7 @@ const ApplySection = ({
 
 export default async function Page({
   params: { orgSlug, measureId },
+  searchParams: { fbclid },
 }: PageParams) {
   const measure = await getMeasureWithInfoAndModules(orgSlug, measureId);
 
@@ -207,6 +210,13 @@ export default async function Page({
   const cost = totalUE * rate;
   const weeks = measure.duration;
   const hoursPerWeek = Math.round((totalUE / weeks) * 0.75);
+
+  if (fbclid) {
+    await sendFacebookConversionEvent({
+      fbclid,
+      eventName: "ViewContent",
+    });
+  }
 
   return (
     <Box marginY="medium">

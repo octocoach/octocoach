@@ -98,7 +98,31 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
   - **Data Sharing**: We may share data with external entities like the [Bundesagentur für Arbeit](https://www.arbeitsagentur.de/) or Jobcenter in Germany for clients using AVGS vouchers and with [Certqua](https://www.certqua.de/) during AZAV audits.
   
   All personal data collected for these services are handled in compliance with GDPR guidelines and are used strictly for the intended purposes.
-  
+
+  ### Ad Performance and Tracking
+
+  We use various technologies to measure the performance of our marketing campaigns and improve the relevance of the ads you see. For this purpose, we may collect certain information when you interact with our ads. We process this data to understand how users engage with our site after interacting with our ads and to optimize our ad campaigns.
+
+  We do not use cookies for this tracking. Instead, we send data directly to the respective platforms via server-side APIs.
+
+  #### 1. Facebook Conversion Tracking
+
+  When you visit certain pages on our site after interacting with one of our Facebook ads, we may collect the following data:
+  - **Facebook Click ID (fbclid)**: This is a unique identifier passed via the URL when you click on a Facebook ad.
+  - **User Agent String**: This includes information about the browser and device you are using.
+  - **Email**: We may send a hashed version of your email address to Facebook for ad tracking purposes.
+  - **First Name**: We may send a hashed version of your first name to Facebook for ad tracking purposes.
+  - **Last Name**: We may send a hashed version of your last name to Facebook for ad tracking purposes.
+  - **City**: We may send a hashed version of your city to Facebook for ad tracking purposes.
+
+  This information is sent directly to Facebook's Conversions API. We use it to track the effectiveness of our ads and to improve our ad targeting. We do not store this data on our own servers and do not process it further beyond sending it to Facebook for ad tracking purposes.
+
+  **How to object**:
+  If you do not want us to track your interaction with our ads through Facebook, you can contact us directly at ${
+    organization.email
+  } to object to the processing of your data.
+
+  Please note that this tracking does not use cookies, and no data is stored on your device.
 
   ## External Service Providers and Sub-Processors
 
@@ -275,6 +299,31 @@ export const makePrivacyPolicy: Record<Locales, MakePrivacyPolicy> = {
 
   Um unsere Dienste effektiv anbieten zu können, arbeiten wir mit externen Dienstleistern zusammen, die uns bei der Verarbeitung von Daten in verschiedenen Funktionen unterstützen.
   
+  ### Anzeigen-Performance und Tracking
+
+  Wir nutzen verschiedene Technologien, um die Leistung unserer Marketingkampagnen zu messen und die Relevanz der von Ihnen gesehenen Anzeigen zu verbessern. Zu diesem Zweck sammeln wir möglicherweise bestimmte Informationen, wenn Sie mit unseren Anzeigen interagieren. Diese Daten verarbeiten wir, um zu verstehen, wie Benutzer nach der Interaktion mit unseren Anzeigen auf unserer Website agieren, und um unsere Werbekampagnen zu optimieren.
+
+  Wir verwenden für dieses Tracking keine Cookies. Stattdessen senden wir Daten direkt über serverseitige APIs an die jeweiligen Plattformen.
+
+  #### 1. Facebook Conversion Tracking
+
+  Wenn Sie bestimmte Seiten auf unserer Website besuchen, nachdem Sie mit einer unserer Facebook-Anzeigen interagiert haben, erfassen wir möglicherweise folgende Daten:
+  - **Facebook Click ID (fbclid)**: Dies ist eine eindeutige Kennung, die über die URL übergeben wird, wenn Sie auf eine Facebook-Anzeige klicken.
+  - **User-Agent-String**: Dieser enthält Informationen über den von Ihnen verwendeten Browser und das Gerät.
+  - **E-Mail**: Wir können eine gehashte Version Ihrer E-Mail-Adresse an Facebook für Tracking-Zwecke senden.
+  - **Vorname**: Wir können eine gehashte Version Ihres Vornamens an Facebook für Tracking-Zwecke senden.
+  - **Nachname**: Wir können eine gehashte Version Ihres Nachnamens an Facebook für Tracking-Zwecke senden.
+  - **Stadt**: Wir können eine gehashte Version Ihrer Stadt an Facebook für Tracking-Zwecke senden.
+
+  Diese Informationen werden direkt an die Facebook Conversions API gesendet. Wir nutzen sie, um die Wirksamkeit unserer Anzeigen zu verfolgen und unsere Anzeigen gezielter zu schalten. Wir speichern diese Daten nicht auf unseren eigenen Servern und verarbeiten sie nicht weiter, außer um sie an Facebook für Werbezwecke zu senden.
+
+  **Wie Sie Widerspruch einlegen können**:
+  Wenn Sie nicht möchten, dass wir Ihre Interaktionen mit unseren Anzeigen über Facebook nachverfolgen, können Sie uns direkt unter ${
+    organization.email
+  } kontaktieren, um der Verarbeitung Ihrer Daten zu widersprechen.
+
+  Bitte beachten Sie, dass dieses Tracking keine Cookies verwendet und keine Daten auf Ihrem Gerät gespeichert werden.
+
   ### Primäre externe Dienstanbieter:
   
   - [**Daily.co**](https://www.daily.co/): Wird für Videogesprächsdienste verwendet. Daily.co bietet eine Transkriptionsfunktion für Videogespräche, die Deepgram.com für die Verarbeitung dieser Transkriptionen nutzt. Dieser Transkriptionsdienst ist ein wesentlicher Bestandteil unserer Coaching-Dienste, da er die detaillierte Analyse ermöglicht, die für ein personalisiertes Feedback erforderlich ist.

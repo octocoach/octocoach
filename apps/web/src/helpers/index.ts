@@ -7,3 +7,12 @@ export const safeParseInt = (value: string | number) => {
 
   throw new Error("Invalid value");
 };
+
+export const sha256 = (data: string) => {
+  const buffer = new TextEncoder().encode(data);
+  return crypto.subtle.digest("SHA-256", buffer).then((hash) => {
+    return Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  });
+};

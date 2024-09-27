@@ -9,6 +9,7 @@
     "@catppuccin/palette": "^1.1.1",
     "@catppuccin/vscode": "^3.15.2",
     "@code-hike/lighter": "^1.0.0",
+    "@giphy/js-fetch-api": "^5.6.0",
     "@octocoach/db": "workspace:^",
     "@octocoach/i18n": "workspace:^",
     "@remotion/animated-emoji": "^4.0.212",

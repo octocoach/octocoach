@@ -71,6 +71,9 @@ importers:
       '@code-hike/lighter':
         specifier: ^1.0.0
         version: 1.0.0
+      '@giphy/js-fetch-api':
+        specifier: ^5.6.0
+        version: 5.6.0
       '@octocoach/db':
         specifier: workspace:^
         version: link:../../packages/db
@@ -2469,6 +2472,15 @@ packages:
 
   '@formatjs/intl-localematcher@0.5.4':
     resolution: {integrity: sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==}
+
+  '@giphy/js-fetch-api@5.6.0':
+    resolution: {integrity: sha512-hKZ7XZWGSzR29ISW1f6LWeVZ7GgWwhVuZprPMj3nrhHT6RkmkKghIP/yXKpWyhfTyAVgjeNGq0T/fAmGNKRvGQ==}
+
+  '@giphy/js-types@5.1.0':
+    resolution: {integrity: sha512-BZYCDtYNRR7cUWkbDLB4wmm3qmWMsVCQdUiBNOfmZ3yAazCgygKJoDI/5Rq4CK5MBaOc5LVdF8viC2WtoBdaPA==}
+
+  '@giphy/js-util@5.1.0':
+    resolution: {integrity: sha512-CvmeJi9H6tj0jscL7xpRXBhNuTgkQkXo7PQZK+UbWMR3NmJ07JibYxrw02bLmBZHxw+4F0cGeZL3zf8u5d+o5A==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -12437,6 +12449,18 @@ snapshots:
   '@formatjs/intl-localematcher@0.5.4':
     dependencies:
       tslib: 2.6.2
+
+  '@giphy/js-fetch-api@5.6.0':
+    dependencies:
+      '@giphy/js-types': 5.1.0
+      '@giphy/js-util': 5.1.0
+
+  '@giphy/js-types@5.1.0': {}
+
+  '@giphy/js-util@5.1.0':
+    dependencies:
+      '@giphy/js-types': 5.1.0
+      uuid: 9.0.1
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:

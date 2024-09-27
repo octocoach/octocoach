@@ -1,3 +1,4 @@
+import { GiphyFetch } from "@giphy/js-fetch-api";
 import { TransitionSeries } from "@remotion/transitions";
 import { CalculateMetadataFunction, useVideoConfig } from "remotion";
 import { z } from "zod";
@@ -41,7 +42,7 @@ const calculateSceneDuration = (
 
 export const calculateSequenceMetadata: CalculateMetadataFunction<
   z.infer<typeof sequenceSchema>
-> = ({ props }) => {
+> = async ({ props }) => {
   let durationInFrames = 0;
 
   for (const scene of props.scenes) {
@@ -54,6 +55,25 @@ export const calculateSequenceMetadata: CalculateMetadataFunction<
     durationInFrames === Infinity
   )
     durationInFrames = 1;
+
+  props.scenes = await Promise.all(
+    props.scenes.map(async (scene) => {
+      if (scene.type === "gif" && !scene.props.src && scene.props.searchTerm) {
+        const giphyKey = process.env.GIPHY_KEY;
+        if (!giphyKey) throw new Error("Missing GIPHY_KEY");
+        const gf = new GiphyFetch(giphyKey);
+        const { data } = await gf.search(scene.props.searchTerm, {
+          limit: 1,
+          type: "stickers",
+        });
+
+        console.log(data);
+        scene.props.src = data[0].images.original.url;
+      }
+
+      return scene;
+    }),
+  );
 
   return { props, durationInFrames };
 };

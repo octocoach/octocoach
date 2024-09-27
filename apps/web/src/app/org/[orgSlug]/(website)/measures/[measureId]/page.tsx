@@ -303,38 +303,36 @@ export default async function Page({
         <Text size="l" weight="light" element="h2">
           <Message id="enrollment.curriculum" />
         </Text>
-        <Card>
-          <Stack spacing="loose">
-            {measure.curriculumIntro && (
-              <Markdown>{measure.curriculumIntro}</Markdown>
-            )}
-            <Stack>
-              <Text size="l" weight="semiBold" element="h2" variation="casual">
-                <Message id="enrollment.whatYoullLearn" />
-              </Text>
-              <Stack spacing="tight">
-                {measure.modules.map((mod) => (
-                  <Card key={mod.id} surface="mantle">
-                    <Grid gap="large" columns="auto" justifyItems="center">
-                      <FillImage
-                        src={mod.imageSrc}
-                        alt={mod.imageAlt}
-                        minHeight={200}
-                        roundedCorners
-                      />
-                      <Box>
-                        <Text size="l" weight="heavy">
-                          {mod.title}
-                        </Text>
-                        <Markdown>{mod.description}</Markdown>
-                      </Box>
-                    </Grid>
-                  </Card>
-                ))}
-              </Stack>
+        <Stack spacing="loose">
+          {measure.curriculumIntro && (
+            <Markdown>{measure.curriculumIntro}</Markdown>
+          )}
+          <Stack>
+            <Text size="m" weight="bold" element="h2" variation="heading">
+              <Message id="enrollment.whatYoullLearn" />
+            </Text>
+            <Stack spacing="tight">
+              {measure.modules.map((mod) => (
+                <Card key={mod.id} surface="mantle">
+                  <Grid gap="large" columns="auto" justifyItems="center">
+                    <FillImage
+                      src={mod.imageSrc}
+                      alt={mod.imageAlt}
+                      minHeight={200}
+                      roundedCorners
+                    />
+                    <Box>
+                      <Text size="l" weight="heavy">
+                        {mod.title}
+                      </Text>
+                      <Markdown>{mod.description}</Markdown>
+                    </Box>
+                  </Grid>
+                </Card>
+              ))}
             </Stack>
           </Stack>
-        </Card>
+        </Stack>
       </Stack>
     </Box>
   );

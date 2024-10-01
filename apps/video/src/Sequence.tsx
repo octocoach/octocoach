@@ -74,6 +74,8 @@ export const SceneLayout = ({
         gridAutoFlow: isLandscape ? "column" : "row",
         placeItems: "center",
         gap: 20,
+        width: "100%",
+        height: "100%",
       }}
     >
       {scenes.map((scene, i) => (

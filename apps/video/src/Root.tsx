@@ -74,7 +74,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={advertSchema}
-        defaultProps={data[1]}
+        defaultProps={data[0]}
       />
 
       <Composition
@@ -90,36 +90,41 @@ export const RemotionRoot: React.FC = () => {
           scenes: [
             {
               durationInFrames: 30,
-              type: "single",
               scenes: [
                 {
-                  type: "logo" as const,
-                  props: { size: 100, durationInFrames: 30 },
+                  type: "words",
+                  props: {
+                    text: ["Completed", "a bootcamp?"],
+                    durationInFrames: 0,
+                  },
                 },
                 {
                   type: "animatedEmoji" as const,
                   props: {
-                    emoji: "peacock" as const,
+                    emoji: "graduationCap",
                     width: 300,
-                    playbackRate: 1,
+                    playbackRate: 2,
                   },
                 },
               ],
             },
             {
-              durationInFrames: 120,
+              durationInFrames: 30,
               scenes: [
                 {
                   type: "animatedEmoji" as const,
                   props: {
-                    emoji: "rocket" as const,
+                    emoji: "unamused",
                     width: 300,
-                    playbackRate: 0,
+                    playbackRate: 2,
                   },
                 },
                 {
-                  type: "words" as const,
-                  props: { text: "fdsa fdsf fdssad", durationInFrames: 0 },
+                  type: "words",
+                  props: {
+                    text: ["Still no Job?"],
+                    durationInFrames: 0,
+                  },
                 },
               ],
             },

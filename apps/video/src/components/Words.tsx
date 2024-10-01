@@ -1,12 +1,11 @@
 import { interpolateStyles } from "@remotion/animation-utils";
-import { useMemo } from "react";
 import { random, Series, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
 import { accentColors } from "../helpers";
 
 const wordsPropsSchema = z.object({
-  text: z.string(),
+  text: z.array(z.string()),
   durationInFrames: z.number(),
 });
 
@@ -15,13 +14,7 @@ export const wordsSchema = z.object({
   props: wordsPropsSchema,
 });
 
-const splitAndFilterEmpty = (text: string) =>
-  text
-    .trim()
-    .split(" ")
-    .filter((word) => word.length > 0);
-
-const Word = ({
+const Sentence = ({
   children,
   wordDuration,
 }: {
@@ -43,27 +36,36 @@ const Word = ({
   const colorId = Math.floor(random(`word-${children}`) * accentColors.length);
   const color = accentColors[colorId];
 
-  return <h1 style={{ ...style, color }}>{children}</h1>;
+  return (
+    <h1
+      style={{
+        ...style,
+        color,
+        textAlign: "center",
+        padding: 20,
+        textWrap: "nowrap",
+      }}
+    >
+      {children}
+    </h1>
+  );
 };
 
-export const Words = (props: z.infer<typeof wordsPropsSchema>) => {
-  const words = useMemo(() => splitAndFilterEmpty(props.text), [props.text]);
-  const wordDuration = props.durationInFrames / words.length;
+export const Words = ({
+  text,
+  durationInFrames,
+}: z.infer<typeof wordsPropsSchema>) => {
+  if (text.length <= 0) return null;
+
+  const wordsDuration = durationInFrames / text.length;
 
   return (
     <Series>
-      {words.map(
-        (word, i) =>
-          word.length && (
-            <Series.Sequence
-              key={i}
-              durationInFrames={wordDuration}
-              layout="none"
-            >
-              <Word wordDuration={wordDuration}>{word}</Word>
-            </Series.Sequence>
-          ),
-      )}
+      {text.map((words, i) => (
+        <Series.Sequence key={i} durationInFrames={wordsDuration} layout="none">
+          <Sentence wordDuration={wordsDuration}>{words}</Sentence>
+        </Series.Sequence>
+      ))}
     </Series>
   );
 };

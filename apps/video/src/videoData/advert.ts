@@ -13,7 +13,7 @@ export const data: z.infer<typeof advertSchema>[] = [
           animatedEmoji: {
             emoji: "muscle",
             width: 300,
-            durationInSeconds: 2,
+            playbackRate: 1,
           },
           title: "You already know",
           items: [
@@ -30,7 +30,7 @@ export const data: z.infer<typeof advertSchema>[] = [
         animatedEmoji: {
           emoji: "goose",
           width: 300,
-          durationInSeconds: 2,
+          playbackRate: 1,
         },
         wordsPerLine: 1,
         width: 1080 * 0.3,
@@ -41,7 +41,7 @@ export const data: z.infer<typeof advertSchema>[] = [
         animatedEmoji: {
           emoji: "peacock",
           width: 300,
-          durationInSeconds: 2,
+          playbackRate: 1,
         },
         wordsPerLine: 1,
         width: 1080 * 0.3,
@@ -53,7 +53,7 @@ export const data: z.infer<typeof advertSchema>[] = [
           animatedEmoji: {
             emoji: "mechanicalArm",
             width: 300,
-            durationInSeconds: 2,
+            playbackRate: 1,
           },
           title: "Become a NextGen Full-Stack Developer",
           items: [
@@ -91,7 +91,7 @@ export const data: z.infer<typeof advertSchema>[] = [
           animatedEmoji: {
             emoji: "muscle",
             width: 300,
-            durationInSeconds: 2,
+            playbackRate: 1,
           },
           title: "Du kennst schon",
           items: [
@@ -108,7 +108,7 @@ export const data: z.infer<typeof advertSchema>[] = [
         animatedEmoji: {
           emoji: "goose",
           width: 300,
-          durationInSeconds: 2,
+          playbackRate: 1,
         },
         wordsPerLine: 1,
         width: 1080 * 0.3,
@@ -119,7 +119,7 @@ export const data: z.infer<typeof advertSchema>[] = [
         animatedEmoji: {
           emoji: "peacock",
           width: 300,
-          durationInSeconds: 2,
+          playbackRate: 1,
         },
         wordsPerLine: 1,
         width: 1080 * 0.3,
@@ -131,7 +131,7 @@ export const data: z.infer<typeof advertSchema>[] = [
           animatedEmoji: {
             emoji: "mechanicalArm",
             width: 300,
-            durationInSeconds: 2,
+            playbackRate: 1,
           },
           title: "Werde NextGen Full-Stack-Entwickler",
           items: [

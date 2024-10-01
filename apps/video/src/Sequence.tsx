@@ -9,6 +9,7 @@ import {
   calculateAnimatedEmojiDuration,
 } from "./components/AnimatedEmoji";
 import { GifReaction, gifSchema } from "./components/GifReaction";
+import { calculateLogoDuration, Logo, logoSchema } from "./components/Logo";
 import { calculateWordsDuration, Words, wordsSchema } from "./components/Words";
 import { exhaustiveCheck } from "./helpers";
 import { Layout } from "./Layout";
@@ -18,6 +19,7 @@ export const sceneSchema = z.discriminatedUnion("type", [
   wordsSchema,
   animatedEmojiSchema,
   gifSchema,
+  logoSchema,
 ]);
 
 export const sequenceSchema = z.object({
@@ -35,6 +37,8 @@ const calculateSceneDuration = (
       return calculateAnimatedEmojiDuration(value, fps);
     case "gif":
       return 120;
+    case "logo":
+      return calculateLogoDuration(value);
     default:
       return exhaustiveCheck(type);
   }
@@ -86,6 +90,8 @@ export const Scene = ({ type, props }: z.infer<typeof sceneSchema>) => {
       return <AnimatedEmoji {...props} />;
     case "gif":
       return <GifReaction {...props} />;
+    case "logo":
+      return <Logo {...props} />;
     default:
       return exhaustiveCheck(type);
   }

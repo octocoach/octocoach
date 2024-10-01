@@ -56,10 +56,6 @@ export const logoSchema = z.object({
   props: logoPropsSchema,
 });
 
-export const calculateLogoDuration = ({
-  durationInFrames,
-}: z.infer<typeof logoPropsSchema>) => durationInFrames || 1;
-
 export const Logo = ({
   size,
   durationInFrames,

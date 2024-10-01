@@ -3,22 +3,8 @@ import { Locales } from "@octocoach/i18n/src/i18n-types";
 import { loadAllLocalesAsync } from "@octocoach/i18n/src/i18n-util.async";
 import { useEffect, useState } from "react";
 import { AbsoluteFill, continueRender, delayRender } from "remotion";
-import { z } from "zod";
 
 import { c } from "./helpers";
-
-export const layoutPropsSchema = z.object<{
-  children: React.ReactNode;
-  locale: Locales;
-}>({
-  children: z.custom<React.ReactNode>(),
-  locale: z.enum(["en", "de"]),
-});
-
-export const layoutSchema = z.object({
-  shape: z.literal("single"),
-  props: layoutPropsSchema,
-});
 
 export const Layout = ({
   children,

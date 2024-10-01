@@ -2,8 +2,9 @@ import { Gif } from "@remotion/gif";
 import { z } from "zod";
 
 const gifPropsSchema = z.object({
-  searchTerm: z.string(),
-  src: z.string().optional(),
+  id: z.string(),
+  width: z.number(),
+  height: z.number(),
 });
 
 export const gifSchema = z.object({
@@ -11,7 +12,13 @@ export const gifSchema = z.object({
   props: gifPropsSchema,
 });
 
-export const GifReaction = ({ src }: z.infer<typeof gifPropsSchema>) => {
-  if (!src) return null;
-  return <Gif src={src} style={{ width: "100%" }} />;
+export const GifReaction = ({
+  id,
+  width,
+  height,
+}: z.infer<typeof gifPropsSchema>) => {
+  if (!id) return null;
+
+  const src = `https://media.giphy.com/media/${id}/giphy.gif`;
+  return <Gif src={src} style={{ width, height }} />;
 };

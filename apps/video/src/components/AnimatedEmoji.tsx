@@ -29,28 +29,13 @@ const emojiLotties = {
 export const animatedEmojiPropsSchema = z.object({
   emoji: emojiEnum,
   width: z.number(),
-  playbackRate: z.number().optional(),
-  durationInSeconds: z.number(),
+  playbackRate: z.number(),
 });
 
 export const animatedEmojiSchema = z.object({
   type: z.literal("animatedEmoji"),
   props: animatedEmojiPropsSchema,
 });
-
-export const calculateAnimatedEmojiDuration = (
-  { durationInSeconds }: z.infer<typeof animatedEmojiPropsSchema>,
-  fps: number,
-) => {
-  if (
-    durationInSeconds === 0 ||
-    isNaN(durationInSeconds) ||
-    durationInSeconds === Infinity
-  )
-    return 1;
-
-  return Math.round(durationInSeconds * fps);
-};
 
 export const AnimatedEmoji = ({
   emoji,
@@ -61,7 +46,7 @@ export const AnimatedEmoji = ({
     <Lottie
       animationData={emojiLotties[emoji]}
       style={{ width }}
-      playbackRate={playbackRate && playbackRate < 1 ? 1 : playbackRate}
+      playbackRate={playbackRate <= 0 ? 1 : playbackRate}
       loop
     />
   );

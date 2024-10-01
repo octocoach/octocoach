@@ -1,13 +1,13 @@
 import { interpolateStyles } from "@remotion/animation-utils";
 import { useMemo } from "react";
-import { random, Series, useCurrentFrame, useVideoConfig } from "remotion";
+import { random, Series, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
 import { accentColors } from "../helpers";
 
 const wordsPropsSchema = z.object({
   text: z.string(),
-  wpm: z.number(),
+  durationInFrames: z.number(),
 });
 
 export const wordsSchema = z.object({
@@ -20,24 +20,6 @@ const splitAndFilterEmpty = (text: string) =>
     .trim()
     .split(" ")
     .filter((word) => word.length > 0);
-
-export const calculateWordsDuration = (
-  { text, wpm }: z.infer<typeof wordsPropsSchema>,
-  fps: number,
-) => {
-  const words = splitAndFilterEmpty(text).length;
-  const secondsPerWord = 60 / wpm || 200;
-  const durationInSeconds = words * secondsPerWord;
-
-  if (
-    durationInSeconds === 0 ||
-    isNaN(durationInSeconds) ||
-    durationInSeconds === Infinity
-  )
-    return 1;
-
-  return Math.round(durationInSeconds * fps);
-};
 
 const Word = ({
   children,
@@ -65,10 +47,8 @@ const Word = ({
 };
 
 export const Words = (props: z.infer<typeof wordsPropsSchema>) => {
-  const { fps } = useVideoConfig();
   const words = useMemo(() => splitAndFilterEmpty(props.text), [props.text]);
-  const durationInFrames = calculateWordsDuration(props, fps);
-  const wordDuration = durationInFrames / words.length;
+  const wordDuration = props.durationInFrames / words.length;
 
   return (
     <Series>

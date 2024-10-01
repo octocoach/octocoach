@@ -81,7 +81,7 @@ export const RemotionRoot: React.FC = () => {
         id="Sequence"
         component={Seq}
         fps={fps}
-        width={1080}
+        width={1920}
         height={1080}
         durationInFrames={30 * fps}
         schema={sequenceSchema}
@@ -89,17 +89,39 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           scenes: [
             {
-              type: "animatedEmoji" as const,
-              props: {
-                emoji: "mechanicalArm" as const,
-                durationInSeconds: 2,
-                width: 500,
-                playbackRate: 1,
-              },
+              durationInFrames: 30,
+              type: "single",
+              scenes: [
+                {
+                  type: "logo" as const,
+                  props: { size: 100, durationInFrames: 30 },
+                },
+                {
+                  type: "animatedEmoji" as const,
+                  props: {
+                    emoji: "peacock" as const,
+                    width: 300,
+                    playbackRate: 1,
+                  },
+                },
+              ],
             },
             {
-              type: "words" as const,
-              props: { text: "The goose is loose!", wpm: 200 },
+              durationInFrames: 120,
+              scenes: [
+                {
+                  type: "animatedEmoji" as const,
+                  props: {
+                    emoji: "rocket" as const,
+                    width: 300,
+                    playbackRate: 0,
+                  },
+                },
+                {
+                  type: "words" as const,
+                  props: { text: "fdsa fdsf fdssad", durationInFrames: 0 },
+                },
+              ],
             },
           ],
         }}

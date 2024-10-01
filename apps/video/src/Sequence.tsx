@@ -1,19 +1,14 @@
-import { GiphyFetch } from "@giphy/js-fetch-api";
 import { TransitionSeries } from "@remotion/transitions";
-import { CalculateMetadataFunction, useVideoConfig } from "remotion";
+import { CalculateMetadataFunction } from "remotion";
 import { z } from "zod";
 
-import {
-  AnimatedEmoji,
-  animatedEmojiSchema,
-  calculateAnimatedEmojiDuration,
-} from "./components/AnimatedEmoji";
+import { AnimatedEmoji, animatedEmojiSchema } from "./components/AnimatedEmoji";
 import { GifReaction, gifSchema } from "./components/GifReaction";
-import { calculateLogoDuration, Logo, logoSchema } from "./components/Logo";
-import { calculateWordsDuration, Words, wordsSchema } from "./components/Words";
+import { Logo, logoSchema } from "./components/Logo";
+import { Words, wordsSchema } from "./components/Words";
 import { exhaustiveCheck } from "./helpers";
+import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
-import { fps } from "./Root";
 
 export const sceneSchema = z.discriminatedUnion("type", [
   wordsSchema,
@@ -22,84 +17,87 @@ export const sceneSchema = z.discriminatedUnion("type", [
   logoSchema,
 ]);
 
-export const sequenceSchema = z.object({
+export const sceneLayoutSchema = z.object({
+  durationInFrames: z.number(),
   scenes: z.array(sceneSchema),
 });
 
-const calculateSceneDuration = (
-  { type, props: value }: z.infer<typeof sceneSchema>,
-  fps: number,
-) => {
-  switch (type) {
-    case "words":
-      return calculateWordsDuration(value, fps);
-    case "animatedEmoji":
-      return calculateAnimatedEmojiDuration(value, fps);
-    case "gif":
-      return 120;
-    case "logo":
-      return calculateLogoDuration(value);
-    default:
-      return exhaustiveCheck(type);
-  }
-};
+export const sequenceSchema = z.object({
+  scenes: z.array(sceneLayoutSchema),
+});
 
 export const calculateSequenceMetadata: CalculateMetadataFunction<
   z.infer<typeof sequenceSchema>
-> = async ({ props }) => {
-  let durationInFrames = 0;
-
-  for (const scene of props.scenes) {
-    durationInFrames += calculateSceneDuration(scene, fps);
-  }
-
-  if (
-    durationInFrames === 0 ||
-    isNaN(durationInFrames) ||
-    durationInFrames === Infinity
-  )
-    durationInFrames = 1;
-
-  props.scenes = await Promise.all(
-    props.scenes.map(async (scene) => {
-      if (scene.type === "gif" && !scene.props.src && scene.props.searchTerm) {
-        const giphyKey = process.env.GIPHY_KEY;
-        if (!giphyKey) throw new Error("Missing GIPHY_KEY");
-        const gf = new GiphyFetch(giphyKey);
-        const { data } = await gf.search(scene.props.searchTerm, {
-          limit: 1,
-          type: "stickers",
-        });
-
-        console.log(data);
-        scene.props.src = data[0].images.original.url;
-      }
-
-      return scene;
-    }),
-  );
+> = ({ props }) => {
+  const durationInFrames =
+    props.scenes.reduce(
+      (acc, { durationInFrames }) => acc + durationInFrames,
+      0,
+    ) || 30;
 
   return { props, durationInFrames };
 };
 
-export const Scene = ({ type, props }: z.infer<typeof sceneSchema>) => {
+export const Scene = ({
+  scene: { type, props },
+  durationInFrames,
+}: {
+  scene: z.infer<typeof sceneSchema>;
+  durationInFrames: number;
+}) => {
   switch (type) {
     case "words":
-      return <Words {...props} />;
+      return <Words {...props} durationInFrames={durationInFrames} />;
     case "animatedEmoji":
       return <AnimatedEmoji {...props} />;
     case "gif":
       return <GifReaction {...props} />;
     case "logo":
-      return <Logo {...props} />;
+      return <Logo {...props} durationInFrames={durationInFrames} />;
     default:
       return exhaustiveCheck(type);
   }
 };
 
-export const Sequence = ({ scenes }: z.infer<typeof sequenceSchema>) => {
-  const { fps } = useVideoConfig();
+export const SceneLayout = ({
+  scenes,
+  durationInFrames,
+}: z.infer<typeof sceneLayoutSchema>) => {
+  const isLandscape = useIsLandscape();
 
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridAutoRows: "1fr",
+        gridAutoColumns: "1fr",
+        gridAutoFlow: isLandscape ? "column" : "row",
+        placeItems: "center",
+        gap: 20,
+      }}
+    >
+      {scenes.map((scene, i) => (
+        <div
+          key={i}
+          style={{
+            position: "relative",
+            display: "flex",
+            placeContent: "center",
+            placeItems: "center",
+          }}
+        >
+          <Scene
+            key={i}
+            scene={scene}
+            durationInFrames={durationInFrames || 30}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const Sequence = ({ scenes }: z.infer<typeof sequenceSchema>) => {
   if (scenes.length === 0) return null;
 
   return (
@@ -114,10 +112,10 @@ export const Sequence = ({ scenes }: z.infer<typeof sequenceSchema>) => {
         {scenes.map((scene, idx) => (
           <TransitionSeries.Sequence
             key={idx}
-            durationInFrames={calculateSceneDuration(scene, fps)}
+            durationInFrames={scene.durationInFrames || 30}
             layout="none"
           >
-            <Scene {...scene} />
+            <SceneLayout {...scene} />
           </TransitionSeries.Sequence>
         ))}
       </TransitionSeries>

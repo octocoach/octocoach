@@ -3,10 +3,11 @@ import { slide } from "@remotion/transitions/slide";
 import { Audio, staticFile, useVideoConfig } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji } from "./AnimatedEmoji";
 import { AnimatedList, animatedListSchema } from "./AnimatedList";
 import { BaLogo } from "./BALogo";
-import { CourseTile } from "./CourseTile";
+import { AnimatedEmoji } from "./components/AnimatedEmoji";
+import { CourseData, CourseTile } from "./CourseTile";
+import { useIsLandscape, useIsPortrait } from "./hooks";
 import { ImagePanLayout, imagePanLayoutSchema } from "./ImagePanLayout";
 import { Layout } from "./Layout";
 import { LineByLineReveal, lineByLineRevealSchema } from "./LineByLineReveal";
@@ -25,64 +26,28 @@ export const advertSchema = z.object({
   }),
 });
 
-export const advertDefaultProps: z.infer<typeof advertSchema> = {
-  locale: "en",
-  content: {
-    1: {
-      layout: "portrait",
-      durationInFrames: 4 * 30,
-      content: {
-        animatedEmoji: { emoji: "muscle", width: 300 },
-        title: "You already know",
-        items: [
-          { text: "HTML", logo: "html" },
-          { text: "CSS", logo: "css" },
-          { text: "JavaScript", logo: "javascript" },
-          { text: "React", logo: "react" },
-        ],
+const courseData: Record<"en" | "de", CourseData> = {
+  en: {
+    locale: "en",
+    data: {
+      type: "Course",
+      mode: "Full-time",
+      fullyRemote: true,
+      dates: {
+        start: "2024-11-04",
+        end: "2025-02-26",
       },
     },
-    2: {
-      text: "Don't just use AI",
-      durationInFrames: 3 * 30,
-      animatedEmoji: { emoji: "goose", width: 300 },
-      wordsPerLine: 1,
-      width: 1080 * 0.3,
-    },
-    3: {
-      text: "Build with it!",
-      durationInFrames: 2 * 30,
-      animatedEmoji: { emoji: "peacock", width: 300 },
-      wordsPerLine: 1,
-      width: 1080 * 0.3,
-    },
-    4: {
-      durationInFrames: 3 * 30,
-      layout: "portrait",
-      content: {
-        animatedEmoji: { emoji: "mechanicalArm", width: 300 },
-        title: "Become a NextGen Full-Stack Developer",
-        items: [
-          { text: "TypeScript", logo: "typescript" },
-          { text: "Next.js", logo: "nextjs" },
-          { text: "Astro", logo: "astro" },
-          { text: "OpenAI", logo: "openai" },
-          { text: "Anthropic", logo: "anthropic" },
-        ],
-      },
-    },
-    5: {
-      imagePan: {
-        image: "4.jpg",
-        layout: "portrait",
-        imagePercentage: 30,
-        panDuration: 120,
-      },
-      lineByLineReveal: {
-        text: "Join our 4 month AI Web-App Development Course",
-        wordsPerLine: 2,
-        durationInFrames: 120,
-        width: 1080 * 0.8,
+  },
+  de: {
+    locale: "de",
+    data: {
+      type: "Kurs",
+      modus: "Vollzeit",
+      remote: true,
+      termine: {
+        beginn: "2024-11-04",
+        ende: "2025-02-26",
       },
     },
   },
@@ -94,6 +59,8 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
   const timingFunction = springTiming({ config: { damping: 200 } });
 
   const transitionDuration = timingFunction.getDurationInFrames({ fps });
+  const isPortrait = useIsPortrait();
+  const isLandscape = useIsLandscape();
 
   return (
     <Layout locale={locale}>
@@ -148,7 +115,11 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
           presentation={slide({ direction: "from-right" })}
         />
         <TransitionSeries.Sequence durationInFrames={120}>
-          <ImagePanLayout {...content[5].imagePan} panDuration={120}>
+          <ImagePanLayout
+            {...content[5].imagePan}
+            panDuration={120}
+            layout={isLandscape ? "square" : "portrait"}
+          >
             <div
               style={{ position: "relative", width: "100%", height: "100%" }}
             >
@@ -163,12 +134,13 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
           timing={timingFunction}
           presentation={slide({ direction: "from-top" })}
         />
-        <TransitionSeries.Sequence durationInFrames={60}>
+        <TransitionSeries.Sequence durationInFrames={90}>
           <div
             style={{
               height: "100%",
+              width: "100%",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: isLandscape ? "row" : "column",
               alignItems: "center",
               justifyContent: "space-evenly",
             }}
@@ -179,11 +151,12 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
                 flexDirection: "column",
               }}
             >
-              <BaLogo width={width * 0.6} />
+              <BaLogo width={isLandscape ? width * 0.3 : width * 0.6} />
             </div>
             <AnimatedEmoji
               emoji="moneyFace"
-              width={width * 0.5}
+              durationInSeconds={2}
+              width={isLandscape ? width * 0.3 : width * 0.6}
               playbackRate={3}
             />
           </div>
@@ -194,20 +167,11 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
         />
         <TransitionSeries.Sequence durationInFrames={1000}>
           <CourseTile
-            layout={"portrait"}
+            layout={isPortrait ? "portrait" : "square"}
             title={"AI Web App Development"}
             animatedLogo={false}
             courseData={{
-              locale: "en",
-              data: {
-                type: "Course",
-                mode: "Full-time",
-                fullyRemote: true,
-                dates: {
-                  start: "2024-11-04",
-                  end: "2025-02-26",
-                },
-              },
+              ...courseData[locale],
             }}
           />
         </TransitionSeries.Sequence>

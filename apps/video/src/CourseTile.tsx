@@ -1,11 +1,12 @@
 import { Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { z } from "zod";
 
+import { Logo } from "./components/Logo";
 import { Footer } from "./Footer";
+import { useIsLandscape, useIsPortrait } from "./hooks";
 import { ImagePanLayout } from "./ImagePanLayout";
 import { Json } from "./Json";
 import { Layout } from "./Layout";
-import { Logo } from "./Logo";
 import { Numeronym } from "./Numeronym";
 import { Title } from "./Title";
 
@@ -71,6 +72,8 @@ export const CourseTile = ({
 }: z.infer<typeof courseTileCompSchema>) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
+  const isPortrait = useIsPortrait();
+  const isLandscape = useIsLandscape();
 
   const progress = animatedLogo
     ? interpolate(frame, [5, 30], [0, 1], {
@@ -93,9 +96,20 @@ export const CourseTile = ({
           <Numeronym text={companyName} progress={progress} />
         </div>
 
-        <Title text={title} />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: isLandscape ? "row" : "column",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            gap: 20,
+          }}
+        >
+          <Title text={title} />
 
-        <Json data={courseData.data} />
+          <Json data={courseData.data} fontSize={isPortrait ? 40 : 20} />
+        </div>
 
         <Footer />
       </ImagePanLayout>

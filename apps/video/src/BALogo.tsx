@@ -1,7 +1,9 @@
 import { useI18nContext } from "@octocoach/i18n/src/i18n-react";
 import { fitText } from "@remotion/layout-utils";
+import { useEffect, useState } from "react";
 import {
-  Easing,
+  continueRender,
+  delayRender,
   interpolate,
   interpolateColors,
   useCurrentFrame,
@@ -24,13 +26,13 @@ export const BaLogo = ({ width }: { width: number }) => {
     withinWidth: width,
   });
 
-  if (fontSize === Infinity) fontSize = 100;
+  if (fontSize === Infinity) fontSize = 50;
 
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const pulse = makePulse({ frame, fps, speed: 3 });
-  const scale = interpolate(pulse, [0, 1], [1, 1.1], {
+  const scale = interpolate(pulse, [0, 1], [0.9, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -41,13 +43,25 @@ export const BaLogo = ({ width }: { width: number }) => {
     [c("mauve"), c("lavender"), c("teal"), c("sky"), c("mauve")],
   );
 
-  Easing.sin(frame);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [delayRenderId] = useState(() => delayRender());
+
+  useEffect(() => {
+    if (!isLoaded && delayRenderId) {
+      setTimeout(() => {
+        setIsLoaded(true);
+        continueRender(delayRenderId);
+      }, 1000);
+    }
+  }, [isLoaded, delayRenderId]);
+
+  if (!isLoaded) return null;
 
   return (
     <div>
       <div
         style={{
-          fontSize: fontSize || 10,
+          fontSize,
           transform: `scale(${scale})`,
           color,
         }}

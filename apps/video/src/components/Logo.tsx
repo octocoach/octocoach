@@ -1,7 +1,7 @@
-import { SVGProps } from "react";
 import { Audio, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { z } from "zod";
 
-import { c } from "./helpers";
+import { c } from "../helpers";
 
 const paths: { d: string; fill: string }[] = [
   {
@@ -46,15 +46,20 @@ const paths: { d: string; fill: string }[] = [
   },
 ];
 
+const logoPropsSchema = z.object({
+  size: z.number(),
+  durationInFrames: z.number(),
+});
+
+export const logoSchema = z.object({
+  type: z.literal("logo"),
+  props: logoPropsSchema,
+});
+
 export const Logo = ({
   size,
   durationInFrames,
-  svgProps,
-}: {
-  size: number;
-  durationInFrames: number;
-  svgProps?: SVGProps<SVGSVGElement>;
-}) => {
+}: z.infer<typeof logoPropsSchema>) => {
   const frame = useCurrentFrame();
 
   const displayLetters = Math.round(
@@ -76,7 +81,6 @@ export const Logo = ({
         width={size}
         height={size}
         fill="none"
-        {...svgProps}
       >
         {paths.slice(0, displayLetters).map((p, i) => (
           <path key={i} {...p} />

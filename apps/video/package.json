@@ -1,5 +1,6 @@
 {
   "name": "@octocoach/video",
+  "type": "module",
   "version": "1.0.0",
   "description": "Video Generation",
   "repository": {},
@@ -12,9 +13,12 @@
     "@octocoach/i18n": "workspace:^",
     "@remotion/animated-emoji": "^4.0.212",
     "@remotion/animation-utils": "^4.0.212",
+    "@remotion/bundler": "^4.0.212",
     "@remotion/cli": "4.0.212",
+    "@remotion/gif": "^4.0.212",
     "@remotion/layout-utils": "^4.0.212",
     "@remotion/lottie": "^4.0.212",
+    "@remotion/renderer": "^4.0.212",
     "@remotion/transitions": "^4.0.212",
     "date-fns": "^3.3.1",
     "lottie-web": "^5.12.2",
@@ -22,9 +26,12 @@
     "react-dom": "^18.0.0",
     "react-icons": "^5.3.0",
     "remotion": "4.0.212",
+    "ts-node": "^10.9.2",
+    "tsx": "^3.12.7",
     "zod": "3.22.3"
   },
   "devDependencies": {
+    "@esbuild-kit/esm-loader": "^2.6.5",
     "@remotion/eslint-config": "4.0.212",
     "@types/react": "^18.0.26",
     "@types/web": "^0.0.143",
@@ -33,11 +40,12 @@
     "typescript": "^5.4.5"
   },
   "scripts": {
-    "start": "remotion studio",
+    "start": "remotion studio --no-open",
     "build": "remotion render",
     "still": "remotion still --frame=615",
     "upgrade": "remotion upgrade",
-    "test": "eslint src --ext ts,tsx,js,jsx && tsc"
+    "test": "eslint src --ext ts,tsx,js,jsx && tsc",
+    "render": "node --loader @esbuild-kit/esm-loader ./src/render.ts"
   },
   "packageManager": "pnpm@9.7.1"
 }

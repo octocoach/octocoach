@@ -2,13 +2,19 @@ import "./global.css";
 
 import { Composition } from "remotion";
 
-import { Advert, advertDefaultProps, advertSchema } from "./Advert";
+import { Advert, advertSchema } from "./Advert";
 import { CourseData, CourseTile, courseTileCompSchema } from "./CourseTile";
+import {
+  calculateSequenceMetadata,
+  Sequence as Seq,
+  sequenceSchema,
+} from "./Sequence";
 import {
   calculateTestimonialsMetadata,
   Testimonials,
   testimonialsSchema,
 } from "./Testimonials";
+import { data } from "./videoData/advert";
 
 export const fps = 30;
 const durationInSeconds = 30;
@@ -47,21 +53,7 @@ export const RemotionRoot: React.FC = () => {
           courseData,
         }}
       />
-      <Composition
-        id="Portrait"
-        component={CourseTile}
-        durationInFrames={durationInSeconds * fps}
-        fps={fps}
-        width={1080}
-        height={1920}
-        schema={courseTileCompSchema}
-        defaultProps={{
-          layout: "portrait",
-          title,
-          animatedLogo,
-          courseData,
-        }}
-      />
+
       <Composition
         id="Testimonials"
         component={Testimonials}
@@ -73,6 +65,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ title: "Testimonials", subSections: [] }}
         calculateMetadata={calculateTestimonialsMetadata}
       />
+
       <Composition
         id="Advert"
         component={Advert}
@@ -81,7 +74,62 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={advertSchema}
-        defaultProps={advertDefaultProps}
+        defaultProps={data[0]}
+      />
+
+      <Composition
+        id="Sequence"
+        component={Seq}
+        fps={fps}
+        width={1920}
+        height={1080}
+        durationInFrames={30 * fps}
+        schema={sequenceSchema}
+        calculateMetadata={calculateSequenceMetadata}
+        defaultProps={{
+          scenes: [
+            {
+              durationInFrames: 30,
+              scenes: [
+                {
+                  type: "words",
+                  props: {
+                    text: ["Completed", "a bootcamp?"],
+                    durationInFrames: 0,
+                  },
+                },
+                {
+                  type: "animatedEmoji" as const,
+                  props: {
+                    emoji: "graduationCap",
+                    width: 300,
+                    playbackRate: 2,
+                  },
+                },
+              ],
+            },
+            {
+              durationInFrames: 30,
+              scenes: [
+                {
+                  type: "animatedEmoji" as const,
+                  props: {
+                    emoji: "unamused",
+                    width: 300,
+                    playbackRate: 2,
+                  },
+                },
+                {
+                  type: "words",
+                  props: {
+                    text: ["Still no Job?"],
+                    durationInFrames: 0,
+                  },
+                },
+              ],
+            },
+          ],
+        }}
       />
     </>
   );

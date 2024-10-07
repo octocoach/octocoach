@@ -1,3 +1,4 @@
+import { fitText } from "@remotion/layout-utils";
 import { springTiming, TransitionSeries } from "@remotion/transitions";
 import { slide } from "@remotion/transitions/slide";
 import {
@@ -19,8 +20,12 @@ import {
 } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji, animatedEmojiSchema } from "./AnimatedEmoji";
-import { c } from "./helpers";
+import {
+  AnimatedEmoji,
+  animatedEmojiPropsSchema,
+} from "./components/AnimatedEmoji";
+import { c, exhaustiveCheck } from "./helpers";
+import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
 
 const logoEnum = z.enum([
@@ -34,10 +39,6 @@ const logoEnum = z.enum([
   "anthropic",
   "astro",
 ]);
-
-const exhaustiveCheck = (_: never): never => {
-  throw new Error("Not all cases are handled");
-};
 
 const getLogoIcon = (logo: z.infer<typeof logoEnum>, size = 200) => {
   switch (logo) {
@@ -70,7 +71,7 @@ export const animatedListContenItemSchema = z.object({
 });
 
 export const animatedListContentSchema = z.object({
-  animatedEmoji: animatedEmojiSchema,
+  animatedEmoji: animatedEmojiPropsSchema,
   title: z.string(),
   items: z.array(animatedListContenItemSchema),
 });
@@ -124,15 +125,19 @@ export const AnimatedList = ({
   content: { title, items, animatedEmoji },
 }: z.infer<typeof animatedListSchema>) => {
   const itemDuration = (durationInFrames / (items.length + 1)) * 2;
+  const fontWeight = 300;
 
   const timing = () => springTiming({ durationInFrames: itemDuration / 2 });
 
-  const frame = useCurrentFrame();
-  const progress = frame / durationInFrames;
+  const { height, width } = useVideoConfig();
+  const isLandscape = useIsLandscape();
 
-  const fontWeight = interpolate(progress, [0, 1], [300, 900]);
-
-  const { height } = useVideoConfig();
+  const { fontSize } = fitText({
+    text: title,
+    withinWidth: isLandscape ? width * 0.4 : width * 0.7,
+    fontFamily: "Recursive",
+    fontWeight: 300,
+  });
 
   return (
     <Layout locale="en">
@@ -147,19 +152,21 @@ export const AnimatedList = ({
         >
           <div
             style={{
+              boxSizing: "border-box",
               display: "grid",
               placeItems: "center",
-              gap: 20,
-              margin: 50,
+              gap: isLandscape ? 20 : 40,
+              padding: 50,
             }}
           >
             <AnimatedEmoji {...animatedEmoji} />
             <h1
               style={{
-                fontSize: 100,
+                fontSize,
                 fontWeight,
                 color: c("text"),
                 textAlign: "center",
+                textWrap: "nowrap",
               }}
             >
               {title}

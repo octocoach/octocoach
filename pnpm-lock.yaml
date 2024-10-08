@@ -225,6 +225,9 @@ importers:
       next:
         specifier: ^14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      nextjs-linkedin-insight-tag:
+        specifier: ^0.0.6
+        version: 0.0.6(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       ofetch:
         specifier: ^1.3.4
         version: 1.3.4
@@ -8199,6 +8202,12 @@ packages:
       sass:
         optional: true
 
+  nextjs-linkedin-insight-tag@0.0.6:
+    resolution: {integrity: sha512-hk3cHpz+1SLbe0hd2nFjUP2AlFmgeDMHHudXGTYrtIvRri/qliFEIpURH7FJWKxQLXm9f1X8B5O20Wvj2wNPCg==}
+    peerDependencies:
+      next: '>=11.0.0'
+      react: '>=17.0.0'
+
   node-dir@0.1.17:
     resolution: {integrity: sha512-tmPX422rYgofd4epzrNoOXiE8XFZYOcCq1vD7MAXCDO+O+zndlA2ztdKKMa+EeuBG5tHETpr4ml4RGgpqDCCAg==}
     engines: {node: '>= 0.10.5'}
@@ -9864,6 +9873,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
 
   typescript@5.4.5:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
@@ -20125,6 +20139,12 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  nextjs-linkedin-insight-tag@0.0.6(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
+    dependencies:
+      next: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      typescript: 4.9.5
+
   node-dir@0.1.17:
     dependencies:
       minimatch: 3.1.2
@@ -21991,6 +22011,8 @@ snapshots:
       typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
+
+  typescript@4.9.5: {}
 
   typescript@5.4.5: {}
 

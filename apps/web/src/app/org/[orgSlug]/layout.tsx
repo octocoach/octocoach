@@ -3,6 +3,7 @@ import { SessionProvider } from "@octocoach/auth/react";
 import { db } from "@octocoach/db/connection";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
 import { ReactNode } from "react";
 
 import type { Params } from "./types";
@@ -50,7 +51,12 @@ export default async function Layout({
 
   const session = await auth();
 
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+  return (
+    <SessionProvider session={session}>
+      {children}
+      <LinkedInInsightTag />
+    </SessionProvider>
+  );
 }
 
 export const runtime = "edge";

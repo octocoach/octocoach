@@ -155,7 +155,6 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
             </div>
             <AnimatedEmoji
               emoji="moneyFace"
-              durationInSeconds={2}
               width={isLandscape ? width * 0.3 : width * 0.6}
               playbackRate={3}
             />

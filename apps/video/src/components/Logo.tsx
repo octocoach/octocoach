@@ -48,7 +48,6 @@ const paths: { d: string; fill: string }[] = [
 
 const logoPropsSchema = z.object({
   size: z.number(),
-  durationInFrames: z.number(),
 });
 
 export const logoSchema = z.object({
@@ -59,7 +58,7 @@ export const logoSchema = z.object({
 export const Logo = ({
   size,
   durationInFrames,
-}: z.infer<typeof logoPropsSchema>) => {
+}: z.infer<typeof logoPropsSchema> & { durationInFrames: number }) => {
   const frame = useCurrentFrame();
 
   const displayLetters = Math.round(

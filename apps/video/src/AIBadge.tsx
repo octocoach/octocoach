@@ -1,5 +1,4 @@
 import { flavors } from "@catppuccin/palette";
-import * as React from "react";
 import {
   interpolateColors,
   Loop,

@@ -6,7 +6,6 @@ import { accentColors } from "../helpers";
 
 const wordsPropsSchema = z.object({
   text: z.array(z.string()),
-  durationInFrames: z.number(),
 });
 
 export const wordsSchema = z.object({
@@ -54,7 +53,7 @@ const Sentence = ({
 export const Words = ({
   text,
   durationInFrames,
-}: z.infer<typeof wordsPropsSchema>) => {
+}: z.infer<typeof wordsPropsSchema> & { durationInFrames: number }) => {
   if (text.length <= 0) return null;
 
   const wordsDuration = durationInFrames / text.length;

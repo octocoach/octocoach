@@ -81,7 +81,7 @@ export const RemotionRoot: React.FC = () => {
         id="Sequence"
         component={Seq}
         fps={fps}
-        width={1920}
+        width={1080}
         height={1080}
         durationInFrames={30 * fps}
         schema={sequenceSchema}
@@ -90,12 +90,11 @@ export const RemotionRoot: React.FC = () => {
           scenes: [
             {
               durationInFrames: 30,
-              scenes: [
+              panels: [
                 {
-                  type: "words",
+                  type: "gif",
                   props: {
-                    text: ["Completed", "a bootcamp?"],
-                    durationInFrames: 0,
+                    id: "vzO0Vc8b2VBLi",
                   },
                 },
                 {
@@ -104,26 +103,6 @@ export const RemotionRoot: React.FC = () => {
                     emoji: "graduationCap",
                     width: 300,
                     playbackRate: 2,
-                  },
-                },
-              ],
-            },
-            {
-              durationInFrames: 30,
-              scenes: [
-                {
-                  type: "animatedEmoji" as const,
-                  props: {
-                    emoji: "unamused",
-                    width: 300,
-                    playbackRate: 2,
-                  },
-                },
-                {
-                  type: "words",
-                  props: {
-                    text: ["Still no Job?"],
-                    durationInFrames: 0,
                   },
                 },
               ],

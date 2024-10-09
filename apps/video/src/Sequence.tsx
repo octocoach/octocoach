@@ -1,4 +1,5 @@
 import { TransitionSeries } from "@remotion/transitions";
+import { createContext } from "react";
 import { CalculateMetadataFunction } from "remotion";
 import { z } from "zod";
 
@@ -10,16 +11,18 @@ import { exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
 
-export const sceneSchema = z.discriminatedUnion("type", [
+export const panelSchema = z.discriminatedUnion("type", [
   wordsSchema,
   animatedEmojiSchema,
   gifSchema,
   logoSchema,
 ]);
 
+const panelsSchema = z.array(panelSchema);
+
 export const sceneLayoutSchema = z.object({
   durationInFrames: z.number(),
-  scenes: z.array(sceneSchema),
+  panels: panelsSchema,
 });
 
 export const sequenceSchema = z.object({
@@ -38,11 +41,11 @@ export const calculateSequenceMetadata: CalculateMetadataFunction<
   return { props, durationInFrames };
 };
 
-export const Scene = ({
-  scene: { type, props },
+export const Panel = ({
+  panel: { type, props },
   durationInFrames,
 }: {
-  scene: z.infer<typeof sceneSchema>;
+  panel: z.infer<typeof panelSchema>;
   durationInFrames: number;
 }) => {
   switch (type) {
@@ -59,8 +62,10 @@ export const Scene = ({
   }
 };
 
+export const PanelsContext = createContext<z.infer<typeof panelsSchema>>([]);
+
 export const SceneLayout = ({
-  scenes,
+  panels,
   durationInFrames,
 }: z.infer<typeof sceneLayoutSchema>) => {
   const isLandscape = useIsLandscape();
@@ -78,23 +83,23 @@ export const SceneLayout = ({
         height: "100%",
       }}
     >
-      {scenes.map((scene, i) => (
-        <div
-          key={i}
-          style={{
-            position: "relative",
-            display: "flex",
-            placeContent: "center",
-            placeItems: "center",
-          }}
-        >
-          <Scene
+      <PanelsContext.Provider value={panels}>
+        {panels.map((panel, i) => (
+          <div
             key={i}
-            scene={scene}
-            durationInFrames={durationInFrames || 30}
-          />
-        </div>
-      ))}
+            style={{
+              position: "relative",
+              display: "flex",
+              placeContent: "center",
+              placeItems: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Panel panel={panel} durationInFrames={durationInFrames || 30} />
+          </div>
+        ))}
+      </PanelsContext.Provider>
     </div>
   );
 };

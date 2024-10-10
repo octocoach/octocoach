@@ -327,6 +327,10 @@ type RootTranslation = {
    * I​m​p​r​i​n​t
    */
   imprint: string;
+  /**
+   * W​e​ ​o​n​l​y​ ​u​s​e​ ​e​s​s​e​n​t​i​a​l​ ​c​o​o​k​i​e​s​ ​t​h​a​t​ ​a​r​e​ ​n​e​c​e​s​s​a​r​y​ ​f​o​r​ ​t​h​e​ ​w​e​b​s​i​t​e​ ​t​o​ ​f​u​n​c​t​i​o​n​ ​�​�​.
+   */
+  cookieMessage: string;
 };
 
 export type NamespaceApplyTranslation = {
@@ -745,6 +749,10 @@ export type TranslationFunctions = {
    * Imprint
    */
   imprint: () => LocalizedString;
+  /**
+   * We only use essential cookies that are necessary for the website to function 😇.
+   */
+  cookieMessage: () => LocalizedString;
   apply: {
     /**
      * You're almost there

@@ -30,6 +30,7 @@
     "date-fns-timezone": "^0.1.4",
     "date-holidays": "^3.23.12",
     "just-shuffle": "^4.2.0",
+    "lucide-react": "^0.451.0",
     "nanoid": "^4.0.2",
     "negotiator": "^0.6.3",
     "next": "^14.2.5",

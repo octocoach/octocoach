@@ -106,6 +106,8 @@ const de = {
   termsOfUse: "Allgemeine Geschäftsbedingungen",
   mission: "Leitbild",
   imprint: "Impressum",
+  cookieMessage:
+    "Wir verwenden nur essentielle Cookies, die für die Nutzung der Website notwendig sind 😇.",
 } satisfies Translation;
 
 export default de;

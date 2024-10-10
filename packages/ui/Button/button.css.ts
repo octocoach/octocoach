@@ -29,6 +29,7 @@ export const button = recipe({
     textAlign: "center",
     lineHeight: 1,
     transition: "all 1s",
+    wordWrap: "normal",
     width: "fit-content",
     ":hover": {
       fontVariationSettings: '"CASL" 1',

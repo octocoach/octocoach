@@ -105,6 +105,8 @@ const en = {
   termsOfUse: "Terms of Use",
   mission: "Mission",
   imprint: "Imprint",
+  cookieMessage:
+    "We only use essential cookies that are necessary for the website to function 😇.",
 } satisfies BaseTranslation;
 
 export default en;

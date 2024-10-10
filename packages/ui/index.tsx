@@ -37,5 +37,6 @@ export * from "./Stack/Stack";
 export * from "./Tag/Tag";
 export * from "./Tagline/Tagline";
 export * from "./Text/Text";
+export * from "./Toast/Toast";
 export { vars } from "./theme.css";
 export * from "./types";

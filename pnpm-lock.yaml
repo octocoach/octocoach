@@ -216,6 +216,9 @@ importers:
       just-shuffle:
         specifier: ^4.2.0
         version: 4.2.0
+      lucide-react:
+        specifier: ^0.451.0
+        version: 0.451.0(react@18.3.1)
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
@@ -683,6 +686,9 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
+      sonner:
+        specifier: ^1.5.0
+        version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@octocoach/db':
         specifier: workspace:^
@@ -7706,6 +7712,11 @@ packages:
   lru_map@0.3.3:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
 
+  lucide-react@0.451.0:
+    resolution: {integrity: sha512-OwQ3uljZLp2cerj8sboy5rnhtGTCl9UCJIhT1J85/yOuGVlEH+xaUPR7tvNdddPvmV5M5VLdr7cQuWE3hzA4jw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
@@ -9340,6 +9351,12 @@ packages:
     peerDependencies:
       solid-js: ^1.2
       swr-store: ^0.10
+
+  sonner@1.5.0:
+    resolution: {integrity: sha512-FBjhG/gnnbN6FY0jaNnqZOMmB73R+5IiyYAw8yBj7L54ER7HB3fOSE5OFiQiE2iXWxeXKvg6fIP4LtVppHEdJA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
@@ -13003,7 +13020,7 @@ snapshots:
       remotion: 4.0.212(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       source-map: 0.7.3
       style-loader: 2.0.0(webpack@5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6))
-      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6)
+      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))
     transitivePeerDependencies:
       - '@swc/core'
       - bufferutil
@@ -16715,7 +16732,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       schema-utils: 3.3.0
       semver: 7.6.0
-      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6)
+      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))
 
   css-select@5.1.0:
     dependencies:
@@ -19396,6 +19413,10 @@ snapshots:
 
   lru_map@0.3.3: {}
 
+  lucide-react@0.451.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
   lz-string@1.5.0: {}
 
   magic-string@0.27.0:
@@ -21433,6 +21454,11 @@ snapshots:
       solid-js: 1.8.17
       swr-store: 0.10.6
 
+  sonner@1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   source-map-js@1.0.2: {}
 
   source-map-js@1.2.0: {}
@@ -21614,7 +21640,7 @@ snapshots:
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0
-      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6)
+      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))
 
   style-to-object@0.4.2:
     dependencies:
@@ -21744,7 +21770,7 @@ snapshots:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.6
-      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6)
+      webpack: 5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))
     optionalDependencies:
       '@swc/core': 1.3.82(@swc/helpers@0.5.5)
       esbuild: 0.18.6
@@ -22460,7 +22486,7 @@ snapshots:
       - esbuild
       - uglify-js
 
-  webpack@5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5))(esbuild@0.18.6):
+  webpack@5.94.0(@swc/core@1.3.82(@swc/helpers@0.5.5)):
     dependencies:
       '@types/estree': 1.0.5
       '@webassemblyjs/ast': 1.12.1

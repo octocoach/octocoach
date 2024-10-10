@@ -25,25 +25,24 @@ export const data: z.infer<typeof advertSchema>[] = [
         },
       },
       2: {
-        text: "Don't just use AI",
-        durationInFrames: 3 * 30,
+        text: ["Don't", "just", "use", "AI"],
         animatedEmoji: {
           emoji: "goose",
           width: 300,
           playbackRate: 1,
         },
-        wordsPerLine: 1,
+
         width: 1080 * 0.3,
       },
       3: {
-        text: "Build with it!",
-        durationInFrames: 2 * 30,
+        text: ["Build", "with", "it!"],
+
         animatedEmoji: {
           emoji: "peacock",
           width: 300,
           playbackRate: 1,
         },
-        wordsPerLine: 1,
+
         width: 1080 * 0.3,
       },
       4: {
@@ -73,9 +72,7 @@ export const data: z.infer<typeof advertSchema>[] = [
           panDuration: 120,
         },
         lineByLineReveal: {
-          text: "Join our 4 month AI Web-App Development Course",
-          wordsPerLine: 2,
-          durationInFrames: 120,
+          text: ["Join our", "4 month", "AI Web-App Development", "Course"],
           width: 1080 * 0.6,
         },
       },
@@ -103,25 +100,21 @@ export const data: z.infer<typeof advertSchema>[] = [
         },
       },
       2: {
-        text: "Benutze nicht nur KI",
-        durationInFrames: 3 * 30,
+        text: ["Benutze", "nicht", "nur", "KI"],
         animatedEmoji: {
           emoji: "goose",
           width: 300,
           playbackRate: 1,
         },
-        wordsPerLine: 1,
         width: 1080 * 0.3,
       },
       3: {
-        text: "Baue auch damit!",
-        durationInFrames: 2 * 30,
+        text: ["Baue", "auch", "damit!"],
         animatedEmoji: {
           emoji: "peacock",
           width: 300,
           playbackRate: 1,
         },
-        wordsPerLine: 1,
         width: 1080 * 0.3,
       },
       4: {
@@ -151,9 +144,13 @@ export const data: z.infer<typeof advertSchema>[] = [
           panDuration: 120,
         },
         lineByLineReveal: {
-          text: "Mach mit bei unserem 4-monatigen KI-Web-App Entwicklungskurs",
-          wordsPerLine: 2,
-          durationInFrames: 120,
+          text: [
+            "Mach mit",
+            "bei unserem",
+            "4-monatigen",
+            "KI Web App Entwicklung",
+            "Kurs",
+          ],
           width: 1080 * 0.6,
         },
       },

@@ -74,7 +74,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={advertSchema}
-        defaultProps={data[0]}
+        defaultProps={data[1]}
       />
 
       <Composition
@@ -103,6 +103,21 @@ export const RemotionRoot: React.FC = () => {
                     emoji: "graduationCap",
                     width: 300,
                     playbackRate: 2,
+                  },
+                },
+                {
+                  type: "words",
+                  props: {
+                    text: ["Completed", "a bootcamp?"],
+                    layout: "parallel",
+                    fontSize: 20,
+                  },
+                },
+                {
+                  type: "simpleIcon",
+                  props: {
+                    size: 200,
+                    slug: "react",
                   },
                 },
               ],

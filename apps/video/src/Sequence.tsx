@@ -3,19 +3,28 @@ import { createContext } from "react";
 import { CalculateMetadataFunction } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji, animatedEmojiSchema } from "./components/AnimatedEmoji";
-import { GifReaction, gifSchema } from "./components/GifReaction";
-import { Logo, logoSchema } from "./components/Logo";
-import { Words, wordsSchema } from "./components/Words";
 import { exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
+import { AnimatedEmoji, animatedEmojiSchema } from "./panels/AnimatedEmoji";
+import { BaLogo, baLogoSchema } from "./panels/BALogo";
+import { GifReaction, gifSchema } from "./panels/GifReaction";
+import {
+  LineByLineReveal,
+  lineByLineRevealSchema,
+} from "./panels/LineByLineReveal";
+import { Logo, logoSchema } from "./panels/Logo";
+import { SimpleIcon, simpleIconSchema } from "./panels/SimpleIcon";
+import { Words, wordsSchema } from "./panels/Words";
 
 export const panelSchema = z.discriminatedUnion("type", [
-  wordsSchema,
   animatedEmojiSchema,
+  baLogoSchema,
   gifSchema,
   logoSchema,
+  wordsSchema,
+  lineByLineRevealSchema,
+  simpleIconSchema,
 ]);
 
 const panelsSchema = z.array(panelSchema);
@@ -57,6 +66,14 @@ export const Panel = ({
       return <GifReaction {...props} />;
     case "logo":
       return <Logo {...props} durationInFrames={durationInFrames} />;
+    case "baLogo":
+      return <BaLogo {...props} />;
+    case "lineByLineReveal":
+      return (
+        <LineByLineReveal {...props} durationInFrames={durationInFrames} />
+      );
+    case "simpleIcon":
+      return <SimpleIcon {...props} />;
     default:
       return exhaustiveCheck(type);
   }

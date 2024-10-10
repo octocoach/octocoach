@@ -20,13 +20,13 @@ import {
 } from "remotion";
 import { z } from "zod";
 
-import {
-  AnimatedEmoji,
-  animatedEmojiPropsSchema,
-} from "./components/AnimatedEmoji";
 import { c, exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
+import {
+  AnimatedEmoji,
+  animatedEmojiPropsSchema,
+} from "./panels/AnimatedEmoji";
 
 const logoEnum = z.enum([
   "html",

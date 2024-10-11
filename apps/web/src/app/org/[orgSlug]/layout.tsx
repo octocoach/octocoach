@@ -58,7 +58,7 @@ export default async function Layout({
 
   return (
     <>
-      <SessionProvider session={session}>{children}</SessionProvider>;
+      <SessionProvider session={session}>{children}</SessionProvider>
       <Toast />
       {!allowCookies && (
         <CookieBanner acceptCookiesAction={acceptCookiesAction} />

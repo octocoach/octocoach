@@ -15,6 +15,7 @@ import {
   testimonialsSchema,
 } from "./Testimonials";
 import { data } from "./videoData/advert";
+import sequenceJson from "./videoData/sequence.json";
 
 export const fps = 30;
 const durationInSeconds = 30;
@@ -86,44 +87,7 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={30 * fps}
         schema={sequenceSchema}
         calculateMetadata={calculateSequenceMetadata}
-        defaultProps={{
-          scenes: [
-            {
-              durationInFrames: 30,
-              panels: [
-                {
-                  type: "gif",
-                  props: {
-                    id: "vzO0Vc8b2VBLi",
-                  },
-                },
-                {
-                  type: "animatedEmoji" as const,
-                  props: {
-                    emoji: "graduationCap",
-                    width: 300,
-                    playbackRate: 2,
-                  },
-                },
-                {
-                  type: "words",
-                  props: {
-                    text: ["Completed", "a bootcamp?"],
-                    layout: "parallel",
-                    fontSize: 20,
-                  },
-                },
-                {
-                  type: "simpleIcon",
-                  props: {
-                    size: 200,
-                    slug: "react",
-                  },
-                },
-              ],
-            },
-          ],
-        }}
+        defaultProps={sequenceSchema.parse(sequenceJson)}
       />
     </>
   );

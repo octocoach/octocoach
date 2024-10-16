@@ -1,4 +1,8 @@
-import { interpolateStyles } from "@remotion/animation-utils";
+import {
+  interpolateStyles,
+  makeTransform,
+  scale,
+} from "@remotion/animation-utils";
 import { random, Series, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
@@ -27,14 +31,15 @@ const Sentence = ({
   const frame = useCurrentFrame();
   const progress = frame / wordDuration;
 
+  const transform = makeTransform([scale(1 + progress * 0.1)]);
+
   const style = interpolateStyles(
     progress,
     [0, 1],
     [
-      { fontWeight: 300, fontSize, fontVariationSettings: `'CASL' ${0}` },
+      { fontWeight: 300, fontVariationSettings: `'CASL' ${0}` },
       {
         fontWeight: 900,
-        fontSize: fontSize * 1.2,
         fontVariationSettings: `'CASL' ${1}`,
       },
     ],
@@ -47,7 +52,9 @@ const Sentence = ({
     <h1
       style={{
         ...style,
+        transform,
         color,
+        fontSize,
         textAlign: "center",
         textWrap: "nowrap",
       }}

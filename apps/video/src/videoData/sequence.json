@@ -1,0 +1,64 @@
+{
+  "scenes": [
+    {
+      "durationInFrames": 60,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": ["Completed", "a Full-Stack", "Bootcamp?"],
+            "layout": "sequential",
+            "fontSize": 100
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "nerdFace",
+            "width": 363,
+            "playbackRate": 3
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 60,
+      "panels": [
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "unamused",
+            "width": 359,
+            "playbackRate": 0
+          }
+        },
+        {
+          "type": "words",
+          "props": {
+            "text": ["Didn't get", "that job", "they promised?"],
+            "layout": "sequential",
+            "fontSize": 100
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 60,
+      "panels": [
+        {
+          "type": "lineByLineReveal",
+          "props": {
+            "text": ["Don't", "give", "up!"],
+            "width": 265
+          }
+        },
+        {
+          "type": "gif",
+          "props": {
+            "id": "26tPcgtbhhbU88U2A"
+          }
+        }
+      ]
+    }
+  ]
+}

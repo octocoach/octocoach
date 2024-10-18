@@ -15,7 +15,7 @@ import {
   testimonialsSchema,
 } from "./Testimonials";
 import { data } from "./videoData/advert";
-import sequenceJson from "./videoData/sequence.json";
+import sequenceJson from "./videoData/video.json";
 
 export const fps = 30;
 const durationInSeconds = 30;

@@ -50,10 +50,12 @@ const logoPropsSchema = z.object({
   size: z.number(),
 });
 
-export const logoSchema = z.object({
-  type: z.literal("logo"),
-  props: logoPropsSchema,
-});
+export const logoSchema = z
+  .object({
+    type: z.literal("logo"),
+    props: logoPropsSchema,
+  })
+  .describe("The Q15 logo");
 
 export const Logo = ({
   size,

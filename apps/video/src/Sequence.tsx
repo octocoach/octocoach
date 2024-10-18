@@ -29,13 +29,19 @@ export const panelSchema = z.discriminatedUnion("type", [
 
 const panelsSchema = z.array(panelSchema);
 
-export const sceneLayoutSchema = z.object({
-  durationInFrames: z.number(),
-  panels: panelsSchema,
-});
+export const sceneLayoutSchema = z
+  .object({
+    durationInFrames: z
+      .number()
+      .describe("Duration of the scene in frames (30 fps)"),
+    panels: panelsSchema.describe(
+      "A discriminated union of available panel types",
+    ),
+  })
+  .describe("A scene with a duration and 1 or more panels. (Max 3)");
 
 export const sequenceSchema = z.object({
-  scenes: z.array(sceneLayoutSchema),
+  scenes: z.array(sceneLayoutSchema).describe("Scenes play in sequence"),
 });
 
 export const calculateSequenceMetadata: CalculateMetadataFunction<

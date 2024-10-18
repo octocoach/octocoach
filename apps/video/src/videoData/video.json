@@ -1,0 +1,233 @@
+{
+  "scenes": [
+    {
+      "durationInFrames": 150,
+      "panels": [
+        {
+          "type": "logo",
+          "props": {
+            "size": 300
+          }
+        },
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "AI Web Application",
+              "Development"
+            ],
+            "layout": "sequential",
+            "fontSize": 80
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "AI models like GPT, Claude,",
+              "Gemini, and Llama are",
+              "becoming standard tools"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "nerdFace",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "Learn to compose AI-driven",
+              "user experiences from",
+              "end to end"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "simpleIcon",
+          "props": {
+            "slug": "nextdotjs",
+            "size": 100
+          }
+        },
+        {
+          "type": "simpleIcon",
+          "props": {
+            "slug": "typescript",
+            "size": 100
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "Integrate server-side logic",
+              "and front-end interactivity",
+              "seamlessly"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "rocket",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "100% online with flexible,",
+              "hands-on learning"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "graduationCap",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "Build 4 solo projects and",
+              "1 team-based open-source",
+              "project"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "muscle",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "Led by industry-expert",
+              "coaches"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "peacock",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "100% funded by the"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "baLogo",
+          "props": {
+            "width": 200
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "moneyFace",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "durationInFrames": 180,
+      "panels": [
+        {
+          "type": "words",
+          "props": {
+            "text": [
+              "Apply now for the next",
+              "session starting Nov 4, 2024"
+            ],
+            "layout": "sequential",
+            "fontSize": 60
+          }
+        },
+        {
+          "type": "animatedEmoji",
+          "props": {
+            "emoji": "goose",
+            "width": 100,
+            "playbackRate": 1
+          }
+        }
+      ]
+    }
+  ]
+}

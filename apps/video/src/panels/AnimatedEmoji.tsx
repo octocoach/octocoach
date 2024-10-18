@@ -37,14 +37,16 @@ const emojiLotties = {
 
 export const animatedEmojiPropsSchema = z.object({
   emoji: emojiEnum,
-  width: z.number(),
-  playbackRate: z.number(),
+  width: z.number().describe("Width of the emoji in pixels"),
+  playbackRate: z.number().describe("Playback rate of the emoji (0 = paused)"),
 });
 
-export const animatedEmojiSchema = z.object({
-  type: z.literal("animatedEmoji"),
-  props: animatedEmojiPropsSchema,
-});
+export const animatedEmojiSchema = z
+  .object({
+    type: z.literal("animatedEmoji"),
+    props: animatedEmojiPropsSchema,
+  })
+  .describe("An animated emoji");
 
 export const AnimatedEmoji = ({
   emoji,

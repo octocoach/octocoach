@@ -9,15 +9,21 @@ import { z } from "zod";
 import { accentColors } from "../helpers";
 
 const wordsPropsSchema = z.object({
-  text: z.array(z.string()),
-  layout: z.enum(["sequential", "parallel"]),
-  fontSize: z.number(),
+  text: z.array(z.string()).describe("Array items are displayed in sequence"),
+  layout: z
+    .enum(["sequential", "parallel"])
+    .describe("Of the lines are displayed in sequence or parallel"),
+  fontSize: z.number().describe("Font size of the words"),
 });
 
-export const wordsSchema = z.object({
-  type: z.literal("words"),
-  props: wordsPropsSchema,
-});
+export const wordsSchema = z
+  .object({
+    type: z.literal("words"),
+    props: wordsPropsSchema.describe(
+      "The words to display, chunk into 2-3 words per item",
+    ),
+  })
+  .describe("A sequence of words");
 
 const Sentence = ({
   children,

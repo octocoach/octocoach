@@ -16,14 +16,16 @@ const slugEnum = z.enum([
 ]);
 
 export const simpleIconPropsSchema = z.object({
-  slug: slugEnum,
-  size: z.number(),
+  slug: slugEnum.describe("The icon to display"),
+  size: z.number().describe("The size of the icon in pixels"),
 });
 
-export const simpleIconSchema = z.object({
-  type: z.literal("simpleIcon"),
-  props: simpleIconPropsSchema,
-});
+export const simpleIconSchema = z
+  .object({
+    type: z.literal("simpleIcon"),
+    props: simpleIconPropsSchema,
+  })
+  .describe("A simple icon");
 
 export const SimpleIcon = ({
   slug,

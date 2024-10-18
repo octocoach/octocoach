@@ -6,13 +6,15 @@ import { z } from "zod";
 import { useIsLandscape, usePanels } from "../hooks";
 
 const gifPropsSchema = z.object({
-  id: z.string(),
+  id: z.string().describe("Gif ID from Giphy"),
 });
 
-export const gifSchema = z.object({
-  type: z.literal("gif"),
-  props: gifPropsSchema,
-});
+export const gifSchema = z
+  .object({
+    type: z.literal("gif"),
+    props: gifPropsSchema,
+  })
+  .describe("A gif from Giphy");
 
 export const GifReaction = ({ id }: z.infer<typeof gifPropsSchema>) => {
   if (!id) return null;

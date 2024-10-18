@@ -70,15 +70,19 @@ const Line = ({
 };
 
 export const lineByLineRevealPropsSchema = z.object({
-  text: z.array(z.string()),
+  text: z.array(z.string()).describe("The lines of text to display"),
   animatedEmoji: animatedEmojiPropsSchema.optional(),
-  width: z.number(),
+  width: z.number().describe("The width of the text in pixels"),
 });
 
-export const lineByLineRevealSchema = z.object({
-  type: z.literal("lineByLineReveal"),
-  props: lineByLineRevealPropsSchema,
-});
+export const lineByLineRevealSchema = z
+  .object({
+    type: z.literal("lineByLineReveal"),
+    props: lineByLineRevealPropsSchema,
+  })
+  .describe(
+    "The lines are displayed all together, but each line is bolded one at a time",
+  );
 
 export const LineByLineReveal = ({
   text,

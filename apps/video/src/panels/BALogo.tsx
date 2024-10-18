@@ -9,10 +9,20 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { z } from "zod";
 
-import { c, makePulse } from "./helpers";
+import { c, makePulse } from "../helpers";
 
-export const BaLogo = ({ width }: { width: number }) => {
+const baLogoPropsSchema = z.object({
+  width: z.number(),
+});
+
+export const baLogoSchema = z.object({
+  type: z.literal("baLogo"),
+  props: baLogoPropsSchema,
+});
+
+export const BaLogo = ({ width }: z.infer<typeof baLogoPropsSchema>) => {
   const textFill = c("text");
   const red = "#ec1c23";
 

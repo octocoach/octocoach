@@ -3,12 +3,9 @@ import { useState } from "react";
 import { interpolate, random, Sequence, useCurrentFrame } from "remotion";
 import { z } from "zod";
 
-import {
-  AnimatedEmoji,
-  animatedEmojiPropsSchema,
-} from "./components/AnimatedEmoji";
-import { accentColors } from "./helpers";
-import { useIsPortrait } from "./hooks";
+import { accentColors } from "../helpers";
+import { useIsPortrait } from "../hooks";
+import { AnimatedEmoji, animatedEmojiPropsSchema } from "./AnimatedEmoji";
 
 const lineSchema = z.object({
   progress: z.number(),
@@ -72,34 +69,34 @@ const Line = ({
   );
 };
 
-export const lineByLineRevealSchema = z.object({
-  text: z.string(),
-  wordsPerLine: z.number(),
-  durationInFrames: z.number(),
+export const lineByLineRevealPropsSchema = z.object({
+  text: z.array(z.string()),
   animatedEmoji: animatedEmojiPropsSchema.optional(),
   width: z.number(),
 });
 
+export const lineByLineRevealSchema = z.object({
+  type: z.literal("lineByLineReveal"),
+  props: lineByLineRevealPropsSchema,
+});
+
 export const LineByLineReveal = ({
   text,
-  wordsPerLine,
+
   durationInFrames,
   animatedEmoji,
   width,
-}: z.infer<typeof lineByLineRevealSchema>) => {
+}: z.infer<typeof lineByLineRevealPropsSchema> & {
+  durationInFrames: number;
+}) => {
   const frame = useCurrentFrame();
   const isPortrait = useIsPortrait();
 
   const progress = frame / durationInFrames;
-  const lines = text.split(" ").reduce((acc, curr, i) => {
-    const chunkIndex = Math.floor(i / wordsPerLine);
-    if (!acc[chunkIndex]) acc[chunkIndex] = [];
-    acc[chunkIndex].push(curr);
-    return acc;
-  }, [] as string[][]);
-  const currentLine = Math.floor(progress * lines.length);
 
-  const lineProgress = (progress * lines.length) % 1;
+  const currentLine = Math.floor(progress * text.length);
+
+  const lineProgress = (progress * text.length) % 1;
 
   return (
     <Sequence
@@ -112,12 +109,12 @@ export const LineByLineReveal = ({
       }}
     >
       <div style={{ textAlign: "center" }}>
-        {lines.map((t, i) => (
+        {text.map((t, i) => (
           <Line
             progress={lineProgress}
             key={i}
             lineIndex={i}
-            text={t.join(" ")}
+            text={t}
             width={width}
             active={currentLine == i}
           />

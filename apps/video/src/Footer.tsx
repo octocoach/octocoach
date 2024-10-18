@@ -9,10 +9,10 @@ import {
   useVideoConfig,
 } from "remotion";
 
-import { BaLogo } from "./BALogo";
 import { Cursor } from "./Cursor";
 import { c } from "./helpers";
 import { useIsPortrait } from "./hooks";
+import { BaLogo } from "./panels/BALogo";
 
 export const Footer = () => {
   const frame = useCurrentFrame();

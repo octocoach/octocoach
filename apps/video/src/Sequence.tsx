@@ -1,25 +1,37 @@
 import { TransitionSeries } from "@remotion/transitions";
+import { createContext } from "react";
 import { CalculateMetadataFunction } from "remotion";
 import { z } from "zod";
 
-import { AnimatedEmoji, animatedEmojiSchema } from "./components/AnimatedEmoji";
-import { GifReaction, gifSchema } from "./components/GifReaction";
-import { Logo, logoSchema } from "./components/Logo";
-import { Words, wordsSchema } from "./components/Words";
 import { exhaustiveCheck } from "./helpers";
 import { useIsLandscape } from "./hooks";
 import { Layout } from "./Layout";
+import { AnimatedEmoji, animatedEmojiSchema } from "./panels/AnimatedEmoji";
+import { BaLogo, baLogoSchema } from "./panels/BALogo";
+import { GifReaction, gifSchema } from "./panels/GifReaction";
+import {
+  LineByLineReveal,
+  lineByLineRevealSchema,
+} from "./panels/LineByLineReveal";
+import { Logo, logoSchema } from "./panels/Logo";
+import { SimpleIcon, simpleIconSchema } from "./panels/SimpleIcon";
+import { Words, wordsSchema } from "./panels/Words";
 
-export const sceneSchema = z.discriminatedUnion("type", [
-  wordsSchema,
+export const panelSchema = z.discriminatedUnion("type", [
   animatedEmojiSchema,
+  baLogoSchema,
   gifSchema,
   logoSchema,
+  wordsSchema,
+  lineByLineRevealSchema,
+  simpleIconSchema,
 ]);
+
+const panelsSchema = z.array(panelSchema);
 
 export const sceneLayoutSchema = z.object({
   durationInFrames: z.number(),
-  scenes: z.array(sceneSchema),
+  panels: panelsSchema,
 });
 
 export const sequenceSchema = z.object({
@@ -38,11 +50,11 @@ export const calculateSequenceMetadata: CalculateMetadataFunction<
   return { props, durationInFrames };
 };
 
-export const Scene = ({
-  scene: { type, props },
+export const Panel = ({
+  panel: { type, props },
   durationInFrames,
 }: {
-  scene: z.infer<typeof sceneSchema>;
+  panel: z.infer<typeof panelSchema>;
   durationInFrames: number;
 }) => {
   switch (type) {
@@ -54,13 +66,23 @@ export const Scene = ({
       return <GifReaction {...props} />;
     case "logo":
       return <Logo {...props} durationInFrames={durationInFrames} />;
+    case "baLogo":
+      return <BaLogo {...props} />;
+    case "lineByLineReveal":
+      return (
+        <LineByLineReveal {...props} durationInFrames={durationInFrames} />
+      );
+    case "simpleIcon":
+      return <SimpleIcon {...props} />;
     default:
       return exhaustiveCheck(type);
   }
 };
 
+export const PanelsContext = createContext<z.infer<typeof panelsSchema>>([]);
+
 export const SceneLayout = ({
-  scenes,
+  panels,
   durationInFrames,
 }: z.infer<typeof sceneLayoutSchema>) => {
   const isLandscape = useIsLandscape();
@@ -78,23 +100,23 @@ export const SceneLayout = ({
         height: "100%",
       }}
     >
-      {scenes.map((scene, i) => (
-        <div
-          key={i}
-          style={{
-            position: "relative",
-            display: "flex",
-            placeContent: "center",
-            placeItems: "center",
-          }}
-        >
-          <Scene
+      <PanelsContext.Provider value={panels}>
+        {panels.map((panel, i) => (
+          <div
             key={i}
-            scene={scene}
-            durationInFrames={durationInFrames || 30}
-          />
-        </div>
-      ))}
+            style={{
+              position: "relative",
+              display: "flex",
+              placeContent: "center",
+              placeItems: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Panel panel={panel} durationInFrames={durationInFrames || 30} />
+          </div>
+        ))}
+      </PanelsContext.Provider>
     </div>
   );
 };

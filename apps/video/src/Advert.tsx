@@ -4,24 +4,27 @@ import { Audio, staticFile, useVideoConfig } from "remotion";
 import { z } from "zod";
 
 import { AnimatedList, animatedListSchema } from "./AnimatedList";
-import { BaLogo } from "./BALogo";
-import { AnimatedEmoji } from "./components/AnimatedEmoji";
 import { CourseData, CourseTile } from "./CourseTile";
 import { useIsLandscape, useIsPortrait } from "./hooks";
 import { ImagePanLayout, imagePanLayoutSchema } from "./ImagePanLayout";
 import { Layout } from "./Layout";
-import { LineByLineReveal, lineByLineRevealSchema } from "./LineByLineReveal";
+import { AnimatedEmoji } from "./panels/AnimatedEmoji";
+import { BaLogo } from "./panels/BALogo";
+import {
+  LineByLineReveal,
+  lineByLineRevealPropsSchema,
+} from "./panels/LineByLineReveal";
 
 export const advertSchema = z.object({
   locale: z.enum(["en", "de"]),
   content: z.object({
     1: animatedListSchema,
-    2: lineByLineRevealSchema,
-    3: lineByLineRevealSchema,
+    2: lineByLineRevealPropsSchema,
+    3: lineByLineRevealPropsSchema,
     4: animatedListSchema,
     5: z.object({
       imagePan: imagePanLayoutSchema,
-      lineByLineReveal: lineByLineRevealSchema,
+      lineByLineReveal: lineByLineRevealPropsSchema,
     }),
   }),
 });
@@ -155,7 +158,6 @@ export const Advert = ({ locale, content }: z.infer<typeof advertSchema>) => {
             </div>
             <AnimatedEmoji
               emoji="moneyFace"
-              durationInSeconds={2}
               width={isLandscape ? width * 0.3 : width * 0.6}
               playbackRate={3}
             />

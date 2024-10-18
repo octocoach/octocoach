@@ -1,13 +1,13 @@
 import { Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { z } from "zod";
 
-import { Logo } from "./components/Logo";
 import { Footer } from "./Footer";
 import { useIsLandscape, useIsPortrait } from "./hooks";
 import { ImagePanLayout } from "./ImagePanLayout";
 import { Json } from "./Json";
 import { Layout } from "./Layout";
 import { Numeronym } from "./Numeronym";
+import { Logo } from "./panels/Logo";
 import { Title } from "./Title";
 
 const CourseData = z.discriminatedUnion("locale", [

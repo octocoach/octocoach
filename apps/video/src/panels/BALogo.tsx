@@ -14,13 +14,15 @@ import { z } from "zod";
 import { c, makePulse } from "../helpers";
 
 const baLogoPropsSchema = z.object({
-  width: z.number(),
+  width: z.number().describe("Width of the logo in pixels"),
 });
 
-export const baLogoSchema = z.object({
-  type: z.literal("baLogo"),
-  props: baLogoPropsSchema,
-});
+export const baLogoSchema = z
+  .object({
+    type: z.literal("baLogo"),
+    props: baLogoPropsSchema,
+  })
+  .describe("An animated logo of the Bundesagentur für Arbeit");
 
 export const BaLogo = ({ width }: z.infer<typeof baLogoPropsSchema>) => {
   const textFill = c("text");

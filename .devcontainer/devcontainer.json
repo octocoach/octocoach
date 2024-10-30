@@ -22,8 +22,7 @@
         "ms-azuretools.vscode-docker",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
-        "YoavBls.pretty-ts-errors",
-        "Supermaven.supermaven"
+        "YoavBls.pretty-ts-errors"
       ]
     }
   },

@@ -14,7 +14,7 @@
     "@eslint/js": "^9.0.0",
     "@next/eslint-plugin-next": "^14.1.4",
     "@types/node": "^20.12.7",
-    "eslint": "8",
+    "eslint": "^8.57.1",
     "eslint-config-next": "^14.1.4",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",

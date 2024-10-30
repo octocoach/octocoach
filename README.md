@@ -1,81 +1,128 @@
-# Turborepo starter
+<p align="center">
+  <img src="assets/octocoach_logo.png" alt="OctoCoach Logo" width="200"/>
+</p>
 
-This is an official starter Turborepo.
+<h1 align="center">OctoCoach</h1>
 
-## Using this example
+<p align="center">
+  A TypeScript-based platform for managing AZAV coaching businesses. This monorepo contains multiple applications and packages that work together to provide a comprehensive coaching management solution.
+</p>
 
-Run the following command:
+## Project Structure
 
-```sh
-npx create-turbo@latest
+This is a monorepo managed with pnpm workspaces, containing:
+
+### Applications
+
+- [`apps/web`](apps/web): The main web application built with Next.js
+
+  - Handles the primary user interface
+  - Integrates with Daily.co for video functionality
+  - Includes analytics and real-time features
+  - Uses AI capabilities through OpenAI integration
+
+- [`apps/video`](apps/video): Video generation service
+  - Built with Remotion for programmatic video creation
+  - Includes support for animations and transitions
+  - Integrates with AI services for content generation
+
+### Packages (Shared Libraries)
+
+The repository includes several shared packages that are used across applications:
+
+- [`@octocoach/auth`](packages/auth): Authentication utilities
+- [`@octocoach/charts`](packages/charts): Charting and visualization components
+- [`@octocoach/daily`](packages/daily): Daily.co integration utilities
+- [`@octocoach/db`](packages/db): Database access layer
+- [`@octocoach/i18n`](packages/i18n): Internationalization utilities
+- [`@octocoach/ui`](packages/ui): Shared UI components
+- [`@octocoach/tshelpers`](packages/tshelpers): TypeScript utility types and helpers
+- [`@octocoach/typescript-config`](packages/typescript-config): Shared TypeScript configuration
+
+## Development Setup
+
+### Prerequisites
+
+- [Docker Desktop](https://docs.github.com/en/codespaces/developing-in-codespaces/getting-started-with-github-codespaces#prerequisites) (Windows/macOS) or Docker Engine (Linux)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+That's it! All other dependencies (Node.js, pnpm, etc.) are handled within the development container.
+
+### Development Environment
+
+The project uses DevContainers for a consistent development environment. The setup includes:
+
+1. Three main services:
+
+   - `app`: Main application container
+   - `db`: PostgreSQL database
+   - `db_proxy`: WebSocket proxy for database connections
+
+2. Exposed ports:
+   - 3000: Web application
+   - 5433: Database WebSocket proxy
+   - 6432: PostgreSQL database
+
+### Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/octocoach/octocoach.git
 ```
 
-## What's inside?
+2. Open in VS Code:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+code octocoach
 ```
 
-### Develop
+3. When prompted, click "Reopen in Container", or:
+   - Press F1 or Ctrl/Cmd + Shift + P
+   - Type "Dev Containers: Reopen in Container"
+   - Press Enter
 
-To develop all apps and packages, run the following command:
+The container will automatically:
 
-```
-cd my-turborepo
+- Set up the development environment
+- Install all dependencies
+- Configure the database
+- Prepare the development servers
+
+To learn more about working with Dev Containers, see the [official documentation](https://code.visualstudio.com/docs/devcontainers/containers).
+
+### Starting the Development Server
+
+Once the container is ready:
+
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+### Included VS Code Extensions
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+The development container comes pre-configured with:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+- Prettier for code formatting
+- Docker tools
+- SQL Tools with PostgreSQL support
+- TypeScript error highlighting
 
-```
-cd my-turborepo
-npx turbo login
-```
+## Scripts
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+- `pnpm dev`: Start all applications in development mode
+- `pnpm build`: Build all applications and packages
+- `pnpm lint`: Run linting across all projects
+- `pnpm format`: Format all files using Prettier
+- `pnpm test`: Run tests using Vitest
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## Technical Stack
 
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- **Frontend**: Next.js, React
+- **Backend**: Node.js
+- **Database**: PostgreSQL
+- **Video Processing**: Remotion
+- **AI Integration**: OpenAI
+- **Containerization**: Docker
+- **Package Management**: pnpm

@@ -5,7 +5,7 @@ import { sendFacebookConversionEvent } from "@helpers/facebook";
 import { getLocale } from "@helpers/locale";
 import { getBaseUrl } from "@helpers/navigation";
 import { db, orgDb } from "@octocoach/db/connection";
-import { and, asc, eq } from "@octocoach/db/operators";
+import { and, asc, eq, gt } from "@octocoach/db/operators";
 import { Cohort } from "@octocoach/db/schemas/org/cohort";
 import {
   Measure,
@@ -24,7 +24,7 @@ import {
   Stack,
   Text,
 } from "@octocoach/ui";
-import { formatDate } from "date-fns";
+import { formatDate, startOfDay } from "date-fns";
 import { de, enUS } from "date-fns/locale";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -126,7 +126,12 @@ const CohortsSection = async ({
   const cohorts = await db
     .select()
     .from(cohortTable)
-    .where(eq(cohortTable.measure, measure.id))
+    .where(
+      and(
+        eq(cohortTable.measure, measure.id),
+        gt(cohortTable.startDate, startOfDay(new Date()))
+      )
+    )
     .orderBy(asc(cohortTable.startDate));
 
   return (
